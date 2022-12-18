@@ -1,0 +1,7 @@
+.vscode
+node_modules
+
+sounds/*
+tokens.json
+twitchConfig.json
+discordWebhookConfig.json
