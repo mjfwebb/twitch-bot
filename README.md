@@ -89,9 +89,9 @@ Watch the output for errors to troubleshoot issues.
 
 👤 **Michael Webb**
 
-* Website: https://github.com/mjfwebb
+* Twitch: [athano](https://twitch.tv/athano)
 * Twitter: [@athanoquest](https://twitter.com/athanoquest)
-* Github: [@mjfwebb](https://github.com/mjfwebb)
+* Game: [Between Worlds ](https://www.betweenworlds.net)
 
 ## 🤝 Contributing
 
