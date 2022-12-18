@@ -1,3 +1,4 @@
+import { connection } from 'websocket';
 import { MINUTE_MS, REWARDS } from '../constants';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
@@ -175,6 +176,10 @@ export const botCommands: BotCommand[] = [
   {
     command: 'l',
     callback: (connection, parsedMessage) => sendChatMessage(connection, `Fat L ${parsedMessage.command?.botCommandParams || ''}`),
+  },
+  {
+    command: 'bot',
+    callback: (connection) => sendChatMessage(connection, 'https://github.com/mjfwebb/twitch-bot'),
   },
   {
     command: 'commands',
