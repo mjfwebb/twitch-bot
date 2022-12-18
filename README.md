@@ -20,6 +20,7 @@ If you need assistance with the Twitch API, you may find helpful information at 
 
 We assume that users of this bot have some level of prior experience with programming. Please keep in mind that this project may not meet the needs of all users, but it does offer the ability to create a customized Twitch Bot.
 
+This project was began with the example provided by Twitch at https://dev.twitch.tv/docs/irc/example-bot. Thanks for that, Twitch!
 
 ## Install
 
