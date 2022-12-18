@@ -1,8 +1,5 @@
 <h1 align="center">Welcome to twitch-bot 👋</h1>
 <p>
-  <a href="https://www.npmjs.com/package/twitch-bot" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/twitch-bot.svg">
-  </a>
   <a href="" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
