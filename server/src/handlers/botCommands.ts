@@ -1,4 +1,3 @@
-import { connection } from 'websocket';
 import { MINUTE_MS, REWARDS } from '../constants';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
@@ -8,7 +7,16 @@ import { editCustomReward, getCustomRewards } from './customRewards';
 
 export const botCommands: BotCommand[] = [
   {
+    command: ['athanotime', 'time'],
+    id: 'athanotime',
+    callback: (connection) => {
+      const now = new Date();
+      sendChatMessage(connection, now.toTimeString());
+    },
+  },
+  {
     command: 'addpushup',
+    id: 'addpushup',
     priviliged: true,
     callback: (connection) => {
       new Promise<void>((resolve, reject) => {
@@ -34,6 +42,7 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'party',
+    id: 'party',
     priviliged: true,
     playTime: 9000,
     callback: (connection) => {
@@ -44,6 +53,7 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'success',
+    id: 'success',
     priviliged: true,
     playTime: 5000,
     callback: () => {
@@ -53,6 +63,7 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'fail',
+    id: 'fail',
     playTime: 5000,
     callback: () => {
       playSound('fail');
@@ -61,6 +72,7 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'resetdrop',
+    id: 'resetdrop',
     callback: (connection) => {
       sendChatMessage(connection, '!resetdrop');
     },
@@ -68,18 +80,21 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'roilisi',
+    id: 'roilisi',
     callback: (connection) => {
       sendChatMessage(connection, "You can try to break me, but you won't succeed UwU");
     },
   },
   {
     command: 'haliphax',
+    id: 'haliphax',
     callback: (connection) => {
       sendChatMessage(connection, 'Go play https://yokai.quest/');
     },
   },
   {
     command: 'elephant',
+    id: 'elephant',
     cooldown: 1 * MINUTE_MS,
     callback: (connection) => {
       sendChatMessage(
@@ -91,6 +106,7 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'lutf1sk',
+    id: 'lutf1sk',
     mustBeUser: 'lutf1sk',
     hidden: true,
     callback: (connection) => {
@@ -104,36 +120,42 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'thanos',
+    id: 'thanos',
     callback: (connection) => {
       sendChatMessage(connection, "Actually, it's Athanos");
     },
   },
   {
     command: 'stack2',
+    id: 'stack2',
     callback: (connection) => {
       sendChatMessage(connection, 'Um, did you mean !stack by any chance?');
     },
   },
   {
     command: 'retrommo',
+    id: 'retrommo',
     callback: (connection) => {
       sendChatMessage(connection, 'Go play https://retro-mmo.com/');
     },
   },
   {
     command: 'redjaw',
+    id: 'redjaw',
     callback: (connection) => {
       sendChatMessage(connection, 'Welcome to the Riazey gang! https://www.twitch.tv/riazey/clip/HotArtsyPuddingGOWSkull-s0cm7S54szpZ6VNy');
     },
   },
   {
     command: 'delvoid',
+    id: 'delvoid',
     callback: (connection) => {
       sendChatMessage(connection, 'Delvoid: I hate eslint', 3);
     },
   },
   {
     command: 'forodor',
+    id: 'forodor',
     mustBeUser: 'forodor',
     cooldown: 5 * MINUTE_MS,
     callback: (connection) => {
@@ -150,17 +172,20 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'thechaosbean',
+    id: 'thechaosbean',
     callback: () => {
       playSound('party');
     },
   },
   {
     command: 'bluepin',
+    id: 'bluepin',
     callback: (connection) =>
       sendChatMessage(connection, 'Wishlist Explory Story on Steam! https://store.steampowered.com/app/1626280/Explory_Story/'),
   },
   {
     command: 'cursor',
+    id: 'cursor',
     callback: (connection) =>
       sendChatMessage(
         connection,
@@ -171,18 +196,22 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'w',
+    id: 'w',
     callback: (connection, parsedMessage) => sendChatMessage(connection, `Big W ${parsedMessage.command?.botCommandParams || ''}`),
   },
   {
     command: 'l',
+    id: 'l',
     callback: (connection, parsedMessage) => sendChatMessage(connection, `Fat L ${parsedMessage.command?.botCommandParams || ''}`),
   },
   {
     command: 'bot',
+    id: 'bot',
     callback: (connection) => sendChatMessage(connection, 'https://github.com/mjfwebb/twitch-bot'),
   },
   {
     command: 'commands',
+    id: 'commands',
     hidden: true,
     callback: (connection) =>
       sendChatMessage(

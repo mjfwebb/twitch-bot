@@ -97,7 +97,8 @@ export type BotCommandCooldown = {
 export type BotCommandCallback = (connection: websocket.connection, parsedMessage: ParsedMessage) => void;
 
 export type BotCommand = {
-  command: string;
+  command: string | string[];
+  id: string;
   callback: BotCommandCallback;
   playTime?: number;
   mustBeUser?: string;

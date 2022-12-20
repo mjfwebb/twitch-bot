@@ -9,8 +9,21 @@ const cooldowns: BotCommandCooldown[] = [];
 const messageQueue: ParsedMessage[] = [];
 let workingQueue = false;
 
+function findCommand(parsedMessage: ParsedMessage) {
+  return botCommands.find((bc) => {
+    if (parsedMessage.command && parsedMessage.command.botCommand) {
+      if (Array.isArray(bc.command)) {
+        return bc.command.includes(parsedMessage.command.botCommand);
+      } else {
+        return bc.command === parsedMessage.command.botCommand;
+      }
+    }
+  });
+}
+
 async function handleCommand(connection: websocket.connection, parsedMessage: ParsedMessage) {
-  const foundBotCommand = botCommands.find((bc) => bc.command === parsedMessage.command?.botCommand);
+  const foundBotCommand = findCommand(parsedMessage);
+
   if (foundBotCommand) {
     if (foundBotCommand.priviliged && !isPrivileged(parsedMessage)) {
       return;
@@ -64,9 +77,10 @@ export async function botCommandHandler(connection: websocket.connection, parsed
   }
 
   if (botCommand) {
-    const foundBotCommand = botCommands.find((bc) => bc.command === parsedMessage.command?.botCommand);
+    const foundBotCommand = findCommand(parsedMessage);
+
     if (foundBotCommand) {
-      addCooldown(foundBotCommand.command, foundBotCommand.cooldown);
+      addCooldown(foundBotCommand.id, foundBotCommand.cooldown);
       messageQueue.push(parsedMessage);
       await workQueue(connection);
       return;
