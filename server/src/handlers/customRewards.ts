@@ -1,6 +1,7 @@
 // https://api.twitch.tv/helix/channel_points/custom_rewards
 
 import Config from '../config';
+import { TWITCH_HELIX_URL } from '../constants';
 import { fetchWithRetry, getCurrentAccessToken } from '../twitch';
 import { assertArray } from '../utils/assertArray';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -31,7 +32,7 @@ export const getCustomRewards = () => customRewards;
 export const subscribeToRedeems = async (sessionId: string) => {
   if (Config.twitch) {
     try {
-      const url = 'https://api.twitch.tv/helix/eventsub/subscriptions';
+      const url = `${TWITCH_HELIX_URL}eventsub/subscriptions`;
       const accessToken = getCurrentAccessToken();
 
       const body = JSON.stringify({
@@ -62,7 +63,7 @@ export const subscribeToRedeems = async (sessionId: string) => {
 export const createCustomReward = async (body: string) => {
   if (Config.twitch) {
     try {
-      const url = `https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
+      const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
       const accessToken = getCurrentAccessToken();
 
       const result = await fetchWithRetry(url, {
@@ -90,7 +91,7 @@ export const editCustomReward = async (customRewardId: string, body: string) => 
 
   if (Config.twitch) {
     try {
-      const url = `https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}&id=${customRewardId}`;
+      const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}&id=${customRewardId}`;
       const accessToken = getCurrentAccessToken();
 
       const result = await fetchWithRetry(url, {
@@ -117,7 +118,7 @@ export const editCustomReward = async (customRewardId: string, body: string) => 
 export const fetchCustomRewards = async (): Promise<void> => {
   if (Config.twitch) {
     try {
-      const url = `https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
+      const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
       const accessToken = getCurrentAccessToken();
 
       const result = await fetchWithRetry(url, {

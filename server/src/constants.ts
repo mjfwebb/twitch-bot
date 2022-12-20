@@ -1,3 +1,7 @@
+export const TWITCH_HELIX_URL = 'https://api.twitch.tv/helix/';
+export const TWITCH_AUTH_URL = 'https://id.twitch.tv/oauth2/';
+export const TWITCH_WEBSOCKET_EVENTSUB_URL = 'wss://eventsub-beta.wss.twitch.tv/ws';
+
 export const MINUTE_MS = 60000;
 
 export const SOUNDS = ['success', 'fail', 'party', 'ominous_bell', 'redeem'] as const;

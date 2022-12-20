@@ -1,6 +1,6 @@
 import websocket from 'websocket';
 import { getConnection } from './bot';
-import { REWARDS } from './constants';
+import { REWARDS, TWITCH_WEBSOCKET_EVENTSUB_URL } from './constants';
 import { botCommands } from './handlers/botCommands';
 import { subscribeToRedeems } from './handlers/customRewards';
 import { sendChatMessage } from './helpers/sendChatMessage';
@@ -90,5 +90,5 @@ export function runTwitchWebsocket() {
       }
     });
   });
-  client.connect('wss://eventsub-beta.wss.twitch.tv/ws');
+  client.connect(TWITCH_WEBSOCKET_EVENTSUB_URL);
 }

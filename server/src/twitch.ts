@@ -7,9 +7,10 @@ import { errorMessage } from './utils/errorMessage';
 import { getTokenFromFile, updateTokenFile } from './tokenManager';
 import type { TwitchConfig } from './config';
 import Config from './config';
+import { TWITCH_AUTH_URL } from './constants';
 
 const validateAccessToken = async (accessToken: string) => {
-  const url = `https://id.twitch.tv/oauth2/validate`;
+  const url = `${TWITCH_AUTH_URL}validate`;
   const result = await fetch(url, {
     method: 'GET',
     headers: {
@@ -69,7 +70,7 @@ const handleReturnedTokens = (data: unknown) => {
 const refreshAccessToken = async (twitchConfig: TwitchConfig) => {
   try {
     const refreshToken = getTokenFromFile('refresh_token');
-    const url = `https://id.twitch.tv/oauth2/token?client_id=${twitchConfig.client_id}&client_secret=${
+    const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${
       twitchConfig.client_secret
     }&grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`;
     const result = await fetch(url, {
@@ -94,7 +95,7 @@ const refreshAccessToken = async (twitchConfig: TwitchConfig) => {
 
 const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
   try {
-    const url = `https://id.twitch.tv/oauth2/token?client_id=${twitchConfig.client_id}&client_secret=${twitchConfig.client_secret}&code=${twitchConfig.auth_code}&grant_type=${twitchConfig.grant_type}&redirect_uri=http://localhost`;
+    const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${twitchConfig.client_secret}&code=${twitchConfig.auth_code}&grant_type=${twitchConfig.grant_type}&redirect_uri=http://localhost`;
     const result = await fetch(url, {
       method: 'post',
       headers: {
