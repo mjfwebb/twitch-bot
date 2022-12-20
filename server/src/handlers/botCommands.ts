@@ -31,6 +31,16 @@ export const botCommands: BotCommand[] = [
               title: customReward.title.replace(amount, String(amountIncremented)),
             });
             await editCustomReward(REWARDS.pushup, body);
+
+            const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushupAddOne);
+            if (pushupAddOneReward) {
+              await editCustomReward(
+                REWARDS.pushupAddOne,
+                JSON.stringify({
+                  cost: pushupAddOneReward.cost + 1000,
+                }),
+              );
+            }
           } else {
             reject('Amount was not found');
           }
