@@ -115,7 +115,7 @@ export const botCommands: BotCommand[] = [
     },
   },
   {
-    command: 'lutf1sk',
+    command: ['lutf1sk', 'lutfisk'],
     id: 'lutf1sk',
     mustBeUser: 'lutf1sk',
     hidden: true,
@@ -143,7 +143,7 @@ export const botCommands: BotCommand[] = [
     },
   },
   {
-    command: 'retrommo',
+    command: ['retrommo', 'evanmmo'],
     id: 'retrommo',
     callback: (connection) => {
       sendChatMessage(connection, 'Go play https://retro-mmo.com/');
@@ -157,7 +157,7 @@ export const botCommands: BotCommand[] = [
     },
   },
   {
-    command: 'delvoid',
+    command: ['delvoid', 'delv'],
     id: 'delvoid',
     callback: (connection) => {
       sendChatMessage(connection, 'Delvoid: I hate eslint', 3);
