@@ -194,6 +194,13 @@ export const botCommands: BotCommand[] = [
       sendChatMessage(connection, 'Wishlist Explory Story on Steam! https://store.steampowered.com/app/1626280/Explory_Story/'),
   },
   {
+    command: ['wary', 'Wary'],
+    id: 'wary',
+    callback: () => {
+      playSound('oh_great_heavens');
+    },
+  },
+  {
     command: 'cursor',
     id: 'cursor',
     callback: (connection) =>

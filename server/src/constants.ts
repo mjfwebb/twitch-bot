@@ -4,7 +4,7 @@ export const TWITCH_WEBSOCKET_EVENTSUB_URL = 'wss://eventsub-beta.wss.twitch.tv/
 
 export const MINUTE_MS = 60000;
 
-export const SOUNDS = ['success', 'fail', 'party', 'ominous_bell', 'redeem'] as const;
+export const SOUNDS = ['success', 'fail', 'party', 'ominous_bell', 'redeem', 'oh_great_heavens'] as const;
 
 export const REWARDS = {
   pushup: 'd17e63c6-208f-4275-bcd7-6a558cc5a494',
