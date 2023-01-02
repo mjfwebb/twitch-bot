@@ -222,7 +222,7 @@ export const botCommands: BotCommand[] = [
     callback: (connection, parsedMessage) => sendChatMessage(connection, `Fat L ${parsedMessage.command?.botCommandParams || ''}`),
   },
   {
-    command: 'bot',
+    command: ['bot', 'github'],
     id: 'bot',
     callback: (connection) => sendChatMessage(connection, 'https://github.com/mjfwebb/twitch-bot'),
   },
