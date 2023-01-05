@@ -62,6 +62,13 @@ export const botCommands: BotCommand[] = [
     cooldown: 10000,
   },
   {
+    command: 'jumpy',
+    id: 'jumpy',
+    callback: (connection) => {
+      sendChatMessage(connection, 'jumpylionnn is the best!!!');
+    },
+  },
+  {
     command: 'success',
     id: 'success',
     priviliged: true,
