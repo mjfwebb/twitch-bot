@@ -48,10 +48,12 @@ To get the oauth_password (for logging into the Twitch chat) you can use for exa
 To get the auth_code construct your URL and enter it into the browser: 
 
 ```
-https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions
+https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users
 ```
 
-Required scopes are channel:manage:redemptions and channel:read:redemptions
+Required scopes are channel:manage:redemptions, channel:read:redemptions and moderator:manage:banned_users
+
+NOTE: If you have an existing access_token and refresh_token and change your scope, you should remove these from the tokens.json file (so they are then empty strings). Once you have your new access code the program will retrieve a new access_token and refresh_token.
 
 2. Create a `tokens.json` file using the example file `example.tokens.json` as a basis. All fields are required.
 

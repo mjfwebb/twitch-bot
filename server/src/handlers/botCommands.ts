@@ -1,9 +1,11 @@
 import { MINUTE_MS, REWARDS } from '../constants';
+import { getUserIdByName } from '../helpers/getUserIdByName';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
 import type { BotCommand } from '../types';
 import { isError } from '../utils/isError';
 import { editCustomReward, getCustomRewards } from './customRewards';
+import { banUser, unbanUser } from './moderation';
 
 export const botCommands: BotCommand[] = [
   {
@@ -127,11 +129,22 @@ export const botCommands: BotCommand[] = [
     mustBeUser: 'lutf1sk',
     hidden: true,
     callback: (connection) => {
-      sendChatMessage(connection, 'Get banned fool');
-      setTimeout(() => {
-        sendChatMessage(connection, '/unban lutf1sk');
-      }, 10000);
-      sendChatMessage(connection, '/ban lutf1sk');
+      new Promise<void>(() => {
+        void (async () => {
+          const lutfiskId = await getUserIdByName('lutf1sk');
+          if (lutfiskId !== '') {
+            sendChatMessage(connection, 'Get banned fool');
+            setTimeout(() => {
+              new Promise<void>(() => {
+                void (async () => {
+                  await unbanUser(lutfiskId);
+                })();
+              }).catch((e) => console.log(e));
+            }, 10000);
+            await banUser(lutfiskId);
+          }
+        })();
+      }).catch((e) => console.log(e));
     },
     cooldown: 30 * MINUTE_MS,
   },
