@@ -247,6 +247,20 @@ export const botCommands: BotCommand[] = [
     callback: (connection) => sendChatMessage(connection, 'https://github.com/mjfwebb/twitch-bot'),
   },
   {
+    command: ['discord', 'd'],
+    id: 'discord',
+    callback: (connection) => sendChatMessage(connection, 'Between Worlds Discord server: https://discord.betweenworlds.net'),
+  },
+  {
+    command: ['links'],
+    id: 'links',
+    callback: (connection) =>
+      sendChatMessage(
+        connection,
+        '🚀 Game: https://www.betweenworlds.net 🚀 Discord: https://discord.betweenworlds.net 🚀 Patreon: https://www.patreon.com/athano 🚀 Twitter: https://twitter.com/athanoquest',
+      ),
+  },
+  {
     command: 'commands',
     id: 'commands',
     hidden: true,
