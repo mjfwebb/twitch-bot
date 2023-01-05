@@ -4,6 +4,7 @@ import { getTwitchAccessToken } from './twitch';
 import { fetchCustomRewards } from './handlers/customRewards';
 import { runTwitchWebsocket } from './twitchWebsocket';
 import { runBot } from './bot';
+import { runIntervalCommands } from './intervalCommands';
 
 async function main() {
   try {
@@ -14,6 +15,7 @@ async function main() {
 
     runBot();
     runTwitchWebsocket();
+    runIntervalCommands();
   } catch (error) {
     console.error(error);
   }
