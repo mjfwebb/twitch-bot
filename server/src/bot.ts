@@ -1,6 +1,7 @@
 import websocket from 'websocket';
 import Config from './config';
 import { discordChatWebhook } from './discord';
+import { bitHandler } from './handlers/bitHandler';
 import { botCommandHandler } from './handlers/botCommandHandler';
 import { parseMessage } from './parsers/parseMessage';
 
@@ -58,6 +59,7 @@ export function runBot() {
             switch (parsedMessage.command.command) {
               case 'PRIVMSG':
                 botCommandHandler(connection, parsedMessage).catch((e) => console.error(e));
+                bitHandler(connection, parsedMessage);
 
                 if (!botCommand && parsedMessage.source?.nick && parsedMessage.parameters) {
                   discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
