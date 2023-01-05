@@ -3,6 +3,7 @@ import Config from './config';
 import { discordChatWebhook } from './discord';
 import { bitHandler } from './handlers/bitHandler';
 import { botCommandHandler } from './handlers/botCommandHandler';
+import { firstMessageHandler } from './handlers/firstMessageHandler';
 import { parseMessage } from './parsers/parseMessage';
 
 let connectionRef: websocket.connection | undefined;
@@ -60,6 +61,7 @@ export function runBot() {
               case 'PRIVMSG':
                 botCommandHandler(connection, parsedMessage).catch((e) => console.error(e));
                 bitHandler(connection, parsedMessage);
+                firstMessageHandler(connection, parsedMessage);
 
                 if (!botCommand && parsedMessage.source?.nick && parsedMessage.parameters) {
                   discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
