@@ -4,8 +4,6 @@ import { getTwitchAccessToken } from './twitch';
 import { fetchCustomRewards } from './handlers/customRewards';
 import { runTwitchWebsocket } from './twitchWebsocket';
 import { runBot } from './bot';
-import { getUserIdByName } from './helpers/getUserIdByName';
-import { banUser } from './handlers/moderation';
 
 async function main() {
   try {
