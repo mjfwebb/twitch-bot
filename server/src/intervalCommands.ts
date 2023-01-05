@@ -11,7 +11,7 @@ interface IntervalCommand {
 export function runIntervalCommands() {
   const intervalCommands: IntervalCommand[] = [
     {
-      message: 'Hey have you heard about the word? The bird is the word!',
+      message: "Have you tried out Between Worlds? It's free to play in your browser right now, no sign up required! https://betweenworlds.net",
       tickInterval: 300,
       currentTick: 0,
       tickOffset: 10,
