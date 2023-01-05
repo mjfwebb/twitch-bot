@@ -31,6 +31,11 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
     throw new Error(`Failed to perform fetch ${attemptNumber} times to Twitch API`);
   }
   const result = await fetch(url, init);
+
+  if (result.status === StatusCodes.NO_CONTENT) {
+    return;
+  }
+
   const data: unknown = await result.json();
   const shouldRetry = checkResponseForErrors(data);
   if (shouldRetry) {
