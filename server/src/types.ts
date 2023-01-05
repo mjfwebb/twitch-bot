@@ -58,6 +58,8 @@ type Emote = {
 
 type UserType = 'staff';
 
+type StringBoolean = '0' | '1';
+
 export type Tags = {
   'badge-info': {
     subscriber: number;
@@ -67,19 +69,22 @@ export type Tags = {
     broadcaster: number;
     turbo: number;
   };
+  bits: string;
   color: string;
   'display-name': string;
-  'emote-only': number;
+  'emote-only': StringBoolean;
   emotes: Emote[];
   id: string;
-  mod: string; // either '0' or '1'
+  mod: StringBoolean;
   'room-id': number;
-  subscriber: boolean;
-  turbo: boolean;
+  subscriber: StringBoolean;
+  turbo: StringBoolean;
   'tmi-sent-ts': string;
-  'first-msg': boolean;
+  'first-msg': StringBoolean;
   'user-id': string;
   'user-type': UserType;
+  vip: StringBoolean;
+  'returning-chatter': StringBoolean;
 };
 
 export type ParsedMessage = {
