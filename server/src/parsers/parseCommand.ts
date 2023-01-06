@@ -12,6 +12,8 @@ export function parseCommand(rawCommandComponent: string): Command | null {
     case 'CLEARCHAT':
     case 'HOSTTARGET':
     case 'PRIVMSG':
+    case 'USERSTATE': // Make sure you request the /commands capability.
+    case 'ROOMSTATE': // Make sure you request the /tags capability.
       parsedCommand = {
         command: commandParts[0],
         channel: commandParts[1],
@@ -34,13 +36,6 @@ export function parseCommand(rawCommandComponent: string): Command | null {
       // But it has no meaning without also including the /tags capability.
       parsedCommand = {
         command: commandParts[0],
-      };
-      break;
-    case 'USERSTATE': // Included only if you request the /commands capability.
-    case 'ROOMSTATE': // But it has no meaning without also including the /tags capabilities.
-      parsedCommand = {
-        command: commandParts[0],
-        channel: commandParts[1],
       };
       break;
     case 'RECONNECT':
