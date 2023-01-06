@@ -17,7 +17,7 @@
     "dev": "nodemon -L src/index.ts"
   },
   "engines": {
-    "node": ">=16.9.0"
+    "node": ">=16.10.0"
   },
   "keywords": [],
   "dependencies": {
