@@ -4,6 +4,7 @@ import { discordChatWebhook } from './discord';
 import { bitHandler } from './handlers/bitHandler';
 import { botCommandHandler } from './handlers/botCommandHandler';
 import { firstMessageHandler } from './handlers/firstMessageHandler';
+import { returningChatterHandler } from './handlers/returningChatterHandler';
 import { parseMessage } from './parsers/parseMessage';
 
 let connectionRef: websocket.connection | undefined;
@@ -62,6 +63,7 @@ export function runBot() {
                 botCommandHandler(connection, parsedMessage).catch((e) => console.error(e));
                 bitHandler(connection, parsedMessage);
                 firstMessageHandler(connection, parsedMessage);
+                returningChatterHandler(connection, parsedMessage);
 
                 if (!botCommand && parsedMessage.source?.nick && parsedMessage.parameters) {
                   discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
