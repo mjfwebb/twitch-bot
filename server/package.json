@@ -21,6 +21,7 @@
   },
   "keywords": [],
   "dependencies": {
+    "@types/jest": "^29.2.5",
     "chalk": "^4.1.1",
     "console-stamp": "^3.0.2",
     "cors": "^2.8.5",
@@ -30,6 +31,7 @@
     "node-fetch": "^2.6.7",
     "play-sound": "^1.1.5",
     "socket.io": "^4.5.0",
+    "ts-jest": "^29.0.3",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
