@@ -4,6 +4,7 @@ import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
 import type { BotCommand } from '../types';
 import { isError } from '../utils/isError';
+import { promiseAsyncWrapper } from '../utils/promiseAsyncWrapper';
 import { editCustomReward, getCustomRewards } from './customRewards';
 import { banUser, unbanUser } from './moderation';
 
@@ -21,35 +22,33 @@ export const botCommands: BotCommand[] = [
     id: 'addpushup',
     priviliged: true,
     callback: (connection) => {
-      new Promise<void>((resolve, reject) => {
-        void (async () => {
-          const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushup);
-          const amount = customReward?.title.split(' ')[0];
+      promiseAsyncWrapper(async (resolve, reject) => {
+        const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushup);
+        const amount = customReward?.title.split(' ')[0];
 
-          if (amount) {
-            const amountIncremented = +amount + 1;
+        if (amount) {
+          const amountIncremented = +amount + 1;
 
-            const body = JSON.stringify({
-              title: customReward.title.replace(amount, String(amountIncremented)),
-            });
-            await editCustomReward(REWARDS.pushup, body);
+          const body = JSON.stringify({
+            title: customReward.title.replace(amount, String(amountIncremented)),
+          });
+          await editCustomReward(REWARDS.pushup, body);
 
-            const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushupAddOne);
-            if (pushupAddOneReward) {
-              await editCustomReward(
-                REWARDS.pushupAddOne,
-                JSON.stringify({
-                  cost: pushupAddOneReward.cost + 1000,
-                }),
-              );
-            }
-          } else {
-            reject('Amount was not found');
+          const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushupAddOne);
+          if (pushupAddOneReward) {
+            await editCustomReward(
+              REWARDS.pushupAddOne,
+              JSON.stringify({
+                cost: pushupAddOneReward.cost + 1000,
+              }),
+            );
           }
-          sendChatMessage(connection, 'It goes ever upwards');
-          resolve();
-        })();
-      }).catch((e) => console.log(e));
+        } else {
+          reject('Amount was not found');
+        }
+        sendChatMessage(connection, 'It goes ever upwards');
+        resolve();
+      });
     },
   },
   {
@@ -129,22 +128,16 @@ export const botCommands: BotCommand[] = [
     mustBeUser: 'lutf1sk',
     hidden: true,
     callback: (connection) => {
-      new Promise<void>(() => {
-        void (async () => {
-          const lutfiskId = await getUserIdByName('lutf1sk');
-          if (lutfiskId !== '') {
-            sendChatMessage(connection, 'Get banned fool');
-            setTimeout(() => {
-              new Promise<void>(() => {
-                void (async () => {
-                  await unbanUser(lutfiskId);
-                })();
-              }).catch((e) => console.log(e));
-            }, 10000);
-            await banUser(lutfiskId);
-          }
-        })();
-      }).catch((e) => console.log(e));
+      promiseAsyncWrapper(async () => {
+        const lutfiskId = await getUserIdByName('lutf1sk');
+        if (lutfiskId !== '') {
+          sendChatMessage(connection, 'Get banned fool');
+          setTimeout(() => {
+            promiseAsyncWrapper(() => unbanUser(lutfiskId));
+          }, 10000);
+          await banUser(lutfiskId);
+        }
+      });
     },
     cooldown: 30 * MINUTE_MS,
   },
