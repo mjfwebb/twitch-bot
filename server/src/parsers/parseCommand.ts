@@ -12,6 +12,7 @@ export function parseCommand(rawCommandComponent: string): Command | null {
     case 'CLEARCHAT':
     case 'HOSTTARGET':
     case 'PRIVMSG':
+    case 'USERNOTICE':
     case 'USERSTATE': // Make sure you request the /commands capability.
     case 'ROOMSTATE': // Make sure you request the /tags capability.
       parsedCommand = {
