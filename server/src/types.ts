@@ -132,6 +132,22 @@ type CommonTags = {
   'user-type': UserType;
 };
 
+export type UserStateTags = {
+  'badge-info': BadgeInfo;
+  badges: Badges;
+  color: string; // The color of the user’s name in the chat room. This is a hexadecimal RGB color code in the form, #<RGB>. This tag may be empty if it is never set.
+  'display-name': string; // 	The user’s display name, escaped as described in the IRCv3 spec. This tag may be empty if it is never set.
+  'emote-sets': string[];
+  turbo: StringBoolean;
+  'user-id': string;
+  'user-type': UserType;
+};
+
+export type NoticeTags = {
+  'msg-id': string;
+  'target-user-id': string;
+};
+
 export type PrivMsgTags = CommonTags & {
   bits: StringNumber;
   'returning-chatter': StringBoolean;
@@ -198,7 +214,9 @@ export type RitualTags = {
   'msg-param-ritual-name': 'new_chatter'; // The name of the ritual being celebrated. Possible values are: new_chatter.
 };
 
-export type Tags = Partial<PrivMsgTags & RoomstateTags & UserNoticeTags & SubscriptionNoticeTags & SubGiftNoticeTags & RaidNoticeTags & RitualTags>;
+export type Tags = Partial<
+  PrivMsgTags & RoomstateTags & UserNoticeTags & SubscriptionNoticeTags & SubGiftNoticeTags & RaidNoticeTags & RitualTags & UserStateTags & NoticeTags
+>;
 
 export type ParsedMessage = {
   tags: Tags | null;
