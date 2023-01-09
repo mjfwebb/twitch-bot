@@ -61,12 +61,12 @@ type Emotes = Emote[];
 
 /**
  * The type of user. Possible values are:
- *  "" — A normal user
+ *  null — A normal user, an empty string from the API, parsed as null by the tags parser
  *  admin — A Twitch administrator
  *  global_mod — A global moderator
  *  staff — A Twitch employee
  */
-type UserType = '' | 'admin' | 'global_mod' | 'staff';
+type UserType = null | 'admin' | 'global_mod' | 'staff';
 
 /**
  *  A string containing a number value of either '0' or '1'
