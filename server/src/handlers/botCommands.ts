@@ -179,6 +179,7 @@ export const botCommands: BotCommand[] = [
   {
     command: ['delvoid', 'delv'],
     id: 'delvoid',
+    cooldown: 0.5 * MINUTE_MS,
     callback: (connection) => {
       sendChatMessage(connection, 'Delvoid: I hate eslint', 3);
     },
