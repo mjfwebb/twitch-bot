@@ -226,7 +226,7 @@ export type ParsedMessage = {
 };
 
 export type BotCommandCooldown = {
-  command: string;
+  commandId: string;
   unusableUntil: number;
 };
 

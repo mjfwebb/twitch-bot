@@ -54,36 +54,32 @@ async function workQueue(connection: websocket.connection) {
   }
 }
 
-function addCooldown(command: string, cooldownLength = 0) {
-  const cooldownIndex = cooldowns.findIndex((cooldown) => cooldown.command === command);
+function addCooldown(commandId: string, cooldownLength = 0) {
+  const cooldownIndex = cooldowns.findIndex((cooldown) => cooldown.commandId === commandId);
 
   if (cooldownIndex > -1) {
     cooldowns[cooldownIndex] = {
-      command,
+      commandId,
       unusableUntil: Date.now() + cooldownLength,
     };
   } else {
-    cooldowns.push({ command, unusableUntil: Date.now() + cooldownLength });
+    cooldowns.push({ commandId, unusableUntil: Date.now() + cooldownLength });
   }
 }
 
 export async function botCommandHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
-  const botCommand = parsedMessage.command?.botCommand;
+  const foundBotCommand = findCommand(parsedMessage);
 
-  const cooldown = cooldowns.find((cooldown) => cooldown.command === botCommand);
+  const cooldown = cooldowns.find((cooldown) => cooldown.commandId === foundBotCommand?.id);
 
   if (cooldown && cooldown.unusableUntil > Date.now()) {
     return;
   }
 
-  if (botCommand) {
-    const foundBotCommand = findCommand(parsedMessage);
-
-    if (foundBotCommand) {
-      addCooldown(foundBotCommand.id, foundBotCommand.cooldown);
-      messageQueue.push(parsedMessage);
-      await workQueue(connection);
-      return;
-    }
+  if (foundBotCommand) {
+    addCooldown(foundBotCommand.id, foundBotCommand.cooldown);
+    messageQueue.push(parsedMessage);
+    await workQueue(connection);
+    return;
   }
 }
