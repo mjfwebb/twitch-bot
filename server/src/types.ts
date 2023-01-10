@@ -22,6 +22,8 @@ export type ChannelPointRedeemNotificatonEvent = {
   };
 };
 
+export type EventSubCondition = { [key: string]: string };
+
 export type RaidNotificationEvent = {
   from_broadcaster_user_id: string; // The broadcaster ID that created the raid.
   from_broadcaster_user_login: string; // The broadcaster login that created the raid.
