@@ -6,6 +6,8 @@ import { subscribeToRaids } from './subscribers/subscribeToRaids';
 import { websocketEventHandler } from './handlers/websocketEventHandler';
 import type { TwitchWebsocketMessage } from './types';
 import { hasOwnProperty } from './utils/hasOwnProperty';
+import { subscribeToSubscriptions } from './subscribers/subscribeToSubscriptions';
+import { subscribeToSubscriptionGifts } from './subscribers/subscribeToSubscriptionGifts';
 
 export function runTwitchWebsocket() {
   const client = new websocket.client();
@@ -37,6 +39,8 @@ export function runTwitchWebsocket() {
                 subscribeToRedeems(sessionId).catch((e) => console.error(e));
                 subscribeToFollows(sessionId).catch((e) => console.error(e));
                 subscribeToRaids(sessionId).catch((e) => console.error(e));
+                subscribeToSubscriptions(sessionId).catch((e) => console.error(e));
+                subscribeToSubscriptionGifts(sessionId).catch((e) => console.error(e));
               }
             }
 

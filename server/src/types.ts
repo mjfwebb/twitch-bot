@@ -24,6 +24,87 @@ export type ChannelPointRedeemNotificatonEvent = {
 
 export type EventSubCondition = { [key: string]: string };
 
+export type EventSubResponse = {
+  subscription: EventsubSubscription;
+  event:
+    | ChannelSubscriptionEvent
+    | ChannelSubscriptionGiftEvent
+    | RaidNotificationEvent
+    | FollowNotificationEvent
+    | ChannelPointRedeemNotificatonEvent;
+};
+
+export type EventsubSubscription = {
+  type:
+    | 'channel.update'
+    | 'channel.follow'
+    | 'channel.subscribe'
+    | 'channel.subscription.end'
+    | 'channel.subscription.gift'
+    | 'channel.subscription.message'
+    | 'channel.cheer'
+    | 'channel.raid'
+    | 'channel.ban'
+    | 'channel.unban'
+    | 'channel.moderator.add'
+    | 'channel.moderator.remove'
+    | 'channel.channel_points_custom_reward.add'
+    | 'channel.channel_points_custom_reward.update'
+    | 'channel.channel_points_custom_reward.remove'
+    | 'channel.channel_points_custom_reward_redemption.add'
+    | 'channel.channel_points_custom_reward_redemption.update'
+    | 'channel.poll.begin'
+    | 'channel.poll.progress'
+    | 'channel.poll.end'
+    | 'channel.prediction.begin'
+    | 'channel.prediction.progress'
+    | 'channel.prediction.lock'
+    | 'channel.prediction.end'
+    | 'channel.charity_campaign.donate'
+    | 'channel.charity_campaign.start'
+    | 'channel.charity_campaign.progress'
+    | 'channel.charity_campaign.stop'
+    | 'drop.entitlement.grant'
+    | 'extension.bits_transaction.create'
+    | 'channel.goal.begin'
+    | 'channel.goal.progress'
+    | 'channel.goal.end'
+    | 'channel.hype_train.begin'
+    | 'channel.hype_train.progress'
+    | 'channel.hype_train.end'
+    | 'channel.shield_mode.begin'
+    | 'channel.shield_mode.end'
+    | 'stream.online'
+    | 'stream.offline'
+    | 'user.authorization.grant'
+    | 'user.authorization.revoke'
+    | 'user.update';
+};
+
+export type ChannelSubscriptionEvent = {
+  user_id: string; // The user ID for the user who subscribed to the specified channel.
+  user_login: string; // The user login for the user who subscribed to the specified channel.
+  user_name: string; // The user display name for the user who subscribed to the specified channel.
+  broadcaster_user_id: string; // The requested broadcaster ID.
+  broadcaster_user_login: string; // The requested broadcaster login.
+  broadcaster_user_name: string; // The requested broadcaster display name.
+  tier: string; // The tier of the subscription. Valid values are 1000, 2000, and 3000.
+  is_gift: boolean; // Whether the subscription is a gift.
+};
+
+export type ChannelSubscriptionGiftEvent = {
+  user_id: string; /// The user ID of the user who sent the subscription gift. Set to null if it was an anonymous subscription gift.
+  user_login: string; /// The user login of the user who sent the gift. Set to null if it was an anonymous subscription gift.
+  user_name: string; /// The user display name of the user who sent the gift. Set to null if it was an anonymous subscription gift.
+  broadcaster_user_id: string; /// The broadcaster user ID.
+  broadcaster_user_login: string; /// The broadcaster login.
+  broadcaster_user_name: string; /// The broadcaster display name.
+  total: number; /// The number of subscriptions in the subscription gift.
+  tier: string; /// The tier of subscriptions in the subscription gift.
+  cumulative_total: number; /// The number of subscriptions gifted by this user in the channel. This value is null for anonymous gifts or if the gifter has opted out of sharing this information.
+  is_anonymous: boolean; /// Whether the subscription gift was anonymous.
+};
+
 export type RaidNotificationEvent = {
   from_broadcaster_user_id: string; // The broadcaster ID that created the raid.
   from_broadcaster_user_login: string; // The broadcaster login that created the raid.

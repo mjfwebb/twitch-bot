@@ -3,17 +3,51 @@ import { REWARDS } from '../constants';
 import { botCommands } from '../handlers/botCommands';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
-import type { ChannelPointRedeemNotificatonEvent, FollowNotificationEvent, RaidNotificationEvent, TwitchWebsocketMessage } from '../types';
+import type {
+  ChannelPointRedeemNotificatonEvent,
+  FollowNotificationEvent,
+  RaidNotificationEvent,
+  ChannelSubscriptionEvent,
+  TwitchWebsocketMessage,
+  EventSubResponse,
+  ChannelSubscriptionGiftEvent,
+} from '../types';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 
+function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
+  return (
+    hasOwnProperty(payload, 'event') &&
+    hasOwnProperty(payload, 'subscription') &&
+    hasOwnProperty(payload.subscription, 'type') &&
+    typeof payload.subscription.type === 'string'
+  );
+}
+
 export function websocketEventHandler(data: TwitchWebsocketMessage) {
-  if (
-    hasOwnProperty(data.payload, 'event') &&
-    hasOwnProperty(data.payload, 'subscription') &&
-    hasOwnProperty(data.payload.subscription, 'type') &&
-    typeof data.payload.subscription.type === 'string'
-  ) {
+  if (isSubscriptionEvent(data.payload)) {
     switch (data.payload.subscription.type) {
+      case 'channel.subscription.gift': {
+        // ChannelSubscriptionEvent
+        const event = data.payload.event as ChannelSubscriptionGiftEvent;
+        const connection = getConnection();
+        if (connection) {
+          sendChatMessage(connection, `Thank you for gifting a sub ${event.user_login}, you're so generous, you're like a generous god.`);
+        }
+        break;
+      }
+
+      case 'channel.subscribe': {
+        // ChannelSubscriptionEvent
+        const event = data.payload.event as ChannelSubscriptionEvent;
+        const connection = getConnection();
+        if (connection) {
+          if (!event.is_gift) {
+            sendChatMessage(connection, `Thank you for subscribing ${event.user_name}, .`);
+          }
+        }
+        break;
+      }
+
       case 'channel.raid': {
         // RaidNotificationEvent
         const event = data.payload.event as RaidNotificationEvent;
