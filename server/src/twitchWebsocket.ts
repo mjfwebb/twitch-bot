@@ -1,8 +1,8 @@
 import websocket from 'websocket';
 import { TWITCH_WEBSOCKET_EVENTSUB_URL } from './constants';
-import { subscribeToRedeems } from './handlers/customRewards';
-import { subscribeToFollows } from './handlers/followHandler';
-import { subscribeToRaids } from './handlers/raidHandler';
+import { subscribeToRedeems } from './subscribers/subscribeToRedeems';
+import { subscribeToFollows } from './subscribers/subscribeToFollows';
+import { subscribeToRaids } from './subscribers/subscribeToRaids';
 import { websocketEventHandler } from './handlers/websocketEventHandler';
 import type { TwitchWebsocketMessage } from './types';
 import { hasOwnProperty } from './utils/hasOwnProperty';
