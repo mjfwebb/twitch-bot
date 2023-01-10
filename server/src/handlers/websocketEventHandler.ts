@@ -3,7 +3,7 @@ import { REWARDS } from '../constants';
 import { botCommands } from '../handlers/botCommands';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
-import type { ChannelPointRedeemNotificatonEvent, FollowNotificationEvent, TwitchWebsocketMessage } from '../types';
+import type { ChannelPointRedeemNotificatonEvent, FollowNotificationEvent, RaidNotificationEvent, TwitchWebsocketMessage } from '../types';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 
 export function websocketEventHandler(data: TwitchWebsocketMessage) {
@@ -14,8 +14,15 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
     typeof data.payload.subscription.type === 'string'
   ) {
     switch (data.payload.subscription.type) {
-      case 'channel.raid':
+      case 'channel.raid': {
+        // RaidNotificationEvent
+        const event = data.payload.event as RaidNotificationEvent;
+        const connection = getConnection();
+        if (connection) {
+          sendChatMessage(connection, `Thank you for the raid ${event.from_broadcaster_user_name}, I think you are very sexy.`);
+        }
         break;
+      }
 
       case 'channel.follow': {
         // FollowNotificationEvent

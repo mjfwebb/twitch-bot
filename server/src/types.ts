@@ -22,14 +22,24 @@ export type ChannelPointRedeemNotificatonEvent = {
   };
 };
 
+export type RaidNotificationEvent = {
+  from_broadcaster_user_id: string; // The broadcaster ID that created the raid.
+  from_broadcaster_user_login: string; // The broadcaster login that created the raid.
+  from_broadcaster_user_name: string; // The broadcaster display name that created the raid.
+  to_broadcaster_user_id: string; // The broadcaster ID that received the raid.
+  to_broadcaster_user_login: string; // The broadcaster login that received the raid.
+  to_broadcaster_user_name: string; // The broadcaster display name that received the raid.
+  viewers: number; //The number of viewers in the raid.
+};
+
 export type FollowNotificationEvent = {
-  user_id: string; //	The user ID for the user now following the specified channel.
-  user_login: string; //	The user login for the user now following the specified channel.
-  user_name: string; //	The user display name for the user now following the specified channel.
-  broadcaster_user_id: string; //	The requested broadcaster ID.
-  broadcaster_user_login: string; //	The requested broadcaster login.
-  broadcaster_user_name: string; //	The requested broadcaster display name.
-  followed_at: string; //	RFC3339 timestamp of when the follow occurred.
+  user_id: string; // The user ID for the user now following the specified channel.
+  user_login: string; // The user login for the user now following the specified channel.
+  user_name: string; // The user display name for the user now following the specified channel.
+  broadcaster_user_id: string; // The requested broadcaster ID.
+  broadcaster_user_login: string; // The requested broadcaster login.
+  broadcaster_user_name: string; // The requested broadcaster display name.
+  followed_at: string; // RFC3339 timestamp of when the follow occurred.
 };
 
 export type TwitchWebsocketSessionData = {
