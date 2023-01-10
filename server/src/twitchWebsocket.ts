@@ -8,6 +8,8 @@ import type { TwitchWebsocketMessage } from './types';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 import { subscribeToSubscriptions } from './subscribers/subscribeToSubscriptions';
 import { subscribeToSubscriptionGifts } from './subscribers/subscribeToSubscriptionGifts';
+import { subscribeToStreamOfflineNotifications } from './subscribers/subscribeToStreamOfflineNotifications';
+import { subscribeToStreamOnlineNotifications } from './subscribers/subscribeToStreamOnlineNotifications';
 
 export function runTwitchWebsocket() {
   const client = new websocket.client();
@@ -41,6 +43,8 @@ export function runTwitchWebsocket() {
                 subscribeToRaids(sessionId).catch((e) => console.error(e));
                 subscribeToSubscriptions(sessionId).catch((e) => console.error(e));
                 subscribeToSubscriptionGifts(sessionId).catch((e) => console.error(e));
+                subscribeToStreamOnlineNotifications(sessionId).catch((e) => console.error(e));
+                subscribeToStreamOfflineNotifications(sessionId).catch((e) => console.error(e));
               }
             }
 

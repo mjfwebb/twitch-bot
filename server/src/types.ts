@@ -31,54 +31,73 @@ export type EventSubResponse = {
     | ChannelSubscriptionGiftEvent
     | RaidNotificationEvent
     | FollowNotificationEvent
-    | ChannelPointRedeemNotificatonEvent;
+    | ChannelPointRedeemNotificatonEvent
+    | StreamOnlineNotificationEvent
+    | StreamOfflineNotificationEvent;
 };
 
 export type EventsubSubscription = {
-  type:
-    | 'channel.update'
-    | 'channel.follow'
-    | 'channel.subscribe'
-    | 'channel.subscription.end'
-    | 'channel.subscription.gift'
-    | 'channel.subscription.message'
-    | 'channel.cheer'
-    | 'channel.raid'
-    | 'channel.ban'
-    | 'channel.unban'
-    | 'channel.moderator.add'
-    | 'channel.moderator.remove'
-    | 'channel.channel_points_custom_reward.add'
-    | 'channel.channel_points_custom_reward.update'
-    | 'channel.channel_points_custom_reward.remove'
-    | 'channel.channel_points_custom_reward_redemption.add'
-    | 'channel.channel_points_custom_reward_redemption.update'
-    | 'channel.poll.begin'
-    | 'channel.poll.progress'
-    | 'channel.poll.end'
-    | 'channel.prediction.begin'
-    | 'channel.prediction.progress'
-    | 'channel.prediction.lock'
-    | 'channel.prediction.end'
-    | 'channel.charity_campaign.donate'
-    | 'channel.charity_campaign.start'
-    | 'channel.charity_campaign.progress'
-    | 'channel.charity_campaign.stop'
-    | 'drop.entitlement.grant'
-    | 'extension.bits_transaction.create'
-    | 'channel.goal.begin'
-    | 'channel.goal.progress'
-    | 'channel.goal.end'
-    | 'channel.hype_train.begin'
-    | 'channel.hype_train.progress'
-    | 'channel.hype_train.end'
-    | 'channel.shield_mode.begin'
-    | 'channel.shield_mode.end'
-    | 'stream.online'
-    | 'stream.offline'
-    | 'user.authorization.grant'
-    | 'user.authorization.revoke'
-    | 'user.update';
+  type: EventsubSubscriptionType;
+};
+
+export type EventsubSubscriptionType =
+  | 'channel.update'
+  | 'channel.follow'
+  | 'channel.subscribe'
+  | 'channel.subscription.end'
+  | 'channel.subscription.gift'
+  | 'channel.subscription.message'
+  | 'channel.cheer'
+  | 'channel.raid'
+  | 'channel.ban'
+  | 'channel.unban'
+  | 'channel.moderator.add'
+  | 'channel.moderator.remove'
+  | 'channel.channel_points_custom_reward.add'
+  | 'channel.channel_points_custom_reward.update'
+  | 'channel.channel_points_custom_reward.remove'
+  | 'channel.channel_points_custom_reward_redemption.add'
+  | 'channel.channel_points_custom_reward_redemption.update'
+  | 'channel.poll.begin'
+  | 'channel.poll.progress'
+  | 'channel.poll.end'
+  | 'channel.prediction.begin'
+  | 'channel.prediction.progress'
+  | 'channel.prediction.lock'
+  | 'channel.prediction.end'
+  | 'channel.charity_campaign.donate'
+  | 'channel.charity_campaign.start'
+  | 'channel.charity_campaign.progress'
+  | 'channel.charity_campaign.stop'
+  | 'drop.entitlement.grant'
+  | 'extension.bits_transaction.create'
+  | 'channel.goal.begin'
+  | 'channel.goal.progress'
+  | 'channel.goal.end'
+  | 'channel.hype_train.begin'
+  | 'channel.hype_train.progress'
+  | 'channel.hype_train.end'
+  | 'channel.shield_mode.begin'
+  | 'channel.shield_mode.end'
+  | 'stream.online'
+  | 'stream.offline'
+  | 'user.authorization.grant'
+  | 'user.authorization.revoke'
+  | 'user.update';
+
+export type StreamOnlineNotificationEvent = {
+  id: string; // The id of the stream.
+  broadcaster_user_id: string; // The broadcaster’s user id.
+  broadcaster_user_login: string; // The broadcaster’s user login.
+  broadcaster_user_name: string; // The broadcaster’s user display name.
+  type: string; // The stream type. Valid values are: live, playlist, watch_party, premiere, rerun.
+  started_at: string; // The timestamp at which the stream went online at.
+};
+
+export type StreamOfflineNotificationEvent = {
+  broadcaster_user_id: string; // The broadcaster’s user id.
+  broadcaster_user_login: string; // The broadcaster’s user login.
+  broadcaster_user_name: string; // The broadcaster’s user display name.
 };
 
 export type ChannelSubscriptionEvent = {

@@ -3,6 +3,7 @@ import { REWARDS } from '../constants';
 import { botCommands } from '../handlers/botCommands';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
+import { setStreamState } from '../streamState';
 import type {
   ChannelPointRedeemNotificatonEvent,
   FollowNotificationEvent,
@@ -26,6 +27,16 @@ function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
 export function websocketEventHandler(data: TwitchWebsocketMessage) {
   if (isSubscriptionEvent(data.payload)) {
     switch (data.payload.subscription.type) {
+      case 'stream.online': {
+        setStreamState('online');
+        break;
+      }
+
+      case 'stream.offline': {
+        setStreamState('offline');
+        break;
+      }
+
       case 'channel.subscription.gift': {
         const event = data.payload.event as ChannelSubscriptionGiftEvent;
         const connection = getConnection();

@@ -1,9 +1,9 @@
 import Config from '../config';
 import { TWITCH_HELIX_URL } from '../constants';
 import { fetchWithRetry, getCurrentAccessToken } from '../twitch';
-import type { EventSubCondition } from '../types';
+import type { EventSubCondition, EventsubSubscriptionType } from '../types';
 
-export const eventSubscribe = async (sessionId: string, type: string, condition: EventSubCondition) => {
+export const eventSubscribe = async (sessionId: string, type: EventsubSubscriptionType, condition: EventSubCondition) => {
   if (Config.twitch) {
     try {
       const url = `${TWITCH_HELIX_URL}eventsub/subscriptions`;
