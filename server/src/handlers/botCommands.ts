@@ -20,6 +20,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'addpushup',
     id: 'addpushup',
+    hidden: true,
     priviliged: true,
     callback: (connection) => {
       promiseAsyncWrapper(async (resolve, reject) => {
