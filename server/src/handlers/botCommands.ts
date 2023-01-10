@@ -270,7 +270,7 @@ export const botCommands: BotCommand[] = [
         connection,
         `Available commands are: ${botCommands
           .filter((bc) => bc.hidden !== true)
-          .map((bc) => bc.command)
+          .map((bc) => bc.id)
           .join(', ')}`,
       ),
     cooldown: 5000,
