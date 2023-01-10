@@ -27,7 +27,6 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
   if (isSubscriptionEvent(data.payload)) {
     switch (data.payload.subscription.type) {
       case 'channel.subscription.gift': {
-        // ChannelSubscriptionEvent
         const event = data.payload.event as ChannelSubscriptionGiftEvent;
         const connection = getConnection();
         if (connection) {
@@ -37,7 +36,6 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.subscribe': {
-        // ChannelSubscriptionEvent
         const event = data.payload.event as ChannelSubscriptionEvent;
         const connection = getConnection();
         if (connection) {
@@ -49,7 +47,6 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.raid': {
-        // RaidNotificationEvent
         const event = data.payload.event as RaidNotificationEvent;
         const connection = getConnection();
         if (connection) {
@@ -59,7 +56,6 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.follow': {
-        // FollowNotificationEvent
         const event = data.payload.event as FollowNotificationEvent;
         const connection = getConnection();
         if (connection) {
@@ -69,7 +65,6 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.channel_points_custom_reward_redemption.add': {
-        // ChannelPointRedeemNotificatonEvent
         const event = data.payload.event as ChannelPointRedeemNotificatonEvent;
         const reward = Object.values(REWARDS).find((value) => value === event.reward.id);
         switch (reward) {
