@@ -247,10 +247,17 @@ export const botCommands: BotCommand[] = [
     callback: (connection) => sendChatMessage(connection, 'Between Worlds Discord server: https://discord.betweenworlds.net'),
   },
   {
+    command: 'stack',
+    id: 'stack',
+    callback: (connection) => {
+      sendChatMessage(connection, 'Typescript, React, NodeJS, Socket.io, mongoDB (Mongoose), Digital Ocean droplet, Firebase');
+    },
+  },
+  {
     command: 'challenge',
     id: 'challenge',
-    callback: (c) => {
-      sendChatMessage(c, 'For the current challenge, check out https://github.com/mjfwebb/twitch-bot/issues/16');
+    callback: (connection) => {
+      sendChatMessage(connection, 'For the current challenge, check out https://github.com/mjfwebb/twitch-bot/issues/16');
     },
   },
   {
