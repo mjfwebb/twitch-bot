@@ -363,4 +363,5 @@ export type BotCommand = {
   priviliged?: boolean;
   cooldown?: number;
   hidden?: boolean;
+  description?: string;
 };

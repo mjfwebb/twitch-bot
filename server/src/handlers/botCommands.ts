@@ -4,7 +4,9 @@ import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
 import type { BotCommand } from '../types';
 import { getRandomNumberInRange } from '../utils/getRandomNumberInRange';
+import { endWithFullStop } from '../utils/endWithFullStop';
 import { isError } from '../utils/isError';
+import { msToTimeString } from '../utils/msToTimeString';
 import { promiseAsyncWrapper } from '../utils/promiseAsyncWrapper';
 import { editCustomReward, getCustomRewards } from './customRewards';
 import { banUser, unbanUser } from './moderation';
@@ -14,6 +16,7 @@ export const botCommands: BotCommand[] = [
   {
     command: ['athanotime', 'time'],
     id: 'athanotime',
+    description: 'Tells you what it is where Athano is',
     callback: (connection) => {
       const now = new Date();
       sendChatMessage(connection, now.toTimeString());
@@ -22,6 +25,7 @@ export const botCommands: BotCommand[] = [
   {
     command: ['roll'],
     id: 'roll',
+    description: 'roll a number between the two numbers provided. Used like !roll 1 10',
     callback: (connection, parsedMessage) => {
       const rollBetween: string[] = parsedMessage.command?.botCommandParams?.split(' ') || [];
       if (parseInt(rollBetween[0]) && parseInt(rollBetween[1])) {
@@ -70,6 +74,7 @@ export const botCommands: BotCommand[] = [
     id: 'party',
     priviliged: true,
     playTime: 9000,
+    description: 'Starts a party',
     callback: (connection) => {
       sendChatMessage(connection, 'Time to party! 🎉');
       playSound('party');
@@ -79,6 +84,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'jumpy',
     id: 'jumpy',
+    description: 'Added by jumpylionn',
     callback: (connection) => {
       sendChatMessage(connection, 'jumpylionnn is the best!!!');
     },
@@ -86,6 +92,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'success',
     id: 'success',
+    description: 'Used when something goes well',
     priviliged: true,
     playTime: 5000,
     callback: () => {
@@ -96,6 +103,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'fail',
     id: 'fail',
+    description: 'Used when something does not go well',
     playTime: 5000,
     callback: () => {
       playSound('fail');
@@ -104,6 +112,7 @@ export const botCommands: BotCommand[] = [
   },
   {
     command: 'resetdrop',
+    description: 'Reset the dropgame drop area',
     id: 'resetdrop',
     callback: (connection) => {
       sendChatMessage(connection, '!resetdrop');
@@ -113,12 +122,14 @@ export const botCommands: BotCommand[] = [
   {
     command: 'roilisi',
     id: 'roilisi',
+    description: 'Shows how resilient roilisi is',
     callback: (connection) => {
       sendChatMessage(connection, "You can try to break me, but you won't succeed UwU");
     },
   },
   {
     command: 'haliphax',
+    description: "It's basically advertising",
     id: 'haliphax',
     callback: (connection) => {
       sendChatMessage(connection, 'Go play https://yokai.quest/');
@@ -127,6 +138,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'elephant',
     id: 'elephant',
+    description: 'Just look at it',
     cooldown: 1 * MINUTE_MS,
     callback: (connection) => {
       sendChatMessage(
@@ -140,7 +152,7 @@ export const botCommands: BotCommand[] = [
     command: ['lutf1sk', 'lutfisk'],
     id: 'lutf1sk',
     mustBeUser: 'lutf1sk',
-    hidden: true,
+    description: 'It allows lutf1sk to ban himself',
     callback: (connection) => {
       promiseAsyncWrapper(async () => {
         const lutfiskId = await getUserIdByName('lutf1sk');
@@ -158,6 +170,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'thanos',
     id: 'thanos',
+    description: "To help those who can't say the name properly",
     callback: (connection) => {
       sendChatMessage(connection, "Actually, it's Athanos");
     },
@@ -165,6 +178,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'stack2',
     id: 'stack2',
+    description: 'It helps those in need',
     callback: (connection) => {
       sendChatMessage(connection, 'Um, did you mean !stack by any chance?');
     },
@@ -172,6 +186,7 @@ export const botCommands: BotCommand[] = [
   {
     command: ['retrommo', 'evanmmo'],
     id: 'retrommo',
+    description: 'Blatant advertising',
     callback: (connection) => {
       sendChatMessage(connection, 'Go play https://retro-mmo.com/');
     },
@@ -179,6 +194,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'redjaw',
     id: 'redjaw',
+    description: 'Welcome to the Riazey gang!',
     callback: (connection) => {
       sendChatMessage(connection, 'Welcome to the Riazey gang! https://www.twitch.tv/riazey/clip/HotArtsyPuddingGOWSkull-s0cm7S54szpZ6VNy');
     },
@@ -190,12 +206,14 @@ export const botCommands: BotCommand[] = [
     callback: (connection) => {
       sendChatMessage(connection, 'Delvoid: I hate eslint', 3);
     },
+    description: 'This command explains how much Delvoid loves eslint',
   },
   {
     command: 'forodor',
     id: 'forodor',
     mustBeUser: 'forodor',
     cooldown: 5 * MINUTE_MS,
+    description: 'This is basically graffiti',
     callback: (connection) => {
       sendChatMessage(connection, 'null is just a number');
       try {
@@ -211,6 +229,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'thechaosbean',
     id: 'thechaosbean',
+    description: "It's a party",
     callback: () => {
       playSound('party');
     },
@@ -218,12 +237,14 @@ export const botCommands: BotCommand[] = [
   {
     command: 'bluepin',
     id: 'bluepin',
+    description: 'Blatant advertising',
     callback: (connection) =>
       sendChatMessage(connection, 'Wishlist Explory Story on Steam! https://store.steampowered.com/app/1626280/Explory_Story/'),
   },
   {
     command: ['wary', 'Wary'],
     id: 'wary',
+    description: 'Just listen to it',
     callback: () => {
       playSound('oh_great_heavens');
     },
@@ -231,6 +252,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'tts',
     id: 'tts',
+    description: 'Make your message audible! Used like !tts hello stream!',
     callback: (_, parsedMessage) => {
       const params = parsedMessage.command?.botCommandParams;
       if (params) {
@@ -243,6 +265,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'cursor',
     id: 'cursor',
+    description: 'Do you like how the VSCode cursor moves?',
     callback: (connection) =>
       sendChatMessage(
         connection,
@@ -254,26 +277,31 @@ export const botCommands: BotCommand[] = [
   {
     command: 'w',
     id: 'w',
+    description: "It's a win",
     callback: (connection, parsedMessage) => sendChatMessage(connection, `Big W ${parsedMessage.command?.botCommandParams || ''}`),
   },
   {
     command: 'l',
     id: 'l',
+    description: "It's a loss",
     callback: (connection, parsedMessage) => sendChatMessage(connection, `Fat L ${parsedMessage.command?.botCommandParams || ''}`),
   },
   {
     command: ['bot', 'github'],
     id: 'bot',
+    description: "The Twitch Bot's github page",
     callback: (connection) => sendChatMessage(connection, 'https://github.com/mjfwebb/twitch-bot'),
   },
   {
     command: ['discord', 'd'],
     id: 'discord',
+    description: 'The Between Worlds discord link',
     callback: (connection) => sendChatMessage(connection, 'Between Worlds Discord server: https://discord.betweenworlds.net'),
   },
   {
     command: 'stack',
     id: 'stack',
+    description: 'The real stack command. These are the technologies used',
     callback: (connection) => {
       sendChatMessage(connection, 'Typescript, React, NodeJS, Socket.io, mongoDB (Mongoose), Digital Ocean droplet, Firebase');
     },
@@ -281,6 +309,7 @@ export const botCommands: BotCommand[] = [
   {
     command: 'challenge',
     id: 'challenge',
+    description: 'Want to help with complex Typescript? Try this out.',
     callback: (connection) => {
       sendChatMessage(connection, 'For the current challenge, check out https://github.com/mjfwebb/twitch-bot/issues/16');
     },
@@ -288,6 +317,7 @@ export const botCommands: BotCommand[] = [
   {
     command: ['links'],
     id: 'links',
+    description: 'Get links for related webpages',
     callback: (connection) =>
       sendChatMessage(
         connection,
@@ -297,13 +327,55 @@ export const botCommands: BotCommand[] = [
   {
     command: 'flappieh',
     id: 'flappieh',
+    description: 'In honour of those who were missed',
     callback: (connection) => {
       sendChatMessage(connection, 'My actual hero ♥');
     },
   },
   {
+    command: 'command',
+    id: 'command',
+    description: 'Use this command to find out more about a command',
+    callback: (connection, parsedMessage) => {
+      const commandParam = parsedMessage.command?.botCommandParams;
+
+      if (commandParam) {
+        const foundCommand = botCommands.find((command) => {
+          if (Array.isArray(command.command)) {
+            return command.command.includes(commandParam);
+          } else {
+            return command.command === commandParam;
+          }
+        });
+
+        if (!foundCommand || foundCommand.hidden) {
+          sendChatMessage(connection, `I don't know what the command ${commandParam} is?!`);
+        } else {
+          const start = `You want to know about ${commandParam}? Here's what we know:`;
+          const description = foundCommand.description ?? '';
+          const useBy = foundCommand.mustBeUser ? `It may only be used by ${foundCommand.mustBeUser}.` : '';
+          const cooldown = foundCommand.cooldown ? `It may only be used once every ${msToTimeString(foundCommand.cooldown)}` : '';
+          const aliases =
+            Array.isArray(foundCommand.command) && foundCommand.command.length > 1
+              ? `It can be invoked using ${foundCommand.command.length} aliases: ${foundCommand.command.join(', ')}`
+              : '';
+
+          sendChatMessage(
+            connection,
+            [start, description, useBy, cooldown, aliases]
+              .filter((text) => !!text)
+              .map((text) => endWithFullStop(text))
+              .join(' '),
+          );
+        }
+      }
+    },
+    cooldown: 5000,
+  },
+  {
     command: 'commands',
     id: 'commands',
+    description: "It's the commands command to see the commands",
     hidden: true,
     callback: (connection) =>
       sendChatMessage(
