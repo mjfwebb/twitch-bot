@@ -2,7 +2,7 @@ import type { Command } from '../types';
 
 // Parses the command component of the IRC message.
 export function parseCommand(rawCommandComponent: string): Command | null {
-  let parsedCommand = null;
+  let parsedCommand: Command | null = null;
   const commandParts = rawCommandComponent.split(' ');
 
   switch (commandParts[0]) {
