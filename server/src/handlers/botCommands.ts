@@ -7,6 +7,7 @@ import { isError } from '../utils/isError';
 import { promiseAsyncWrapper } from '../utils/promiseAsyncWrapper';
 import { editCustomReward, getCustomRewards } from './customRewards';
 import { banUser, unbanUser } from './moderation';
+import { ttsStreamElementsHandler } from './ttsStreamElementsHandler';
 
 export const botCommands: BotCommand[] = [
   {
@@ -213,6 +214,18 @@ export const botCommands: BotCommand[] = [
     id: 'wary',
     callback: () => {
       playSound('oh_great_heavens');
+    },
+  },
+  {
+    command: 'tts',
+    id: 'tts',
+    callback: (_, parsedMessage) => {
+      const params = parsedMessage.command?.botCommandParams;
+      if (params) {
+        promiseAsyncWrapper(async () => {
+          await ttsStreamElementsHandler('Brian', params);
+        });
+      }
     },
   },
   {

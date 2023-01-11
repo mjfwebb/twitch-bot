@@ -3,8 +3,20 @@ import type { SOUNDS } from './constants';
 
 type SoundEffect = typeof SOUNDS[number];
 
-export function playSound(sound: SoundEffect): void {
-  player().play(`../sounds/${sound}.wav`, function (err) {
-    if (err) throw err;
+type SoundFileType = 'wav' | 'mp3';
+
+export function playSound(sound: SoundEffect, fileType: SoundFileType = 'wav'): void {
+  player().play(`../sounds/${sound}.${fileType}`, function (err) {
+    if (err) {
+      console.error(err);
+    }
+  });
+}
+
+export function playTTS(fileName: string, fileType: SoundFileType = 'wav'): void {
+  player().play(`../tts/${fileName}.${fileType}`, function (err) {
+    if (err) {
+      console.error(err);
+    }
   });
 }

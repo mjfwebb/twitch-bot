@@ -2,6 +2,7 @@
 node_modules
 
 sounds/*
+tts/*
 tokens.json
 twitchConfig.json
 discordWebhookConfig.json
