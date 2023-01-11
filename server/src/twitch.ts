@@ -63,16 +63,17 @@ export const checkResponseForErrors = (data: unknown): boolean => {
   return false;
 };
 
-const handleReturnedTokens = (data: unknown) => {
+const parseNewTokens = (data: unknown): string => {
   assert(hasOwnProperty(data, 'access_token'), 'access_token not found in data response');
   assert(hasOwnProperty(data, 'refresh_token'), 'refresh_token not found in data response');
   assert(typeof data.access_token === 'string', 'access_token in data response is not a string');
   assert(typeof data.refresh_token === 'string', 'refresh_token in data response is not a string');
   updateTokenFile('access_token', data.access_token);
   updateTokenFile('refresh_token', data.refresh_token);
+  return data.access_token;
 };
 
-const refreshAccessToken = async (twitchConfig: TwitchConfig) => {
+const refreshAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
   try {
     const refreshToken = getTokenFromFile('refresh_token');
     const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${
@@ -86,9 +87,9 @@ const refreshAccessToken = async (twitchConfig: TwitchConfig) => {
     });
     const data: unknown = await result.json();
     checkResponseForErrors(data);
-    handleReturnedTokens(data);
+    return parseNewTokens(data);
   } catch (error) {
-    console.log(`Unable to use Refresh Token to obtain new Access Token from Twitch. Error: ${errorMessage(error)}`);
+    throw new Error(`Unable to use Refresh Token to obtain new Access Token from Twitch. Error: ${errorMessage(error)}`);
   }
 };
 
@@ -107,10 +108,10 @@ const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> =>
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
+
     const data: unknown = await result.json();
     checkResponseForErrors(data);
-    handleReturnedTokens(data);
-    return getTokenFromFile('access_token');
+    return parseNewTokens(data);
   } catch (error) {
     throw new Error(`Unable to obtain new Access Token from Twitch. Error: ${errorMessage(error)}`);
   }
@@ -120,8 +121,12 @@ export const getTwitchAccessToken = async (twitchConfig: TwitchConfig): Promise<
   const accessToken = getTokenFromFile('access_token');
   try {
     if (!(await validateAccessToken(accessToken))) {
-      const newAccessToken = await getNewAccessToken(twitchConfig);
-      return newAccessToken;
+      const refreshToken = getTokenFromFile('refresh_token');
+      if (refreshToken) {
+        return await refreshAccessToken(twitchConfig);
+      } else {
+        return await getNewAccessToken(twitchConfig);
+      }
     } else {
       return accessToken;
     }
