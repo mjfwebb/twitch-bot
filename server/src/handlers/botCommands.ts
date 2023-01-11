@@ -270,6 +270,13 @@ export const botCommands: BotCommand[] = [
       ),
   },
   {
+    command: 'flappieh',
+    id: 'flappieh',
+    callback: (connection) => {
+      sendChatMessage(connection, 'My actual hero ♥');
+    },
+  },
+  {
     command: 'commands',
     id: 'commands',
     hidden: true,
