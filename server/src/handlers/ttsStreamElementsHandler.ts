@@ -1,6 +1,7 @@
 import { writeFileSync } from 'fs';
 import fetch from 'node-fetch';
 import { playTTS } from '../playSound';
+import getMP3Duration from 'get-mp3-duration';
 
 export const ttsStreamElementsHandler = async (voice: StreamElementsVoices, text: string) => {
   try {
@@ -12,7 +13,9 @@ export const ttsStreamElementsHandler = async (voice: StreamElementsVoices, text
     const buffer = await result.buffer();
     const id = Math.random().toString(36).substring(2, 15);
     writeFileSync(`../tts/${id}.mp3`, buffer);
-    playTTS(id, 'mp3');
+    const duration = getMP3Duration(buffer);
+
+    await playTTS(id, 'mp3', duration);
   } catch (error) {
     console.error(error);
   }
