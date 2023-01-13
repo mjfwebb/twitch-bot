@@ -46,7 +46,7 @@ cp example.twitchConfig.json twitchConfig.json
 To get the auth_code construct your URL and enter it into the browser: 
 
 ```
-https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit
+https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator:read:chatters
 ```
 
 Required scopes are channel:manage:redemptions, channel:read:redemptions and moderator:manage:banned_users
