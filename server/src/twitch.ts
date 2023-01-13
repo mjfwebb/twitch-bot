@@ -101,7 +101,7 @@ const refreshAccessToken = async (twitchConfig: TwitchConfig): Promise<string> =
 
 const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
   try {
-    const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${twitchConfig.client_secret}&code=${twitchConfig.auth_code}&grant_type=${twitchConfig.grant_type}&redirect_uri=http://localhost`;
+    const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${twitchConfig.client_secret}&code=${twitchConfig.auth_code}&grant_type=${twitchConfig.grant_type}&redirect_uri=${twitchConfig.redirect_uri}`;
     const result = await fetch(url, {
       method: 'post',
       headers: {

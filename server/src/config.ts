@@ -21,6 +21,7 @@ export interface TwitchConfig {
   account: string;
   channel: string;
   auth_code: string;
+  redirect_uri: string;
 }
 
 interface IConfig {
@@ -37,6 +38,7 @@ function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
   assert(Object.prototype.hasOwnProperty.call(config, 'account'), 'Missing Twitch config: account');
   assert(Object.prototype.hasOwnProperty.call(config, 'channel'), 'Missing Twitch config: channel');
   assert(Object.prototype.hasOwnProperty.call(config, 'auth_code'), 'Missing Twitch config: auth_code');
+  assert(Object.prototype.hasOwnProperty.call(config, 'redirect_uri'), 'Missing Twitch config: redirect_uri');
 }
 
 function readTwitchConfig(): TwitchConfig {
