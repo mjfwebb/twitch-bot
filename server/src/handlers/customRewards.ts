@@ -35,7 +35,7 @@ export const createCustomReward = async (body: string) => {
       const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
       const accessToken = getCurrentAccessToken();
 
-      const result = await fetchWithRetry(url, {
+      await fetchWithRetry(url, {
         method: 'POST',
         headers: {
           'Client-Id': Config.twitch.client_id,
@@ -44,7 +44,6 @@ export const createCustomReward = async (body: string) => {
         },
         body,
       });
-      console.log(result);
     } catch (error) {
       console.error(error);
     }
@@ -72,7 +71,6 @@ export const editCustomReward = async (customRewardId: string, body: string) => 
         },
         body,
       });
-      console.dir(result, { depth: null });
       if (hasOwnProperty(result, 'data')) {
         const customRewardsData: unknown = result.data;
         assertArray(customRewardsData);
