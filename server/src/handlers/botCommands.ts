@@ -149,6 +149,15 @@ export const botCommands: BotCommand[] = [
     },
   },
   {
+    command: 'lurk',
+    id: 'lurk',
+    description: "Say you'll be back soon",
+    cooldown: 1 * MINUTE_MS,
+    callback: (connection, parsedMessage) => {
+      sendChatMessage(connection, `Thank you for the lurk ${parsedMessage.tags?.['display-name'] || '[unknown user]'}! Stay safe out there...`);
+    },
+  },
+  {
     command: ['lutf1sk', 'lutfisk'],
     id: 'lutf1sk',
     mustBeUser: 'lutf1sk',
