@@ -3,6 +3,7 @@ import { getUserIdByName } from '../helpers/getUserIdByName';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
 import type { BotCommand } from '../types';
+import { getRandomNumberInRange } from '../utils/getRandomNumberInRange';
 import { isError } from '../utils/isError';
 import { promiseAsyncWrapper } from '../utils/promiseAsyncWrapper';
 import { editCustomReward, getCustomRewards } from './customRewards';
@@ -16,6 +17,17 @@ export const botCommands: BotCommand[] = [
     callback: (connection) => {
       const now = new Date();
       sendChatMessage(connection, now.toTimeString());
+    },
+  },
+  {
+    command: ['roll'],
+    id: 'roll',
+    callback: (connection, parsedMessage) => {
+      const rollBetween: string[] = parsedMessage.command?.botCommandParams?.split(' ') || [];
+      if (parseInt(rollBetween[0]) && parseInt(rollBetween[1])) {
+        const roll = getRandomNumberInRange(parseInt(rollBetween[0]), parseInt(rollBetween[1]));
+        sendChatMessage(connection, `It's ${roll}!`);
+      }
     },
   },
   {
