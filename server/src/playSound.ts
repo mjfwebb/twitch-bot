@@ -6,8 +6,7 @@ type SoundEffect = typeof SOUNDS[number];
 type SoundFileType = 'wav' | 'mp3';
 
 type Sound = {
-  fileName: string;
-  fileType: string;
+  file: string;
   duration: number;
 };
 
@@ -23,7 +22,7 @@ async function workQueue() {
     workingQueue = true;
     const soundToPlay = soundQueue[0];
 
-    player().play(`../tts/${soundToPlay.fileName}.${soundToPlay.fileType}`, function (err) {
+    player().play(soundToPlay.file, function (err) {
       if (err) {
         console.error(err);
       }
@@ -48,15 +47,8 @@ export function playSound(sound: SoundEffect, fileType: SoundFileType = 'wav'): 
 
 export async function playTTS(fileName: string, fileType: SoundFileType = 'wav', duration: number): Promise<void> {
   addSoundToQueue({
-    fileName,
-    fileType,
+    file: `../tts/${fileName}.${fileType}`,
     duration,
   });
   await workQueue();
-
-  // player().play(`../tts/${fileName}.${fileType}`, function (err) {
-  //   if (err) {
-  //     console.error(err);
-  //   }
-  // });
 }
