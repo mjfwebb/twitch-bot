@@ -18,7 +18,6 @@ export interface TwitchConfig {
   client_id: string;
   client_secret: string;
   grant_type: string;
-  oauth_password: string;
   account: string;
   channel: string;
   auth_code: string;
@@ -35,7 +34,6 @@ function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
   assert(Object.prototype.hasOwnProperty.call(config, 'client_id'), 'Missing Twitch config: client_id');
   assert(Object.prototype.hasOwnProperty.call(config, 'client_secret'), 'Missing Twitch config: client_secret');
   assert(Object.prototype.hasOwnProperty.call(config, 'grant_type'), 'Missing Twitch config: grant_type');
-  assert(Object.prototype.hasOwnProperty.call(config, 'oauth_password'), 'Missing Twitch config: oauth_password');
   assert(Object.prototype.hasOwnProperty.call(config, 'account'), 'Missing Twitch config: account');
   assert(Object.prototype.hasOwnProperty.call(config, 'channel'), 'Missing Twitch config: channel');
   assert(Object.prototype.hasOwnProperty.call(config, 'auth_code'), 'Missing Twitch config: auth_code');
