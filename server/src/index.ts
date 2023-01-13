@@ -5,6 +5,8 @@ import { fetchCustomRewards } from './handlers/customRewards';
 import { runTwitchWebsocket } from './twitchWebsocket';
 import { runBot } from './bot';
 import { runIntervalCommands } from './intervalCommands';
+import { fetchStreamStatus } from './handlers/fetchStreamStatus';
+import { setStreamState } from './streamState';
 
 async function main() {
   try {
@@ -12,6 +14,7 @@ async function main() {
 
     await getTwitchAccessToken(Config.twitch);
     await fetchCustomRewards();
+    setStreamState(await fetchStreamStatus());
 
     runBot();
     runTwitchWebsocket();

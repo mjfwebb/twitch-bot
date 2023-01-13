@@ -1,4 +1,4 @@
-type StreamState = 'online' | 'offline';
+export type StreamState = 'online' | 'offline';
 
 let streamState: StreamState = 'offline';
 
