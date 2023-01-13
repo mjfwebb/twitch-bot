@@ -6,6 +6,7 @@ import { botCommandHandler } from './handlers/botCommandHandler';
 import { firstMessageHandler } from './handlers/firstMessageHandler';
 import { returningChatterHandler } from './handlers/returningChatterHandler';
 import { parseMessage } from './parsers/parseMessage';
+import { getCurrentAccessToken } from './twitch';
 
 let connectionRef: websocket.connection | undefined;
 
@@ -30,7 +31,7 @@ export function runBot() {
 
     // Authenticate with the Twitch IRC server and then join the channel.
     // If the authentication fails, the server drops the connection.
-    connection.send(`PASS ${Config.twitch.oauth_password}`);
+    connection.send(`PASS oauth:${getCurrentAccessToken()}`);
     connection.send(`NICK ${Config.twitch.account}`);
 
     connection.on('error', function (error) {

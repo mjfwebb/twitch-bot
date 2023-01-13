@@ -5,6 +5,5 @@
   "grant_type": "authorization_code",
   "account": "your_account_name",
   "channel": "target_channel_name",
-  "oauth_password": "",
   "auth_code": ""
 }

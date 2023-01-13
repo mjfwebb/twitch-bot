@@ -41,9 +41,7 @@ cd server
 cp example.twitchConfig.json twitchConfig.json
 ```
 
-#### **Where to get oauth_password and auth_code**
-
-To get the oauth_password (for logging into the Twitch chat) you can use for example TMI https://twitchapps.com/tmi/
+#### **Where to get auth_code**
 
 To get the auth_code construct your URL and enter it into the browser: 
 
