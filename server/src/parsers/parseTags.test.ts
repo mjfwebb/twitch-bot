@@ -114,7 +114,7 @@ describe('parseTags', () => {
       // eslint-disable-next-line prettier/prettier, no-useless-escape
     '@badge-info=;badges=staff/1,broadcaster/1,turbo/1;color=#008000;display-name=ronni;emotes=;id=db25007f-7a18-43eb-9379-80131e44d633;login=ronni;mod=0;msg-id=resub;msg-param-cumulative-months=6;msg-param-streak-months=2;msg-param-should-share-streak=1;msg-param-sub-plan=Prime;msg-param-sub-plan-name=Prime;room-id=12345678;subscriber=1;system-msg=ronni\shas\ssubscribed\sfor\s6\smonths!;tmi-sent-ts=1507246572675;turbo=1;user-id=87654321;user-type=staff :tmi.twitch.tv USERNOTICE #dallas :Great stream -- keep it up!';
     const parsedMessage = parseMessage(message);
-    test('should have false turbo property', () => {
+    test('should have turbo property', () => {
       expect(parsedMessage?.tags?.turbo).toEqual('1');
     });
     test('should have display-name ronni', () => {
@@ -137,6 +137,20 @@ describe('parseTags', () => {
     });
     test('should have user-id 87654321', () => {
       expect(parsedMessage?.tags?.['user-id']).toEqual('87654321');
+    });
+  });
+  describe('USERSTATE test message', () => {
+    const message =
+      '@badge-info=;badges=staff/1;color=#0D4200;display-name=ronni;emote-sets=0,33,50,237,793,2126,3517,4578,5569,9400,10337,12239;mod=1;subscriber=1;turbo=1;user-type=staff :tmi.twitch.tv USERSTATE #dallas';
+    const parsedMessage = parseMessage(message);
+    test('should have turbo property', () => {
+      expect(parsedMessage?.tags?.turbo).toEqual('1');
+    });
+    test('should have display-name ronni', () => {
+      expect(parsedMessage?.tags?.['display-name']).toEqual('ronni');
+    });
+    test('should have user-type staff', () => {
+      expect(parsedMessage?.tags?.['user-type']).toEqual('staff');
     });
   });
 });
