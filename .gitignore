@@ -7,3 +7,4 @@ tokens.json
 twitchConfig.json
 discordWebhookConfig.json
 mongoDBConfig.json
+spotifyConfig.json

@@ -29,11 +29,16 @@ export interface MongoDBConfig {
   db: string;
 }
 
+export interface SpotifyConfig {
+  oauth_token: string;
+}
+
 interface IConfig {
   environment: 'development' | 'production';
   twitch: TwitchConfig;
   webhooks: Record<string, Webhook>;
   mongoDB: MongoDBConfig;
+  spotify: SpotifyConfig | null;
 }
 
 function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
@@ -58,6 +63,23 @@ function readTwitchConfig(): TwitchConfig {
     }
   }
   throw new Error('Failed to read Twitch config');
+}
+
+function assertSpotifyConfig(config: unknown): asserts config is SpotifyConfig {
+  assert(Object.prototype.hasOwnProperty.call(config, 'oauth_token'), 'Missing Spotify config: oauth_token');
+}
+
+function readSpotifyConfig(): SpotifyConfig | null {
+  try {
+    const SpotifyConfg: unknown = JSON.parse(readFileSync('./SpotifyConfig.json', 'utf8'));
+    assertSpotifyConfig(SpotifyConfg);
+    return SpotifyConfg;
+  } catch (error) {
+    if (isError(error)) {
+      console.log(`Error when loading Spotify config: ${error.message}`);
+    }
+  }
+  return null;
 }
 
 function assertMongoDBConfig(config: unknown): asserts config is MongoDBConfig {
@@ -105,6 +127,7 @@ const Config: IConfig = {
     discordChatHook: readDiscordWebhookConfig(),
   },
   mongoDB: readMongoDBConfig(),
+  spotify: readSpotifyConfig(),
 };
 
 export default Config;

@@ -79,6 +79,16 @@ cd server
 cp example.mongoDBConfig.json mongoDBConfig.json
 ```
 
+5. (Optional) Create a `spotifyConfig.json` file using the example file `example.spotifyConfig.json` as a basis. All fields are required.
+
+**NOTE**: The resulting spotifyConfig.json file will contain information that can be considered sensitive when filled in correctly. Do not share this information.
+```sh
+cd server
+cp example.spotifyConfig.json spotifyConfig.json
+```
+
+You can use https://developer.spotify.com/console/get-users-currently-playing-track/ to obtain the `oauth_token`
+
 ### Set up your commands
 
 Open `server\src\handlers\botCommands.ts` and change the commands to fit your needs. There are several examples of different commands here.

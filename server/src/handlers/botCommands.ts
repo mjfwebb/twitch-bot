@@ -13,6 +13,7 @@ import { banUser, unbanUser } from './moderation';
 import { ttsStreamElementsHandler } from './ttsStreamElementsHandler';
 import TaskModel from '../models/task-model';
 import { hasBotCommandParams } from '../helpers/hasBotCommandParams';
+import { fetchSpotifyCurrentlyPlaying } from './fetchSpotifyCurrentlyPlaying';
 
 export const botCommands: BotCommand[] = [
   {
@@ -53,6 +54,16 @@ export const botCommands: BotCommand[] = [
       } else {
         sendChatMessage(connection, 'No current task!');
       }
+    },
+  },
+  {
+    command: 'song',
+    id: 'song',
+    cooldown: 30 * SECOND_MS,
+    description: 'Gets the currently playing song (on Spotify)',
+    callback: async (connection) => {
+      const currentlyPlaying = await fetchSpotifyCurrentlyPlaying();
+      sendChatMessage(connection, currentlyPlaying);
     },
   },
   {
