@@ -112,7 +112,6 @@ export const botCommands: BotCommand[] = [
     command: 'party',
     id: 'party',
     priviliged: true,
-    playTime: 9000,
     description: 'Starts a party',
     callback: async (connection) => {
       sendChatMessage(connection, 'Time to party! 🎉');
@@ -133,7 +132,6 @@ export const botCommands: BotCommand[] = [
     id: 'success',
     description: 'Used when something goes well',
     priviliged: true,
-    playTime: 5000,
     callback: async () => {
       await playSound('success');
     },
@@ -143,7 +141,6 @@ export const botCommands: BotCommand[] = [
     command: 'fail',
     id: 'fail',
     description: 'Used when something does not go well',
-    playTime: 5000,
     callback: async () => {
       await playSound('fail');
     },

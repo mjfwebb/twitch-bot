@@ -360,7 +360,6 @@ export type BotCommand = {
   command: string | string[];
   id: string;
   callback: BotCommandCallback;
-  playTime?: number;
   mustBeUser?: string;
   priviliged?: boolean;
   cooldown?: number;

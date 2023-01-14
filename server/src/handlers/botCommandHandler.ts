@@ -33,14 +33,7 @@ async function handleCommand(connection: websocket.connection, parsedMessage: Pa
       return;
     }
 
-    if (foundBotCommand.playTime && foundBotCommand.playTime > 0) {
-      await new Promise<void>((resolve) => {
-        foundBotCommand.callback(connection, parsedMessage);
-        setTimeout(() => resolve(), foundBotCommand.playTime);
-      });
-    } else {
-      foundBotCommand.callback(connection, parsedMessage);
-    }
+    await foundBotCommand.callback(connection, parsedMessage);
   }
 }
 
