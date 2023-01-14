@@ -352,7 +352,9 @@ export type BotCommandCooldown = {
   unusableUntil: number;
 };
 
-export type BotCommandCallback = (connection: websocket.connection, parsedMessage: ParsedMessage) => void;
+export type BotCommandCallback =
+  | ((connection: websocket.connection, parsedMessage: ParsedMessage) => void)
+  | ((connection: websocket.connection, parsedMessage: ParsedMessage) => Promise<void>);
 
 export type BotCommand = {
   command: string | string[];

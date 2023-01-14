@@ -39,34 +39,29 @@ export const botCommands: BotCommand[] = [
     id: 'addpushup',
     hidden: true,
     priviliged: true,
-    callback: (connection) => {
-      promiseAsyncWrapper(async (resolve, reject) => {
-        const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushup);
-        const amount = customReward?.title.split(' ')[0];
+    callback: async (connection) => {
+      const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushup);
+      const amount = customReward?.title.split(' ')[0];
 
-        if (amount) {
-          const amountIncremented = +amount + 1;
+      if (amount) {
+        const amountIncremented = +amount + 1;
 
-          const body = JSON.stringify({
-            title: customReward.title.replace(amount, String(amountIncremented)),
-          });
-          await editCustomReward(REWARDS.pushup, body);
+        const body = JSON.stringify({
+          title: customReward.title.replace(amount, String(amountIncremented)),
+        });
+        await editCustomReward(REWARDS.pushup, body);
 
-          const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushupAddOne);
-          if (pushupAddOneReward) {
-            await editCustomReward(
-              REWARDS.pushupAddOne,
-              JSON.stringify({
-                cost: pushupAddOneReward.cost + 1000,
-              }),
-            );
-          }
-        } else {
-          reject('Amount was not found');
+        const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushupAddOne);
+        if (pushupAddOneReward) {
+          await editCustomReward(
+            REWARDS.pushupAddOne,
+            JSON.stringify({
+              cost: pushupAddOneReward.cost + 1000,
+            }),
+          );
         }
         sendChatMessage(connection, 'It goes ever upwards');
-        resolve();
-      });
+      }
     },
   },
   {
@@ -75,9 +70,9 @@ export const botCommands: BotCommand[] = [
     priviliged: true,
     playTime: 9000,
     description: 'Starts a party',
-    callback: (connection) => {
+    callback: async (connection) => {
       sendChatMessage(connection, 'Time to party! 🎉');
-      playSound('party');
+      await playSound('party');
     },
     cooldown: 10000,
   },
@@ -95,8 +90,8 @@ export const botCommands: BotCommand[] = [
     description: 'Used when something goes well',
     priviliged: true,
     playTime: 5000,
-    callback: () => {
-      playSound('success');
+    callback: async () => {
+      await playSound('success');
     },
     cooldown: 10000,
   },
@@ -105,8 +100,8 @@ export const botCommands: BotCommand[] = [
     id: 'fail',
     description: 'Used when something does not go well',
     playTime: 5000,
-    callback: () => {
-      playSound('fail');
+    callback: async () => {
+      await playSound('fail');
     },
     cooldown: 10000,
   },
@@ -162,17 +157,15 @@ export const botCommands: BotCommand[] = [
     id: 'lutf1sk',
     mustBeUser: 'lutf1sk',
     description: 'It allows lutf1sk to ban himself',
-    callback: (connection) => {
-      promiseAsyncWrapper(async () => {
-        const lutfiskId = await getUserIdByName('lutf1sk');
-        if (lutfiskId !== '') {
-          sendChatMessage(connection, 'Get banned fool');
-          setTimeout(() => {
-            promiseAsyncWrapper(() => unbanUser(lutfiskId));
-          }, 10000);
-          await banUser(lutfiskId);
-        }
-      });
+    callback: async (connection) => {
+      const lutfiskId = await getUserIdByName('lutf1sk');
+      if (lutfiskId !== '') {
+        sendChatMessage(connection, 'Get banned fool');
+        setTimeout(() => {
+          promiseAsyncWrapper(() => unbanUser(lutfiskId));
+        }, 10000);
+        await banUser(lutfiskId);
+      }
     },
     cooldown: 30 * MINUTE_MS,
   },
@@ -239,8 +232,8 @@ export const botCommands: BotCommand[] = [
     command: 'thechaosbean',
     id: 'thechaosbean',
     description: "It's a party",
-    callback: () => {
-      playSound('party');
+    callback: async () => {
+      await playSound('party');
     },
   },
   {
@@ -254,20 +247,18 @@ export const botCommands: BotCommand[] = [
     command: ['wary', 'Wary'],
     id: 'wary',
     description: 'Just listen to it',
-    callback: () => {
-      playSound('oh_great_heavens');
+    callback: async () => {
+      await playSound('oh_great_heavens');
     },
   },
   {
     command: 'tts',
     id: 'tts',
     description: 'Make your message audible! Used like !tts hello stream!',
-    callback: (_, parsedMessage) => {
+    callback: async (_, parsedMessage) => {
       const params = parsedMessage.command?.botCommandParams;
       if (params) {
-        promiseAsyncWrapper(async () => {
-          await ttsStreamElementsHandler('Brian', params);
-        });
+        await ttsStreamElementsHandler('Brian', params);
       }
     },
   },
