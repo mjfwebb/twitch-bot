@@ -6,3 +6,4 @@ tts/*
 tokens.json
 twitchConfig.json
 discordWebhookConfig.json
+mongoDBConfig.json

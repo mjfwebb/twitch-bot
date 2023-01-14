@@ -29,6 +29,8 @@
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^5.1.0",
     "http-status-codes": "^2.2.0",
+    "mongodb": "^4.13.0",
+    "mongoose": "^6.8.3",
     "node-fetch": "^2.6.7",
     "play-sound": "^1.1.5",
     "socket.io": "^4.5.0",

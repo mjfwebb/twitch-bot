@@ -55,7 +55,7 @@ NOTE: If you have an existing access_token and refresh_token and change your sco
 
 2. Create a `tokens.json` file using the example file `example.tokens.json` as a basis. All fields are required.
 
-**NOTE**: The resulting tokens.json file will contains sensitive information when filled in correctly. Do not share this information.
+**NOTE**: The resulting tokens.json file will contain sensitive information when filled in correctly. Do not share this information.
 ```sh
 cd server
 cp example.tokens.json tokens.json
@@ -63,13 +63,21 @@ cp example.tokens.json tokens.json
 
 3. Create a `discordWebhookConfig.json` file using the example file `example.discordWebhookConfig.json` as a basis. All fields are required.
 
-**NOTE**: The resulting discordWebhookConfig.json file will contains sensitive information when filled in correctly. Do not share this information.
+**NOTE**: The resulting discordWebhookConfig.json file will contain sensitive information when filled in correctly. Do not share this information.
 ```sh
 cd server
 cp example.discordWebhookConfig.json discordWebhookConfig.json
 ```
 
 If you don't want to use a Discord Webhook then you will need to edit the call to `discordChatWebhook`.
+
+4. Create a `mongoDBConfig.json` file using the example file `example.mongoDBConfig.json` as a basis. All fields are required.
+
+**NOTE**: The resulting mongoDBConfig.json file will contain information that can be considered sensitive when filled in correctly. Do not share this information.
+```sh
+cd server
+cp example.mongoDBConfig.json mongoDBConfig.json
+```
 
 ### Set up your commands
 

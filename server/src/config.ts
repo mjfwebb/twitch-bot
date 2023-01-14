@@ -24,10 +24,16 @@ export interface TwitchConfig {
   redirect_uri: string;
 }
 
+export interface MongoDBConfig {
+  url: string;
+  db: string;
+}
+
 interface IConfig {
   environment: 'development' | 'production';
   twitch: TwitchConfig;
   webhooks: Record<string, Webhook>;
+  mongoDB: MongoDBConfig;
 }
 
 function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
@@ -52,6 +58,24 @@ function readTwitchConfig(): TwitchConfig {
     }
   }
   throw new Error('Failed to read Twitch config');
+}
+
+function assertMongoDBConfig(config: unknown): asserts config is MongoDBConfig {
+  assert(Object.prototype.hasOwnProperty.call(config, 'url'), 'Missing mongoDB config: url');
+  assert(Object.prototype.hasOwnProperty.call(config, 'db'), 'Missing mongoDB config: db');
+}
+
+function readMongoDBConfig(): MongoDBConfig {
+  try {
+    const mongoDBConfg: unknown = JSON.parse(readFileSync('./mongoDBConfig.json', 'utf8'));
+    assertMongoDBConfig(mongoDBConfg);
+    return mongoDBConfg;
+  } catch (error) {
+    if (isError(error)) {
+      console.log(`Error when loading MongoDB config: ${error.message}`);
+    }
+  }
+  throw new Error('Failed to read mongoDB config');
 }
 
 function assertWebhookConfig(config: unknown): asserts config is Webhook {
@@ -80,6 +104,7 @@ const Config: IConfig = {
   webhooks: {
     discordChatHook: readDiscordWebhookConfig(),
   },
+  mongoDB: readMongoDBConfig(),
 };
 
 export default Config;

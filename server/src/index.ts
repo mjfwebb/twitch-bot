@@ -1,4 +1,3 @@
-import assert from 'assert';
 import Config from './config';
 import { getTwitchAccessToken } from './twitch';
 import { fetchCustomRewards } from './handlers/customRewards';
@@ -7,10 +6,11 @@ import { runBot } from './bot';
 import { runIntervalCommands } from './intervalCommands';
 import { fetchStreamStatus } from './handlers/fetchStreamStatus';
 import { setStreamState } from './streamState';
+import { setupMongoose } from './setupMongoose';
 
 async function main() {
   try {
-    assert(Config.twitch?.client_id && Config.twitch?.client_secret, 'Missing Twitch credentials!');
+    await setupMongoose();
 
     await getTwitchAccessToken(Config.twitch);
     await fetchCustomRewards();
