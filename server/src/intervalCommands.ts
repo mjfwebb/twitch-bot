@@ -1,4 +1,5 @@
 import { getConnection } from './bot';
+import { SECOND_MS } from './constants';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import { getStreamState } from './streamState';
 
@@ -13,9 +14,9 @@ export function runIntervalCommands() {
   const intervalCommands: IntervalCommand[] = [
     {
       message: "Have you tried out Between Worlds? It's free to play in your browser right now, no sign up required! https://betweenworlds.net",
-      tickInterval: 300,
+      tickInterval: 60 * 15,
       currentTick: 0,
-      tickOffset: 10,
+      tickOffset: 30,
     },
   ];
 
@@ -39,5 +40,5 @@ export function runIntervalCommands() {
         intervalCommand.currentTick += 1;
       }
     }
-  }, 1000);
+  }, SECOND_MS);
 }
