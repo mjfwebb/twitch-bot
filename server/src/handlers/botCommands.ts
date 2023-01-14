@@ -1,4 +1,4 @@
-import { MINUTE_MS, REWARDS } from '../constants';
+import { MINUTE_MS, REWARDS, SECOND_MS } from '../constants';
 import { getUserIdByName } from '../helpers/getUserIdByName';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { playSound } from '../playSound';
@@ -11,6 +11,8 @@ import { promiseAsyncWrapper } from '../utils/promiseAsyncWrapper';
 import { editCustomReward, getCustomRewards } from './customRewards';
 import { banUser, unbanUser } from './moderation';
 import { ttsStreamElementsHandler } from './ttsStreamElementsHandler';
+import TaskModel from '../models/task-model';
+import { hasBotCommandParams } from '../helpers/hasBotCommandParams';
 
 export const botCommands: BotCommand[] = [
   {
@@ -20,6 +22,37 @@ export const botCommands: BotCommand[] = [
     callback: (connection) => {
       const now = new Date();
       sendChatMessage(connection, now.toTimeString());
+    },
+  },
+  {
+    command: 'settask',
+    id: 'settask',
+    priviliged: true,
+    description: 'Sets the current task',
+    cooldown: 5 * SECOND_MS,
+    callback: async (connection, parsedMessage) => {
+      if (hasBotCommandParams(parsedMessage)) {
+        const taskText = parsedMessage.command?.botCommandParams;
+        const task = new TaskModel({
+          text: taskText,
+        });
+        await task.save();
+        sendChatMessage(connection, `Task successfully updated 🎉`);
+      }
+    },
+  },
+  {
+    command: 'task',
+    id: 'task',
+    description: 'Gets the current task',
+    cooldown: 5 * SECOND_MS,
+    callback: async (connection) => {
+      const task = await TaskModel.findOne({}, {}, { sort: { createdAt: -1 } });
+      if (task) {
+        sendChatMessage(connection, `Current task: ${task.text}`);
+      } else {
+        sendChatMessage(connection, 'No current task!');
+      }
     },
   },
   {
