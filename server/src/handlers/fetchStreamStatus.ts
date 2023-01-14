@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import Config from '../config';
 import { TWITCH_HELIX_URL } from '../constants';
+import { updateStreamStartedAt } from '../helpers/updateStreamStartedAt';
 import type { StreamState } from '../streamState';
 import { getCurrentAccessToken } from '../twitch';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -20,7 +21,13 @@ export const fetchStreamStatus = async (): Promise<StreamState> => {
       });
       const result: unknown = await response.json();
       if (hasOwnProperty(result, 'data') && Array.isArray(result.data)) {
-        return result.data.length > 0 ? 'online' : 'offline';
+        if (result.data.length > 0) {
+          const data = result.data[0] as unknown;
+          if (hasOwnProperty(data, 'started_at') && typeof data.started_at === 'string') {
+            await updateStreamStartedAt(data.started_at);
+          }
+          return 'online';
+        }
       }
     } catch (error) {
       console.error(error);

@@ -2,6 +2,8 @@ import { getConnection } from '../bot';
 import { REWARDS } from '../constants';
 import { botCommands } from '../handlers/botCommands';
 import { sendChatMessage } from '../helpers/sendChatMessage';
+import { updateStreamStartedAt } from '../helpers/updateStreamStartedAt';
+import StreamModel from '../models/stream-model';
 import { playSound } from '../playSound';
 import { setStreamState } from '../streamState';
 import type {
@@ -12,6 +14,7 @@ import type {
   TwitchWebsocketMessage,
   EventSubResponse,
   ChannelSubscriptionGiftEvent,
+  StreamOnlineNotificationEvent,
 } from '../types';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 
@@ -24,10 +27,14 @@ function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
   );
 }
 
-export function websocketEventHandler(data: TwitchWebsocketMessage) {
+export async function websocketEventHandler(data: TwitchWebsocketMessage) {
   if (isSubscriptionEvent(data.payload)) {
     switch (data.payload.subscription.type) {
       case 'stream.online': {
+        const event = data.payload.event as StreamOnlineNotificationEvent;
+        if (event.started_at) {
+          await updateStreamStartedAt(event.started_at);
+        }
         setStreamState('online');
         break;
       }
@@ -80,7 +87,7 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
         const reward = Object.values(REWARDS).find((value) => value === event.reward.id);
         switch (reward) {
           case REWARDS.pushup:
-            playSound('redeem');
+            await playSound('redeem');
             {
               const connection = getConnection();
               if (connection) {
@@ -93,8 +100,8 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
               const addPushupCommand = botCommands.find((command) => command.command === 'addpushup');
               const connection = getConnection();
               if (addPushupCommand && connection) {
-                playSound('redeem');
-                addPushupCommand.callback(connection, {
+                await playSound('redeem');
+                await addPushupCommand.callback(connection, {
                   tags: null,
                   source: null,
                   command: null,
@@ -105,7 +112,7 @@ export function websocketEventHandler(data: TwitchWebsocketMessage) {
             break;
           case REWARDS.test:
             {
-              playSound('redeem');
+              await playSound('redeem');
             }
             break;
           default:
