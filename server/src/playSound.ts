@@ -3,7 +3,6 @@ import type { SOUNDS } from './constants';
 import ffmpegPath from 'ffmpeg-static';
 import type { ExecException } from 'child_process';
 import { execFile } from 'child_process';
-import { getDurationMilliseconds } from './utils/getDurationMilliseconds';
 
 type SoundEffect = typeof SOUNDS[number];
 
@@ -16,6 +15,18 @@ type Sound = {
 
 const soundQueue: Sound[] = [];
 let workingQueue = false;
+
+function getDurationMilliseconds(stderr: string): number {
+  const durationInSeconds = /Duration: (\d{2}:\d{2}:\d{2}\.\d{2})/g.exec(stderr);
+  if (Array.isArray(durationInSeconds) && durationInSeconds.length > 1) {
+    const durationString = durationInSeconds[1];
+    const durationParts = durationString.split(':').map(Number);
+    const durationInMilliseconds = (durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2]) * 1000;
+    return durationInMilliseconds;
+  }
+
+  return 0;
+}
 
 export async function getDuration(soundFile: string): Promise<number> {
   const args = ['-i', soundFile, '-f', 'null', '-'];
