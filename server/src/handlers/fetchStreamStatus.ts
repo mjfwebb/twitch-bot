@@ -19,8 +19,8 @@ export const fetchStreamStatus = async (): Promise<StreamState> => {
         },
       });
       const result: unknown = await response.json();
-      if (hasOwnProperty(result, 'data')) {
-        return 'online';
+      if (hasOwnProperty(result, 'data') && Array.isArray(result.data)) {
+        return result.data.length > 0 ? 'online' : 'offline';
       }
     } catch (error) {
       console.error(error);
