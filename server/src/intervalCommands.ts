@@ -1,6 +1,6 @@
 import { getConnection } from './bot';
 import { sendChatMessage } from './helpers/sendChatMessage';
-import { getSteamState } from './streamState';
+import { getStreamState } from './streamState';
 
 interface IntervalCommand {
   message: string;
@@ -25,7 +25,7 @@ export function runIntervalCommands() {
       return;
     }
 
-    const streamState = getSteamState();
+    const streamState = getStreamState();
     if (streamState === 'offline') {
       return;
     }
