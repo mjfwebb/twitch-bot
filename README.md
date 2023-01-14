@@ -33,15 +33,13 @@ npm install
 
 ### Create required JSON files
 
+**NOTE**: The resulting json files will contain sensitive information when filled in correctly. Do not share this information.
+
+#### twitchConfig.json
+
 Create a `twitchConfig.json` file using the example file `example.twitchConfig.json` as a basis. All fields are required.
 
-**NOTE**: The resulting twitchConfig.json file will contains sensitive information when filled in correctly. Do not share this information.
-```sh
-cd server
-cp example.twitchConfig.json twitchConfig.json
-```
-
-#### **Where to get auth_code**
+##### **Where to get auth_code**
 
 To get the auth_code construct your URL and enter it into the browser: 
 
@@ -49,43 +47,28 @@ To get the auth_code construct your URL and enter it into the browser:
 https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator:read:chatters
 ```
 
-Required scopes are channel:manage:redemptions, channel:read:redemptions and moderator:manage:banned_users
+Required scopes are `channel:manage:redemptions`, `channel:read:redemptions` and `moderator:manage:banned_users`
 
-NOTE: If you have an existing access_token and refresh_token and change your scope, you should remove these from the tokens.json file (so they are then empty strings). Once you have your new access code the program will retrieve a new access_token and refresh_token.
+**NOTE**: If you have an existing `access_token` and `refresh_token` and change your scope, you should remove these from the `tokens.json` file (so they are then empty strings). Once you have your new access code the program will retrieve a new `access_token` and `refresh_token`.
 
-2. Create a `tokens.json` file using the example file `example.tokens.json` as a basis. All fields are required.
+#### tokens.json
 
-**NOTE**: The resulting tokens.json file will contain sensitive information when filled in correctly. Do not share this information.
-```sh
-cd server
-cp example.tokens.json tokens.json
-```
+Create a `tokens.json` file using the example file `example.tokens.json` as a basis. All fields are required.
 
-3. Create a `discordWebhookConfig.json` file using the example file `example.discordWebhookConfig.json` as a basis. All fields are required.
+#### discordWebhookConfig.json
 
-**NOTE**: The resulting discordWebhookConfig.json file will contain sensitive information when filled in correctly. Do not share this information.
-```sh
-cd server
-cp example.discordWebhookConfig.json discordWebhookConfig.json
-```
+Create a `discordWebhookConfig.json` file using the example file `example.discordWebhookConfig.json` as a basis. All fields are required.
+#### mongoDBConfig.json
 
 If you don't want to use a Discord Webhook then you will need to edit the call to `discordChatWebhook`.
 
-4. Create a `mongoDBConfig.json` file using the example file `example.mongoDBConfig.json` as a basis. All fields are required.
+Create a `mongoDBConfig.json` file using the example file `example.mongoDBConfig.json` as a basis. All fields are required.
 
-**NOTE**: The resulting mongoDBConfig.json file will contain information that can be considered sensitive when filled in correctly. Do not share this information.
-```sh
-cd server
-cp example.mongoDBConfig.json mongoDBConfig.json
-```
+#### spotifyConfig.json (Optional)
 
-5. (Optional) Create a `spotifyConfig.json` file using the example file `example.spotifyConfig.json` as a basis. All fields are required.
+Create a `spotifyConfig.json` file using the example file `example.spotifyConfig.json` as a basis. All fields are required.
 
-**NOTE**: The resulting spotifyConfig.json file will contain information that can be considered sensitive when filled in correctly. Do not share this information.
-```sh
-cd server
-cp example.spotifyConfig.json spotifyConfig.json
-```
+##### **Where to get Spotify oauth_token**
 
 You can use https://developer.spotify.com/console/get-users-currently-playing-track/ to obtain the `oauth_token`
 
