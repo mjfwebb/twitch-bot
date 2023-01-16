@@ -17,7 +17,7 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
         user.lastSeen = new Date().toISOString();
         await user.save();
         if (user.welcomeMessage) {
-          if (user.welcomeMessage.startsWith('!')) {
+          if (user.welcomeMessage.startsWith('!') && user.welcomeMessage.startsWith('/')) {
             return;
           }
           sendChatMessage(connection, `${user.welcomeMessage.replace(/%nick%/gi, nick)}`);
