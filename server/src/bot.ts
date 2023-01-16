@@ -4,6 +4,7 @@ import { discordChatWebhook } from './discord';
 import { bitHandler } from './handlers/bitHandler';
 import { botCommandHandler } from './handlers/botCommandHandler';
 import { firstMessageHandler } from './handlers/firstMessageHandler';
+import { firstMessageOfStreamHandler } from './handlers/firstMessageOfStreamHandler';
 import { returningChatterHandler } from './handlers/returningChatterHandler';
 import { parseMessage } from './parsers/parseMessage';
 import { getCurrentAccessToken } from './twitch';
@@ -64,6 +65,7 @@ export function runBot() {
                 botCommandHandler(connection, parsedMessage).catch((e) => console.error(e));
                 bitHandler(connection, parsedMessage);
                 firstMessageHandler(connection, parsedMessage);
+                firstMessageOfStreamHandler(connection, parsedMessage).catch((e) => console.error(e));
                 returningChatterHandler(connection, parsedMessage);
 
                 if (!botCommand && parsedMessage.source?.nick && parsedMessage.parameters) {
