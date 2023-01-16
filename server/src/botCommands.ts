@@ -17,6 +17,7 @@ import { fetchSpotifyCurrentlyPlaying } from './handlers/fetchSpotifyCurrentlyPl
 import open from 'open';
 import { findOrCreateUser } from './helpers/findOrCreateUser';
 import { setStreamTitle } from './handlers/setStreamTitle';
+import { setStreamTags } from './handlers/setStreamTags';
 
 export const botCommands: BotCommand[] = [
   {
@@ -41,6 +42,38 @@ export const botCommands: BotCommand[] = [
           await setStreamTitle(newTitle);
           sendChatMessage(connection, `Title updated 🎉`);
         }
+      }
+    },
+  },
+  {
+    command: 'settags',
+    id: 'settags',
+    mustBeUser: 'athano',
+    priviliged: true,
+    callback: async (connection, parsedMessage) => {
+      if (hasBotCommandParams(parsedMessage)) {
+        const botCommandParams = parsedMessage.command?.botCommandParams;
+
+        if (!botCommandParams) {
+          return;
+        }
+
+        const newTags: string[] = botCommandParams.split(' ');
+
+        if (!(newTags.length > 0)) {
+          return sendChatMessage(connection, `modCheck tags?`);
+        }
+
+        if (newTags.length > 10) {
+          return sendChatMessage(connection, `Too many tags! Maximum of 10 allowed.`);
+        }
+
+        if (!newTags.every((t) => t.length <= 25)) {
+          return sendChatMessage(connection, `One or more tag is too long. Maximum length of a tag is 25`);
+        }
+
+        await setStreamTags(newTags);
+        sendChatMessage(connection, `Tags updated 🎉`);
       }
     },
   },

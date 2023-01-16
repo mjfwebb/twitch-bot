@@ -4,7 +4,7 @@ import Config from '../config';
 import { TWITCH_HELIX_URL } from '../constants';
 import { getCurrentAccessToken } from '../twitch';
 
-export const setStreamTitle = async (title: string): Promise<void> => {
+export const setStreamTags = async (tags: string[]): Promise<void> => {
   if (Config.twitch) {
     try {
       const url = `${TWITCH_HELIX_URL}channels?broadcaster_id=${Config.twitch.broadcaster_id}`;
@@ -18,14 +18,14 @@ export const setStreamTitle = async (title: string): Promise<void> => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title,
+          tags,
         }),
       });
 
       if (response.status === StatusCodes.NO_CONTENT) {
         return;
       } else {
-        throw new Error(`setStreamTitle: ${response.status} - ${response.statusText}`);
+        throw new Error(`setStreamTags: ${response.status} - ${response.statusText}`);
       }
     } catch (error) {
       console.error(error);
