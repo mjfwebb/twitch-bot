@@ -35,6 +35,7 @@ export const botCommands: BotCommand[] = [
     id: 'settitle',
     mustBeUser: 'athano',
     priviliged: true,
+    hidden: true,
     callback: async (connection, parsedMessage) => {
       if (hasBotCommandParams(parsedMessage)) {
         const newTitle = parsedMessage.command?.botCommandParams;
@@ -50,6 +51,7 @@ export const botCommands: BotCommand[] = [
     id: 'settags',
     mustBeUser: 'athano',
     priviliged: true,
+    hidden: true,
     callback: async (connection, parsedMessage) => {
       if (hasBotCommandParams(parsedMessage)) {
         const botCommandParams = parsedMessage.command?.botCommandParams;
