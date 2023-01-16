@@ -1,6 +1,6 @@
 import { getConnection } from '../bot';
 import { REWARDS } from '../constants';
-import { botCommands } from '../handlers/botCommands';
+import { botCommands } from '../botCommands';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../helpers/updateStreamStartedAt';
 import StreamModel from '../models/stream-model';

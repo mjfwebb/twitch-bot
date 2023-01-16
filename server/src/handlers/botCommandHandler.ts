@@ -3,7 +3,7 @@ import type websocket from 'websocket';
 import { isPrivileged } from '../helpers/isPrivileged';
 import { isUser } from '../helpers/isUser';
 import type { BotCommandCooldown, ParsedMessage } from '../types';
-import { botCommands } from './botCommands';
+import { botCommands } from '../botCommands';
 
 const cooldowns: BotCommandCooldown[] = [];
 const messageQueue: ParsedMessage[] = [];

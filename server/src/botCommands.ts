@@ -1,21 +1,21 @@
-import { MINUTE_MS, REWARDS, SECOND_MS } from '../constants';
-import { getUserIdByName } from '../helpers/getUserIdByName';
-import { sendChatMessage } from '../helpers/sendChatMessage';
-import { playSound } from '../playSound';
-import type { BotCommand } from '../types';
-import { getRandomNumberInRange } from '../utils/getRandomNumberInRange';
-import { endWithFullStop } from '../utils/endWithFullStop';
-import { isError } from '../utils/isError';
-import { msToTimeString } from '../utils/msToTimeString';
-import { promiseAsyncWrapper } from '../utils/promiseAsyncWrapper';
-import { editCustomReward, getCustomRewards } from './customRewards';
-import { banUser, unbanUser } from './moderation';
-import { ttsStreamElementsHandler } from './ttsStreamElementsHandler';
-import TaskModel from '../models/task-model';
-import { hasBotCommandParams } from '../helpers/hasBotCommandParams';
-import { fetchSpotifyCurrentlyPlaying } from './fetchSpotifyCurrentlyPlaying';
+import { MINUTE_MS, REWARDS, SECOND_MS } from './constants';
+import { getUserIdByName } from './helpers/getUserIdByName';
+import { sendChatMessage } from './helpers/sendChatMessage';
+import { playSound } from './playSound';
+import type { BotCommand } from './types';
+import { getRandomNumberInRange } from './utils/getRandomNumberInRange';
+import { endWithFullStop } from './utils/endWithFullStop';
+import { isError } from './utils/isError';
+import { msToTimeString } from './utils/msToTimeString';
+import { promiseAsyncWrapper } from './utils/promiseAsyncWrapper';
+import { editCustomReward, getCustomRewards } from './handlers/customRewards';
+import { banUser, unbanUser } from './handlers/moderation';
+import { ttsStreamElementsHandler } from './handlers/ttsStreamElementsHandler';
+import TaskModel from './models/task-model';
+import { hasBotCommandParams } from './helpers/hasBotCommandParams';
+import { fetchSpotifyCurrentlyPlaying } from './handlers/fetchSpotifyCurrentlyPlaying';
 import open from 'open';
-import { findOrCreateUser } from '../helpers/findOrCreateUser';
+import { findOrCreateUser } from './helpers/findOrCreateUser';
 
 export const botCommands: BotCommand[] = [
   {
