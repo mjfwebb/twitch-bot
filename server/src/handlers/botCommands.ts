@@ -14,8 +14,18 @@ import { ttsStreamElementsHandler } from './ttsStreamElementsHandler';
 import TaskModel from '../models/task-model';
 import { hasBotCommandParams } from '../helpers/hasBotCommandParams';
 import { fetchSpotifyCurrentlyPlaying } from './fetchSpotifyCurrentlyPlaying';
+import open from 'open';
 
 export const botCommands: BotCommand[] = [
+  {
+    command: 'issue',
+    id: 'issue',
+    mustBeUser: 'athano',
+    hidden: true,
+    callback: async () => {
+      await open('https://github.com/mjfwebb/twitch-bot/issues/new');
+    },
+  },
   {
     command: ['athanotime', 'time'],
     id: 'athanotime',

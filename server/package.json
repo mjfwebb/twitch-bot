@@ -32,6 +32,7 @@
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.3",
     "node-fetch": "^2.6.7",
+    "open": "^8.4.0",
     "play-sound": "^1.1.5",
     "socket.io": "^4.5.0",
     "websocket": "^1.0.34"
