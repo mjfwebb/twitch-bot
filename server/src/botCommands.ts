@@ -16,15 +16,32 @@ import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { fetchSpotifyCurrentlyPlaying } from './handlers/fetchSpotifyCurrentlyPlaying';
 import open from 'open';
 import { findOrCreateUser } from './helpers/findOrCreateUser';
+import { setStreamTitle } from './handlers/setStreamTitle';
 
 export const botCommands: BotCommand[] = [
   {
     command: 'issue',
     id: 'issue',
     mustBeUser: 'athano',
+    priviliged: true,
     hidden: true,
     callback: async () => {
       await open('https://github.com/mjfwebb/twitch-bot/issues/new');
+    },
+  },
+  {
+    command: 'settitle',
+    id: 'settitle',
+    mustBeUser: 'athano',
+    priviliged: true,
+    callback: async (connection, parsedMessage) => {
+      if (hasBotCommandParams(parsedMessage)) {
+        const newTitle = parsedMessage.command?.botCommandParams;
+        if (newTitle) {
+          await setStreamTitle(newTitle);
+          sendChatMessage(connection, `Title updated 🎉`);
+        }
+      }
     },
   },
   {

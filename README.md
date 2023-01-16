@@ -44,10 +44,10 @@ Create a `twitchConfig.json` file using the example file `example.twitchConfig.j
 To get the auth_code construct your URL and enter it into the browser: 
 
 ```
-https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator:read:chatters
+https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator%3Aread%3Achatters+channel%3Amanage%3Abroadcast
 ```
 
-Required scopes are `channel:manage:redemptions`, `channel:read:redemptions` and `moderator:manage:banned_users`
+Required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`
 
 **NOTE**: If you have an existing `access_token` and `refresh_token` and change your scope, you should remove these from the `tokens.json` file (so they are then empty strings). Once you have your new access code the program will retrieve a new `access_token` and `refresh_token`.
 
