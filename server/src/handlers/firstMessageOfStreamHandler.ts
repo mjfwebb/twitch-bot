@@ -16,7 +16,12 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
       if (new Date(user.lastSeen).getTime() < new Date(stream.startedAt).getTime()) {
         user.lastSeen = new Date().toISOString();
         await user.save();
-        sendChatMessage(connection, `${user.welcomeMessage} ${nick}!`);
+        if (user.welcomeMessage) {
+          if (user.welcomeMessage.startsWith('!')) {
+            return;
+          }
+          sendChatMessage(connection, `${user.welcomeMessage.replace(/%nick%/gi, nick)}`);
+        }
       }
     }
   }
