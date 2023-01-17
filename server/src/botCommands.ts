@@ -1,4 +1,4 @@
-import { MINUTE_MS, REWARDS, SECOND_MS } from './constants';
+import { BOTNAMES, MINUTE_MS, REWARDS, SECOND_MS } from './constants';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import { playSound } from './playSound';
 import type { BotCommand } from './types';
@@ -21,8 +21,19 @@ import { fetchGameByName } from './handlers/fetchGameByName';
 import { setStreamGame } from './handlers/setStreamGame';
 import { fetchChannelInformation } from './handlers/fetchChannelInformation';
 import { fetchUserInformation } from './handlers/fetchUserInformation';
+import { fetchChatters } from './handlers/fetchChatters';
 
 export const botCommands: BotCommand[] = [
+  {
+    command: 'viewers',
+    id: 'viewers',
+    cooldown: 5 * SECOND_MS,
+    callback: async (connection) => {
+      const chatters = await fetchChatters();
+      const viewerCount = chatters.filter((chatter) => !BOTNAMES.includes(chatter.user_login)).length;
+      sendChatMessage(connection, `Currently there are ${viewerCount} viewers 👀`);
+    },
+  },
   {
     command: 'whoami',
     id: 'whoami',
