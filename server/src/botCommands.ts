@@ -18,6 +18,8 @@ import open from 'open';
 import { findOrCreateUser } from './helpers/findOrCreateUser';
 import { setStreamTitle } from './handlers/setStreamTitle';
 import { setStreamTags } from './handlers/setStreamTags';
+import { fetchGameByName } from './handlers/fetchGameByName';
+import { setStreamGame } from './handlers/setStreamGame';
 
 export const botCommands: BotCommand[] = [
   {
@@ -31,6 +33,25 @@ export const botCommands: BotCommand[] = [
     },
   },
   {
+    command: ['setcategory', 'category'],
+    id: 'setcategory',
+    mustBeUser: 'athano',
+    priviliged: true,
+    hidden: true,
+    callback: async (connection, parsedMessage) => {
+      if (hasBotCommandParams(parsedMessage)) {
+        const newCategory = parsedMessage.command?.botCommandParams;
+        if (newCategory) {
+          const newCategoryId = await fetchGameByName(newCategory);
+          if (newCategoryId) {
+            await setStreamGame(newCategoryId);
+            sendChatMessage(connection, `Category updated to ${newCategory} 🎉`);
+          }
+        }
+      }
+    },
+  },
+  {
     command: ['settitle', 'title'],
     id: 'settitle',
     mustBeUser: 'athano',
@@ -41,7 +62,7 @@ export const botCommands: BotCommand[] = [
         const newTitle = parsedMessage.command?.botCommandParams;
         if (newTitle) {
           await setStreamTitle(newTitle);
-          sendChatMessage(connection, `Title updated 🎉`);
+          sendChatMessage(connection, `Title updated to ${newTitle} 🎉`);
         }
       }
     },
@@ -75,7 +96,7 @@ export const botCommands: BotCommand[] = [
         }
 
         await setStreamTags(newTags);
-        sendChatMessage(connection, `Tags updated 🎉`);
+        sendChatMessage(connection, `Tags updated to ${newTags.join(', ')} 🎉`);
       }
     },
   },
