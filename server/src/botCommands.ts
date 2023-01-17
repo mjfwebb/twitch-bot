@@ -20,8 +20,26 @@ import { setStreamTitle } from './handlers/setStreamTitle';
 import { setStreamTags } from './handlers/setStreamTags';
 import { fetchGameByName } from './handlers/fetchGameByName';
 import { setStreamGame } from './handlers/setStreamGame';
+import { fetchUserInformation } from './handlers/fetchUserInformation';
 
 export const botCommands: BotCommand[] = [
+  {
+    command: 'whoami',
+    id: 'whoami',
+    cooldown: 5 * SECOND_MS,
+    callback: async (connection, parsedMessage) => {
+      const userId = parsedMessage.tags?.['user-id'];
+      if (userId) {
+        const userInformation = await fetchUserInformation(userId);
+        if (userInformation) {
+          sendChatMessage(
+            connection,
+            `Here's what we know about you: You go by ${userInformation.display_name} and you've had ${userInformation.view_count} viewers so far`,
+          );
+        }
+      }
+    },
+  },
   {
     command: 'issue',
     id: 'issue',
