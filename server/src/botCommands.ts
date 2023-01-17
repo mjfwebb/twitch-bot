@@ -216,19 +216,41 @@ export const botCommands: BotCommand[] = [
       if (amount) {
         const amountIncremented = +amount + 1;
 
-        const body = JSON.stringify({
+        await editCustomReward(REWARDS.pushup, {
           title: customReward.title.replace(amount, String(amountIncremented)),
         });
-        await editCustomReward(REWARDS.pushup, body);
 
         const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushupAddOne);
         if (pushupAddOneReward) {
-          await editCustomReward(
-            REWARDS.pushupAddOne,
-            JSON.stringify({
-              cost: pushupAddOneReward.cost + 1000,
-            }),
-          );
+          await editCustomReward(REWARDS.pushupAddOne, {
+            cost: pushupAddOneReward.cost + 1000,
+          });
+        }
+        sendChatMessage(connection, 'It goes ever upwards');
+      }
+    },
+  },
+  {
+    command: 'addsquat',
+    id: 'addsquat',
+    hidden: true,
+    priviliged: true,
+    callback: async (connection) => {
+      const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.squat);
+      const amount = customReward?.title.split(' ')[0];
+
+      if (amount) {
+        const amountIncremented = +amount + 1;
+
+        await editCustomReward(REWARDS.squat, {
+          title: customReward.title.replace(amount, String(amountIncremented)),
+        });
+
+        const squatAddOneRewards = getCustomRewards().find((customReward) => customReward.id === REWARDS.squatAddOne);
+        if (squatAddOneRewards) {
+          await editCustomReward(REWARDS.squat, {
+            cost: squatAddOneRewards.cost + 1000,
+          });
         }
         sendChatMessage(connection, 'It goes ever upwards');
       }

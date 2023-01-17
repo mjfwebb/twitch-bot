@@ -3,7 +3,6 @@ import { REWARDS } from '../constants';
 import { botCommands } from '../botCommands';
 import { sendChatMessage } from '../helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../helpers/updateStreamStartedAt';
-import StreamModel from '../models/stream-model';
 import { playSound } from '../playSound';
 import { setStreamState } from '../streamState';
 import type {
@@ -87,11 +86,12 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
         const reward = Object.values(REWARDS).find((value) => value === event.reward.id);
         switch (reward) {
           case REWARDS.pushup:
+          case REWARDS.squat:
             await playSound('redeem');
             {
               const connection = getConnection();
               if (connection) {
-                sendChatMessage(connection, "It's time to get down");
+                sendChatMessage(connection, "It's time to get up and down");
               }
             }
             break;
@@ -102,6 +102,21 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
               if (addPushupCommand && connection) {
                 await playSound('redeem');
                 await addPushupCommand.callback(connection, {
+                  tags: null,
+                  source: null,
+                  command: null,
+                  parameters: null,
+                });
+              }
+            }
+            break;
+          case REWARDS.squatAddOne:
+            {
+              const addSquatCommand = botCommands.find((command) => command.command === 'addsquat');
+              const connection = getConnection();
+              if (addSquatCommand && connection) {
+                await playSound('redeem');
+                await addSquatCommand.callback(connection, {
                   tags: null,
                   source: null,
                   command: null,
