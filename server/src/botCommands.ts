@@ -31,7 +31,7 @@ export const botCommands: BotCommand[] = [
     },
   },
   {
-    command: 'settitle',
+    command: ['settitle', 'title'],
     id: 'settitle',
     mustBeUser: 'athano',
     priviliged: true,
@@ -47,7 +47,7 @@ export const botCommands: BotCommand[] = [
     },
   },
   {
-    command: 'settags',
+    command: ['settags', 'tags'],
     id: 'settags',
     mustBeUser: 'athano',
     priviliged: true,
