@@ -1,5 +1,4 @@
 import { MINUTE_MS, REWARDS, SECOND_MS } from './constants';
-import { getUserIdByName } from './helpers/getUserIdByName';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import { playSound } from './playSound';
 import type { BotCommand } from './types';
@@ -325,14 +324,14 @@ export const botCommands: BotCommand[] = [
     id: 'lutf1sk',
     mustBeUser: 'lutf1sk',
     description: 'It allows lutf1sk to ban himself',
-    callback: async (connection) => {
-      const lutfiskId = await getUserIdByName('lutf1sk');
-      if (lutfiskId !== '') {
+    callback: async (connection, parsedMessage) => {
+      const userId = parsedMessage.tags?.['user-id'];
+      if (userId) {
         sendChatMessage(connection, 'Get banned fool');
         setTimeout(() => {
-          promiseAsyncWrapper(() => unbanUser(lutfiskId));
+          promiseAsyncWrapper(() => unbanUser(userId));
         }, 10000);
-        await banUser(lutfiskId);
+        await banUser(userId);
       }
     },
     cooldown: 30 * MINUTE_MS,
