@@ -20,6 +20,7 @@ import { setStreamTitle } from './handlers/setStreamTitle';
 import { setStreamTags } from './handlers/setStreamTags';
 import { fetchGameByName } from './handlers/fetchGameByName';
 import { setStreamGame } from './handlers/setStreamGame';
+import { fetchChannelInformation } from './handlers/fetchChannelInformation';
 import { fetchUserInformation } from './handlers/fetchUserInformation';
 
 export const botCommands: BotCommand[] = [
@@ -81,6 +82,11 @@ export const botCommands: BotCommand[] = [
         if (newTitle) {
           await setStreamTitle(newTitle);
           sendChatMessage(connection, `Title updated to ${newTitle} 🎉`);
+        }
+      } else {
+        const currentTitle = (await fetchChannelInformation())?.title;
+        if (currentTitle) {
+          sendChatMessage(connection, `Current title is ${currentTitle}`);
         }
       }
     },
