@@ -1,14 +1,17 @@
-import './App.css'
-import { Output } from './components/Output'
+import './App.css';
+import useStore from './store/store';
+import useSocketContext from './hooks/useSocketContext';
 
 function App() {
-  return (
-    <div className="App">
-      Twitch bot!
+  const { sendToServer } = useSocketContext();
+  sendToServer('getTask');
+  const task = useStore((s) => s.task);
 
-      <Output />
+  return (
+    <div className="current-task-wrapper">
+      <span className="current-task">Task: {task}</span>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

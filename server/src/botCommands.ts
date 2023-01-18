@@ -22,6 +22,7 @@ import { setStreamGame } from './handlers/setStreamGame';
 import { fetchChannelInformation } from './handlers/fetchChannelInformation';
 import { fetchUserInformation } from './handlers/fetchUserInformation';
 import { fetchChatters } from './handlers/fetchChatters';
+import { getIO } from './runSocketServer';
 
 export const botCommands: BotCommand[] = [
   {
@@ -176,6 +177,7 @@ export const botCommands: BotCommand[] = [
         });
         await task.save();
         sendChatMessage(connection, `Task successfully updated 🎉`);
+        getIO().emit('task', taskText);
       }
     },
   },
