@@ -1,11 +1,11 @@
 import websocket from 'websocket';
 import Config from './config';
-import { discordChatWebhook } from './discord';
-import { bitHandler } from './handlers/bitHandler';
+import { discordChatWebhook } from './handlers/discord/discord';
+import { bitHandler } from './handlers/twitch/irc/bitHandler';
 import { botCommandHandler } from './handlers/botCommandHandler';
-import { firstMessageHandler } from './handlers/firstMessageHandler';
-import { firstMessageOfStreamHandler } from './handlers/firstMessageOfStreamHandler';
-import { returningChatterHandler } from './handlers/returningChatterHandler';
+import { firstMessageHandler } from './handlers/twitch/irc/firstMessageHandler';
+import { firstMessageOfStreamHandler } from './handlers/twitch/irc/firstMessageOfStreamHandler';
+import { returningChatterHandler } from './handlers/twitch/irc/returningChatterHandler';
 import { parseMessage } from './parsers/parseMessage';
 import { getCurrentAccessToken } from './twitch';
 
@@ -63,7 +63,7 @@ export function runBot() {
             switch (parsedMessage.command.command) {
               case 'PRIVMSG':
                 botCommandHandler(connection, parsedMessage).catch((e) => console.error(e));
-                bitHandler(connection, parsedMessage);
+                bitHandler(connection, parsedMessage).catch((e) => console.error(e));
                 firstMessageHandler(connection, parsedMessage);
                 firstMessageOfStreamHandler(connection, parsedMessage).catch((e) => console.error(e));
                 returningChatterHandler(connection, parsedMessage);

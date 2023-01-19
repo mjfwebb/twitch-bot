@@ -1,5 +1,5 @@
 import { BOTNAMES, SECOND_MS } from '../constants';
-import { fetchChatters } from '../handlers/fetchChatters';
+import { fetchChatters } from '../handlers/twitch/helix/fetchChatters';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import type { BotCommand } from '../types';
 

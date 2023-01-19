@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
-import Config from '../config';
-import { TWITCH_HELIX_URL } from '../constants';
-import { getCurrentAccessToken } from '../twitch';
-import { assertArray } from '../utils/assertArray';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import Config from '../../../config';
+import { TWITCH_HELIX_URL } from '../../../constants';
+import { getCurrentAccessToken } from '../../../twitch';
+import { assertArray } from '../../../utils/assertArray';
+import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
 type ChannelInfomation = {
   broadcaster_id: string;

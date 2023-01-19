@@ -1,8 +1,8 @@
 // https://api.twitch.tv/helix/moderation/
 
-import Config from '../config';
-import { TWITCH_HELIX_URL } from '../constants';
-import { fetchWithRetry, getCurrentAccessToken } from '../twitch';
+import Config from '../../../config';
+import { TWITCH_HELIX_URL } from '../../../constants';
+import { fetchWithRetry, getCurrentAccessToken } from '../../../twitch';
 
 export const banUser = async (userId: string) => {
   if (Config.twitch) {

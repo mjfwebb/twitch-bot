@@ -1,8 +1,8 @@
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import type { BotCommand } from '../types';
-import { setStreamTitle } from '../handlers/setStreamTitle';
+import { setStreamTitle } from '../handlers/twitch/helix/setStreamTitle';
 import { sendChatMessage } from './helpers/sendChatMessage';
-import { fetchChannelInformation } from '../handlers/fetchChannelInformation';
+import { fetchChannelInformation } from '../handlers/twitch/helix/fetchChannelInformation';
 
 export const settitle: BotCommand = {
   command: ['settitle', 'title'],

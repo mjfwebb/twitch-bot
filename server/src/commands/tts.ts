@@ -1,4 +1,4 @@
-import { ttsStreamElementsHandler } from '../handlers/ttsStreamElementsHandler';
+import { ttsStreamElementsHandler } from '../handlers/streamelements/ttsStreamElementsHandler';
 import type { BotCommand } from '../types';
 
 export const tts: BotCommand = {

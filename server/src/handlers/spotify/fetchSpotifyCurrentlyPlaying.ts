@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-import Config from '../config';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import Config from '../../config';
+import { hasOwnProperty } from '../../utils/hasOwnProperty';
 
 export const fetchSpotifyCurrentlyPlaying = async (): Promise<string> => {
   if (Config.spotify) {

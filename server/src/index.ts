@@ -1,10 +1,10 @@
 import Config from './config';
 import { getTwitchAccessToken } from './twitch';
-import { editCustomReward, fetchCustomRewards } from './handlers/customRewards';
+import { editCustomReward, fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { runTwitchWebsocket } from './twitchWebsocket';
 import { runBot } from './bot';
 import { runIntervalCommands } from './intervalCommands';
-import { fetchStreamStatus } from './handlers/fetchStreamStatus';
+import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
 import { setStreamState } from './streamState';
 import { setupMongoose } from './setupMongoose';
 import { runSocketServer } from './runSocketServer';

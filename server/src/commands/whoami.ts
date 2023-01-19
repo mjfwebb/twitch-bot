@@ -1,5 +1,5 @@
 import { SECOND_MS } from '../constants';
-import { fetchUserInformation } from '../handlers/fetchUserInformation';
+import { fetchUserInformation } from '../handlers/twitch/helix/fetchUserInformation';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import type { BotCommand } from '../types';
 

@@ -1,5 +1,5 @@
 import { SECOND_MS } from '../constants';
-import { fetchSpotifyCurrentlyPlaying } from '../handlers/fetchSpotifyCurrentlyPlaying';
+import { fetchSpotifyCurrentlyPlaying } from '../handlers/spotify/fetchSpotifyCurrentlyPlaying';
 import type { BotCommand } from '../types';
 import { sendChatMessage } from './helpers/sendChatMessage';
 

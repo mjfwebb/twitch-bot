@@ -1,4 +1,4 @@
-import { setStreamTags } from '../handlers/setStreamTags';
+import { setStreamTags } from '../handlers/twitch/helix/setStreamTags';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';

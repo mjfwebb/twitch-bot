@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 // https://api.twitch.tv/helix/channel_points/custom_rewards
 
-import Config from '../config';
-import { TWITCH_HELIX_URL } from '../constants';
-import { fetchWithRetry, getCurrentAccessToken } from '../twitch';
-import { assertArray } from '../utils/assertArray';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import Config from '../../../config';
+import { TWITCH_HELIX_URL } from '../../../constants';
+import { fetchWithRetry, getCurrentAccessToken } from '../../../twitch';
+import { assertArray } from '../../../utils/assertArray';
+import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
 interface CustomReward {
   broadcaster_name: string;

@@ -1,6 +1,6 @@
 import type websocket from 'websocket';
-import { sendChatMessage } from '../commands/helpers/sendChatMessage';
-import type { ParsedMessage } from '../types';
+import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
+import type { ParsedMessage } from '../../../types';
 
 export function firstMessageHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
   const firstMessage = parsedMessage.tags?.['first-msg'];

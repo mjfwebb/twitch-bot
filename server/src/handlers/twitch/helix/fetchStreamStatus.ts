@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
-import Config from '../config';
-import { TWITCH_HELIX_URL } from '../constants';
-import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
-import type { StreamState } from '../streamState';
-import { getCurrentAccessToken } from '../twitch';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import Config from '../../../config';
+import { TWITCH_HELIX_URL } from '../../../constants';
+import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
+import type { StreamState } from '../../../streamState';
+import { getCurrentAccessToken } from '../../../twitch';
+import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
 export const fetchStreamStatus = async (): Promise<StreamState> => {
   if (Config.twitch) {

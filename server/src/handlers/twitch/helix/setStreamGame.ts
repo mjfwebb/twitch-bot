@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
-import Config from '../config';
-import { TWITCH_HELIX_URL } from '../constants';
-import { getCurrentAccessToken } from '../twitch';
+import Config from '../../../config';
+import { TWITCH_HELIX_URL } from '../../../constants';
+import { getCurrentAccessToken } from '../../../twitch';
 
-export const setStreamTags = async (tags: string[]): Promise<void> => {
+export const setStreamGame = async (gameId: string): Promise<void> => {
   if (Config.twitch) {
     try {
       const url = `${TWITCH_HELIX_URL}channels?broadcaster_id=${Config.twitch.broadcaster_id}`;
@@ -18,14 +18,14 @@ export const setStreamTags = async (tags: string[]): Promise<void> => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          tags,
+          game_id: gameId,
         }),
       });
 
       if (response.status === StatusCodes.NO_CONTENT) {
         return;
       } else {
-        throw new Error(`setStreamTags: ${response.status} - ${response.statusText}`);
+        throw new Error(`setStreamGame: ${response.status} - ${response.statusText}`);
       }
     } catch (error) {
       console.error(error);

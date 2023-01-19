@@ -1,5 +1,5 @@
 import { REWARDS } from '../constants';
-import { editCustomReward, getCustomRewards } from '../handlers/customRewards';
+import { editCustomReward, getCustomRewards } from '../handlers/twitch/helix/customRewards';
 import type { BotCommand } from '../types';
 import { sendChatMessage } from './helpers/sendChatMessage';
 

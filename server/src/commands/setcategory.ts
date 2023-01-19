@@ -1,5 +1,5 @@
-import { fetchGameByName } from '../handlers/fetchGameByName';
-import { setStreamGame } from '../handlers/setStreamGame';
+import { fetchGameByName } from '../handlers/twitch/helix/fetchGameByName';
+import { setStreamGame } from '../handlers/twitch/helix/setStreamGame';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import type { BotCommand } from '../types';

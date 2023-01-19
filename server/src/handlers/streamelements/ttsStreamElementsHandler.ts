@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs';
 import fetch from 'node-fetch';
-import { playSound } from '../playSound';
+import { playSound } from '../../playSound';
 
 export const ttsStreamElementsHandler = async (voice: StreamElementsVoices, text: string) => {
   try {

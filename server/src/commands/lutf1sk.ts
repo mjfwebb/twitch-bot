@@ -1,5 +1,5 @@
 import { MINUTE_MS } from '../constants';
-import { banUser, unbanUser } from '../handlers/moderation';
+import { banUser, unbanUser } from '../handlers/twitch/helix/moderation';
 import type { BotCommand } from '../types';
 import { promiseAsyncWrapper } from '../utils/promiseAsyncWrapper';
 import { sendChatMessage } from './helpers/sendChatMessage';

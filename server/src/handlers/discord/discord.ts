@@ -1,5 +1,5 @@
 import Discord, { EmbedBuilder } from 'discord.js';
-import type { Webhook } from './config';
+import type { Webhook } from '../../config';
 
 export const discordChatWebhook = (username: string, webhook: Webhook, chatMessage: string): void => {
   const webhookClient = new Discord.WebhookClient({ id: webhook.id, token: webhook.token });
