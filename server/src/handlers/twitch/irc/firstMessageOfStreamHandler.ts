@@ -14,9 +14,9 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
       const user = await findOrCreateUser(userId);
 
       if (new Date(user.lastSeen).getTime() < new Date(stream.startedAt).getTime()) {
-        user.lastSeen = new Date().toISOString();
-        await user.save();
         if (user.welcomeMessage) {
+          user.lastSeen = new Date().toISOString();
+          await user.save();
           if (user.welcomeMessage.startsWith('!') && user.welcomeMessage.startsWith('/')) {
             return;
           }
