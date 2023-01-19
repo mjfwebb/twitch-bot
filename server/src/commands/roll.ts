@@ -11,6 +11,8 @@ export const roll: BotCommand = {
     if (parseInt(rollBetween[0]) && parseInt(rollBetween[1])) {
       const roll = getRandomNumberInRange(parseInt(rollBetween[0]), parseInt(rollBetween[1]));
       sendChatMessage(connection, `It's ${roll}!`);
+    } else {
+      sendChatMessage(connection, "That's not right. This command is used like !roll 1 10");
     }
   },
 };
