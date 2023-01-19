@@ -4,6 +4,9 @@ import { isPrivileged } from '../commands/helpers/isPrivileged';
 import { isUser } from '../commands/helpers/isUser';
 import type { BotCommandCooldown, ParsedMessage } from '../types';
 import { botCommands } from '../botCommands';
+import { sendChatMessage } from '../commands/helpers/sendChatMessage';
+import CommandModel from '../models/command-model';
+import { findOrCreateCommand } from '../commands/helpers/findOrCreateCommand';
 
 const cooldowns: BotCommandCooldown[] = [];
 const messageQueue: ParsedMessage[] = [];
@@ -33,7 +36,12 @@ async function handleCommand(connection: websocket.connection, parsedMessage: Pa
       return;
     }
 
-    await foundBotCommand.callback(connection, parsedMessage);
+    const result = await foundBotCommand.callback(connection, parsedMessage);
+    if (typeof result === 'boolean' && result === false) {
+      sendChatMessage(connection, `That's not right. Use !help ${parsedMessage.command?.botCommand || ''} to get more information`);
+    } else {
+      await CommandModel.updateOne({ commandId: foundBotCommand.id }, { $inc: { timesUsed: 1 } }, { upsert: true });
+    }
   }
 }
 

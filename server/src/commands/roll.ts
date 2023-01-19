@@ -12,7 +12,7 @@ export const roll: BotCommand = {
       const roll = getRandomNumberInRange(parseInt(rollBetween[0]), parseInt(rollBetween[1]));
       sendChatMessage(connection, `It's ${roll}!`);
     } else {
-      sendChatMessage(connection, "That's not right. This command is used like !roll 1 10");
+      return false;
     }
   },
 };
