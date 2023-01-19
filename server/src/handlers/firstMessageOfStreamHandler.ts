@@ -1,8 +1,8 @@
 import type websocket from 'websocket';
 import StreamModel from '../models/stream-model';
-import { sendChatMessage } from '../helpers/sendChatMessage';
+import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import type { ParsedMessage } from '../types';
-import { findOrCreateUser } from '../helpers/findOrCreateUser';
+import { findOrCreateUser } from '../commands/helpers/findOrCreateUser';
 
 export async function firstMessageOfStreamHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
   const nick = parsedMessage.source?.nick;

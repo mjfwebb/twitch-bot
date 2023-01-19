@@ -1,5 +1,5 @@
 import type websocket from 'websocket';
-import { sendChatMessage } from '../helpers/sendChatMessage';
+import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import type { ParsedMessage } from '../types';
 
 export function firstMessageHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {

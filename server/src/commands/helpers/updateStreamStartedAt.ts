@@ -1,4 +1,4 @@
-import StreamModel from '../models/stream-model';
+import StreamModel from '../../models/stream-model';
 
 export async function updateStreamStartedAt(startedAt: string): Promise<void> {
   const stream = await StreamModel.findOne({});

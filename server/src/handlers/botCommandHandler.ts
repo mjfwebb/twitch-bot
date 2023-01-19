@@ -1,7 +1,7 @@
 import type websocket from 'websocket';
 
-import { isPrivileged } from '../helpers/isPrivileged';
-import { isUser } from '../helpers/isUser';
+import { isPrivileged } from '../commands/helpers/isPrivileged';
+import { isUser } from '../commands/helpers/isUser';
 import type { BotCommandCooldown, ParsedMessage } from '../types';
 import { botCommands } from '../botCommands';
 

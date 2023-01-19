@@ -1,6 +1,6 @@
 import { getConnection } from './bot';
 import { SECOND_MS } from './constants';
-import { sendChatMessage } from './helpers/sendChatMessage';
+import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { getStreamState } from './streamState';
 
 interface IntervalCommand {

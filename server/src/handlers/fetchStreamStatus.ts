@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import Config from '../config';
 import { TWITCH_HELIX_URL } from '../constants';
-import { updateStreamStartedAt } from '../helpers/updateStreamStartedAt';
+import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
 import type { StreamState } from '../streamState';
 import { getCurrentAccessToken } from '../twitch';
 import { hasOwnProperty } from '../utils/hasOwnProperty';

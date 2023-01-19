@@ -1,5 +1,5 @@
 import type websocket from 'websocket';
-import Config from '../config';
+import Config from '../../config';
 
 const channel = `#${Config.twitch.channel}`; // Replace with your channel.
 

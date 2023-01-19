@@ -1,0 +1,25 @@
+import { fetchGameByName } from '../handlers/fetchGameByName';
+import { setStreamGame } from '../handlers/setStreamGame';
+import { hasBotCommandParams } from './helpers/hasBotCommandParams';
+import { sendChatMessage } from './helpers/sendChatMessage';
+import type { BotCommand } from '../types';
+
+export const setcategory: BotCommand = {
+  command: ['setcategory', 'category'],
+  id: 'setcategory',
+  mustBeUser: 'athano',
+  priviliged: true,
+  hidden: true,
+  callback: async (connection, parsedMessage) => {
+    if (hasBotCommandParams(parsedMessage)) {
+      const newCategory = parsedMessage.command?.botCommandParams;
+      if (newCategory) {
+        const newCategoryId = await fetchGameByName(newCategory);
+        if (newCategoryId) {
+          await setStreamGame(newCategoryId);
+          sendChatMessage(connection, `Category updated to ${newCategory} 🎉`);
+        }
+      }
+    }
+  },
+};

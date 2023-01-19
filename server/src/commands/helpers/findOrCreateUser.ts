@@ -1,5 +1,5 @@
-import type { User } from '../models/user-model';
-import UserModel from '../models/user-model';
+import type { User } from '../../models/user-model';
+import UserModel from '../../models/user-model';
 import type { HydratedDocument } from 'mongoose';
 
 export async function findOrCreateUser(userId: string): Promise<HydratedDocument<User>> {

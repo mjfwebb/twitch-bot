@@ -1,8 +1,8 @@
 import { getConnection } from '../bot';
 import { REWARDS } from '../constants';
 import { botCommands } from '../botCommands';
-import { sendChatMessage } from '../helpers/sendChatMessage';
-import { updateStreamStartedAt } from '../helpers/updateStreamStartedAt';
+import { sendChatMessage } from '../commands/helpers/sendChatMessage';
+import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
 import { playSound } from '../playSound';
 import { setStreamState } from '../streamState';
 import type {
