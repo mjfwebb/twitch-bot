@@ -41,6 +41,7 @@ import {
   links,
   flappieh,
   play,
+  command,
   commands,
 } from './commands';
 
@@ -86,5 +87,6 @@ export const botCommands: BotCommand[] = [
   links,
   flappieh,
   play,
+  command,
   commands,
 ];
