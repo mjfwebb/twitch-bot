@@ -1,6 +1,6 @@
 import Config from './config';
 import { getTwitchAccessToken } from './twitch';
-import { editCustomReward, fetchCustomRewards } from './handlers/twitch/helix/customRewards';
+import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { runTwitchWebsocket } from './twitchWebsocket';
 import { runBot } from './bot';
 import { runIntervalCommands } from './intervalCommands';
