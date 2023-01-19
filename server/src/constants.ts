@@ -4,6 +4,7 @@ export const TWITCH_WEBSOCKET_EVENTSUB_URL = 'wss://eventsub-beta.wss.twitch.tv/
 
 export const SECOND_MS = 1000;
 export const MINUTE_MS = 60000;
+export const MAX_TWITCH_MESSAGE_LENGTH = 500;
 
 export const SOUNDS = ['success', 'fail', 'party', 'ominous_bell', 'redeem', 'oh_great_heavens'] as const;
 

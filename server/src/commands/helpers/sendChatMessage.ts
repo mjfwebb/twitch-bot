@@ -1,16 +1,17 @@
 import type websocket from 'websocket';
 import Config from '../../config';
+import { MAX_TWITCH_MESSAGE_LENGTH } from '../../constants';
 
 const channel = `#${Config.twitch.channel}`; // Replace with your channel.
 
 export function sendChatMessage(connection: websocket.connection, message: string, amount = 1) {
-  if (message.length < 450) {
+  if (message.length < MAX_TWITCH_MESSAGE_LENGTH) {
     sendMessage(message);
   } else {
     const messageWords = message.split(' ');
     let newMessage = '';
     messageWords.forEach((word) => {
-      if (newMessage.length + word.length > 450) {
+      if (newMessage.length + word.length > MAX_TWITCH_MESSAGE_LENGTH) {
         sendMessage(newMessage);
         newMessage = word;
       } else {
