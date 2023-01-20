@@ -28,7 +28,7 @@ export function runIntervalCommands() {
       callback: async () => {
         await fetchSpotifyCurrentlyPlaying();
       },
-      tickInterval: 1,
+      tickInterval: 5,
       currentTick: 0,
       tickOffset: 0,
     },
