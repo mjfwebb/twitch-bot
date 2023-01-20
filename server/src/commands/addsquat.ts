@@ -21,7 +21,7 @@ export const addsquat: BotCommand = {
 
       const squatAddOneRewards = getCustomRewards().find((customReward) => customReward.id === REWARDS.squatAddOne);
       if (squatAddOneRewards) {
-        await editCustomReward(REWARDS.squat, {
+        await editCustomReward(REWARDS.squatAddOne, {
           cost: squatAddOneRewards.cost + 1000,
         });
       }
