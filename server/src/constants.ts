@@ -1,5 +1,7 @@
 export const TWITCH_HELIX_URL = 'https://api.twitch.tv/helix/';
 export const TWITCH_AUTH_URL = 'https://id.twitch.tv/oauth2/';
+export const SPOTIFY_API_URL = 'https://api.spotify.com/v1/';
+export const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/';
 export const TWITCH_WEBSOCKET_EVENTSUB_URL = 'wss://eventsub-beta.wss.twitch.tv/ws';
 
 export const SECOND_MS = 1000;

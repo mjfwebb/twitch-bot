@@ -1,10 +1,4 @@
-import fetch from 'node-fetch';
-import Config from '../../config';
-import { getIO } from '../../runSocketServer';
-import { getCurrentAccessToken } from '../../spotify';
-import { hasOwnProperty } from '../../utils/hasOwnProperty';
-
-type SpotifySong = {
+export type SpotifySong = {
   timestamp: number;
   context: {
     external_urls: {
@@ -28,7 +22,7 @@ type SpotifySong = {
           name: string;
           type: string;
           uri: string;
-        },
+        }
       ];
       external_urls: {
         spotify: string;
@@ -84,39 +78,4 @@ type SpotifySong = {
     };
   };
   is_playing: boolean;
-};
-
-let currentSong: SpotifySong | null = null;
-
-export const getCurrentSpotifySong = () => currentSong;
-
-export const fetchSpotifyCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
-  if (Config.spotify) {
-    try {
-      const url = `https://api.spotify.com/v1/me/player/currently-playing`;
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getCurrentAccessToken()}`,
-        },
-      });
-      const result: unknown = await response.json();
-      if (
-        hasOwnProperty(result, 'item') &&
-        hasOwnProperty(result.item, 'name') &&
-        hasOwnProperty(result.item, 'external_urls') &&
-        hasOwnProperty(result.item.external_urls, 'spotify') &&
-        typeof result.item.name === 'string' &&
-        typeof result.item.external_urls.spotify === 'string'
-      ) {
-        getIO().emit('currentSong', result);
-        currentSong = result as SpotifySong;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  return null;
 };

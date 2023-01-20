@@ -3,7 +3,7 @@ import { hasOwnProperty } from './utils/hasOwnProperty';
 
 const tokensfileName = 'tokens.json';
 
-export const updateTokenFile = (tokenName: string, tokenValue: string) => {
+export const setTokenInFile = (tokenName: string, tokenValue: string) => {
   const file = readFileSync(tokensfileName);
   const currentTokenData: unknown = JSON.parse(file.toString());
 

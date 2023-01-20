@@ -29,16 +29,20 @@ export interface MongoDBConfig {
   db: string;
 }
 
-export interface SpotifyConfig {
-  oauth_token: string;
-}
+export type SpotifyConfig = {
+  client_id: string;
+  client_secret: string;
+  grant_type: string;
+  auth_code: string;
+  redirect_uri: string;
+} | null;
 
 interface IConfig {
   environment: 'development' | 'production';
   twitch: TwitchConfig;
   webhooks: Record<string, Webhook>;
   mongoDB: MongoDBConfig;
-  spotify: SpotifyConfig | null;
+  spotify: SpotifyConfig;
 }
 
 function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
@@ -66,10 +70,14 @@ function readTwitchConfig(): TwitchConfig {
 }
 
 function assertSpotifyConfig(config: unknown): asserts config is SpotifyConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'oauth_token'), 'Missing Spotify config: oauth_token');
+  assert(Object.prototype.hasOwnProperty.call(config, 'client_id'), 'Missing Spotify config: client_id');
+  assert(Object.prototype.hasOwnProperty.call(config, 'client_secret'), 'Missing Spotify config: client_secret');
+  assert(Object.prototype.hasOwnProperty.call(config, 'grant_type'), 'Missing Spotify config: grant_type');
+  assert(Object.prototype.hasOwnProperty.call(config, 'auth_code'), 'Missing Spotify config: auth_code');
+  assert(Object.prototype.hasOwnProperty.call(config, 'redirect_uri'), 'Missing Spotify config: redirect_uri');
 }
 
-function readSpotifyConfig(): SpotifyConfig | null {
+function readSpotifyConfig(): SpotifyConfig {
   try {
     const SpotifyConfg: unknown = JSON.parse(readFileSync('./SpotifyConfig.json', 'utf8'));
     assertSpotifyConfig(SpotifyConfg);

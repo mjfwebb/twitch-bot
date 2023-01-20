@@ -2,9 +2,11 @@ import { getConnection } from './bot';
 import { SECOND_MS } from './constants';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { getStreamState } from './streamState';
+import type { connection } from 'websocket';
+import { fetchSpotifyCurrentlyPlaying } from './handlers/spotify/fetchSpotifyCurrentlyPlaying';
 
 interface IntervalCommand {
-  message: string;
+  callback: ((connection: connection) => void) | ((connection: connection) => Promise<void>);
   tickInterval: number;
   currentTick: number;
   tickOffset: number;
@@ -13,14 +15,26 @@ interface IntervalCommand {
 export function runIntervalCommands() {
   const intervalCommands: IntervalCommand[] = [
     {
-      message: "Have you tried out Between Worlds? It's free to play in your browser right now, no sign up required! https://betweenworlds.net",
+      callback: (connection) =>
+        sendChatMessage(
+          connection,
+          "Have you tried out Between Worlds? It's free to play in your browser right now, no sign up required! https://betweenworlds.net",
+        ),
       tickInterval: 60 * 15,
       currentTick: 0,
       tickOffset: 30,
     },
+    {
+      callback: async () => {
+        await fetchSpotifyCurrentlyPlaying();
+      },
+      tickInterval: 1,
+      currentTick: 0,
+      tickOffset: 0,
+    },
   ];
 
-  setInterval(() => {
+  async function runInterval() {
     const connection = getConnection();
     if (!connection) {
       return;
@@ -33,12 +47,15 @@ export function runIntervalCommands() {
 
     for (const intervalCommand of intervalCommands) {
       if (intervalCommand.currentTick === intervalCommand.tickInterval + intervalCommand.tickOffset) {
-        sendChatMessage(connection, intervalCommand.message);
+        await intervalCommand.callback(connection);
         intervalCommand.currentTick = 0;
         intervalCommand.tickOffset = 0;
       } else {
         intervalCommand.currentTick += 1;
       }
     }
-  }, SECOND_MS);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  setInterval(runInterval, SECOND_MS);
 }

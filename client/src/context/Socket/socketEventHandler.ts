@@ -1,5 +1,6 @@
 import type { Socket } from 'socket.io-client';
 
+import type { SpotifySong } from '../../types';
 import useStore from '../../store/store';
 
 function socketEventHandler(socket: Socket) {
@@ -7,6 +8,9 @@ function socketEventHandler(socket: Socket) {
     if (typeof data === 'string') {
       useStore.getState().setTask(data);
     }
+  });
+  socket.on('currentSong', (data: unknown) => {
+    useStore.getState().setCurrentSong(data as unknown as SpotifySong);
   });
 }
 

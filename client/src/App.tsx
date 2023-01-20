@@ -6,10 +6,12 @@ function App() {
   const { sendToServer } = useSocketContext();
   sendToServer('getTask');
   const task = useStore((s) => s.task);
+  const currentSong = useStore((s) => s.currentSong);
 
   return (
-    <div className="current-task-wrapper">
-      <span className="current-task">Task: {task}</span>
+    <div className="current-data-wrapper">
+      <div className="current-task">Task: {task}</div>
+      <div className="current-song">Current song: {currentSong?.item.name}</div>
     </div>
   );
 }

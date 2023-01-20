@@ -4,7 +4,7 @@ import assert from 'assert';
 import { StatusCodes } from 'http-status-codes';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 import { errorMessage } from './utils/errorMessage';
-import { getTokenFromFile, updateTokenFile } from './tokenManager';
+import { getTokenFromFile, setTokenInFile } from './tokenManager';
 import type { TwitchConfig } from './config';
 import Config from './config';
 import { TWITCH_AUTH_URL } from './constants';
@@ -20,7 +20,7 @@ const validateAccessToken = async (accessToken: string) => {
   return result.status === StatusCodes.OK;
 };
 
-export const getCurrentAccessToken = () => getTokenFromFile('access_token');
+export const getCurrentAccessToken = () => getTokenFromFile('twitch_access_token');
 
 // To support checking the response (which requires using result.json())
 // we pass back the parsed data response, instead of the whole Reponse.
@@ -68,14 +68,14 @@ const parseNewTokens = (data: unknown): string => {
   assert(hasOwnProperty(data, 'refresh_token'), 'refresh_token not found in data response');
   assert(typeof data.access_token === 'string', 'access_token in data response is not a string');
   assert(typeof data.refresh_token === 'string', 'refresh_token in data response is not a string');
-  updateTokenFile('access_token', data.access_token);
-  updateTokenFile('refresh_token', data.refresh_token);
+  setTokenInFile('twitch_access_token', data.access_token);
+  setTokenInFile('twitch_refresh_token', data.refresh_token);
   return data.access_token;
 };
 
 const refreshAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
   try {
-    const refreshToken = getTokenFromFile('refresh_token');
+    const refreshToken = getTokenFromFile('twitch_refresh_token');
     const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${
       twitchConfig.client_secret
     }&grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`;
@@ -118,10 +118,10 @@ const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> =>
 };
 
 export const getTwitchAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
-  const accessToken = getTokenFromFile('access_token');
+  const accessToken = getTokenFromFile('twitch_access_token');
   try {
     if (!(await validateAccessToken(accessToken))) {
-      const refreshToken = getTokenFromFile('refresh_token');
+      const refreshToken = getTokenFromFile('twitch_refresh_token');
       if (refreshToken) {
         return await refreshAccessToken(twitchConfig);
       } else {

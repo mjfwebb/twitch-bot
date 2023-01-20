@@ -1,15 +1,18 @@
 import { SECOND_MS } from '../constants';
-import { fetchSpotifyCurrentlyPlaying } from '../handlers/spotify/fetchSpotifyCurrentlyPlaying';
+import { getCurrentSpotifySong } from '../handlers/spotify/fetchSpotifyCurrentlyPlaying';
 import type { BotCommand } from '../types';
 import { sendChatMessage } from './helpers/sendChatMessage';
 
 export const song: BotCommand = {
   command: 'song',
   id: 'song',
-  cooldown: 30 * SECOND_MS,
+  cooldown: 1 * SECOND_MS,
   description: 'Gets the currently playing song (on Spotify)',
-  callback: async (connection) => {
-    const currentlyPlaying = await fetchSpotifyCurrentlyPlaying();
+  callback: (connection) => {
+    const currentlyPlayingSong = getCurrentSpotifySong();
+    const currentlyPlaying = currentlyPlayingSong
+      ? `Current song is ${currentlyPlayingSong.item.name} (link: ${currentlyPlayingSong.item.external_urls.spotify})`
+      : 'No Spotify connection found';
     sendChatMessage(connection, currentlyPlaying);
   },
 };

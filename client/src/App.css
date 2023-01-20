@@ -13,13 +13,28 @@
   border-radius: 0.5rem;
   background-size: 200% auto;
   animation: text-shine 60s linear infinite;
+  padding-bottom: 1rem;
 }
 
-.current-task-wrapper {
+
+.current-song {
+  font-weight: bold;
+  color: white;
+  font-size: 1.8rem;
+  background: linear-gradient(45deg, #d4992a 20%, #ffffff 30%,  #ffffff 70%, #d4992a 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-radius: 0.5rem;
+  background-size: 200% auto;
+  animation: text-shine 60s linear infinite;
+}
+
+.current-data-wrapper {
   padding: 1rem;
   position: absolute; 
   top: 1rem;
   left: 1rem;
-  text-align: center;
+  text-align: left;
 }
 

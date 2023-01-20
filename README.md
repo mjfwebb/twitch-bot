@@ -39,7 +39,7 @@ npm install
 
 Create a `twitchConfig.json` file using the example file `example.twitchConfig.json` as a basis. All fields are required.
 
-##### **Where to get auth_code**
+##### **Where to get the auth_code**
 
 To get the auth_code construct your URL and enter it into the browser: 
 
@@ -67,6 +67,15 @@ Create a `mongoDBConfig.json` file using the example file `example.mongoDBConfig
 #### spotifyConfig.json (Optional)
 
 Create a `spotifyConfig.json` file using the example file `example.spotifyConfig.json` as a basis. All fields are required.
+
+Where to get the auth_code
+
+```
+https://accounts.spotify.com/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=user-read-currently-playing
+```
+
+Required scope is `user-read-currently-playing`
+
 
 ##### **Where to get Spotify oauth_token**
 
