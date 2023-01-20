@@ -5,17 +5,9 @@ import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
 import { playSound } from '../playSound';
 import { setStreamState } from '../streamState';
-import type {
-  ChannelPointRedeemNotificatonEvent,
-  FollowNotificationEvent,
-  RaidNotificationEvent,
-  ChannelSubscriptionEvent,
-  TwitchWebsocketMessage,
-  EventSubResponse,
-  ChannelSubscriptionGiftEvent,
-  StreamOnlineNotificationEvent,
-} from '../types';
+import type { TwitchWebsocketMessage } from '../types';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
+import type { EventFromSubscriptionType, EventSubResponse } from '../typings/twitchEvents';
 
 function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
   return (
@@ -25,12 +17,11 @@ function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
     typeof payload.subscription.type === 'string'
   );
 }
-
 export async function websocketEventHandler(data: TwitchWebsocketMessage) {
   if (isSubscriptionEvent(data.payload)) {
     switch (data.payload.subscription.type) {
       case 'stream.online': {
-        const event = data.payload.event as StreamOnlineNotificationEvent;
+        const event = data.payload.event as EventFromSubscriptionType<'stream.online'>;
         if (event.started_at) {
           await updateStreamStartedAt(event.started_at);
         }
@@ -44,7 +35,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.subscription.gift': {
-        const event = data.payload.event as ChannelSubscriptionGiftEvent;
+        const event = data.payload.event as EventFromSubscriptionType<'channel.subscription.gift'>;
         const connection = getConnection();
         if (connection) {
           sendChatMessage(connection, `Thank you for gifting a sub ${event.user_login}, you're so generous, you're like a generous god.`);
@@ -53,7 +44,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.subscribe': {
-        const event = data.payload.event as ChannelSubscriptionEvent;
+        const event = data.payload.event as EventFromSubscriptionType<'channel.subscribe'>;
         const connection = getConnection();
         if (connection) {
           if (!event.is_gift) {
@@ -64,7 +55,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.raid': {
-        const event = data.payload.event as RaidNotificationEvent;
+        const event = data.payload.event as EventFromSubscriptionType<'channel.raid'>;
         const connection = getConnection();
         if (connection) {
           sendChatMessage(connection, `Thank you for the raid ${event.from_broadcaster_user_name}, I think you are very sexy.`);
@@ -73,7 +64,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.follow': {
-        const event = data.payload.event as FollowNotificationEvent;
+        const event = data.payload.event as EventFromSubscriptionType<'channel.follow'>;
         const connection = getConnection();
         if (connection) {
           sendChatMessage(connection, `Thank you for following ${event.user_name}, I love you`);
@@ -82,7 +73,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
       }
 
       case 'channel.channel_points_custom_reward_redemption.add': {
-        const event = data.payload.event as ChannelPointRedeemNotificatonEvent;
+        const event = data.payload.event as EventFromSubscriptionType<'channel.channel_points_custom_reward_redemption.add'>;
         const reward = Object.values(REWARDS).find((value) => value === event.reward.id);
         switch (reward) {
           case REWARDS.pushup:

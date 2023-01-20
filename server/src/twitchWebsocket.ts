@@ -51,7 +51,7 @@ export function runTwitchWebsocket() {
             break;
 
           case 'notification':
-            websocketEventHandler(data);
+            websocketEventHandler(data).catch((e) => console.error(e));
 
             break;
 
