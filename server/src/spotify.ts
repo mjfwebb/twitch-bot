@@ -1,3 +1,4 @@
+import type { RequestInit } from 'node-fetch';
 import fetch from 'node-fetch';
 import assert from 'assert';
 import { StatusCodes } from 'http-status-codes';
@@ -10,22 +11,52 @@ import { SPOTIFY_AUTH_URL } from './constants';
 
 export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_token');
 
+// To support checking the response (which requires using result.json())
+// we pass back the parsed data response, instead of the whole Reponse.
+// This seems reasonable since all interactions with the API always want
+// the JSON data anyway.
+export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
+  if (attemptNumber > 1) {
+    throw new Error(`Failed to perform fetch ${attemptNumber} times to Spotify API`);
+  }
+  const result = await fetch(url, init);
+
+  if (result.status === StatusCodes.NO_CONTENT) {
+    return;
+  }
+
+  const data: unknown = await result.json();
+  const shouldRetry = checkResponseForErrors(data);
+  if (shouldRetry) {
+    return fetchWithRetry(url, init, attemptNumber + 1);
+  } else {
+    return data;
+  }
+};
+
 export const checkResponseForErrors = (data: unknown): boolean => {
-  if (hasOwnProperty(data, 'status')) {
-    assert(typeof data.status === 'number', 'status in data response is not a number');
-    if (data.status === StatusCodes.BAD_REQUEST) {
+  if (hasOwnProperty(data, 'error') && hasOwnProperty(data.error, 'status')) {
+    assert(typeof data.error.status === 'number', 'status in data response is not a number');
+    if (data.error.status === StatusCodes.BAD_REQUEST) {
       assert(hasOwnProperty(data, 'message'), 'message not found in data response');
       assert(typeof data.message === 'string', 'message in data response is not a number');
       throw new Error(`Bad request: ${data.message}`);
     }
 
-    if (data.status === StatusCodes.UNAUTHORIZED) {
+    if (data.error.status === StatusCodes.UNAUTHORIZED) {
       // NOTE: Access token may have expired. Try to refresh.
       refreshAccessToken(Config.spotify).catch((e) => console.error(e));
       return true;
     }
   }
   return false;
+};
+
+const parseNewAccessToken = (data: unknown): string => {
+  assert(hasOwnProperty(data, 'access_token'), 'access_token not found in data response');
+  assert(typeof data.access_token === 'string', 'access_token in data response is not a string');
+  setTokenInFile('spotify_access_token', data.access_token);
+  return data.access_token;
 };
 
 const parseNewTokens = (data: unknown): string => {
@@ -56,7 +87,7 @@ const refreshAccessToken = async (spotifyConfig: SpotifyConfig): Promise<string>
     });
     const data: unknown = await result.json();
     checkResponseForErrors(data);
-    return parseNewTokens(data);
+    return parseNewAccessToken(data);
   } catch (error) {
     throw new Error(`Unable to use Refresh Token to obtain new Access Token from Spotify. Error: ${errorMessage(error)}`);
   }

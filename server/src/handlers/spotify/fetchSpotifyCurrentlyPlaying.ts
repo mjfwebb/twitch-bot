@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import Config from '../../config';
 import { getIO } from '../../runSocketServer';
-import { getCurrentAccessToken } from '../../spotify';
+import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 
 type SpotifySong = {
@@ -95,14 +95,13 @@ export const fetchSpotifyCurrentlyPlaying = async (): Promise<SpotifySong | null
     try {
       const url = `https://api.spotify.com/v1/me/player/currently-playing`;
 
-      const response = await fetch(url, {
+      const result = await fetchWithRetry(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
-      const result: unknown = await response.json();
       if (
         hasOwnProperty(result, 'item') &&
         hasOwnProperty(result.item, 'name') &&
