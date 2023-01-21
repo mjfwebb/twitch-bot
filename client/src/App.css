@@ -10,10 +10,8 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  border-radius: 0.5rem;
   background-size: 200% auto;
   animation: text-shine 60s linear infinite;
-  padding-bottom: 1rem;
 }
 
 
@@ -25,7 +23,6 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  border-radius: 0.5rem;
   background-size: 200% auto;
   animation: text-shine 60s linear infinite;
 }
@@ -36,5 +33,9 @@
   top: 1rem;
   left: 1rem;
   text-align: left;
+}
+
+.current-data-wrapper > div {
+  padding: 1rem;
 }
 
