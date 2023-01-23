@@ -43,9 +43,11 @@ import {
   play,
   command,
   commands,
+  followage,
 } from './commands';
 
 export const botCommands: BotCommand[] = [
+  followage,
   viewers,
   whoami,
   issue,

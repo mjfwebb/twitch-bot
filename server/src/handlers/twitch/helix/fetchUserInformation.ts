@@ -19,10 +19,26 @@ type UserInformation = {
   created_at: string;
 };
 
-export const fetchUserInformation = async (userId: string): Promise<UserInformation | null> => {
+export const fetchUserInformationById = async (userId: string): Promise<UserInformation | null> => {
+  if (!userId) {
+    return null;
+  }
+
+  return await fetchUserInformation(`id=${userId}`);
+};
+
+export const fetchUserInformationByName = async (loginName: string): Promise<UserInformation | null> => {
+  if (!loginName) {
+    return null;
+  }
+
+  return await fetchUserInformation(`login=${loginName}`);
+};
+
+const fetchUserInformation = async (queryParams: string): Promise<UserInformation | null> => {
   if (Config.twitch) {
     try {
-      const url = `${TWITCH_HELIX_URL}users?id=${userId}`;
+      const url = `${TWITCH_HELIX_URL}users?${queryParams}`;
       const accessToken = getCurrentAccessToken();
 
       const response = await fetch(url, {

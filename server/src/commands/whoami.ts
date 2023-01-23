@@ -1,5 +1,5 @@
 import { SECOND_MS } from '../constants';
-import { fetchUserInformation } from '../handlers/twitch/helix/fetchUserInformation';
+import { fetchUserInformationById } from '../handlers/twitch/helix/fetchUserInformation';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import type { BotCommand } from '../types';
 
@@ -10,7 +10,7 @@ export const whoami: BotCommand = {
   callback: async (connection, parsedMessage) => {
     const userId = parsedMessage.tags?.['user-id'];
     if (userId) {
-      const userInformation = await fetchUserInformation(userId);
+      const userInformation = await fetchUserInformationById(userId);
       if (userInformation) {
         sendChatMessage(
           connection,

@@ -42,8 +42,10 @@ import { flappieh } from './flappieh';
 import { play } from './play';
 import { command } from './command';
 import { commands } from './commands';
+import { followage } from './followage';
 
 export {
+  followage,
   command,
   commands,
   play,

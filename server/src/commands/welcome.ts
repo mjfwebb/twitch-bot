@@ -1,5 +1,5 @@
 import type { BotCommand } from '../types';
-import { findOrCreateUser } from './helpers/findOrCreateUser';
+import { findOrCreateUserById } from './helpers/findOrCreateUser';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
 
@@ -12,7 +12,7 @@ export const welcome: BotCommand = {
       const userId = parsedMessage.tags?.['user-id'];
       const welcomeMessage = parsedMessage.command?.botCommandParams;
       if (userId && welcomeMessage && !welcomeMessage.startsWith('!') && !welcomeMessage.startsWith('/')) {
-        const user = await findOrCreateUser(userId);
+        const user = await findOrCreateUserById(userId);
         user.welcomeMessage = welcomeMessage;
         await user.save();
         sendChatMessage(connection, `Welcome message updated 🎉`);

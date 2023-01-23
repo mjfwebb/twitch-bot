@@ -4,6 +4,7 @@ import { model, Schema } from 'mongoose';
 const UserSchema = new Schema<User>(
   {
     userId: { type: String, required: true },
+    displayName: { type: String, required: false },
     welcomeMessage: { type: String, required: false },
     points: { type: Number, required: true, default: 0 },
     experience: { type: Number, required: true, default: 0 },
@@ -16,6 +17,7 @@ const UserSchema = new Schema<User>(
 
 export interface User extends SchemaTimestampsConfig {
   userId: string;
+  displayName: string;
   welcomeMessage?: string;
   points: number;
   experience: number;

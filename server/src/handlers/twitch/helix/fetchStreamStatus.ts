@@ -2,11 +2,11 @@ import fetch from 'node-fetch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
-import type { StreamState } from '../../../streamState';
+import type { StreamStatus } from '../../../streamState';
 import { getCurrentAccessToken } from '../../../twitch';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
-export const fetchStreamStatus = async (): Promise<StreamState> => {
+export const fetchStreamStatus = async (): Promise<StreamStatus> => {
   if (Config.twitch) {
     try {
       const url = `${TWITCH_HELIX_URL}streams?user_login=${Config.twitch.account}`;

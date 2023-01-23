@@ -1,7 +1,7 @@
 import { getConnection } from './bot';
 import { SECOND_MS } from './constants';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
-import { getStreamState } from './streamState';
+import { getStreamStatus } from './streamState';
 import type { connection } from 'websocket';
 import { fetchSpotifyCurrentlyPlaying } from './handlers/spotify/fetchSpotifyCurrentlyPlaying';
 
@@ -40,7 +40,7 @@ export function runIntervalCommands() {
       return;
     }
 
-    const streamState = getStreamState();
+    const streamState = getStreamStatus();
     if (streamState === 'offline') {
       return;
     }
