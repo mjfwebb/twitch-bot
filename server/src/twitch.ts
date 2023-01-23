@@ -93,12 +93,6 @@ const refreshAccessToken = async (twitchConfig: TwitchConfig): Promise<string> =
   }
 };
 
-// TODO: can we make this nice and generic while also speicfying property names and types in the asserted Record?
-// const hasOwnPropertyOfType = <T, K extends string, U extends string | number>(data: T, property: K, type: U): data is T & Record<K, U> => {
-//   return hasOwnProperty(data, property) && typeof data[property] === type;
-//   // assert(, `${property} in data response is not of type ${type}`);
-// };
-
 const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
   try {
     const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${twitchConfig.client_secret}&code=${twitchConfig.auth_code}&grant_type=${twitchConfig.grant_type}&redirect_uri=${twitchConfig.redirect_uri}`;
