@@ -9,5 +9,5 @@ export const resetdrop: BotCommand = {
   callback: (connection) => {
     sendChatMessage(connection, '!resetdrop');
   },
-  cooldown: 10 * MINUTE_MS,
+  cooldown: 5 * MINUTE_MS,
 };
