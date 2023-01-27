@@ -11,7 +11,18 @@ export const commands: BotCommand = {
     sendChatMessage(
       connection,
       `Available commands are: ${getBotCommands()
-        .filter((bc) => bc.hidden !== true)
+        .filter((bc) => {
+          if (bc.mustBeUser) {
+            return false;
+          }
+          if (bc.hidden) {
+            return false;
+          }
+          if (bc.priviliged) {
+            return false;
+          }
+          return true;
+        })
         .sort((a, b) => {
           if (a.id < b.id) {
             return -1;
