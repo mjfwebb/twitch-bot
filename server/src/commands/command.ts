@@ -1,4 +1,4 @@
-import { botCommands } from '../botCommands';
+import { getBotCommands } from '../botCommands';
 import type { BotCommand } from '../types';
 import { endWithFullStop } from '../utils/endWithFullStop';
 import { msToTimeString } from '../utils/msToTimeString';
@@ -13,7 +13,7 @@ export const command: BotCommand = {
     const commandParam = parsedMessage.command?.botCommandParams;
 
     if (commandParam) {
-      const foundCommand = botCommands.find((command) => {
+      const foundCommand = getBotCommands().find((command) => {
         if (Array.isArray(command.command)) {
           return command.command.includes(commandParam);
         } else {

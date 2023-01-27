@@ -5,15 +5,17 @@ import { runTwitchWebsocket } from './twitchWebsocket';
 import { runBot } from './bot';
 import { runIntervalCommands } from './intervalCommands';
 import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
-import { getDisplayName, setDisplayName, setStreamStatus } from './streamState';
+import { setDisplayName, setStreamStatus } from './streamState';
 import { setupMongoose } from './setupMongoose';
 import { runSocketServer } from './runSocketServer';
 import { getSpotifyAccessToken } from './spotify';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
+import { loadBotCommands } from './botCommands';
 
 async function main() {
   try {
     await setupMongoose();
+    await loadBotCommands();
 
     await getTwitchAccessToken(Config.twitch);
     await getSpotifyAccessToken();

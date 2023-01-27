@@ -1,10 +1,10 @@
 import { getConnection } from '../bot';
 import { REWARDS } from '../constants';
-import { botCommands } from '../botCommands';
+import { getBotCommands } from '../botCommands';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
 import { playSound } from '../playSound';
-import { setStreamState } from '../streamState';
+import { setStreamStatus } from '../streamState';
 import type { TwitchWebsocketMessage } from '../types';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 import type { EventFromSubscriptionType, EventSubResponse } from '../typings/twitchEvents';
@@ -25,12 +25,12 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
         if (event.started_at) {
           await updateStreamStartedAt(event.started_at);
         }
-        setStreamState('online');
+        setStreamStatus('online');
         break;
       }
 
       case 'stream.offline': {
-        setStreamState('offline');
+        setStreamStatus('offline');
         break;
       }
 
@@ -88,7 +88,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
             break;
           case REWARDS.pushupAddOne:
             {
-              const addPushupCommand = botCommands.find((command) => command.command === 'addpushup');
+              const addPushupCommand = getBotCommands().find((command) => command.command === 'addpushup');
               const connection = getConnection();
               if (addPushupCommand && connection) {
                 await playSound('redeem');
@@ -103,7 +103,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
             break;
           case REWARDS.squatAddOne:
             {
-              const addSquatCommand = botCommands.find((command) => command.command === 'addsquat');
+              const addSquatCommand = getBotCommands().find((command) => command.command === 'addsquat');
               const connection = getConnection();
               if (addSquatCommand && connection) {
                 await playSound('redeem');

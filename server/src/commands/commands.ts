@@ -1,4 +1,4 @@
-import { botCommands } from '../botCommands';
+import { getBotCommands } from '../botCommands';
 import type { BotCommand } from '../types';
 import { sendChatMessage } from './helpers/sendChatMessage';
 
@@ -10,7 +10,7 @@ export const commands: BotCommand = {
   callback: (connection) =>
     sendChatMessage(
       connection,
-      `Available commands are: ${botCommands
+      `Available commands are: ${getBotCommands()
         .filter((bc) => bc.hidden !== true)
         .map((bc) => bc.id)
         .join(', ')}`,

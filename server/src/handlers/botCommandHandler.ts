@@ -3,17 +3,16 @@ import type websocket from 'websocket';
 import { isPrivileged } from '../commands/helpers/isPrivileged';
 import { isUser } from '../commands/helpers/isUser';
 import type { BotCommandCooldown, ParsedMessage } from '../types';
-import { botCommands } from '../botCommands';
+import { getBotCommands } from '../botCommands';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import CommandModel from '../models/command-model';
-import { findOrCreateCommand } from '../commands/helpers/findOrCreateCommand';
 
 const cooldowns: BotCommandCooldown[] = [];
 const messageQueue: ParsedMessage[] = [];
 let workingQueue = false;
 
 function findCommand(parsedMessage: ParsedMessage) {
-  return botCommands.find((bc) => {
+  return getBotCommands().find((bc) => {
     if (parsedMessage.command && parsedMessage.command.botCommand) {
       if (Array.isArray(bc.command)) {
         return bc.command.includes(parsedMessage.command.botCommand);
