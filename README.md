@@ -55,37 +55,47 @@ Required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `m
 
 Create a `tokens.json` file using the example file `example.tokens.json` as a basis. All fields are required.
 
-#### discordWebhookConfig.json
-
-Create a `discordWebhookConfig.json` file using the example file `example.discordWebhookConfig.json` as a basis. All fields are required.
 #### mongoDBConfig.json
 
 If you don't want to use a Discord Webhook then you will need to edit the call to `discordChatWebhook`.
 
 Create a `mongoDBConfig.json` file using the example file `example.mongoDBConfig.json` as a basis. All fields are required.
 
+#### discordWebhookConfig.json(Optional)
+
+Create a `discordWebhookConfig.json` file using the example file `example.discordWebhookConfig.json` as a basis. All fields are required.
+
 #### spotifyConfig.json (Optional)
 
 Create a `spotifyConfig.json` file using the example file `example.spotifyConfig.json` as a basis. All fields are required.
 
-Where to get the auth_code
-
-```
-https://accounts.spotify.com/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=user-read-currently-playing
-```
-
-Required scope is `user-read-currently-playing`
-
-
 ##### **Where to get Spotify oauth_token**
 
 You can use https://developer.spotify.com/console/get-users-currently-playing-track/ to obtain the `oauth_token`
+
+Required scope is `user-read-currently-playing`
+
+#### githubConfig.json (Optional)
+
+Create a `githubConfig.json` file using the example file `example.githubConfig.json` as a basis. All fields are required.
+
+##### **Where to get GitHub access_token**
+
+You can use https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
+
+Current commands require that you create a personal access token with the scopes limited to issues. If you want to add new features for more in-depth API interactions then adjust the scopes accordingly
 
 ### Set up your commands
 
 Open `server\src\handlers\botCommands.ts` and change the commands to fit your needs. There are several examples of different commands here.
 
 Open `server\src\constants.ts` and change the values in the constants to fir your needs.
+
+Alternatively use the `!addcommand` bot command when the server is running to create commands through the Bot itself. The functionality of commands created with `!addcommand` are limited in comparison to the hard-coded commands.
+
+To update descriptions use `!setdescription <commandId> this is my description`. Where `<commandId>` is replaced with the command ID in question. For example: `!setdescription test This is a test command!`
+
+To update cooldowns use `!setcooldown <commandId> 1000`. Where `<commandId>` is replaced with the command ID in question, and the amount is in milliseconds. For example: `!setcooldown test 10000` would set a 10 second cooldown to the command "test".
 
 ### Start the server
 
