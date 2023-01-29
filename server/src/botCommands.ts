@@ -1,7 +1,5 @@
 import type { BotCommand } from './types';
 import {
-  setcooldown,
-  setalias,
   addcommand,
   addpushup,
   addsquat,
@@ -19,7 +17,9 @@ import {
   party,
   play,
   roll,
+  setalias,
   setcategory,
+  setcooldown,
   setdescription,
   settags,
   settask,
@@ -53,8 +53,6 @@ export function getBotCommands() {
 }
 
 const complexBotCommands: BotCommand[] = [
-  setcooldown,
-  setalias,
   addcommand,
   addpushup,
   addsquat,
@@ -72,7 +70,9 @@ const complexBotCommands: BotCommand[] = [
   party,
   play,
   roll,
+  setalias,
   setcategory,
+  setcooldown,
   setdescription,
   settags,
   settask,
