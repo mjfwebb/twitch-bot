@@ -6,12 +6,12 @@ import { isError } from './utils/isError';
 
 config({ path: `./.env.${process.env.NODE_ENV || ''}` });
 
-export interface Webhook {
+export type WebhookConfig = {
   service: string;
   id: string;
   token: string;
   url: string;
-}
+} | null;
 
 export interface TwitchConfig {
   broadcaster_id: string;
@@ -46,7 +46,7 @@ export type GitHubConfig = {
 interface IConfig {
   environment: 'development' | 'production';
   twitch: TwitchConfig;
-  webhooks: Record<string, Webhook>;
+  webhooks: Record<string, WebhookConfig>;
   mongoDB: MongoDBConfig;
   spotify: SpotifyConfig;
   github: GitHubConfig;
@@ -134,14 +134,14 @@ function readMongoDBConfig(): MongoDBConfig {
   throw new Error('Failed to read mongoDB config');
 }
 
-function assertWebhookConfig(config: unknown): asserts config is Webhook {
+function assertWebhookConfig(config: unknown): asserts config is WebhookConfig {
   assert(Object.prototype.hasOwnProperty.call(config, 'service'), 'Missing Webhook config: service');
   assert(Object.prototype.hasOwnProperty.call(config, 'id'), 'Missing Webhook config: id');
   assert(Object.prototype.hasOwnProperty.call(config, 'token'), 'Missing Webhook config: token');
   assert(Object.prototype.hasOwnProperty.call(config, 'url'), 'Missing Webhook config: url');
 }
 
-function readDiscordWebhookConfig(): Webhook {
+function readDiscordWebhookConfig(): WebhookConfig {
   try {
     const discordWebhookConfig: unknown = JSON.parse(readFileSync('./discordWebhookConfig.json', 'utf8'));
     assertWebhookConfig(discordWebhookConfig);
@@ -151,7 +151,7 @@ function readDiscordWebhookConfig(): Webhook {
       console.log(`Error when loading Discord Webhook config: ${error.message}`);
     }
   }
-  throw new Error('Failed to read Discord Webhook config');
+  return null;
 }
 
 const Config: IConfig = {
