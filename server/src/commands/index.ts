@@ -15,6 +15,7 @@ import { lurk } from './lurk';
 import { lutf1sk } from './lutf1sk';
 import { party } from './party';
 import { play } from './play';
+import { randomissue } from './randomissue';
 import { roll } from './roll';
 import { setalias } from './setalias';
 import { setcategory } from './setcategory';
@@ -52,6 +53,7 @@ export {
   lutf1sk,
   party,
   play,
+  randomissue,
   roll,
   setalias,
   setcategory,

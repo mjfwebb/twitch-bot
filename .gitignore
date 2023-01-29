@@ -8,3 +8,4 @@ twitchConfig.json
 discordWebhookConfig.json
 mongoDBConfig.json
 spotifyConfig.json
+githubConfig.json

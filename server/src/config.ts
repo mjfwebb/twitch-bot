@@ -37,12 +37,19 @@ export type SpotifyConfig = {
   redirect_uri: string;
 } | null;
 
+export type GitHubConfig = {
+  owner: string;
+  repo: string;
+  access_token: string;
+} | null;
+
 interface IConfig {
   environment: 'development' | 'production';
   twitch: TwitchConfig;
   webhooks: Record<string, Webhook>;
   mongoDB: MongoDBConfig;
   spotify: SpotifyConfig;
+  github: GitHubConfig;
 }
 
 function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
@@ -79,12 +86,31 @@ function assertSpotifyConfig(config: unknown): asserts config is SpotifyConfig {
 
 function readSpotifyConfig(): SpotifyConfig {
   try {
-    const SpotifyConfg: unknown = JSON.parse(readFileSync('./SpotifyConfig.json', 'utf8'));
+    const SpotifyConfg: unknown = JSON.parse(readFileSync('./spotifyConfig.json', 'utf8'));
     assertSpotifyConfig(SpotifyConfg);
     return SpotifyConfg;
   } catch (error) {
     if (isError(error)) {
       console.log(`Error when loading Spotify config: ${error.message}`);
+    }
+  }
+  return null;
+}
+
+function assertGitHubConfig(config: unknown): asserts config is GitHubConfig {
+  assert(Object.prototype.hasOwnProperty.call(config, 'owner'), 'Missing GitHub config: owner');
+  assert(Object.prototype.hasOwnProperty.call(config, 'repo'), 'Missing GitHub config: repo');
+  assert(Object.prototype.hasOwnProperty.call(config, 'access_token'), 'Missing GitHub config: access_token');
+}
+
+function readGitHubConfig(): GitHubConfig {
+  try {
+    const GitHubConfg: unknown = JSON.parse(readFileSync('./githubConfig.json', 'utf8'));
+    assertGitHubConfig(GitHubConfg);
+    return GitHubConfg;
+  } catch (error) {
+    if (isError(error)) {
+      console.log(`Error when loading GitHub config: ${error.message}`);
     }
   }
   return null;
@@ -136,6 +162,7 @@ const Config: IConfig = {
   },
   mongoDB: readMongoDBConfig(),
   spotify: readSpotifyConfig(),
+  github: readGitHubConfig(),
 };
 
 export default Config;
