@@ -2,6 +2,7 @@
 node_modules
 
 sounds/*
+!sounds/silence.mp3
 tts/*
 tokens.json
 twitchConfig.json

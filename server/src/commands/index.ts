@@ -25,6 +25,7 @@ import { setdescription } from './setdescription';
 import { settags } from './settags';
 import { settask } from './settask';
 import { settitle } from './settitle';
+import { skiptts } from './skiptts';
 import { song } from './song';
 import { success } from './success';
 import { task } from './task';
@@ -64,6 +65,7 @@ export {
   settags,
   settask,
   settitle,
+  skiptts,
   song,
   success,
   task,

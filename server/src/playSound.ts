@@ -3,6 +3,7 @@ import type { SOUNDS } from './constants';
 import ffmpegPath from 'ffmpeg-static';
 import type { ExecException } from 'child_process';
 import { execFile } from 'child_process';
+import { skipCurrentCommand } from './handlers/botCommandHandler';
 
 type SoundEffect = typeof SOUNDS[number];
 
@@ -15,6 +16,17 @@ type Sound = {
 
 const soundQueue: Sound[] = [];
 let workingQueue = false;
+
+let playSoundTimeout: NodeJS.Timeout | undefined = undefined;
+let timeOutResolve: undefined | ((value: unknown) => void) = undefined;
+
+export const clearCurrentSound = () => {
+  if (timeOutResolve && playSoundTimeout) {
+    clearTimeout(playSoundTimeout);
+    timeOutResolve(null);
+    player().play('../sounds/silence.mp3');
+  }
+};
 
 function getDurationMilliseconds(stderr: string): number {
   const durationInSeconds = /Duration: (\d{2}:\d{2}:\d{2}\.\d{2})/g.exec(stderr);
@@ -59,11 +71,13 @@ async function workQueue() {
       }
     });
 
+    soundQueue.splice(0, 1);
+
     await new Promise(function (resolve) {
-      setTimeout(resolve, soundToPlay.duration);
+      timeOutResolve = resolve;
+      playSoundTimeout = setTimeout(resolve, soundToPlay.duration) as NodeJS.Timeout;
     });
 
-    soundQueue.splice(0, 1);
     workingQueue = false;
   }
 }
@@ -79,9 +93,10 @@ export async function playSound<T extends SoundEffect | string>(sound: T, fileTy
   const duration = await getDuration(file);
 
   if (duration === 0) {
-    console.log('duration');
     return;
   }
+
+  skipCurrentCommand();
 
   addSoundToQueue({
     file,

@@ -11,6 +11,11 @@ const cooldowns: BotCommandCooldown[] = [];
 const messageQueue: ParsedMessage[] = [];
 let workingQueue = false;
 
+export const skipCurrentCommand = () => {
+  messageQueue.splice(0, 1);
+  workingQueue = false;
+};
+
 function findCommand(parsedMessage: ParsedMessage) {
   return getBotCommands().find((bc) => {
     if (parsedMessage.command && parsedMessage.command.botCommand) {
