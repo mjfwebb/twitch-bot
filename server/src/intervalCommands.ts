@@ -29,7 +29,7 @@ export function runIntervalCommands() {
         sendChatMessage(connection, 'This twitch bot is opensource and the source code can be found at https://github.com/mjfwebb/twitch-bot/'),
       tickInterval: 60 * 15,
       currentTick: 0,
-      tickOffset: 30,
+      tickOffset: 120,
     },
     {
       callback: async () => {
