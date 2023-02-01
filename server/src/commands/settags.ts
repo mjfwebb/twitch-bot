@@ -1,3 +1,4 @@
+import { fetchChannelInformation } from '../handlers/twitch/helix/fetchChannelInformation';
 import { setStreamTags } from '../handlers/twitch/helix/setStreamTags';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
@@ -33,6 +34,11 @@ export const settags: BotCommand = {
 
       await setStreamTags(newTags);
       sendChatMessage(connection, `Tags updated to ${newTags.join(', ')} 🎉`);
+    } else {
+      const currentTags = (await fetchChannelInformation())?.tags;
+      if (currentTags) {
+        sendChatMessage(connection, `Current tags are: ${currentTags.join(', ')}`);
+      }
     }
   },
 };
