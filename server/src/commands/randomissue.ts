@@ -6,7 +6,6 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const randomissue: BotCommand = {
   command: 'randomissue',
   id: 'randomissue',
-  priviliged: true,
   cooldown: 3 * MINUTE_MS,
   description: 'Returns a random GitHub issue from the TwitchBot repository',
   callback: async (connection) => {
