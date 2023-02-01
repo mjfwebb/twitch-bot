@@ -20,7 +20,7 @@ export const settitle: BotCommand = {
     } else {
       const currentTitle = (await fetchChannelInformation())?.title;
       if (currentTitle) {
-        sendChatMessage(connection, `Current title is ${currentTitle}`);
+        sendChatMessage(connection, `Current title is: ${currentTitle}`);
       }
     }
   },
