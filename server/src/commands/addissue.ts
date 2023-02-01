@@ -21,7 +21,7 @@ export const addissue: BotCommand = {
         const newIssueDescription = newIssueParts[1];
         const createdIssue = await createIssue(newIssueTitle, newIssueDescription);
         if (createdIssue) {
-          sendChatMessage(connection, `Issue ${createdIssue.number} with the title "${createdIssue.title}" has been created.`);
+          sendChatMessage(connection, `Issue ${createdIssue.number} with the title "${createdIssue.title}" has been created: ${createdIssue.url}`);
         }
       }
     }
