@@ -8,7 +8,7 @@
   </a>
 </p>
 
-> Twitch Chat bot with custom commands, sounds, rewards and more!
+> Twitch Chat bot with custom commands, TTS, sounds, rewards, API integrations and more!
 
 ### ✨ [See it in action on Twitch](https://www.twitch.tv/athano)
 
@@ -22,24 +22,42 @@ We assume that users of this bot have some level of prior experience with progra
 
 This project was began with the example provided by Twitch at https://dev.twitch.tv/docs/irc/example-bot. Thanks for that, Twitch!
 
-## Install
+## 📦 Install
+
+Client:
+
+```sh
+cd client
+npm install
+```
+
+Server:
 
 ```sh
 cd server
 npm install
 ```
 
-## Usage
+## 🔨 Usage
 
 ### Create required JSON files
 
-**NOTE**: The resulting json files will contain sensitive information when filled in correctly. Do not share this information.
+**WARNING**: The resulting `.json` files will contain sensitive information when filled in correctly. Do not share this information.
+
+| Required file | Desired filename          | Example filename                  | Required fields |
+| ------------- | ------------------------- | --------------------------------- | --------------- |
+| required      | twitchConfig.json         | example.twitchConfig.json         | all             |
+| required      | tokens.json               | example.tokens.json               | all             |
+| required      | mongoDBConfig.json        | example.mongoDBConfig.json        | all             |
+| optional      | discordWebhookConfig.json | example.discordWebhookConfig.json | all             |
+| optional      | spotifyConfig.json        | example.spotifyConfig.json        | all             |
+| optional      | githubConfig.json         | example.githubConfig.json         | all             |
+
+### Where to get the data
+
+The listed scopes are relevant for the existing commands in the repository. If you would like to add new features with more in-depth API interactions then you should adjust the scopes accordingly.
 
 #### twitchConfig.json
-
-Create a `twitchConfig.json` file using the example file `example.twitchConfig.json` as a basis. All fields are required.
-
-##### **Where to get the auth_code**
 
 To get the auth_code construct your URL and enter it into the browser: 
 
@@ -47,43 +65,19 @@ To get the auth_code construct your URL and enter it into the browser:
 https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator%3Aread%3Achatters+channel%3Amanage%3Abroadcast
 ```
 
-Required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`
+The required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
 
-**NOTE**: If you have an existing `access_token` and `refresh_token` and change your scope, you should remove these from the `tokens.json` file (so they are then empty strings). Once you have your new access code the program will retrieve a new `access_token` and `refresh_token`.
+#### spotifyConfig.json
 
-#### tokens.json
+Visit https://developer.spotify.com/console/get-users-currently-playing-track/ to obtain the `oauth_token`.
 
-Create a `tokens.json` file using the example file `example.tokens.json` as a basis. All fields are required.
+The required scope is `user-read-currently-playing`.
 
-#### mongoDBConfig.json
+#### githubConfig.json
 
-If you don't want to use a Discord Webhook then you will need to edit the call to `discordChatWebhook`.
+Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
 
-Create a `mongoDBConfig.json` file using the example file `example.mongoDBConfig.json` as a basis. All fields are required.
-
-#### discordWebhookConfig.json(Optional)
-
-Create a `discordWebhookConfig.json` file using the example file `example.discordWebhookConfig.json` as a basis. All fields are required.
-
-#### spotifyConfig.json (Optional)
-
-Create a `spotifyConfig.json` file using the example file `example.spotifyConfig.json` as a basis. All fields are required.
-
-##### **Where to get Spotify oauth_token**
-
-You can use https://developer.spotify.com/console/get-users-currently-playing-track/ to obtain the `oauth_token`
-
-Required scope is `user-read-currently-playing`
-
-#### githubConfig.json (Optional)
-
-Create a `githubConfig.json` file using the example file `example.githubConfig.json` as a basis. All fields are required.
-
-##### **Where to get GitHub access_token**
-
-You can use https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
-
-Current commands require that you create a personal access token with the scopes limited to issues. If you want to add new features for more in-depth API interactions then adjust the scopes accordingly
+Ennsure that the personal access token includes the scope to access and modify issues.
 
 ### Set up your commands
 
@@ -97,22 +91,33 @@ To update descriptions use `!setdescription <commandId> this is my description`.
 
 To update cooldowns use `!setcooldown <commandId> 1000`. Where `<commandId>` is replaced with the command ID in question, and the amount is in milliseconds. For example: `!setcooldown test 10000` would set a 10 second cooldown to the command "test".
 
-### Start the server
+### Start the bot
+
+Client:
+
+```sh
+cd client
+npm start
+```
+
+Server:
 
 ```sh
 cd server
 npm start
 ```
 
-Watch the output for errors to troubleshoot issues.
+## 🕵️ Troubleshooting
 
-## Author
+Primarily, watch the console output for errors to troubleshoot issues.
 
-👤 **Michael Webb**
+For tokens that are saved in tokens.json (Twitch and Spotify), if you change your scope and there are already `access_token` and `refresh_token` present in the file, you should remove these token values. Once you have your new access code the program will retrieve a new `access_token` and `refresh_token`.
+
+## 🔗 Links
 
 * Twitch: [athano](https://twitch.tv/athano)
 * Twitter: [@athanoquest](https://twitter.com/athanoquest)
-* Game: [Between Worlds ](https://www.betweenworlds.net)
+* Game: [Between Worlds](https://www.betweenworlds.net)
 
 ## 🤝 Contributing
 
