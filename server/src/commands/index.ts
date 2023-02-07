@@ -18,6 +18,7 @@ import { lutf1sk } from './lutf1sk';
 import { party } from './party';
 import { play } from './play';
 import { randomissue } from './randomissue';
+import { removecommand } from './removecommand';
 import { roll } from './roll';
 import { setalias } from './setalias';
 import { setcategory } from './setcategory';
@@ -59,6 +60,7 @@ export {
   party,
   play,
   randomissue,
+  removecommand,
   roll,
   setalias,
   setcategory,
