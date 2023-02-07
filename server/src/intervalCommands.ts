@@ -20,14 +20,14 @@ export function runIntervalCommands() {
           connection,
           "Have you tried out Between Worlds? It's free to play in your browser right now, no sign up required! https://betweenworlds.net",
         ),
-      tickInterval: 60 * 15,
+      tickInterval: 60 * 20,
       currentTick: 0,
       tickOffset: 30,
     },
     {
       callback: (connection) =>
         sendChatMessage(connection, 'This twitch bot is opensource and the source code can be found at https://github.com/mjfwebb/twitch-bot/'),
-      tickInterval: 60 * 15,
+      tickInterval: 60 * 30,
       currentTick: 0,
       tickOffset: 120,
     },
