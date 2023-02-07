@@ -2,6 +2,7 @@ import type { BotCommand } from './types';
 import {
   addcommand,
   addissue,
+  addburpee,
   addpushup,
   addsquat,
   bot,
@@ -58,6 +59,7 @@ export function getBotCommands() {
 const complexBotCommands: BotCommand[] = [
   addcommand,
   addissue,
+  addburpee,
   addpushup,
   addsquat,
   bot,

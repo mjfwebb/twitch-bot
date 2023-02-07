@@ -1,5 +1,6 @@
 import { addcommand } from './addcommand';
 import { addissue } from './addissue';
+import { addburpee } from './addburpee';
 import { addpushup } from './addpushup';
 import { addsquat } from './addsquat';
 import { athanotime } from './athanotime';
@@ -40,6 +41,7 @@ import { whoami } from './whoami';
 export {
   addcommand,
   addissue,
+  addburpee,
   addpushup,
   addsquat,
   athanotime,

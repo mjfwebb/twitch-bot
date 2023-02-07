@@ -77,6 +77,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
         const reward = Object.values(REWARDS).find((value) => value === event.reward.id);
         switch (reward) {
           case REWARDS.pushup:
+          case REWARDS.burpee:
           case REWARDS.squat:
             await playSound('redeem');
             {
@@ -108,6 +109,21 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
               if (addSquatCommand && connection) {
                 await playSound('redeem');
                 await addSquatCommand.callback(connection, {
+                  tags: null,
+                  source: null,
+                  command: null,
+                  parameters: null,
+                });
+              }
+            }
+            break;
+          case REWARDS.burpeeAddOne:
+            {
+              const addBurpeeCommand = getBotCommands().find((command) => command.command === 'addburpee');
+              const connection = getConnection();
+              if (addBurpeeCommand && connection) {
+                await playSound('redeem');
+                await addBurpeeCommand.callback(connection, {
                   tags: null,
                   source: null,
                   command: null,
