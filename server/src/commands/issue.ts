@@ -4,7 +4,7 @@ import type { BotCommand } from '../types';
 export const issue: BotCommand = {
   command: 'issue',
   id: 'issue',
-  mustBeUser: 'athano',
+  mustBeUser: ['athano'],
   priviliged: true,
   hidden: true,
   callback: async () => {

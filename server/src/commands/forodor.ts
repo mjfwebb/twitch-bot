@@ -6,7 +6,7 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const forodor: BotCommand = {
   command: 'forodor',
   id: 'forodor',
-  mustBeUser: 'forodor',
+  mustBeUser: ['forodor'],
   cooldown: 5 * MINUTE_MS,
   description: 'This is basically graffiti',
   callback: (connection) => {

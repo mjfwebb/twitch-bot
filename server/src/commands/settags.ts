@@ -7,7 +7,7 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const settags: BotCommand = {
   command: ['settags', 'tags'],
   id: 'settags',
-  mustBeUser: 'athano',
+  mustBeUser: ['athano'],
   priviliged: true,
   hidden: true,
   callback: async (connection, parsedMessage) => {

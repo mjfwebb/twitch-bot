@@ -7,7 +7,7 @@ import type { BotCommand } from '../types';
 export const setcategory: BotCommand = {
   command: ['setcategory', 'category'],
   id: 'setcategory',
-  mustBeUser: 'athano',
+  mustBeUser: ['athano'],
   priviliged: true,
   hidden: true,
   callback: async (connection, parsedMessage) => {

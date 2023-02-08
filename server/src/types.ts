@@ -223,7 +223,7 @@ export type BotCommand = {
   command: string | string[];
   id: string;
   callback: BotCommandCallback;
-  mustBeUser?: string;
+  mustBeUser?: string[];
   priviliged?: boolean;
   cooldown?: number;
   hidden?: boolean;

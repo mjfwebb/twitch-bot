@@ -8,7 +8,7 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const settask: BotCommand = {
   command: 'settask',
   id: 'settask',
-  priviliged: true,
+  mustBeUser: ['athano', 'jumpylionnn'],
   description: 'Sets the current task',
   cooldown: 5 * SECOND_MS,
   callback: async (connection, parsedMessage) => {

@@ -7,7 +7,7 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const lutf1sk: BotCommand = {
   command: ['lutf1sk', 'lutfisk'],
   id: 'lutf1sk',
-  mustBeUser: 'lutf1sk',
+  mustBeUser: ['lutf1sk'],
   description: 'It allows lutf1sk to ban himself',
   callback: async (connection, parsedMessage) => {
     const userId = parsedMessage.tags?.['user-id'];

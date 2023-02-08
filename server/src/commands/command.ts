@@ -27,7 +27,7 @@ export const command: BotCommand = {
         const commandData = await findOrCreateCommand(foundCommand.id);
         const start = `You want to know about ${commandParam}? Here's what we know:`;
         const description = foundCommand.description ?? '';
-        const useBy = foundCommand.mustBeUser ? `It may only be used by ${foundCommand.mustBeUser}.` : '';
+        const useBy = foundCommand.mustBeUser ? `It may only be used by ${foundCommand.mustBeUser.join(',')}.` : '';
         const cooldown = foundCommand.cooldown ? `It may only be used once every ${msToTimeString(foundCommand.cooldown)}` : '';
         const aliases =
           Array.isArray(foundCommand.command) && foundCommand.command.length > 1

@@ -7,7 +7,7 @@ import { fetchChannelInformation } from '../handlers/twitch/helix/fetchChannelIn
 export const settitle: BotCommand = {
   command: ['settitle', 'title'],
   id: 'settitle',
-  mustBeUser: 'athano',
+  mustBeUser: ['athano'],
   priviliged: true,
   hidden: true,
   callback: async (connection, parsedMessage) => {
