@@ -32,14 +32,6 @@ async function handleCommand(connection: websocket.connection, parsedMessage: Pa
   const foundBotCommand = findCommand(parsedMessage);
 
   if (foundBotCommand) {
-    if (foundBotCommand.priviliged && !isPrivileged(parsedMessage)) {
-      return;
-    }
-
-    if (foundBotCommand.mustBeUser && !isUser(parsedMessage, foundBotCommand.mustBeUser)) {
-      return;
-    }
-
     const result = await foundBotCommand.callback(connection, parsedMessage);
     if (typeof result === 'boolean' && result === false) {
       sendChatMessage(connection, `That's not right. Use !help ${parsedMessage.command?.botCommand || ''} to get more information`);
@@ -82,9 +74,16 @@ export async function botCommandHandler(connection: websocket.connection, parsed
   }
 
   if (foundBotCommand) {
+    if (foundBotCommand.priviliged && !isPrivileged(parsedMessage)) {
+      return;
+    }
+
+    if (foundBotCommand.mustBeUser && !isUser(parsedMessage, foundBotCommand.mustBeUser)) {
+      return;
+    }
+
     addCooldown(foundBotCommand.id, foundBotCommand.cooldown);
     messageQueue.push(parsedMessage);
     await workQueue(connection);
-    return;
   }
 }
