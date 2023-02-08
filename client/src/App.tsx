@@ -1,4 +1,5 @@
 import './App.css';
+
 import useStore from './store/store';
 import useSocketContext from './hooks/useSocketContext';
 
@@ -9,9 +10,11 @@ function App() {
   const currentSong = useStore((s) => s.currentSong);
 
   return (
-    <div className="current-data-wrapper">
-      <div className="current-task">Task: {task}</div>
-      <div className="current-song">Current song: {currentSong?.item.name}</div>
+    <div className="screen">
+      <div className="current-data-wrapper">
+        <div className="current-task">Task: {task}</div>
+        <div className="current-song">Current song: {currentSong?.item.name}</div>
+      </div>
     </div>
   );
 }
