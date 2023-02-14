@@ -210,14 +210,16 @@ export type ParsedMessage = {
   parameters: string | null;
 };
 
+export type ParsedCommand = { commandName: string; botCommand: BotCommand; parsedMessage: ParsedMessage };
+
 export type BotCommandCooldown = {
   commandId: string;
   unusableUntil: number;
 };
 
 export type BotCommandCallback =
-  | ((connection: websocket.connection, parsedMessage: ParsedMessage) => void | false)
-  | ((connection: websocket.connection, parsedMessage: ParsedMessage) => Promise<void | false>);
+  | ((connection: websocket.connection, parsedCommand: ParsedCommand) => void | false)
+  | ((connection: websocket.connection, parsedCommand: ParsedCommand) => Promise<void | false>);
 
 export type BotCommand = {
   command: string | string[];

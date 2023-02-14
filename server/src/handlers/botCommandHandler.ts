@@ -2,51 +2,35 @@ import type websocket from 'websocket';
 
 import { isPrivileged } from '../commands/helpers/isPrivileged';
 import { isUser } from '../commands/helpers/isUser';
-import type { BotCommandCooldown, ParsedMessage } from '../types';
-import { getBotCommands } from '../botCommands';
+import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import CommandModel from '../models/command-model';
+import { findBotCommand } from '../commands/helpers/findBotCommand';
 
 const cooldowns: BotCommandCooldown[] = [];
-const messageQueue: ParsedMessage[] = [];
+const commandQueue: ParsedCommand[] = [];
 let workingQueue = false;
 
 export const skipCurrentCommand = () => {
-  messageQueue.splice(0, 1);
+  commandQueue.splice(0, 1);
   workingQueue = false;
 };
 
-function findCommand(parsedMessage: ParsedMessage) {
-  return getBotCommands().find((bc) => {
-    if (parsedMessage.command && parsedMessage.command.botCommand) {
-      if (Array.isArray(bc.command)) {
-        return bc.command.includes(parsedMessage.command.botCommand);
-      } else {
-        return bc.command === parsedMessage.command.botCommand;
-      }
-    }
-  });
-}
-
-async function handleCommand(connection: websocket.connection, parsedMessage: ParsedMessage) {
-  const foundBotCommand = findCommand(parsedMessage);
-
-  if (foundBotCommand) {
-    const result = await foundBotCommand.callback(connection, parsedMessage);
-    if (typeof result === 'boolean' && result === false) {
-      sendChatMessage(connection, `That's not right. Use !help ${parsedMessage.command?.botCommand || ''} to get more information`);
-    } else {
-      await CommandModel.updateOne({ commandId: foundBotCommand.id }, { $inc: { timesUsed: 1 } }, { upsert: true });
-    }
+async function handleCommand(connection: websocket.connection, queuedCommand: ParsedCommand) {
+  const result = await queuedCommand.botCommand.callback(connection, queuedCommand);
+  if (typeof result === 'boolean' && result === false) {
+    sendChatMessage(connection, `That's not right. Use !help ${queuedCommand.commandName} to get more information`);
+  } else {
+    await CommandModel.updateOne({ commandId: queuedCommand.botCommand.id }, { $inc: { timesUsed: 1 } }, { upsert: true });
   }
 }
 
 async function workQueue(connection: websocket.connection) {
-  while (messageQueue.length > 0 && workingQueue === false) {
+  while (commandQueue.length > 0 && workingQueue === false) {
     workingQueue = true;
-    const messageToWork = messageQueue[0];
+    const messageToWork = commandQueue[0];
     await handleCommand(connection, messageToWork);
-    messageQueue.splice(0, 1);
+    commandQueue.splice(0, 1);
     workingQueue = false;
   }
 }
@@ -65,25 +49,34 @@ function addCooldown(commandId: string, cooldownLength = 0) {
 }
 
 export async function botCommandHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
-  const foundBotCommand = findCommand(parsedMessage);
+  const commandName = parsedMessage.command?.botCommand;
+  if (!commandName) {
+    return;
+  }
 
-  const cooldown = cooldowns.find((cooldown) => cooldown.commandId === foundBotCommand?.id);
+  const botCommand = findBotCommand(commandName);
+  if (!botCommand) {
+    return;
+  }
 
+  const cooldown = cooldowns.find((cooldown) => cooldown.commandId === botCommand.id);
   if (cooldown && cooldown.unusableUntil > Date.now()) {
     return;
   }
 
-  if (foundBotCommand) {
-    if (foundBotCommand.priviliged && !isPrivileged(parsedMessage)) {
-      return;
-    }
-
-    if (foundBotCommand.mustBeUser && !isUser(parsedMessage, foundBotCommand.mustBeUser)) {
-      return;
-    }
-
-    addCooldown(foundBotCommand.id, foundBotCommand.cooldown);
-    messageQueue.push(parsedMessage);
-    await workQueue(connection);
+  if (botCommand.priviliged && !isPrivileged(parsedMessage)) {
+    return;
   }
+
+  if (botCommand.mustBeUser && !isUser(parsedMessage, botCommand.mustBeUser)) {
+    return;
+  }
+
+  addCooldown(botCommand.id, botCommand.cooldown);
+  commandQueue.push({
+    commandName,
+    botCommand,
+    parsedMessage,
+  });
+  await workQueue(connection);
 }
