@@ -1,5 +1,6 @@
 export function endWithFullStop(text: string) {
-  if (text.endsWith('.') || text.endsWith(':')) {
+  const punctuationMarks = ['.', ':', '?', '!'];
+  if (punctuationMarks.some((mark) => text.endsWith(mark))) {
     return text;
   }
   return `${text}.`;
