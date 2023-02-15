@@ -8,9 +8,9 @@ export const addissue: BotCommand = {
   id: 'addissue',
   priviliged: true,
   hidden: true,
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const newIssue = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const newIssue = parsedCommand.parsedMessage.command?.botCommandParams;
       if (newIssue) {
         const newIssueParts = newIssue.split('"').filter((x) => x.trim().length > 0);
         if (newIssueParts.length !== 2) {

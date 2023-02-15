@@ -10,9 +10,9 @@ export const removecommand: BotCommand = {
   priviliged: true,
   hidden: true,
   description: '',
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const commandId = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const commandId = parsedCommand.parsedMessage.command?.botCommandParams;
       if (commandId) {
         const newCommandParts = commandId.split(' ');
         if (newCommandParts.length > 1) {

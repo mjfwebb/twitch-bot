@@ -10,9 +10,9 @@ export const setcooldown: BotCommand = {
   priviliged: true,
   hidden: true,
   description: '',
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const newCommand = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const newCommand = parsedCommand.parsedMessage.command?.botCommandParams;
       if (newCommand) {
         const newCommandParts = newCommand.split(' ');
         if (newCommandParts.length > 1) {

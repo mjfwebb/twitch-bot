@@ -10,9 +10,9 @@ export const settags: BotCommand = {
   mustBeUser: ['athano'],
   priviliged: true,
   hidden: true,
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const botCommandParams = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const botCommandParams = parsedCommand.parsedMessage.command?.botCommandParams;
 
       if (!botCommandParams) {
         return;

@@ -22,9 +22,9 @@ export const followage: BotCommand = {
   command: 'followage',
   id: 'followage',
   cooldown: 0,
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const targetName = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const targetName = parsedCommand.parsedMessage.command?.botCommandParams;
       if (targetName) {
         const user = await findOrCreateUserByName(targetName);
         if (user && user.userId && user.displayName) {
@@ -34,8 +34,8 @@ export const followage: BotCommand = {
         }
       }
     } else {
-      const userId = parsedMessage.tags?.['user-id'];
-      const userName = parsedMessage.tags?.['display-name'];
+      const userId = parsedCommand.parsedMessage.tags?.['user-id'];
+      const userName = parsedCommand.parsedMessage.tags?.['display-name'];
       if (userId && userName) {
         await sendFollowage(connection, userId, userName);
       }

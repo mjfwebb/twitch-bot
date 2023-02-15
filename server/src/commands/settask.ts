@@ -11,9 +11,9 @@ export const settask: BotCommand = {
   mustBeUser: ['athano', 'jumpylionnn'],
   description: 'Sets the current task',
   cooldown: 5 * SECOND_MS,
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const taskText = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const taskText = parsedCommand.parsedMessage.command?.botCommandParams;
       const task = new TaskModel({
         text: taskText,
       });

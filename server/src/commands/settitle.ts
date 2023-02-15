@@ -10,9 +10,9 @@ export const settitle: BotCommand = {
   mustBeUser: ['athano'],
   priviliged: true,
   hidden: true,
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const newTitle = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const newTitle = parsedCommand.parsedMessage.command?.botCommandParams;
       if (newTitle) {
         await setStreamTitle(newTitle);
         sendChatMessage(connection, `Title updated to ${newTitle} 🎉`);

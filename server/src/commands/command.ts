@@ -9,8 +9,8 @@ export const command: BotCommand = {
   command: ['command', 'help'],
   id: 'command',
   description: 'Use this command to find out more about a command',
-  callback: async (connection, parsedMessage) => {
-    const commandParam = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    const commandParam = parsedCommand.parsedMessage.command?.botCommandParams;
 
     if (commandParam) {
       const foundCommand = getBotCommands().find((command) => {

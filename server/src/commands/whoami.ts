@@ -7,8 +7,8 @@ export const whoami: BotCommand = {
   command: 'whoami',
   id: 'whoami',
   cooldown: 5 * SECOND_MS,
-  callback: async (connection, parsedMessage) => {
-    const userId = parsedMessage.tags?.['user-id'];
+  callback: async (connection, parsedCommand) => {
+    const userId = parsedCommand.parsedMessage.tags?.['user-id'];
     if (userId) {
       const userInformation = await fetchUserInformationById(userId);
       if (userInformation) {

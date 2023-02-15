@@ -10,9 +10,9 @@ export const setcategory: BotCommand = {
   mustBeUser: ['athano'],
   priviliged: true,
   hidden: true,
-  callback: async (connection, parsedMessage) => {
-    if (hasBotCommandParams(parsedMessage)) {
-      const newCategory = parsedMessage.command?.botCommandParams;
+  callback: async (connection, parsedCommand) => {
+    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      const newCategory = parsedCommand.parsedMessage.command?.botCommandParams;
       if (newCategory) {
         const newCategoryId = await fetchGameByName(newCategory);
         if (newCategoryId) {

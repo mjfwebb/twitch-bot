@@ -5,5 +5,5 @@ export const l: BotCommand = {
   command: 'l',
   id: 'l',
   description: "It's a loss",
-  callback: (connection, parsedMessage) => sendChatMessage(connection, `Fat L ${parsedMessage.command?.botCommandParams || ''}`),
+  callback: (connection, parsedCommand) => sendChatMessage(connection, `Fat L ${parsedCommand.parsedMessage.command?.botCommandParams || ''}`),
 };
