@@ -5,9 +5,25 @@ import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
 import { playSound } from '../playSound';
 import { setStreamStatus } from '../streamState';
-import type { TwitchWebsocketMessage } from '../types';
+import type { ParsedCommand, TwitchWebsocketMessage } from '../types';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 import type { EventFromSubscriptionType, EventSubResponse } from '../typings/twitchEvents';
+
+const emptyParsedCommand: ParsedCommand = {
+  commandName: '',
+  botCommand: {
+    command: '',
+    id: '',
+    description: '',
+    callback: () => false,
+  },
+  parsedMessage: {
+    command: null,
+    parameters: null,
+    source: null,
+    tags: null,
+  },
+};
 
 function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
   return (
@@ -93,12 +109,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
               const connection = getConnection();
               if (addPushupCommand && connection) {
                 await playSound('redeem');
-                await addPushupCommand.callback(connection, {
-                  tags: null,
-                  source: null,
-                  command: null,
-                  parameters: null,
-                });
+                await addPushupCommand.callback(connection, emptyParsedCommand);
               }
             }
             break;
@@ -108,12 +119,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
               const connection = getConnection();
               if (addSquatCommand && connection) {
                 await playSound('redeem');
-                await addSquatCommand.callback(connection, {
-                  tags: null,
-                  source: null,
-                  command: null,
-                  parameters: null,
-                });
+                await addSquatCommand.callback(connection, emptyParsedCommand);
               }
             }
             break;
@@ -123,12 +129,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
               const connection = getConnection();
               if (addBurpeeCommand && connection) {
                 await playSound('redeem');
-                await addBurpeeCommand.callback(connection, {
-                  tags: null,
-                  source: null,
-                  command: null,
-                  parameters: null,
-                });
+                await addBurpeeCommand.callback(connection, emptyParsedCommand);
               }
             }
             break;
