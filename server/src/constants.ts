@@ -3,6 +3,7 @@ export const TWITCH_AUTH_URL = 'https://id.twitch.tv/oauth2/';
 export const SPOTIFY_API_URL = 'https://api.spotify.com/v1/';
 export const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/';
 export const TWITCH_WEBSOCKET_EVENTSUB_URL = 'wss://eventsub-beta.wss.twitch.tv/ws';
+export const TWITCH_INSIGHTS_URL = 'https://api.twitchinsights.net/v1/';
 
 export const SECOND_MS = 1000;
 export const MINUTE_MS = 60000;
@@ -83,5 +84,4 @@ export const BOTNAMES = [
   'blgdamjudge',
   '01ella',
   'streamfahrer',
-  // # "explodedsoda", not sure if this is a bot or not
 ];

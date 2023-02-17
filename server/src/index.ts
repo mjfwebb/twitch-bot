@@ -11,6 +11,7 @@ import { runSocketServer } from './runSocketServer';
 import { getSpotifyAccessToken } from './spotify';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
 import { loadBotCommands } from './botCommands';
+import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
 
 async function main() {
   try {
@@ -20,6 +21,7 @@ async function main() {
     await getTwitchAccessToken(Config.twitch);
     await getSpotifyAccessToken();
     await fetchCustomRewards();
+    await fetchKnownTwitchViewerBots();
     setStreamStatus(await fetchStreamStatus());
     setDisplayName((await fetchChannelInformation())?.broadcaster_name || Config.twitch.account);
 
