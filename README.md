@@ -77,13 +77,13 @@ The required scope is `user-read-currently-playing`.
 
 Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
 
-Ennsure that the personal access token includes the scope to access and modify issues.
+Ensure that the personal access token includes the scope to access and modify issues.
 
 ### Set up your commands
 
 Open `server\src\handlers\botCommands.ts` and change the commands to fit your needs. There are several examples of different commands here.
 
-Open `server\src\constants.ts` and change the values in the constants to fir your needs.
+Open `server\src\constants.ts` and change the values in the constants to fit your needs.
 
 Alternatively use the `!addcommand` bot command when the server is running to create commands through the Bot itself. The functionality of commands created with `!addcommand` are limited in comparison to the hard-coded commands.
 
