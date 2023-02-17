@@ -11,7 +11,7 @@ export const help: BotCommand = {
   description: 'Use this command to find out more about a command',
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
-      const commandToGetDetailsAbout = parsedCommand.parsedMessage.command?.botCommandParams;
+      const commandToGetDetailsAbout = parsedCommand.parsedMessage.command?.botCommandParams?.replace('!', '');
       if (!commandToGetDetailsAbout) {
         return;
       }
