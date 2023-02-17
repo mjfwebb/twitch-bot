@@ -2,8 +2,13 @@ import type { User } from '../../models/user-model';
 import UserModel from '../../models/user-model';
 import type { HydratedDocument } from 'mongoose';
 import { fetchUserInformationByName } from '../../handlers/twitch/helix/fetchUserInformation';
+import { getTwitchViewerBotNames } from '../../handlers/twitchinsights/twitchViewerBots';
 
 export async function findOrCreateUserByName(displayName: string): Promise<HydratedDocument<User> | null> {
+  if (getTwitchViewerBotNames().includes(displayName)) {
+    return null;
+  }
+
   const user = await UserModel.findOne({ displayName });
   if (user) {
     await user.save();
