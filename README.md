@@ -12,7 +12,7 @@
 
 ### ✨ [See it in action on Twitch](https://www.twitch.tv/athano)
 
-Welcome to our Twitch Bot! At the moment, only the server functionality is available. However, we are working on adding client functionality in the near future.
+Welcome to our Twitch Bot!
 
 Please note that this bot is designed to be used by streamers who will also be running the bot themselves. While it may be possible to adapt the bot to work in other channels, this is outside the scope of this project.
 
