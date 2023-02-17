@@ -5,8 +5,8 @@ import { generateCommandMessage } from './helpers/generateCommandMessage';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
 
-export const command: BotCommand = {
-  command: ['command', 'help'],
+export const help: BotCommand = {
+  command: ['help'],
   id: 'command',
   description: 'Use this command to find out more about a command',
   callback: async (connection, parsedCommand) => {

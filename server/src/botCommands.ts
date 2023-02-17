@@ -6,7 +6,7 @@ import { addpushup } from './commands/addpushup';
 import { addsquat } from './commands/addsquat';
 import { athanotime } from './commands/athanotime';
 import { bot } from './commands/bot';
-import { command } from './commands/command';
+import { help } from './commands/help';
 import { commands } from './commands/commands';
 import { delvoid } from './commands/delvoid';
 import { fail } from './commands/fail';
@@ -66,7 +66,7 @@ const complexBotCommands: BotCommand[] = [
   addpushup,
   addsquat,
   bot,
-  command,
+  help,
   commands,
   delvoid,
   fail,

@@ -5,7 +5,7 @@ import { addpushup } from './addpushup';
 import { addsquat } from './addsquat';
 import { athanotime } from './athanotime';
 import { bot } from './bot';
-import { command } from './command';
+import { command } from './help';
 import { commands } from './commands';
 import { delvoid } from './delvoid';
 import { fail } from './fail';
