@@ -112,8 +112,13 @@ async function loadMessageCommands(): Promise<BotCommand[]> {
       id: c.commandId,
       description: c.description || '',
       cooldown: c.cooldown || 0,
-      callback: (connection) => {
-        sendChatMessage(connection, c.message);
+      callback: async (connection) => {
+        const command = await CommandModel.findOne({ command: c.command });
+        if (!command) {
+          return;
+        }
+
+        sendChatMessage(connection, c.message.replace('%count%', String(command.timesUsed)));
       },
     }));
 
