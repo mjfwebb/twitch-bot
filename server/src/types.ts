@@ -30,6 +30,8 @@ export type Command = {
   botCommandParams?: string;
 };
 
+export type CommandWithBotCommandParams = Omit<Command, 'botCommand'> & { botCommandParams: string };
+
 export type Source = {
   nick: string | null;
   host: string | null;
@@ -207,6 +209,13 @@ export type ParsedMessage = {
   tags: Tags | null;
   source: Source | null;
   command: Command | null;
+  parameters: string | null;
+};
+
+export type ParsedMessageWithCommand = {
+  tags: Tags | null;
+  source: Source | null;
+  command: CommandWithBotCommandParams;
   parameters: string | null;
 };
 

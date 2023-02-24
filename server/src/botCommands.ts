@@ -44,6 +44,9 @@ import type { Command } from './models/command-model';
 import CommandModel from './models/command-model';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import type { HydratedDocument } from 'mongoose';
+import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
+import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
+import { mention } from './utils/mention';
 
 const botCommands: BotCommand[] = [];
 
@@ -112,13 +115,28 @@ async function loadMessageCommands(): Promise<BotCommand[]> {
       id: c.commandId,
       description: c.description || '',
       cooldown: c.cooldown || 0,
-      callback: async (connection) => {
+      callback: async (connection, parsedCommand) => {
         const command = await CommandModel.findOne({ command: c.command });
         if (!command) {
           return;
         }
 
-        sendChatMessage(connection, c.message.replace('%count%', String(command.timesUsed)));
+        let target = 'unknown';
+        if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+          const chatters = await fetchChatters();
+
+          const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
+          if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
+            target = mention(botCommandParam);
+          }
+        }
+
+        let user = 'unknown';
+        if (parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
+          user = parsedCommand.parsedMessage.tags['display-name'];
+        }
+
+        sendChatMessage(connection, c.message.replace('%user%', user).replace('%target%', target).replace('%count%', String(command.timesUsed)));
       },
     }));
 
