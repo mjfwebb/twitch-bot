@@ -85,7 +85,9 @@ Open `server\src\handlers\botCommands.ts` and change the commands to fit your ne
 
 Open `server\src\constants.ts` and change the values in the constants to fit your needs.
 
-Alternatively use the `!addcommand` bot command when the server is running to create commands through the Bot itself. The functionality of commands created with `!addcommand` are limited in comparison to the hard-coded commands.
+Alternatively use the `!addcommand` bot command when the server is running to create commands through the Bot itself. The functionality of commands created with `!addcommand` are limited in comparison to the hard-coded commands. For example: `!addcommand hello Hello everyone!` would add the command `!hello` which would send the message `Hello everyone!`.
+
+You can use `%count%` in the message text to display how many times that command has been used. For example: `!addcommand test This command has been tested %count% times`.
 
 To update descriptions use `!setdescription <commandId> this is my description`. Where `<commandId>` is replaced with the command ID in question. For example: `!setdescription test This is a test command!`
 
