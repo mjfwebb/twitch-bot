@@ -5,7 +5,7 @@ import TaskModel from './models/task-model';
 const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://127.0.0.1:5173',
+    origin: ['http://localhost:5173'],
   },
 });
 
