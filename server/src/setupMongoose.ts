@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 import Config from './config';
 
+/**
+ * Sets up the Mongoose connection to the MongoDB database.
+ * @returns A Promise that resolves once the connection is established.
+ */
 export const setupMongoose = async (): Promise<void> => {
   const mongoDBConfig = Config.mongoDB;
 

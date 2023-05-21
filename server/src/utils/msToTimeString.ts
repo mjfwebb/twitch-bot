@@ -1,5 +1,10 @@
 import { MINUTE_MS } from '../constants';
 
+/**
+ * Converts milliseconds to a human-readable time string representation.
+ * @param ms - The number of milliseconds.
+ * @returns A formatted string representing the time in the appropriate unit (ms, seconds, minutes, or hours).
+ */
 export function msToTimeString(ms: number): string {
   if (ms < 1000) {
     return `${ms} ms`;

@@ -3,6 +3,11 @@ import { hasOwnProperty } from './utils/hasOwnProperty';
 
 const tokensfileName = 'tokens.json';
 
+/**
+ * Sets a token in the tokens file by its name and value.
+ * @param tokenName - The name of the token to set.
+ * @param tokenValue - The value of the token to set.
+ */
 export const setTokenInFile = (tokenName: string, tokenValue: string) => {
   const file = readFileSync(tokensfileName);
   const currentTokenData: unknown = JSON.parse(file.toString());
@@ -16,6 +21,12 @@ export const setTokenInFile = (tokenName: string, tokenValue: string) => {
   }
 };
 
+/**
+ * Retrieves a token from the tokens file by its name.
+ * @param tokenName - The name of the token to retrieve.
+ * @returns The token value as a string.
+ * @throws Error if the token cannot be found in the file.
+ */
 export const getTokenFromFile = (tokenName: string): string => {
   const file = readFileSync(tokensfileName);
   const json: unknown = JSON.parse(file.toString());

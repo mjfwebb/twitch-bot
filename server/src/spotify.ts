@@ -1,20 +1,26 @@
-import type { RequestInit } from 'node-fetch';
-import fetch from 'node-fetch';
 import assert from 'assert';
 import { StatusCodes } from 'http-status-codes';
-import { hasOwnProperty } from './utils/hasOwnProperty';
-import { errorMessage } from './utils/errorMessage';
-import { getTokenFromFile, setTokenInFile } from './tokenManager';
+import type { RequestInit } from 'node-fetch';
+import fetch from 'node-fetch';
 import type { SpotifyConfig } from './config';
 import Config from './config';
 import { SPOTIFY_AUTH_URL } from './constants';
+import { getTokenFromFile, setTokenInFile } from './tokenManager';
+import { errorMessage } from './utils/errorMessage';
+import { hasOwnProperty } from './utils/hasOwnProperty';
 
 export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_token');
 
-// To support checking the response (which requires using result.json())
-// we pass back the parsed data response, instead of the whole Reponse.
-// This seems reasonable since all interactions with the API always want
-// the JSON data anyway.
+/**
+ * Performs a fetch request to the specified URL with optional request initialization parameters, with retry logic.
+ * @param url - The URL to fetch from.
+ * @param init - Optional request initialization parameters.
+ * @param attemptNumber - The number of attempts made (used for retry logic).
+ * @returns A Promise that resolves to the fetched data as an unknown type.
+ * @throws Error if the fetch operation fails after the maximum number of attempts.
+ * @remarks To support checking the response (which requires using result.json()) we pass back the parsed data response, instead of the whole Reponse.
+ * This seems reasonable since all interactions with the API always want the JSON data anyway.
+ */
 export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
   if (attemptNumber > 1) {
     throw new Error(`Failed to perform fetch ${attemptNumber} times to Spotify API`);
@@ -34,6 +40,13 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
   }
 };
 
+/**
+ * Checks the data response for any errors and performs necessary actions based on the error status.
+ * @param data - The data response object.
+ * @returns A boolean indicating whether an error was found.
+ * @throws Error with a specific message if a bad request error is encountered.
+ * @remarks If the error status is UNAUTHORIZED, it attempts to refresh the Access Token.
+ */
 export const checkResponseForErrors = (data: unknown): boolean => {
   if (hasOwnProperty(data, 'error') && hasOwnProperty(data.error, 'status')) {
     assert(typeof data.error.status === 'number', 'status in data response is not a number');
@@ -52,6 +65,13 @@ export const checkResponseForErrors = (data: unknown): boolean => {
   return false;
 };
 
+/**
+ * Parses the new access token from the data response and updates the corresponding token in the file.
+ * @param data - The data response object.
+ * @returns The access token as a string.
+ * @throws AssertionError if the access_token property is missing or not of the expected type.
+ */
+
 const parseNewAccessToken = (data: unknown): string => {
   assert(hasOwnProperty(data, 'access_token'), 'access_token not found in data response');
   assert(typeof data.access_token === 'string', 'access_token in data response is not a string');
@@ -59,6 +79,12 @@ const parseNewAccessToken = (data: unknown): string => {
   return data.access_token;
 };
 
+/**
+ * Parses the new tokens from the data response and updates the corresponding tokens in the file.
+ * @param data - The data response object.
+ * @returns The access token as a string.
+ * @throws AssertionError if any of the required token properties are missing or not of the expected type.
+ */
 const parseNewTokens = (data: unknown): string => {
   assert(hasOwnProperty(data, 'access_token'), 'access_token not found in data response');
   assert(hasOwnProperty(data, 'refresh_token'), 'refresh_token not found in data response');
@@ -69,6 +95,12 @@ const parseNewTokens = (data: unknown): string => {
   return data.access_token;
 };
 
+/**
+ * Refreshes the Access Token from Spotify using the provided configuration.
+ * @param spotifyConfig - The Spotify configuration object.
+ * @returns A Promise that resolves to the refreshed Access Token as a string.
+ * @throws Error if unable to refresh the Access Token from Spotify.
+ */
 const refreshAccessToken = async (spotifyConfig: SpotifyConfig): Promise<string> => {
   try {
     if (spotifyConfig === null) {
@@ -93,6 +125,12 @@ const refreshAccessToken = async (spotifyConfig: SpotifyConfig): Promise<string>
   }
 };
 
+/**
+ * Obtains a new Access Token from Spotify using the provided configuration.
+ * @param spotifyConfig - The Spotify configuration object.
+ * @returns A Promise that resolves to the new Access Token as a string.
+ * @throws Error if unable to obtain a new Access Token from Spotify.
+ */
 const getNewAccessToken = async (spotifyConfig: SpotifyConfig): Promise<string> => {
   try {
     if (spotifyConfig === null) {
@@ -115,6 +153,11 @@ const getNewAccessToken = async (spotifyConfig: SpotifyConfig): Promise<string> 
   }
 };
 
+/**
+ * Retrieves the Spotify access token.
+ * @returns A Promise that resolves to the Spotify access token as a string.
+ * @throws Error if unable to get the Spotify Access Token.
+ */
 export const getSpotifyAccessToken = async (): Promise<string> => {
   const accessToken = getTokenFromFile('spotify_access_token');
   if (accessToken) {

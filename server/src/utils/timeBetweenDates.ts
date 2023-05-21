@@ -1,3 +1,9 @@
+/**
+ * Calculates the difference between two dates in terms of years, months, days, hours, minutes, and seconds.
+ * @param date1 - The first date.
+ * @param date2 - The second date.
+ * @returns An object representing the difference between the dates in each unit.
+ */
 function dateDifference(date1: Date, date2: Date): { year: number; month: number; day: number; hour: number; minute: number; second: number } {
   const result = {
     year: date2.getFullYear() - date1.getFullYear(),
@@ -35,12 +41,25 @@ function dateDifference(date1: Date, date2: Date): { year: number; month: number
   return result;
 }
 
+/**
+ * Adds an "s" to the given string if the amount is greater than 1.
+ * @param str - The string to modify.
+ * @param amount - The amount to determine whether to add "s".
+ * @returns The modified string with "s" added if necessary.
+ */
 function addS(str: string, amount: number): string {
   if (amount === 1) {
     return str;
   }
   return `${str}s`;
 }
+
+/**
+ * Calculates the time difference between two dates and returns it as a string.
+ * @param pastDate - The past date.
+ * @param futureDate - The future date.
+ * @returns A formatted string representing the time difference between the dates.
+ */
 
 export function timeBetweenDates(pastDate: Date, futureDate: Date): string {
   const dateDifferences = dateDifference(pastDate, futureDate);

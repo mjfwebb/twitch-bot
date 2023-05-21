@@ -231,12 +231,12 @@ export type BotCommandCallback =
   | ((connection: websocket.connection, parsedCommand: ParsedCommand) => Promise<void | false>);
 
 export type BotCommand = {
-  command: string | string[];
-  id: string;
-  callback: BotCommandCallback;
-  mustBeUser?: string[];
-  priviliged?: boolean;
-  cooldown?: number;
-  hidden?: boolean;
-  description?: string;
+  command: string | string[]; // The command or an array of commands that trigger this command
+  id: string; // Unique identifier for the command
+  callback: BotCommandCallback; // The function to be executed when the command is triggered
+  mustBeUser?: string[]; // Optional: List of users who are allowed to execute this command
+  privileged?: boolean; // Optional: Indicates if the command requires special privileges
+  cooldown?: number; // Optional: Cooldown period in milliseconds between command uses
+  hidden?: boolean; // Optional: Indicates if the command should be hidden from users
+  description?: string; // Optional: Description of the command
 };

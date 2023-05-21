@@ -11,6 +11,11 @@ const io = new Server(httpServer, {
 
 export const getIO = () => io;
 
+/**
+ * Runs the socket server and listens for connections.
+ * Retrieves the latest task from the database and emits it to the connected socket.
+ * Listens on port 6969.
+ */
 export function runSocketServer() {
   io.on('connection', (socket) => {
     socket.on('getTask', async () => {
