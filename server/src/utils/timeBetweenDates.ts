@@ -24,9 +24,9 @@ function dateDifference(date1: Date, date2: Date): { year: number; month: number
     result.month--;
     // days = days left in date1's month,
     //   plus days that have passed in date2's month
-    const copy1 = new Date(date1.getTime());
-    copy1.setDate(32);
-    result.day = 32 - date1.getDate() - copy1.getDate() + date2.getDate();
+    const date1Copy = new Date(date1.getTime());
+    date1Copy.setDate(32);
+    result.day = 32 - date1.getDate() - date1Copy.getDate() + date2.getDate();
   }
   if (result.month < 0) {
     result.year--;
@@ -37,7 +37,6 @@ function dateDifference(date1: Date, date2: Date): { year: number; month: number
 
 function addS(str: string, amount: number): string {
   if (amount === 1) {
-    console.log(str, amount);
     return str;
   }
   return `${str}s`;
