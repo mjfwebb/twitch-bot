@@ -1,12 +1,12 @@
+import { createIssue } from '../handlers/github/createIssue';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
-import { createIssue } from '../handlers/github/createIssue';
 
 export const addissue: BotCommand = {
   command: 'addissue',
   id: 'addissue',
-  priviliged: true,
+  privileged: true,
   hidden: true,
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {

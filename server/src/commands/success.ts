@@ -6,7 +6,7 @@ export const success: BotCommand = {
   command: 'success',
   id: 'success',
   description: 'Used when something goes well',
-  priviliged: true,
+  privileged: true,
   callback: async () => {
     getIO().emit('confetti');
     await playSound('success');

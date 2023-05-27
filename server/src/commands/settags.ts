@@ -8,7 +8,7 @@ export const settags: BotCommand = {
   command: ['settags', 'tags'],
   id: 'settags',
   mustBeUser: ['athano'],
-  priviliged: true,
+  privileged: true,
   hidden: true,
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {

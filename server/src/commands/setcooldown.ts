@@ -1,13 +1,13 @@
+import { loadBotCommands } from '../botCommands';
+import CommandModel from '../models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
-import { loadBotCommands } from '../botCommands';
-import CommandModel from '../models/command-model';
 
 export const setcooldown: BotCommand = {
   command: 'setcooldown',
   id: 'setcooldown',
-  priviliged: true,
+  privileged: true,
   hidden: true,
   description: '',
   callback: async (connection, parsedCommand) => {

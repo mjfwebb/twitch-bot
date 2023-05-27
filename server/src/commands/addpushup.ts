@@ -7,7 +7,7 @@ export const addpushup: BotCommand = {
   command: 'addpushup',
   id: 'addpushup',
   hidden: true,
-  priviliged: true,
+  privileged: true,
   callback: async (connection) => {
     const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.pushup);
     const amount = customReward?.title.split(' ')[0];

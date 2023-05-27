@@ -4,7 +4,7 @@ import type { BotCommand } from '../types';
 export const skiptts: BotCommand = {
   command: 'skiptts',
   id: 'skiptts',
-  priviliged: true,
+  privileged: true,
   hidden: true,
   callback: () => {
     clearCurrentSound();

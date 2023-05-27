@@ -1,13 +1,13 @@
+import { loadBotCommands } from '../botCommands';
 import type { BotCommand } from '../types';
+import { findOrCreateCommand } from './helpers/findOrCreateCommand';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
-import { findOrCreateCommand } from './helpers/findOrCreateCommand';
-import { loadBotCommands } from '../botCommands';
 
 export const addcommand: BotCommand = {
   command: 'addcommand',
   id: 'addcommand',
-  priviliged: true,
+  privileged: true,
   hidden: true,
   description: '',
   callback: async (connection, parsedCommand) => {

@@ -7,7 +7,7 @@ export const addsquat: BotCommand = {
   command: 'addsquat',
   id: 'addsquat',
   hidden: true,
-  priviliged: true,
+  privileged: true,
   callback: async (connection) => {
     const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.squat);
     const amount = customReward?.title.split(' ')[0];

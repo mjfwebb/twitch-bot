@@ -1,14 +1,14 @@
-import { hasBotCommandParams } from './helpers/hasBotCommandParams';
-import type { BotCommand } from '../types';
-import { setStreamTitle } from '../handlers/twitch/helix/setStreamTitle';
-import { sendChatMessage } from './helpers/sendChatMessage';
 import { fetchChannelInformation } from '../handlers/twitch/helix/fetchChannelInformation';
+import { setStreamTitle } from '../handlers/twitch/helix/setStreamTitle';
+import type { BotCommand } from '../types';
+import { hasBotCommandParams } from './helpers/hasBotCommandParams';
+import { sendChatMessage } from './helpers/sendChatMessage';
 
 export const settitle: BotCommand = {
   command: ['settitle', 'title'],
   id: 'settitle',
   mustBeUser: ['athano'],
-  priviliged: true,
+  privileged: true,
   hidden: true,
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {

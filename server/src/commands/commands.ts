@@ -18,7 +18,7 @@ export const commands: BotCommand = {
           if (bc.hidden) {
             return false;
           }
-          if (bc.priviliged) {
+          if (bc.privileged) {
             return false;
           }
           return true;

@@ -7,7 +7,7 @@ export const addburpee: BotCommand = {
   command: 'addburpee',
   id: 'addburpee',
   hidden: true,
-  priviliged: true,
+  privileged: true,
   callback: async (connection) => {
     const customReward = getCustomRewards().find((customReward) => customReward.id === REWARDS.burpee);
     const amount = customReward?.title.split(' ')[0];

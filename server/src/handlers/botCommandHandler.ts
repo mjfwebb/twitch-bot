@@ -1,11 +1,11 @@
 import type websocket from 'websocket';
 
+import { findBotCommand } from '../commands/helpers/findBotCommand';
 import { isPrivileged } from '../commands/helpers/isPrivileged';
 import { isUser } from '../commands/helpers/isUser';
-import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import CommandModel from '../models/command-model';
-import { findBotCommand } from '../commands/helpers/findBotCommand';
+import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
 
 const cooldowns: BotCommandCooldown[] = [];
 const commandQueue: ParsedCommand[] = [];
@@ -64,7 +64,7 @@ export async function botCommandHandler(connection: websocket.connection, parsed
     return;
   }
 
-  if (botCommand.priviliged && !isPrivileged(parsedMessage)) {
+  if (botCommand.privileged && !isPrivileged(parsedMessage)) {
     return;
   }
 

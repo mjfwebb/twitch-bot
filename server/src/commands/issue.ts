@@ -5,7 +5,7 @@ export const issue: BotCommand = {
   command: 'issue',
   id: 'issue',
   mustBeUser: ['athano'],
-  priviliged: true,
+  privileged: true,
   hidden: true,
   callback: async () => {
     await open('https://github.com/mjfwebb/twitch-bot/issues/new');
