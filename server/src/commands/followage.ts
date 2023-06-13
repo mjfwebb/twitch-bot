@@ -1,11 +1,11 @@
-import { fetchUserFollow } from '../handlers/twitch/helix/fetchUserFollow';
-import type { BotCommand } from '../types';
-import { sendChatMessage } from './helpers/sendChatMessage';
-import { timeBetweenDates } from '../utils/timeBetweenDates';
-import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import type { connection } from 'websocket';
-import { findOrCreateUserByName } from './helpers/findOrCreateUser';
+import { fetchUserFollow } from '../handlers/twitch/helix/fetchUserFollow';
 import { getDisplayName } from '../streamState';
+import type { BotCommand } from '../types';
+import { timeBetweenDates } from '../utils/timeBetweenDates';
+import { findOrCreateUserByName } from './helpers/findOrCreateUser';
+import { hasBotCommandParams } from './helpers/hasBotCommandParams';
+import { sendChatMessage } from './helpers/sendChatMessage';
 
 async function sendFollowage(connection: connection, userId: string, displayName: string) {
   const followData = await fetchUserFollow(userId);
@@ -41,5 +41,5 @@ export const followage: BotCommand = {
       }
     }
   },
-  description: '',
+  description: 'Shows you the followage information for yourself or the specified user',
 };
