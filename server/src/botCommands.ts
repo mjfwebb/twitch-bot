@@ -1,17 +1,16 @@
-import type { BotCommand } from './types';
+import { addburpee } from './commands/addburpee';
 import { addcommand } from './commands/addcommand';
 import { addissue } from './commands/addissue';
-import { addburpee } from './commands/addburpee';
 import { addpushup } from './commands/addpushup';
 import { addsquat } from './commands/addsquat';
 import { athanotime } from './commands/athanotime';
 import { bot } from './commands/bot';
-import { help } from './commands/help';
 import { commands } from './commands/commands';
 import { delvoid } from './commands/delvoid';
 import { fail } from './commands/fail';
 import { followage } from './commands/followage';
 import { forodor } from './commands/forodor';
+import { help } from './commands/help';
 import { issue } from './commands/issue';
 import { l } from './commands/l';
 import { lurk } from './commands/lurk';
@@ -39,13 +38,15 @@ import { w } from './commands/w';
 import { wary } from './commands/wary';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
+import type { BotCommand } from './types';
 
-import type { Command } from './models/command-model';
-import CommandModel from './models/command-model';
-import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import type { HydratedDocument } from 'mongoose';
 import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
+import { sendChatMessage } from './commands/helpers/sendChatMessage';
+import { updateUser } from './commands/updateUser';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
+import type { Command } from './models/command-model';
+import CommandModel from './models/command-model';
 import { mention } from './utils/mention';
 
 const botCommands: BotCommand[] = [];
@@ -61,20 +62,19 @@ export function getBotCommands() {
 }
 
 const complexBotCommands: BotCommand[] = [
-  athanotime,
-  removecommand,
+  addburpee,
   addcommand,
   addissue,
-  addburpee,
   addpushup,
   addsquat,
+  athanotime,
   bot,
-  help,
   commands,
   delvoid,
   fail,
   followage,
   forodor,
+  help,
   issue,
   l,
   lurk,
@@ -82,6 +82,7 @@ const complexBotCommands: BotCommand[] = [
   party,
   play,
   randomissue,
+  removecommand,
   roll,
   setalias,
   setcategory,
@@ -96,6 +97,7 @@ const complexBotCommands: BotCommand[] = [
   task,
   thechaosbean,
   tts,
+  updateUser,
   viewers,
   w,
   wary,

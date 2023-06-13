@@ -1,8 +1,8 @@
 import type websocket from 'websocket';
-import StreamModel from '../../../models/stream-model';
-import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
-import type { ParsedMessage } from '../../../types';
 import { findOrCreateUserById } from '../../../commands/helpers/findOrCreateUser';
+import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
+import StreamModel from '../../../models/stream-model';
+import type { ParsedMessage } from '../../../types';
 
 export async function firstMessageOfStreamHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
   const nick = parsedMessage.source?.nick;
@@ -11,7 +11,7 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
   if (userId && nick) {
     const stream = await StreamModel.findOne({});
     if (stream) {
-      const user = await findOrCreateUserById(userId);
+      const user = await findOrCreateUserById(userId, nick);
 
       if (new Date(user.lastSeen).getTime() < new Date(stream.startedAt).getTime()) {
         if (user.welcomeMessage) {
@@ -20,7 +20,7 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
           if (user.welcomeMessage.startsWith('!') && user.welcomeMessage.startsWith('/')) {
             return;
           }
-          sendChatMessage(connection, `${user.welcomeMessage.replace(/%nick%/gi, nick)}`);
+          sendChatMessage(connection, `${user.welcomeMessage.replace(/%nick%/gi, user.displayName || user.nick)}`);
         }
       }
     }

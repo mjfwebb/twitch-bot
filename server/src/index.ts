@@ -1,17 +1,17 @@
-import Config from './config';
-import { getTwitchAccessToken } from './twitch';
-import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
-import { runTwitchWebsocket } from './twitchWebsocket';
 import { runBot } from './bot';
-import { runIntervalCommands } from './intervalCommands';
-import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
-import { setDisplayName, setStreamStatus } from './streamState';
-import { setupMongoose } from './setupMongoose';
-import { runSocketServer } from './runSocketServer';
-import { getSpotifyAccessToken } from './spotify';
-import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
 import { loadBotCommands } from './botCommands';
+import Config from './config';
+import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
+import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
+import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
 import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
+import { runIntervalCommands } from './intervalCommands';
+import { runSocketServer } from './runSocketServer';
+import { setupMongoose } from './setupMongoose';
+import { getSpotifyAccessToken } from './spotify';
+import { setDisplayName, setStreamStatus } from './streamState';
+import { getTwitchAccessToken } from './twitch';
+import { runTwitchWebsocket } from './twitchWebsocket';
 
 async function main() {
   try {
