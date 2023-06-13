@@ -10,9 +10,10 @@ export const welcome: BotCommand = {
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const userId = parsedCommand.parsedMessage.tags?.['user-id'];
+      const nick = parsedCommand.parsedMessage.source?.nick;
       const welcomeMessage = parsedCommand.parsedMessage.command?.botCommandParams;
-      if (userId && welcomeMessage && !welcomeMessage.startsWith('!') && !welcomeMessage.startsWith('/')) {
-        const user = await findOrCreateUserById(userId);
+      if (userId && nick && welcomeMessage && !welcomeMessage.startsWith('!') && !welcomeMessage.startsWith('/')) {
+        const user = await findOrCreateUserById(userId, nick);
         user.welcomeMessage = welcomeMessage;
         await user.save();
         sendChatMessage(connection, `Welcome message updated 🎉`);
