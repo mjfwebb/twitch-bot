@@ -1,3 +1,5 @@
+import type { ParsedMessage } from './twitchTypes';
+
 export type SpotifySong = {
   timestamp: number;
   context: {
@@ -78,4 +80,28 @@ export type SpotifySong = {
     };
   };
   is_playing: boolean;
+};
+
+export type ChatMessage = {
+  user: {
+    userId: string;
+    displayName: string;
+    welcomeMessage?: string;
+    points: number;
+    experience: number;
+    lastSeen: string;
+    avatarUrl: string;
+  } | null;
+  parsedMessage: ParsedMessage;
+};
+
+export type ChatEmote = {
+  url: string;
+  width: number | null;
+  height: number | null;
+};
+
+export type ChatBadge = {
+  name: string;
+  url: string;
 };

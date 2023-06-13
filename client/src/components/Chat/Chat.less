@@ -1,0 +1,107 @@
+.chat {
+  font-size: 22px;
+  box-sizing: border-box;
+  width: 600px;
+  height: 100vh;
+  text-align: left;
+  overflow: hidden;
+
+  ::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+  }
+
+  &-message {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 1;
+    padding-bottom: 4px;
+
+    &-background {
+      border: 3px solid transparent;
+      border-radius: 3px;
+
+      &-subscriber {
+        background: linear-gradient(to right, rgba(250, 201, 3, 0.396), rgb(255, 249, 171)) border-box border-box;
+      }
+
+      &-moderator {
+        background: linear-gradient(to right, rgb(168, 255, 117), rgb(122, 255, 155)) border-box border-box;
+      }
+
+      &-vip {
+        background: linear-gradient(to right, rgb(255, 0, 204), rgb(8, 0, 255)) border-box border-box;
+      }
+    }
+
+    &-body {
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: row;
+      background-color: #121212;
+
+      &:hover {
+        background-color: #161616;
+      }
+    }
+
+    &-user {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 0.2em;
+      width: 160px;
+    }
+
+    &-nick {
+      font-weight: 700;
+      padding-right: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &-content {
+      display: flex;
+      word-break: break-word;
+      flex-wrap: wrap;
+      gap: 0.2em;
+    }
+
+    &-selected {
+      background: linear-gradient(225deg, rgb(189 52 52 / 80%), rgb(47 7 176 / 80%));
+
+      &:hover {
+        background: linear-gradient(225deg, rgba(230, 56, 56, 0.8), rgba(57, 11, 208, 0.8));
+      }
+    }
+
+    &-badges {
+      display: inline-flex;
+      gap: 0.2em;
+    }
+
+    &-badge {
+      border-radius: 3px;
+    }
+
+    &-avatar {
+      display: flex;
+
+      &-image {
+        border-radius: 4px;
+        height: 34px;
+      }
+    }
+  }
+
+  &-emote {
+    max-height: 36px;
+  }
+}
