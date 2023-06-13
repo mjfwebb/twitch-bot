@@ -43,6 +43,15 @@ export type GitHubConfig = {
   access_token: string;
 } | null;
 
+export type SevenTVConfig = {
+  userId: string;
+} | null;
+
+export type BetterTTVConfig = {
+  provider: string;
+  providerId: string;
+} | null;
+
 interface IConfig {
   environment: 'development' | 'production';
   twitch: TwitchConfig;
@@ -50,6 +59,8 @@ interface IConfig {
   mongoDB: MongoDBConfig;
   spotify: SpotifyConfig;
   github: GitHubConfig;
+  sevenTV: SevenTVConfig;
+  betterTTV: BetterTTVConfig;
 }
 
 function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
@@ -116,6 +127,41 @@ function readGitHubConfig(): GitHubConfig {
   return null;
 }
 
+function assertSevenTVConfig(config: unknown): asserts config is SevenTVConfig {
+  assert(Object.prototype.hasOwnProperty.call(config, 'userId'), 'Missing SevenTV (7tv) config: userId');
+}
+
+function readSevenTVConfig(): SevenTVConfig {
+  try {
+    const SevenTVConfg: unknown = JSON.parse(readFileSync('./sevenTVConfig.json', 'utf8'));
+    assertSevenTVConfig(SevenTVConfg);
+    return SevenTVConfg;
+  } catch (error) {
+    if (isError(error)) {
+      console.log(`Error when loading SevenTV config: ${error.message}`);
+    }
+  }
+  return null;
+}
+
+function assertBetterTTVConfig(config: unknown): asserts config is BetterTTVConfig {
+  assert(Object.prototype.hasOwnProperty.call(config, 'provider'), 'Missing BetterTTV config: provider');
+  assert(Object.prototype.hasOwnProperty.call(config, 'providerId'), 'Missing BetterTTV config: providerId');
+}
+
+function readBetterTTVConfig(): BetterTTVConfig {
+  try {
+    const BetterTTVConfg: unknown = JSON.parse(readFileSync('./betterTTVConfig.json', 'utf8'));
+    assertBetterTTVConfig(BetterTTVConfg);
+    return BetterTTVConfg;
+  } catch (error) {
+    if (isError(error)) {
+      console.log(`Error when loading BetterTTV config: ${error.message}`);
+    }
+  }
+  return null;
+}
+
 function assertMongoDBConfig(config: unknown): asserts config is MongoDBConfig {
   assert(Object.prototype.hasOwnProperty.call(config, 'url'), 'Missing mongoDB config: url');
   assert(Object.prototype.hasOwnProperty.call(config, 'db'), 'Missing mongoDB config: db');
@@ -163,6 +209,8 @@ const Config: IConfig = {
   mongoDB: readMongoDBConfig(),
   spotify: readSpotifyConfig(),
   github: readGitHubConfig(),
+  sevenTV: readSevenTVConfig(),
+  betterTTV: readBetterTTVConfig(),
 };
 
 export default Config;

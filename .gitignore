@@ -10,3 +10,5 @@ discordWebhookConfig.json
 mongoDBConfig.json
 spotifyConfig.json
 githubConfig.json
+sevenTVConfig.json
+betterTTVConfig.json

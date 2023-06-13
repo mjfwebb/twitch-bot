@@ -1,5 +1,6 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { loadEmotes } from './loadEmotes';
 import TaskModel from './models/task-model';
 
 const httpServer = createServer();
@@ -23,6 +24,9 @@ export function runSocketServer() {
       if (task) {
         socket.emit('task', task.text);
       }
+    });
+    socket.on('getEmotes', async () => {
+      await loadEmotes();
     });
   });
   httpServer.listen(6969);
