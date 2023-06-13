@@ -37,14 +37,12 @@ export type Source = {
   host: string | null;
 };
 
-type Emote = {
+type Emotes = {
   [key: string]: {
     startPosition: number;
     endPosition: number;
   }[];
 };
-
-type Emotes = Emote[];
 
 /**
  * The type of user. Possible values are:
