@@ -238,3 +238,20 @@ export type BotCommand = {
   hidden?: boolean; // Optional: Indicates if the command should be hidden from users
   description?: string; // Optional: Description of the command
 };
+
+type BadgeVersion = {
+  // eslint-disable-next-line max-len
+  id: string; // An ID that identifies this version of the badge. The ID can be any value. For example, for Bits, the ID is the Bits tier level, but for World of Warcraft, it could be Alliance or Horde.
+  image_url_1x: string; // A URL to the small version (18px x 18px) of the badge.
+  image_url_2x: string; // A URL to the medium version (36px x 36px) of the badge.
+  image_url_4x: string; // A URL to the large version (72px x 72px) of the badge.
+  title: string; // The title of the badge.
+  description: string; // The description of the badge.
+  click_action: string; // The action to take when clicking on the badge. Set to null if no action is specified.
+  click_url: string; // The URL to navigate to when clicking on the badge. Set to null if no URL is specified.
+};
+
+export type BadgeSet = {
+  set_id: string; // An ID that identifies this set of chat badges. For example, Bits or Subscriber.
+  versions: BadgeVersion[]; // The list of chat badges in this set.
+};
