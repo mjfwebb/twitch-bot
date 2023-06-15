@@ -1,5 +1,6 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { loadBadges } from './loadBadges';
 import { loadEmotes } from './loadEmotes';
 import TaskModel from './models/task-model';
 
@@ -27,6 +28,9 @@ export function runSocketServer() {
     });
     socket.on('getEmotes', async () => {
       await loadEmotes();
+    });
+    socket.on('getBadges', async () => {
+      await loadBadges();
     });
   });
   httpServer.listen(6969);
