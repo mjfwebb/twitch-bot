@@ -32,6 +32,9 @@ export function runSocketServer() {
     socket.on('getBadges', async () => {
       await loadBadges();
     });
+    socket.on('setSelectedDisplayName', (displayName) => {
+      getIO().emit('setSelectedDisplayName', displayName);
+    });
   });
   httpServer.listen(6969);
 }

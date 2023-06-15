@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import type { ChatMessage } from '../../types';
 import useStore from '../../store/store';
 import { usePersistentStore } from '../../store/persistentStore';
+import useSocketContext from '../../hooks/useSocketContext';
 import { UserBadges } from './UserBadges';
 import { ChatMessageWithEmotes } from './ChatMessageWithEmotes';
 
@@ -15,6 +16,7 @@ import './Chat.less';
 const ChatEntry = ({ chatMessage }: { chatMessage: ChatMessage }) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
+  const { socket } = useSocketContext();
   const avatarUrl = chatMessage.user?.avatarUrl || '';
 
   const user = chatMessage.user ?? {
@@ -23,7 +25,7 @@ const ChatEntry = ({ chatMessage }: { chatMessage: ChatMessage }) => {
   const isSelected = selectedDisplayName === user.displayName;
 
   return (
-    <button className="chat-message" onClick={() => useStore.getState().setSelectedDisplayName(user.displayName)}>
+    <button className="chat-message" onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}>
       <div
         className={classNames(
           'chat-message-background',
