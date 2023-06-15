@@ -30,6 +30,9 @@ function socketEventHandler(socket: Socket) {
   socket.on('badges', (data: Record<string, ChatBadge>) => {
     useStore.getState().addBadges(data);
   });
+  socket.on('setSelectedDisplayName', (data: string) => {
+    useStore.getState().setSelectedDisplayName(data);
+  });
 }
 
 export default socketEventHandler;
