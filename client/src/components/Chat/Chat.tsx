@@ -17,37 +17,36 @@ const ChatEntry = ({ chatMessage }: { chatMessage: ChatMessage }) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const { socket } = useSocketContext();
-  const avatarUrl = chatMessage.user?.avatarUrl || '';
 
+  // Set default user if no user
   const user = chatMessage.user ?? {
     displayName: chatMessage.parsedMessage.tags['display-name'] || 'unknown',
+    avatarUrl: '',
   };
+
   const isSelected = selectedDisplayName === user.displayName;
 
   return (
     <button className="chat-message" onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}>
       <div
         className={classNames(
-          'chat-message-background',
-          chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-background-subscriber'
-          // chatMessage.parsedMessage.tags.mod === '1' && 'chat-message-background-moderator',
-          // chatMessage.parsedMessage.tags.vip === '1' && 'chat-message-background-vip'
+          'chat-message-body',
+          isSelected && 'chat-message-body-selected',
+          chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
         )}
       >
-        <div className={classNames('chat-message-body', isSelected && 'chat-message-selected')} key={chatMessage.parsedMessage.tags.id}>
-          <div className="chat-message-avatar">
-            {avatarUrl && <img className="chat-message-avatar-image" src={avatarUrl} alt="avatar" height={34} />}
-          </div>
-          <div className="chat-message-user">
-            <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
-            <span className="chat-message-nick" style={{ color: isSelected ? 'white' : color }}>
-              {user.displayName}
-            </span>
-          </div>
-          <span className="chat-message-content">
-            <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={chatMessage.parsedMessage.parameters} />
+        <div className="chat-message-avatar">
+          {user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
+        </div>
+        <div className="chat-message-user">
+          <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
+          <span className="chat-message-nick" style={{ color: isSelected ? 'white' : color }}>
+            {user.displayName}
           </span>
         </div>
+        <span className="chat-message-content">
+          <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={chatMessage.parsedMessage.parameters} />
+        </span>
       </div>
     </button>
   );
