@@ -9,6 +9,7 @@ import useStore from '../../store/store';
 import { usePersistentStore } from '../../store/persistentStore';
 import useSocketContext from '../../hooks/useSocketContext';
 import { UserBadges } from './UserBadges';
+import { contrastCorrected } from './contrastCorrected';
 import { ChatMessageWithEmotes } from './ChatMessageWithEmotes';
 
 import './Chat.less';
@@ -40,7 +41,7 @@ const ChatEntry = ({ chatMessage }: { chatMessage: ChatMessage }) => {
         </div>
         <div className="chat-message-user">
           <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
-          <span className="chat-message-nick" style={{ color: isSelected ? 'white' : color }}>
+          <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', '#121212') }}>
             {user.displayName}
           </span>
         </div>
