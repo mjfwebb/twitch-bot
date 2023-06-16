@@ -14,7 +14,7 @@ import { ChatMessageWithEmotes } from './ChatMessageWithEmotes';
 
 import './Chat.less';
 
-const ChatEntry = ({ chatMessage }: { chatMessage: ChatMessage }) => {
+const ChatEntry = ({ chatMessage, background }: { chatMessage: ChatMessage; background: string }) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const { socket } = useSocketContext();
@@ -41,7 +41,7 @@ const ChatEntry = ({ chatMessage }: { chatMessage: ChatMessage }) => {
         </div>
         <div className="chat-message-user">
           <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
-          <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', '#121212') }}>
+          <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', background) }}>
             {user.displayName}
           </span>
         </div>
@@ -54,11 +54,13 @@ const ChatEntry = ({ chatMessage }: { chatMessage: ChatMessage }) => {
 };
 
 export const Chat = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const background = searchParams.get('background') || '#121212';
   const chatMessages = usePersistentStore((s) => s.chatMessages);
   const virtuoso = useRef<VirtuosoHandle>(null);
 
   const InnerItem = memo(({ index }: { index: number }) => {
-    return <ChatEntry chatMessage={chatMessages[index]} />;
+    return <ChatEntry chatMessage={chatMessages[index]} background={background} />;
   });
 
   const itemContent = (index: number) => {
@@ -66,7 +68,7 @@ export const Chat = () => {
   };
 
   return (
-    <div className="chat">
+    <div className="chat" style={{ background }}>
       {chatMessages.length > 0 && (
         <Virtuoso
           ref={virtuoso}
