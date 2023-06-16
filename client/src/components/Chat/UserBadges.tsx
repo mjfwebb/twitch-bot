@@ -16,7 +16,6 @@ export const UserBadges = ({ badges }: BadgesProps) => {
     const foundBadge = chatBadges[`${badge[0]}_${badge[1]}`];
 
     if (!foundBadge) {
-      console.log('Unknown badge:', badge);
       return null;
     }
 
