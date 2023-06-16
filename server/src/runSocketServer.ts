@@ -24,7 +24,7 @@ export function runSocketServer() {
     socket.on('getTask', async () => {
       const task = await TaskModel.findOne({}, {}, { sort: { createdAt: -1 } });
       if (task) {
-        socket.emit('task', task.text);
+        socket.emit('task', task.content);
       }
     });
     socket.on('getEmotes', async () => {

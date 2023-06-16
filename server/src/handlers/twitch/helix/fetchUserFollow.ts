@@ -38,8 +38,6 @@ export const fetchUserFollow = async (userId: string): Promise<UserFollow | null
 
       const result: unknown = await response.json();
 
-      console.log(result);
-
       if (hasOwnProperty(result, 'data')) {
         assertArray(result.data);
         if (

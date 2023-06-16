@@ -182,5 +182,14 @@ export type ParsedMessage = {
   tags: Tags;
   source: Source | null;
   command: Command | null;
-  parameters: string | null;
+  parameters: string;
+};
+
+export type CommandWithBotCommandParams = Omit<Command, 'botCommand'> & { botCommandParams: string };
+
+export type TaskMessage = {
+  tags: Tags;
+  source: Source;
+  command: CommandWithBotCommandParams;
+  parameters: string;
 };

@@ -28,8 +28,18 @@ function reactStringReplace(source: string, match: RegExp, fn: ReplacerFunction)
   return [source].map((x) => replaceString(x, match, fn)).flat();
 }
 
-export const ChatMessageWithEmotes = ({ emotes, message }: { emotes: Emotes | undefined; message: string | null }): JSX.Element => {
+export const ChatMessageWithEmotes = ({
+  emotes,
+  message = '',
+  offset = 0,
+}: {
+  emotes: Emotes | undefined;
+  message: string;
+  offset?: number;
+}): JSX.Element => {
   const chatEmotes = useStore((s) => s.chatEmotes);
+
+  message = message.slice(offset);
 
   if (!message) {
     return <></>;
@@ -39,7 +49,7 @@ export const ChatMessageWithEmotes = ({ emotes, message }: { emotes: Emotes | un
 
   if (emotes) {
     Object.entries(emotes).forEach(([emoteUrlPart, positioning]) => {
-      const emoteName = message.slice(Number(positioning[0].startPosition), Number(positioning[0].endPosition) + 1);
+      const emoteName = message.slice(Number(positioning[0].startPosition - offset), Number(positioning[0].endPosition - offset) + 1);
       twitchEmoteMap[emoteName] = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/3.0`;
     });
   }

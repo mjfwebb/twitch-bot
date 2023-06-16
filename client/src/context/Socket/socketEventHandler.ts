@@ -2,16 +2,15 @@ import type { Socket } from 'socket.io-client';
 import JSConfetti from 'js-confetti';
 
 import type { ChatBadge, ChatEmote, ChatMessage, SpotifySong } from '../../types';
+import type { TaskMessage } from '../../twitchTypes';
 import useStore from '../../store/store';
 
 function socketEventHandler(socket: Socket) {
   socket.on('task', (data: unknown) => {
-    if (typeof data === 'string') {
-      useStore.getState().setTask(data);
-    }
+    useStore.getState().setTask(data as TaskMessage);
   });
   socket.on('currentSong', (data: unknown) => {
-    useStore.getState().setCurrentSong(data as unknown as SpotifySong);
+    useStore.getState().setCurrentSong(data as SpotifySong);
   });
   socket.on('confetti', () => {
     setTimeout(() => {
@@ -21,10 +20,10 @@ function socketEventHandler(socket: Socket) {
     }, 1500);
   });
   socket.on('chatMessage', (data: unknown) => {
-    useStore.getState().addChatMessage(data as unknown as ChatMessage);
+    useStore.getState().addChatMessage(data as ChatMessage);
   });
   socket.on('chatMessages', (data: unknown) => {
-    useStore.getState().addChatMessages(data as unknown as ChatMessage[]);
+    useStore.getState().addChatMessages(data as ChatMessage[]);
   });
   socket.on('emotes', (data: Record<string, ChatEmote>) => {
     useStore.getState().addEmotes(data);

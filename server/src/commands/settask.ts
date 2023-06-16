@@ -13,13 +13,12 @@ export const settask: BotCommand = {
   cooldown: 5 * SECOND_MS,
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
-      const taskText = parsedCommand.parsedMessage.command?.botCommandParams;
       const task = new TaskModel({
-        text: taskText,
+        content: parsedCommand.parsedMessage,
       });
       await task.save();
       sendChatMessage(connection, `Task successfully updated 🎉`);
-      getIO().emit('task', taskText);
+      getIO().emit('task', parsedCommand.parsedMessage);
     }
   },
 };

@@ -1,16 +1,17 @@
 import { create } from 'zustand';
 
 import type { ChatBadge, ChatEmote, ChatMessage, SpotifySong } from '../types';
+import type { TaskMessage } from '../twitchTypes';
 
 interface Store {
   reconnectAttempt: number;
-  task: string;
+  task: TaskMessage | null;
   currentSong: SpotifySong | null;
   selectedDisplayName: string;
   chatEmotes: Record<string, ChatEmote>;
   chatBadges: Record<string, ChatBadge>;
   chatMessages: ChatMessage[];
-  setTask: (task: string) => void;
+  setTask: (task: TaskMessage) => void;
   setCurrentSong: (song: SpotifySong) => void;
   resetState: () => void;
   setSelectedDisplayName: (displayName: string) => void;
@@ -22,18 +23,16 @@ interface Store {
 
 const useStore = create<Store>((set, get) => ({
   reconnectAttempt: 0,
-  task: '',
+  task: null,
   currentSong: null,
   selectedDisplayName: '',
   chatEmotes: {},
   chatBadges: {},
   chatMessages: [],
-  setTask: (task: string) => {
+  setTask: (task: TaskMessage) => {
     set(() => ({ task }));
   },
-  resetState: () => {
-    console.log('reset state');
-  },
+  resetState: () => undefined,
   setCurrentSong: (song: SpotifySong) => {
     set(() => ({ currentSong: song }));
   },

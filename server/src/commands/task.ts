@@ -11,7 +11,7 @@ export const task: BotCommand = {
   callback: async (connection) => {
     const task = await TaskModel.findOne({}, {}, { sort: { createdAt: -1 } });
     if (task) {
-      sendChatMessage(connection, `Current task: ${task.text}`);
+      sendChatMessage(connection, `Current task: ${task.content.command.botCommandParams}`);
     } else {
       sendChatMessage(connection, 'No current task!');
     }

@@ -1,9 +1,10 @@
 import type { SchemaTimestampsConfig } from 'mongoose';
 import { model, Schema } from 'mongoose';
+import type { ParsedMessageWithCommand } from '../types';
 
 const TaskSchema = new Schema<Task>(
   {
-    text: { type: String, required: true },
+    content: { type: Object, required: true },
   },
   {
     timestamps: true,
@@ -11,7 +12,7 @@ const TaskSchema = new Schema<Task>(
 );
 
 export interface Task extends SchemaTimestampsConfig {
-  text: string;
+  content: ParsedMessageWithCommand;
 }
 
 const TaskModel = model<Task>('Task', TaskSchema);
