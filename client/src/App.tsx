@@ -2,8 +2,8 @@ import './App.css';
 
 import { Route } from 'wouter';
 
+import { Chat } from './views/Chat/Chat';
 import useStore from './store/store';
-import { Chat } from './components/Chat/Chat';
 
 function App() {
   const task = useStore((s) => s.task);
