@@ -25,20 +25,23 @@ export const loadSevenTVEmotes = async () => {
   if (Config.sevenTV) {
     const sevenTVUser = await fetchSevenTVUser();
     if (sevenTVUser) {
-      const sevenTVEmoteSet = await fetchSevenTVEmoteSet(sevenTVUser.emote_sets[0].id);
-      if (sevenTVEmoteSet) {
-        sevenTVEmoteSet.emotes.forEach((emote) => {
-          const name = emote.name;
-          // Use the last in the array of files as it will be the largest WebP
-          const file = emote.data.host.files[emote.data.host.files.length - 1];
-          const imageUrl = `${emote.data.host.url}/${file.name}`;
+      const emoteSets = [sevenTVUser.emote_sets[0].id, 'global'];
+      for (const emoteSet of emoteSets) {
+        const sevenTVEmoteSet = await fetchSevenTVEmoteSet(emoteSet);
+        if (sevenTVEmoteSet) {
+          sevenTVEmoteSet.emotes.forEach((emote) => {
+            const name = emote.name;
+            // Use the last in the array of files as it will be the largest WebP
+            const file = emote.data.host.files[emote.data.host.files.length - 1];
+            const imageUrl = `${emote.data.host.url}/${file.name}`;
 
-          sevenTVEmotesForClient[name] = {
-            url: imageUrl,
-            width: file.width,
-            height: file.height,
-          };
-        });
+            sevenTVEmotesForClient[name] = {
+              url: imageUrl,
+              width: file.width,
+              height: file.height,
+            };
+          });
+        }
       }
     }
   }
