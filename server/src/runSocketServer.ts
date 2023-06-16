@@ -1,5 +1,6 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { getChatMessages } from './chatMessages';
 import { loadBadges } from './loadBadges';
 import { loadEmotes } from './loadEmotes';
 import TaskModel from './models/task-model';
@@ -34,6 +35,9 @@ export function runSocketServer() {
     });
     socket.on('setSelectedDisplayName', (displayName) => {
       getIO().emit('setSelectedDisplayName', displayName);
+    });
+    socket.on('getChatMessages', () => {
+      getChatMessages();
     });
   });
   httpServer.listen(6969);

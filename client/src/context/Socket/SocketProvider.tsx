@@ -59,6 +59,7 @@ const SocketProvider = (props: SocketProviderProps) => {
             sendToServer('getTask');
             sendToServer('getEmotes');
             sendToServer('getBadges');
+            sendToServer('getChatMessages');
           });
         }
 

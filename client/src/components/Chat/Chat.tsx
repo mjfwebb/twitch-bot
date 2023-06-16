@@ -6,7 +6,6 @@ import classNames from 'classnames';
 
 import type { ChatMessage } from '../../types';
 import useStore from '../../store/store';
-import { usePersistentStore } from '../../store/persistentStore';
 import useSocketContext from '../../hooks/useSocketContext';
 import { UserBadges } from './UserBadges';
 import { contrastCorrected } from './contrastCorrected';
@@ -56,7 +55,7 @@ const ChatEntry = ({ chatMessage, background }: { chatMessage: ChatMessage; back
 export const Chat = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const background = searchParams.get('background') || '#121212';
-  const chatMessages = usePersistentStore((s) => s.chatMessages);
+  const chatMessages = useStore((s) => s.chatMessages);
   const virtuoso = useRef<VirtuosoHandle>(null);
 
   const InnerItem = memo(({ index }: { index: number }) => {
