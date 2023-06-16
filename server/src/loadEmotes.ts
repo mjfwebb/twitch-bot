@@ -1,4 +1,5 @@
 import Config from './config';
+import { fetchBetterTTVGlobalEmotes } from './handlers/bttv/fetchBetterTTVGlobalEmotes';
 import { fetchBetterTTVUser } from './handlers/bttv/fetchBetterTTVUser';
 import { fetchSevenTVEmoteSet } from './handlers/sevenTV/fetchSevenTVEmoteSets';
 import { fetchSevenTVUser } from './handlers/sevenTV/fetchSevenTVUser';
@@ -16,12 +17,13 @@ const betterTTVEmotesForClient: Record<string, ChatEmote> = {};
 export const loadEmotes = async () => {
   await loadSevenTVEmotes();
   await loadBetterTTVEmotes();
+  await loadBetterTTVGlobalEmotes();
 
   // Change the order of this destructuring for your preferered emote prioritisation
   getIO().emit('emotes', { ...betterTTVEmotesForClient, ...sevenTVEmotesForClient });
 };
 
-export const loadSevenTVEmotes = async () => {
+const loadSevenTVEmotes = async () => {
   if (Config.sevenTV) {
     const sevenTVUser = await fetchSevenTVUser();
     if (sevenTVUser) {
@@ -62,5 +64,21 @@ const loadBetterTTVEmotes = async () => {
         };
       });
     }
+  }
+};
+
+export const loadBetterTTVGlobalEmotes = async () => {
+  const betterTTVGlobalEmotes = await fetchBetterTTVGlobalEmotes();
+  if (betterTTVGlobalEmotes) {
+    betterTTVGlobalEmotes.forEach((emote) => {
+      const name = emote.code;
+      const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/3x.${emote.imageType}`;
+
+      betterTTVEmotesForClient[name] = {
+        url: imageUrl,
+        width: null,
+        height: null,
+      };
+    });
   }
 };
