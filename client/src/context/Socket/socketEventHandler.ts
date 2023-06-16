@@ -3,7 +3,6 @@ import JSConfetti from 'js-confetti';
 
 import type { ChatBadge, ChatEmote, ChatMessage, SpotifySong } from '../../types';
 import useStore from '../../store/store';
-import { usePersistentStore } from '../../store/persistentStore';
 
 function socketEventHandler(socket: Socket) {
   socket.on('task', (data: unknown) => {
@@ -22,7 +21,10 @@ function socketEventHandler(socket: Socket) {
     }, 1500);
   });
   socket.on('chatMessage', (data: unknown) => {
-    usePersistentStore.getState().addChatMessage(data as unknown as ChatMessage);
+    useStore.getState().addChatMessage(data as unknown as ChatMessage);
+  });
+  socket.on('chatMessages', (data: unknown) => {
+    useStore.getState().addChatMessages(data as unknown as ChatMessage[]);
   });
   socket.on('emotes', (data: Record<string, ChatEmote>) => {
     useStore.getState().addEmotes(data);

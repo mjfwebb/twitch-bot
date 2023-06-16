@@ -1,4 +1,5 @@
 import websocket from 'websocket';
+import { addChatMessage } from './chatMessages';
 import { findOrCreateUserById } from './commands/helpers/findOrCreateUser';
 import Config from './config';
 import { botCommandHandler } from './handlers/botCommandHandler';
@@ -8,7 +9,6 @@ import { firstMessageHandler } from './handlers/twitch/irc/firstMessageHandler';
 import { firstMessageOfStreamHandler } from './handlers/twitch/irc/firstMessageOfStreamHandler';
 import { returningChatterHandler } from './handlers/twitch/irc/returningChatterHandler';
 import { parseMessage } from './parsers/parseMessage';
-import { getIO } from './runSocketServer';
 import { getCurrentAccessToken } from './twitch';
 
 let connectionRef: websocket.connection | undefined;
@@ -79,7 +79,7 @@ export function runBot() {
                   if (userId) {
                     findOrCreateUserById(userId, nick)
                       .then((user) => {
-                        getIO().emit('chatMessage', { user, parsedMessage });
+                        addChatMessage({ user, parsedMessage });
                       })
                       .catch((e) => {
                         console.error(e);
