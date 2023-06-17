@@ -2,51 +2,7 @@
 
 import fetch from 'node-fetch';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
-
-export type SevenTVEmoteSet = {
-  id: string;
-  name: string;
-  flags: number;
-  tags: string[];
-  immutable: boolean;
-  privileged: boolean;
-  emotes: {
-    id: string;
-    name: string;
-    flags: number;
-    timestamp: number;
-    actor_id: string;
-    data: {
-      id: string;
-      name: string;
-      flags: number;
-      lifecycle: number;
-      state: ('PERSONAL' | 'LISTED')[];
-      listed: boolean;
-      animated: boolean;
-      owner: {
-        id: string;
-        username: string;
-        display_name: string;
-        avatar_url: string;
-        style: unknown;
-        roles: string[];
-      };
-      host: {
-        url: string;
-        files: {
-          name: string;
-          static_name: string;
-          width: number;
-          height: number;
-          frame_count: number;
-          size: number;
-          format: 'AVIF' | 'WEBP';
-        }[];
-      };
-    };
-  }[];
-};
+import type { SevenTVEmoteSet } from './types';
 
 export const fetchSevenTVEmoteSet = async (emoteSetId: string): Promise<SevenTVEmoteSet | null> => {
   try {

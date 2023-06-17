@@ -3,48 +3,7 @@
 import fetch from 'node-fetch';
 import Config from '../../config';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
-
-export type SevenTVUser = {
-  id: string;
-  username: string;
-  display_name: string;
-  created_at: number;
-  avatar_url: string;
-  style: unknown;
-  emote_sets: {
-    id: string;
-    name: string;
-    flags: number;
-    tags: string[];
-    capacity: number;
-  }[];
-  editors: {
-    id: string;
-    permissions: number;
-    visible: boolean;
-    added_at: number;
-  }[];
-  roles: string[];
-  connections: {
-    id: string;
-    platform: string;
-    username: string;
-    display_name: string;
-    linked_at: number;
-    emote_capacity: number;
-    emote_set_id: null;
-    emote_set: {
-      id: string;
-      name: string;
-      flags: number;
-      tags: string[];
-      immutable: boolean;
-      privileged: boolean;
-      capacity: number;
-      owner: null;
-    };
-  }[];
-};
+import type { SevenTVUser } from './types';
 
 export const fetchSevenTVUser = async (): Promise<SevenTVUser | null> => {
   if (Config.sevenTV) {
