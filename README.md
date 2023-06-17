@@ -14,13 +14,13 @@
 
 Welcome to our Twitch Bot!
 
-Please note that this bot is designed to be used by streamers who will also be running the bot themselves. While it may be possible to adapt the bot to work in other channels, this is outside the scope of this project.
+This bot is intended for self-hosting streamers. Its adaptation for other channels is not covered in this project.
 
-If you need assistance with the Twitch API, you may find helpful information at https://dev.twitch.tv/docs/. 
+For Twitch API help, visit https://dev.twitch.tv/docs/.
 
-We assume that users of this bot have some level of prior experience with programming. Please keep in mind that this project may not meet the needs of all users, but it does offer the ability to create a customized Twitch Bot.
+This bot assumes users have programming experience. Please keep in mind that this project may not meet the needs of all users, but it does offer the ability to create a customized Twitch Bot.
 
-This project was began with the example provided by Twitch at https://dev.twitch.tv/docs/irc/example-bot. Thanks for that, Twitch!
+We used Twitch's example at https://dev.twitch.tv/docs/irc/example-bot as a starting point. Thanks, Twitch!
 
 ## Setup
 [View SETUP instructions](./docs/SETUP.md)
