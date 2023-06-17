@@ -1,6 +1,7 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getChatMessages } from './chatMessages';
+import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
 import { loadBadges } from './loadBadges';
 import { loadEmotes } from './loadEmotes';
 import TaskModel from './models/task-model';
@@ -26,6 +27,9 @@ export function runSocketServer() {
       if (task) {
         socket.emit('task', task.content);
       }
+    });
+    socket.on('getSong', async () => {
+      await fetchCurrentlyPlaying();
     });
     socket.on('getEmotes', async () => {
       await loadEmotes();

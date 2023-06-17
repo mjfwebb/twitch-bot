@@ -57,6 +57,7 @@ const SocketProvider = (props: SocketProviderProps) => {
           socket.current.on('disconnect', onDisconnect);
           socket.current.on('connect', () => {
             sendToServer('getTask');
+            sendToServer('getSong');
             sendToServer('getEmotes');
             sendToServer('getBadges');
             sendToServer('getChatMessages');

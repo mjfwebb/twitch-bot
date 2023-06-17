@@ -15,7 +15,6 @@ export const forodor: BotCommand = {
       throw new Error('Forodor was here');
     } catch (error) {
       if (isError(error)) {
-        console.log(error);
         sendChatMessage(connection, error.message);
       }
     }

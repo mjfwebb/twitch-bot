@@ -1,9 +1,9 @@
-import { getConnection } from './bot';
-import { SECOND_MS } from './constants';
-import { sendChatMessage } from './commands/helpers/sendChatMessage';
-import { getStreamStatus } from './streamState';
 import type { connection } from 'websocket';
-import { fetchSpotifyCurrentlyPlaying } from './handlers/spotify/fetchSpotifyCurrentlyPlaying';
+import { getConnection } from './bot';
+import { sendChatMessage } from './commands/helpers/sendChatMessage';
+import { SECOND_MS } from './constants';
+import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
+import { getStreamStatus } from './streamState';
 
 interface IntervalCommand {
   callback: ((connection: connection) => void) | ((connection: connection) => Promise<void>);
@@ -33,7 +33,7 @@ export function runIntervalCommands() {
     },
     {
       callback: async () => {
-        await fetchSpotifyCurrentlyPlaying();
+        await fetchCurrentlyPlaying();
       },
       tickInterval: 5,
       currentTick: 0,

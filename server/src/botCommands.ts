@@ -1,3 +1,4 @@
+import type { HydratedDocument } from 'mongoose';
 import { addburpee } from './commands/addburpee';
 import { addcommand } from './commands/addcommand';
 import { addissue } from './commands/addissue';
@@ -11,12 +12,15 @@ import { fail } from './commands/fail';
 import { followage } from './commands/followage';
 import { forodor } from './commands/forodor';
 import { help } from './commands/help';
+import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
+import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { issue } from './commands/issue';
 import { l } from './commands/l';
 import { lurk } from './commands/lurk';
 import { lutf1sk } from './commands/lutf1sk';
 import { party } from './commands/party';
 import { play } from './commands/play';
+import { queuesong } from './commands/queuesong';
 import { randomissue } from './commands/randomissue';
 import { removecommand } from './commands/removecommand';
 import { roll } from './commands/roll';
@@ -27,26 +31,23 @@ import { setdescription } from './commands/setdescription';
 import { settags } from './commands/settags';
 import { settask } from './commands/settask';
 import { settitle } from './commands/settitle';
+import { skipsong } from './commands/skipsong';
 import { skiptts } from './commands/skiptts';
 import { song } from './commands/song';
 import { success } from './commands/success';
 import { task } from './commands/task';
 import { thechaosbean } from './commands/thechaosbean';
 import { tts } from './commands/tts';
+import { updateUser } from './commands/updateUser';
 import { viewers } from './commands/viewers';
 import { w } from './commands/w';
 import { wary } from './commands/wary';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
-import type { BotCommand } from './types';
-
-import type { HydratedDocument } from 'mongoose';
-import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
-import { sendChatMessage } from './commands/helpers/sendChatMessage';
-import { updateUser } from './commands/updateUser';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
 import type { Command } from './models/command-model';
 import CommandModel from './models/command-model';
+import type { BotCommand } from './types';
 import { mention } from './utils/mention';
 
 const botCommands: BotCommand[] = [];
@@ -81,6 +82,7 @@ const complexBotCommands: BotCommand[] = [
   lutf1sk,
   party,
   play,
+  queuesong,
   randomissue,
   removecommand,
   roll,
@@ -91,6 +93,7 @@ const complexBotCommands: BotCommand[] = [
   settags,
   settask,
   settitle,
+  skipsong,
   skiptts,
   song,
   success,

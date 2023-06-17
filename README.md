@@ -69,9 +69,17 @@ The required scopes are `channel:manage:redemptions`, `channel:read:redemptions`
 
 #### spotifyConfig.json
 
-Visit https://developer.spotify.com/console/get-users-currently-playing-track/ to obtain the `oauth_token`.
+Visit https://developer.spotify.com/documentation/web-api/tutorials/getting-started to create an app and obtain the `client_id` and `client_secret`
 
-The required scope is `user-read-currently-playing`.
+Use the [Authorization Code Flow](https://developer.spotify.com/documentation/web-api/tutorials/code-flow)
+
+To get the auth_code construct your URL and enter it into the browser:
+
+```
+https://accounts.spotify.com/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=user-read-currently-playing%20user-modify-playback-state
+```
+
+The required scopes are `user-read-currently-playing` and ``user-modify-playback-state`.
 
 #### githubConfig.json
 

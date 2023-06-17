@@ -1,12 +1,44 @@
 .song {
   font-weight: bold;
   color: white;
-  font-size: 2rem;
-  background: linear-gradient(45deg, #d4992a 20%, #ffffff 30%, #ffffff 70%, #d4992a 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% auto;
-  animation: text-shine 20s linear infinite;
-  padding: 2rem;
+  font-size: 1.4rem;
+  padding: 1rem;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+
+  &-wrapper {
+    width: 500px;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    flex-shrink: 0;
+    width: 22rem;
+  }
+
+  &-name {
+    font-size: 2rem;
+    line-height: 3rem;
+    background: linear-gradient(45deg, #50e0be 20%, #ffffff 30%, #ffffff 70%, #50e0be 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: text-shine 20s linear infinite;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &-artists {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }

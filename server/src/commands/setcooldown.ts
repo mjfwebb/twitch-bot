@@ -9,7 +9,7 @@ export const setcooldown: BotCommand = {
   id: 'setcooldown',
   privileged: true,
   hidden: true,
-  description: '',
+  description: "Set the command's cooldown to the provided milliseconds",
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const newCommand = parsedCommand.parsedMessage.command?.botCommandParams;
