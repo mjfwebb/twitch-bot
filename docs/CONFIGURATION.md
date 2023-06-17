@@ -52,6 +52,14 @@ Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-se
 
 Ensure that the personal access token includes the scope to access and modify issues.
 
+### sevenTVConfig.json
+
+Enter your userId which you can get from the URL on your account page in 7tv.app.
+
+### betterTTVConfig.json
+
+You probably want to set provider as twitch and the ID is your twitch broadcaster ID (the same as set in your twitchConfig.json).
+
 ## Set up your commands
 
 
