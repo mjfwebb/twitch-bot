@@ -13,11 +13,10 @@ const requiredExampleFiles = [
   'example.tokens.json',
 ]
 
-function createFileFromExample(filename) {
-  const content = readFileSync(filename);
-  const nonExampleFilename = filename.slice("example.".length);
-  console.log(`Creating ${nonExampleFilename}`);
-  writeFileSync(nonExampleFilename, content);
+function createFileFromExample(source, destination) {
+  const content = readFileSync(source);
+  console.log(`Creating ${destination}`);
+  writeFileSync(destination, content);
 }
 
 function main() {
@@ -41,10 +40,11 @@ function main() {
   const exampleFiles = generateAll ? [...optionalExampleFiles, ...requiredExampleFiles] : requiredExampleFiles;
 
   for (const exampleFile of exampleFiles) {
-    if (!existsSync(exampleFile) || forceRecreate) {
-      createFileFromExample(exampleFile);
+    const nonExampleFilename = exampleFile.slice("example.".length);
+    if (!existsSync(nonExampleFilename) || forceRecreate) {
+      createFileFromExample(exampleFile, nonExampleFilename);
     } else {
-      console.log(`${exampleFile} already exists. Skipping.`);
+      console.log(`${nonExampleFilename} already exists. Skipping.`);
     }
   }
 
