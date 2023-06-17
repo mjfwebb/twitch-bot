@@ -1,10 +1,11 @@
 import Config from '../../config';
+import { SPOTIFY_API_URL } from '../../constants';
 import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 
 export const skipCurrentSong = async (): Promise<void> => {
   if (Config.spotify) {
     try {
-      const url = `https://api.spotify.com/v1/me/player/next`;
+      const url = `${SPOTIFY_API_URL}me/player/next`;
 
       await fetchWithRetry(url, {
         method: 'POST',

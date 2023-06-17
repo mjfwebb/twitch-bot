@@ -1,4 +1,5 @@
 import Config from '../../config';
+import { SPOTIFY_API_URL } from '../../constants';
 import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SpotifyTrack } from './types';
@@ -6,7 +7,7 @@ import type { SpotifyTrack } from './types';
 export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> => {
   if (Config.spotify) {
     try {
-      const url = `https://api.spotify.com/v1/tracks/${trackId}`;
+      const url = `${SPOTIFY_API_URL}tracks/${trackId}`;
 
       const result = await fetchWithRetry(url, {
         method: 'GET',

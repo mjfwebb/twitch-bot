@@ -1,4 +1,5 @@
 import Config from '../../config';
+import { SPOTIFY_API_URL } from '../../constants';
 import { getIO } from '../../runSocketServer';
 import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
@@ -11,7 +12,7 @@ export const getCurrentSpotifySong = () => currentSong;
 export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
   if (Config.spotify) {
     try {
-      const url = `https://api.spotify.com/v1/me/player/currently-playing`;
+      const url = `${SPOTIFY_API_URL}me/player/currently-playing`;
 
       const result = await fetchWithRetry(url, {
         method: 'GET',
