@@ -21,18 +21,13 @@ export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_toke
  * @remarks To support checking the response (which requires using result.json()) we pass back the parsed data response, instead of the whole Reponse.
  * This seems reasonable since all interactions with the API always want the JSON data anyway.
  */
-export const fetchWithRetry = async (
-  url: string,
-  init?: RequestInit | undefined,
-  attemptNumber = 0,
-  expectedStatusCode = StatusCodes.NO_CONTENT,
-): Promise<unknown> => {
+export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
   if (attemptNumber > 1) {
     throw new Error(`Failed to perform fetch ${attemptNumber} times to Spotify API`);
   }
   const result = await fetch(url, init);
 
-  if (result.status === expectedStatusCode) {
+  if (result.status === StatusCodes.NO_CONTENT) {
     return;
   }
 

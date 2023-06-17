@@ -6,7 +6,7 @@ import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
 
 export const queuesong: BotCommand = {
-  command: 'queuesong',
+  command: ['queuesong', 'qs'],
   id: 'queuesong',
   cooldown: 1 * SECOND_MS,
   privileged: true,
@@ -22,10 +22,10 @@ export const queuesong: BotCommand = {
         const track = await getTrack(trackId);
         await addSongToPlaybackQueue(trackInput);
         if (!track) {
-          sendChatMessage(connection, `Song added to queue EZ`);
+          sendChatMessage(connection, `Song added to queue athanoCool`);
         } else {
           const trackArtists = track.artists.map((artist) => artist.name).join(', ');
-          sendChatMessage(connection, `Song ${track.name} - ${trackArtists} added to queue EZ`);
+          sendChatMessage(connection, `Song ${track.name} - ${trackArtists} added to queue athanoCool`);
         }
       }
     }

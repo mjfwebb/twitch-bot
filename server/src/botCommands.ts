@@ -34,6 +34,7 @@ import { settitle } from './commands/settitle';
 import { skipsong } from './commands/skipsong';
 import { skiptts } from './commands/skiptts';
 import { song } from './commands/song';
+import { songqueue } from './commands/songqueue';
 import { success } from './commands/success';
 import { task } from './commands/task';
 import { thechaosbean } from './commands/thechaosbean';
@@ -96,6 +97,7 @@ const complexBotCommands: BotCommand[] = [
   skipsong,
   skiptts,
   song,
+  songqueue,
   success,
   task,
   thechaosbean,
