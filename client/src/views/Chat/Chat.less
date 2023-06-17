@@ -20,6 +20,10 @@
     line-height: 1;
     padding-bottom: 4px;
 
+    &-disappeared {
+      visibility: hidden;
+    }
+
     &-body {
       cursor: pointer;
       padding: 4px;
@@ -98,5 +102,19 @@
 
   &-emote {
     max-height: 36px;
+  }
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }

@@ -17,10 +17,12 @@ interface ChatEntryProps {
   chatMessage: ChatMessage;
   background: string;
   showAvatars: boolean;
+  disappears: boolean;
   showBorders: boolean;
+  disappearsTime: number;
 }
 
-const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }: ChatEntryProps) => {
+const ChatEntry = ({ chatMessage, background, showAvatars, showBorders, disappears, disappearsTime }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const { socket } = useSocketContext();
@@ -33,8 +35,20 @@ const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }: ChatEn
 
   const isSelected = selectedDisplayName === user.displayName;
 
+  let isDisappeared = false;
+  if (disappears) {
+    const messageTime = new Date(Number(chatMessage.parsedMessage.tags['tmi-sent-ts'])).getTime();
+    const disappearsTimeSeconds = disappearsTime * 1000;
+    const differenceBetweenMessageAndNow = Date.now() - messageTime;
+    isDisappeared = disappearsTimeSeconds < differenceBetweenMessageAndNow;
+  }
+
   return (
-    <button className="chat-message" onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}>
+    <button
+      className={classNames('chat-message', isDisappeared && 'chat-message-disappeared')}
+      style={disappears ? { animation: `hide ${String(disappearsTime)}s forwards` } : undefined}
+      onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}
+    >
       <div
         className={classNames(
           'chat-message-body',
@@ -62,15 +76,29 @@ const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }: ChatEn
 };
 
 export const Chat = () => {
+  const chatMessages = useStore((s) => s.chatMessages);
+  const virtuoso = useRef<VirtuosoHandle>(null);
   const searchParams = new URLSearchParams(window.location.search);
+  const disappears = searchParams.get('disappears') === 'true' ? true : false;
+  const disappearsTime = searchParams.get('disappears-time') !== null ? Number(searchParams.get('disappears-time')) : 10;
+  const foreground = searchParams.get('foreground');
   const background = searchParams.get('background') || 'transparent';
   const showAvatars = searchParams.get('avatars') === 'false' ? false : true;
   const showBorders = searchParams.get('borders') === 'false' ? false : true;
-  const chatMessages = useStore((s) => s.chatMessages);
-  const virtuoso = useRef<VirtuosoHandle>(null);
+  const chatWidth = searchParams.get('width');
+  const chatHeight = searchParams.get('height');
 
   const InnerItem = memo(({ index }: { index: number }) => {
-    return <ChatEntry chatMessage={chatMessages[index]} background={background} showAvatars={showAvatars} showBorders={showBorders} />;
+    return (
+      <ChatEntry
+        chatMessage={chatMessages[index]}
+        background={background}
+        showAvatars={showAvatars}
+        showBorders={showBorders}
+        disappears={disappears}
+        disappearsTime={disappearsTime}
+      />
+    );
   });
 
   const itemContent = (index: number) => {
@@ -78,7 +106,7 @@ export const Chat = () => {
   };
 
   return (
-    <div className="chat" style={{ background }}>
+    <div className="chat" style={{ background, width: chatWidth ?? undefined, height: chatHeight ?? undefined, color: foreground ?? undefined }}>
       {chatMessages.length > 0 && (
         <Virtuoso
           ref={virtuoso}
@@ -87,7 +115,7 @@ export const Chat = () => {
           itemContent={itemContent}
           totalCount={chatMessages.length}
           initialTopMostItemIndex={chatMessages.length - 1}
-          atBottomThreshold={12}
+          atTopThreshold={400}
         />
       )}
     </div>

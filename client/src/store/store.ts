@@ -57,10 +57,28 @@ const useStore = create<Store>((set, get) => ({
     }));
   },
   addChatMessage: (chatMessage: ChatMessage) => {
-    set((state) => ({
-      ...state,
-      chatMessages: [...state.chatMessages, chatMessage],
-    }));
+    const searchParams = new URLSearchParams(window.location.search);
+    const disappears = searchParams.get('disappears') === 'true' ? true : false;
+    if (disappears) {
+      const disappearsTime = searchParams.get('disappears-time') !== null ? Number(searchParams.get('disappears-time')) : 10;
+      const now = Date.now();
+      const filteredChatMessages = [...get().chatMessages, chatMessage].filter((chatMessage) => {
+        const messageTime = new Date(Number(chatMessage.parsedMessage.tags['tmi-sent-ts'])).getTime();
+        const disappearsTimeSeconds = disappearsTime * 1000;
+        const differenceBetweenMessageAndNow = now - messageTime;
+        const isDisappeared = disappearsTimeSeconds < differenceBetweenMessageAndNow;
+        return !isDisappeared;
+      });
+      set((state) => ({
+        ...state,
+        chatMessages: filteredChatMessages,
+      }));
+    } else {
+      set((state) => ({
+        ...state,
+        chatMessages: [...state.chatMessages, chatMessage],
+      }));
+    }
   },
   addChatMessages: (chatMessages: ChatMessage[]) => {
     set((state) => ({
