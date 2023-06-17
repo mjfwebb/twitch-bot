@@ -1,11 +1,11 @@
 {
-  "name": "athano-bot-server",
+  "name": "twitch-bot-server",
   "version": "1.0.0",
   "private": true,
-  "description": "Athano Twitch bot server!",
+  "description": "Twitch bot server!",
   "author": "Michael Webb",
   "license": "MIT",
-  "homepage": "https://www.twitch.tv/athano",
+  "homepage": "https://github.com/mjfwebb/twitch-bot",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development npm run build:live",
