@@ -50,29 +50,10 @@ npm start
 Primarily, watch the console output for errors to troubleshoot issues.
 
 For tokens that are saved in tokens.json (Twitch and Spotify), if you change your scope and there are already `access_token` and `refresh_token` present in the file, you should remove these token values. Once you have your new access code the program will retrieve a new `access_token` and `refresh_token`.
-
-## Links
-
-* Twitch: [athano](https://twitch.tv/athano)
-* Twitter: [@athanoquest](https://twitter.com/athanoquest)
-* Game: [Between Worlds](https://www.betweenworlds.net)
-
 ## Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/mjfwebb/twitch-bot/issues). 
 
-## Show your support
+## License
 
-Give a ⭐️ if this project helped you!
-
-<a href="https://www.patreon.com/athano">
-  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
-
-## 📝 License
-
-Copyright © 2022 [Michael Webb](https://github.com/mjfwebb).<br />
 This project is [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE) licensed.
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_  
