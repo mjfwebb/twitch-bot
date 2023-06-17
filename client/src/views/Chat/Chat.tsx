@@ -13,7 +13,14 @@ import { ChatMessageWithEmotes } from './ChatMessageWithEmotes';
 
 import './Chat.less';
 
-const ChatEntry = ({ chatMessage, background }: { chatMessage: ChatMessage; background: string }) => {
+interface ChatEntryProps {
+  chatMessage: ChatMessage;
+  background: string;
+  showAvatars: boolean;
+  showBorders: boolean;
+}
+
+const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const { socket } = useSocketContext();
@@ -32,12 +39,14 @@ const ChatEntry = ({ chatMessage, background }: { chatMessage: ChatMessage; back
         className={classNames(
           'chat-message-body',
           isSelected && 'chat-message-body-selected',
-          chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
+          showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
         )}
       >
-        <div className="chat-message-avatar">
-          {user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
-        </div>
+        {showAvatars && (
+          <div className="chat-message-avatar">
+            {user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
+          </div>
+        )}
         <div className="chat-message-user">
           <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
           <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', background) }}>
@@ -54,12 +63,14 @@ const ChatEntry = ({ chatMessage, background }: { chatMessage: ChatMessage; back
 
 export const Chat = () => {
   const searchParams = new URLSearchParams(window.location.search);
-  const background = searchParams.get('background') || '#121212';
+  const background = searchParams.get('background') || 'transparent';
+  const showAvatars = searchParams.get('avatars') === 'false' ? false : true;
+  const showBorders = searchParams.get('borders') === 'false' ? false : true;
   const chatMessages = useStore((s) => s.chatMessages);
   const virtuoso = useRef<VirtuosoHandle>(null);
 
   const InnerItem = memo(({ index }: { index: number }) => {
-    return <ChatEntry chatMessage={chatMessages[index]} background={background} />;
+    return <ChatEntry chatMessage={chatMessages[index]} background={background} showAvatars={showAvatars} showBorders={showBorders} />;
   });
 
   const itemContent = (index: number) => {
