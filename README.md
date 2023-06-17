@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to twitch-bot 👋</h1>
+<h1 align="center">Welcome to twitch-bot</h1>
 <p>
   <a href="" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
@@ -45,19 +45,19 @@ cd server
 npm start
 ```
 
-## 🕵️ Troubleshooting
+## Troubleshooting
 
 Primarily, watch the console output for errors to troubleshoot issues.
 
 For tokens that are saved in tokens.json (Twitch and Spotify), if you change your scope and there are already `access_token` and `refresh_token` present in the file, you should remove these token values. Once you have your new access code the program will retrieve a new `access_token` and `refresh_token`.
 
-## 🔗 Links
+## Links
 
 * Twitch: [athano](https://twitch.tv/athano)
 * Twitter: [@athanoquest](https://twitter.com/athanoquest)
 * Game: [Between Worlds](https://www.betweenworlds.net)
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/mjfwebb/twitch-bot/issues). 
 
