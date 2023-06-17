@@ -12,12 +12,14 @@ export const Task = () => {
 
   return (
     <div className="task">
-      Task:{' '}
-      <ChatMessageWithEmotes
-        emotes={task.tags.emotes}
-        message={task.parameters}
-        offset={task.parameters.length - task.command.botCommandParams.length}
-      />
+      <p>Current task:</p>
+      <div>
+        <ChatMessageWithEmotes
+          emotes={task.tags.emotes}
+          message={task.parameters}
+          offset={task.parameters.length - task.command.botCommandParams.length}
+        />
+      </div>
     </div>
   );
 };
