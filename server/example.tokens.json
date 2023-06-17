@@ -1,6 +1,6 @@
 {
-  "access_token": "",
-  "refresh_token": "",
+  "twitch_access_token": "",
+  "twitch_refresh_token": "",
   "spotify_access_token": "",
   "spotify_refresh_token": ""
 }
