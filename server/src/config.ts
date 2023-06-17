@@ -102,7 +102,7 @@ function readSpotifyConfig(): SpotifyConfig {
     return SpotifyConfg;
   } catch (error) {
     if (isError(error)) {
-      console.log(`Error when loading Spotify config: ${error.message}`);
+      console.log(`Optional Spotify config error: ${error.message}`);
     }
   }
   return null;
@@ -121,7 +121,7 @@ function readGitHubConfig(): GitHubConfig {
     return GitHubConfg;
   } catch (error) {
     if (isError(error)) {
-      console.log(`Error when loading GitHub config: ${error.message}`);
+      console.log(`Optional GitHub config error: ${error.message}`);
     }
   }
   return null;
@@ -138,7 +138,7 @@ function readSevenTVConfig(): SevenTVConfig {
     return SevenTVConfg;
   } catch (error) {
     if (isError(error)) {
-      console.log(`Error when loading SevenTV config: ${error.message}`);
+      console.log(`Optional SevenTV config error: ${error.message}`);
     }
   }
   return null;
@@ -156,7 +156,7 @@ function readBetterTTVConfig(): BetterTTVConfig {
     return BetterTTVConfg;
   } catch (error) {
     if (isError(error)) {
-      console.log(`Error when loading BetterTTV config: ${error.message}`);
+      console.log(`Optional BetterTTV config error: ${error.message}`);
     }
   }
   return null;
@@ -194,7 +194,7 @@ function readDiscordWebhookConfig(): WebhookConfig {
     return discordWebhookConfig;
   } catch (error) {
     if (isError(error)) {
-      console.log(`Error when loading Discord Webhook config: ${error.message}`);
+      console.log(`Optional Discord Webhook config error: ${error.message}`);
     }
   }
   return null;
