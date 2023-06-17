@@ -3,14 +3,7 @@
 import fetch from 'node-fetch';
 import Config from '../../config';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
-
-export type BttvEmote = {
-  id: string;
-  code: string;
-  imageType: string;
-  animated: boolean;
-  userId: string;
-};
+import type { BttvEmote } from './types';
 
 export const fetchBetterTTVGlobalEmotes = async (): Promise<BttvEmote[] | null> => {
   if (Config.betterTTV) {
