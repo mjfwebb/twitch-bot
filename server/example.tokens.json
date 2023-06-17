@@ -1,4 +1,6 @@
 {
   "access_token": "",
-  "refresh_token": ""
+  "refresh_token": "",
+  "spotify_access_token": "",
+  "spotify_refresh_token": ""
 }
