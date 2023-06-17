@@ -22,8 +22,8 @@ We assume that users of this bot have some level of prior experience with progra
 
 This project was began with the example provided by Twitch at https://dev.twitch.tv/docs/irc/example-bot. Thanks for that, Twitch!
 
-## Install
-[View INSTALL instructions](./docs/INSTALL.md)
+## Setup
+[View SETUP instructions](./docs/SETUP.md)
 
 
 ## Configuration

@@ -1,37 +1,7 @@
 
-## Configuration
+# Configuration
 
-### Create required JSON files
-
-It is highly recommended you use the setup script named `setup.mjs` to create these files. Do note however that the values in the created configuration files need to be updated with your own unique data.
-
-Usage of setup.mjs:
-
-```
-  cd server
-  node setup.mjs
-```
-
-If you want to forcefully recreate files:
-
-```
-  cd server
-  node setup.mjs --force
-```
-
-If you want to create all files, including optional files:
-
-```
-  cd server
-  node setup.mjs --all
-```
-
-If you want to forcefully recreate all files, including optional files:
-
-```
-  cd server
-  node setup.mjs --all --force
-```
+Ensure you have [setup your environment and configuration files](SETUP.md) before continuing,
 
 **WARNING**: The resulting `.json` files will contain sensitive information when filled in correctly. Do not share this information.
 
@@ -46,11 +16,11 @@ If you want to forcefully recreate all files, including optional files:
 
 The best way to begin is by copying the example versions of the required files (twitchConfig.json, tokens.json, and mongoDBConfig.json) and renaming them to the desired filenames.
 
-### Where to get the data
+## Where to get the data
 
 The listed scopes are relevant for the existing commands in the repository. If you would like to add new features with more in-depth API interactions then you should adjust the scopes accordingly.
 
-#### twitchConfig.json
+### twitchConfig.json
 
 To get the auth_code construct your URL and enter it into the browser: 
 
@@ -60,7 +30,7 @@ https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_
 
 The required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
 
-#### spotifyConfig.json
+### spotifyConfig.json
 
 Visit https://developer.spotify.com/documentation/web-api/tutorials/getting-started to create an app and obtain the `client_id` and `client_secret`
 
@@ -72,15 +42,15 @@ To get the auth_code construct your URL and enter it into the browser:
 https://accounts.spotify.com/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=user-read-currently-playing%20user-read-playback-state%20user-modify-playback-state
 ```
 
-The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and ``user-modify-playback-state`. 
+The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`. 
 
-#### githubConfig.json
+### githubConfig.json
 
 Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
 
 Ensure that the personal access token includes the scope to access and modify issues.
 
-### Set up your commands
+## Set up your commands
 
 Open `server\src\handlers\botCommands.ts` and change the commands to fit your needs. There are several examples of different commands here.
 
