@@ -63,25 +63,3 @@ export const VOICES = {
     api: 'tiktok',
   },
 };
-
-export const BOTNAMES = [
-  'streamlabs',
-  'aliengathering',
-  'anotherttvviewer',
-  'chatstats_',
-  'commanderroot',
-  'discordstreamercommunity',
-  'smallstreamersdccommunity',
-  '0ax2',
-  'aliceydra',
-  'audycia',
-  'iizzybeth',
-  'ssgdcserver',
-  'nightbot',
-  'lurxx',
-  'ashleighhy',
-  'drapsnatt',
-  'blgdamjudge',
-  '01ella',
-  'streamfahrer',
-];
