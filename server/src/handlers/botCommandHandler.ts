@@ -4,6 +4,7 @@ import { findBotCommand } from '../commands/helpers/findBotCommand';
 import { isPrivileged } from '../commands/helpers/isPrivileged';
 import { isUser } from '../commands/helpers/isUser';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
+import Config from '../config';
 import CommandModel from '../models/command-model';
 import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
 
@@ -21,7 +22,9 @@ async function handleCommand(connection: websocket.connection, queuedCommand: Pa
   if (typeof result === 'boolean' && result === false) {
     sendChatMessage(connection, `That's not right. Use !help ${queuedCommand.commandName} to get more information`);
   } else {
-    await CommandModel.updateOne({ commandId: queuedCommand.botCommand.id }, { $inc: { timesUsed: 1 } }, { upsert: true });
+    if (Config.mongoDB) {
+      await CommandModel.updateOne({ commandId: queuedCommand.botCommand.id }, { $inc: { timesUsed: 1 } }, { upsert: true });
+    }
   }
 }
 

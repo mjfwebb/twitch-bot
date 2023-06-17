@@ -1,7 +1,7 @@
 import type websocket from 'websocket';
-import { findOrCreateUserById } from '../../../commands/helpers/findOrCreateUser';
+import { getChatUser } from '../../../commands/helpers/findOrCreateUser';
 import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
-import StreamModel from '../../../models/stream-model';
+import { getStreamStartedAt } from '../../../streamState';
 import type { ParsedMessage } from '../../../types';
 
 export async function firstMessageOfStreamHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
@@ -9,19 +9,14 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
   const userId = parsedMessage.tags?.['user-id'];
 
   if (userId && nick) {
-    const stream = await StreamModel.findOne({});
-    if (stream) {
-      const user = await findOrCreateUserById(userId, nick);
+    const user = await getChatUser(userId, nick);
 
-      if (new Date(user.lastSeen).getTime() < new Date(stream.startedAt).getTime()) {
-        if (user.welcomeMessage) {
-          user.lastSeen = new Date().toISOString();
-          await user.save();
-          if (user.welcomeMessage.startsWith('!') || user.welcomeMessage.startsWith('/')) {
-            return;
-          }
-          sendChatMessage(connection, `${user.welcomeMessage.replace(/%nick%/gi, user.displayName || user.nick)}`);
+    if (new Date(user.lastSeen).getTime() < new Date(getStreamStartedAt()).getTime()) {
+      if (user.welcomeMessage) {
+        if (user.welcomeMessage.startsWith('!') || user.welcomeMessage.startsWith('/')) {
+          return;
         }
+        sendChatMessage(connection, `${user.welcomeMessage.replace(/%nick%/gi, user.displayName || user.nick)}`);
       }
     }
   }

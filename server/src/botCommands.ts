@@ -45,6 +45,7 @@ import { w } from './commands/w';
 import { wary } from './commands/wary';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
+import Config from './config';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
 import type { Command } from './models/command-model';
 import CommandModel from './models/command-model';
@@ -111,6 +112,11 @@ const complexBotCommands: BotCommand[] = [
 ];
 
 async function loadMessageCommands(): Promise<BotCommand[]> {
+  // If mongoDB isn't used then don't try to load these
+  if (!Config.mongoDB) {
+    return [];
+  }
+
   const commands = await CommandModel.find({ message: { $ne: null } });
 
   type CommandWithMessage = HydratedDocument<Command> & { message: string; command: string };

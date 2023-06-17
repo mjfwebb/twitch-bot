@@ -1,6 +1,7 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getChatMessages } from './chatMessages';
+import Config from './config';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
 import { loadBadges } from './loadBadges';
 import { loadEmotes } from './loadEmotes';
@@ -23,9 +24,11 @@ export const getIO = () => io;
 export function runSocketServer() {
   io.on('connection', (socket) => {
     socket.on('getTask', async () => {
-      const task = await TaskModel.findOne({}, {}, { sort: { createdAt: -1 } });
-      if (task) {
-        socket.emit('task', task.content);
+      if (Config.mongoDB) {
+        const task = await TaskModel.findOne({}, {}, { sort: { createdAt: -1 } });
+        if (task) {
+          socket.emit('task', task.content);
+        }
       }
     });
     socket.on('getSong', async () => {

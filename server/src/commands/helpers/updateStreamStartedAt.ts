@@ -1,6 +1,14 @@
+import Config from '../../config';
 import StreamModel from '../../models/stream-model';
+import { setStreamStartedAt } from '../../streamState';
 
 export async function updateStreamStartedAt(startedAt: string): Promise<void> {
+  setStreamStartedAt(startedAt);
+
+  if (!Config.mongoDB) {
+    return;
+  }
+
   const stream = await StreamModel.findOne({});
   if (stream) {
     stream.startedAt = startedAt;

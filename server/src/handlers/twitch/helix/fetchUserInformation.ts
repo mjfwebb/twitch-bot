@@ -2,22 +2,9 @@ import fetch from 'node-fetch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { getCurrentAccessToken } from '../../../twitch';
+import type { UserInformation } from '../../../types';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
-
-type UserInformation = {
-  id: string;
-  login: string;
-  display_name: string;
-  type: string;
-  broadcaster_type: string;
-  description: string;
-  profile_image_url: string;
-  offline_image_url: string;
-  view_count: number;
-  email: string;
-  created_at: string;
-};
 
 export const fetchUserInformationById = async (userId: string): Promise<UserInformation | null> => {
   if (!userId) {

@@ -9,12 +9,14 @@ Ensure you have [setup your environment and configuration files](SETUP.md) befor
 | ------------- | ------------------------- | --------------------------------- |
 | required      | twitchConfig.json         | example.twitchConfig.json         |
 | required      | tokens.json               | example.tokens.json               |
-| required      | mongoDBConfig.json        | example.mongoDBConfig.json        |
+| optional*     | mongoDBConfig.json        | example.mongoDBConfig.json        |
 | optional      | discordWebhookConfig.json | example.discordWebhookConfig.json |
 | optional      | spotifyConfig.json        | example.spotifyConfig.json        |
 | optional      | githubConfig.json         | example.githubConfig.json         |
+| optional      | sevenTVConfig.json        | example.sevenTVConfig.json        |
+| optional      | betterTTVConfig.json      | example.betterTTVConfig.json      |
 
-The best way to begin is by copying the example versions of the required files (twitchConfig.json, tokens.json, and mongoDBConfig.json) and renaming them to the desired filenames.
+* It is highly recommended you include mongoDB connections to enable features of the bot which need storage.
 
 ## Where to get the data
 
@@ -22,11 +24,11 @@ The listed scopes are relevant for the existing commands in the repository. If y
 
 ### twitchConfig.json
 
-To get the auth_code construct your URL and enter it into the browser: 
+To get the auth_code construct your URL and enter it into the browser.  Here's an example:
 
-```
-https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator%3Aread%3Achatters+channel%3Amanage%3Abroadcast
-```
+`https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator%3Aread%3Achatters+channel%3Amanage%3Abroadcast`
+
+Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
 The required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
 
@@ -36,11 +38,11 @@ Visit https://developer.spotify.com/documentation/web-api/tutorials/getting-star
 
 Use the [Authorization Code Flow](https://developer.spotify.com/documentation/web-api/tutorials/code-flow)
 
-To get the auth_code construct your URL and enter it into the browser:
+To get the auth_code construct your URL and enter it into the browser. Here's an example:
 
-```
-https://accounts.spotify.com/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=user-read-currently-playing%20user-read-playback-state%20user-modify-playback-state
-```
+`https://accounts.spotify.com/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=user-read-currently-playing%20user-read-playback-state%20user-modify-playback-state`
+
+Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
 The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`. 
 
@@ -51,6 +53,7 @@ Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-se
 Ensure that the personal access token includes the scope to access and modify issues.
 
 ## Set up your commands
+
 
 Open `server\src\handlers\botCommands.ts` and change the commands to fit your needs. There are several examples of different commands here.
 

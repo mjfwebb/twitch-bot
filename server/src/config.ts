@@ -24,10 +24,10 @@ export interface TwitchConfig {
   redirect_uri: string;
 }
 
-export interface MongoDBConfig {
+export type MongoDBConfig = {
   url: string;
   db: string;
-}
+} | null;
 
 export type SpotifyConfig = {
   client_id: string;
@@ -174,10 +174,10 @@ function readMongoDBConfig(): MongoDBConfig {
     return mongoDBConfg;
   } catch (error) {
     if (isError(error)) {
-      console.log(`Error when loading MongoDB config: ${error.message}`);
+      console.log(`Optional MongoDB config error: ${error.message}`);
     }
   }
-  throw new Error('Failed to read mongoDB config');
+  return null;
 }
 
 function assertWebhookConfig(config: unknown): asserts config is WebhookConfig {

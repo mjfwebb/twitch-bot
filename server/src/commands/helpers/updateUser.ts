@@ -1,10 +1,15 @@
 import type { HydratedDocument } from 'mongoose';
+import Config from '../../config';
 import { fetchUserInformationById, fetchUserInformationByName } from '../../handlers/twitch/helix/fetchUserInformation';
 import { getTwitchViewerBotNames } from '../../handlers/twitchinsights/twitchViewerBots';
 import type { User } from '../../models/user-model';
 import UserModel from '../../models/user-model';
 
 export async function updateUserByName(displayName: string): Promise<HydratedDocument<User> | null> {
+  if (!Config.mongoDB) {
+    return null;
+  }
+
   if (getTwitchViewerBotNames().includes(displayName)) {
     return null;
   }

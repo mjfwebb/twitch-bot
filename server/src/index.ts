@@ -19,7 +19,9 @@ async function main() {
     await loadBotCommands();
 
     await getTwitchAccessToken(Config.twitch);
-    await getSpotifyAccessToken();
+    if (Config.spotify) {
+      await getSpotifyAccessToken();
+    }
     await fetchCustomRewards();
     await fetchKnownTwitchViewerBots();
     setStreamStatus(await fetchStreamStatus());

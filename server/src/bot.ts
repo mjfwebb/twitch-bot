@@ -1,6 +1,6 @@
 import websocket from 'websocket';
 import { addChatMessage } from './chatMessages';
-import { findOrCreateUserById } from './commands/helpers/findOrCreateUser';
+import { getChatUser } from './commands/helpers/findOrCreateUser';
 import Config from './config';
 import { botCommandHandler } from './handlers/botCommandHandler';
 import { discordChatWebhook } from './handlers/discord/discord';
@@ -77,7 +77,7 @@ export function runBot() {
                   const nick = parsedMessage.source.nick;
 
                   if (userId) {
-                    findOrCreateUserById(userId, nick)
+                    getChatUser(userId, nick)
                       .then((user) => {
                         addChatMessage({ user, parsedMessage });
                       })

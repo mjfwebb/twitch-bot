@@ -255,3 +255,17 @@ export type BadgeSet = {
   set_id: string; // An ID that identifies this set of chat badges. For example, Bits or Subscriber.
   versions: BadgeVersion[]; // The list of chat badges in this set.
 };
+
+export type UserInformation = {
+  id: string;
+  login: string;
+  display_name: string;
+  type: string;
+  broadcaster_type: string;
+  description: string;
+  profile_image_url: string;
+  offline_image_url: string;
+  view_count: number;
+  email: string;
+  created_at: string;
+};
