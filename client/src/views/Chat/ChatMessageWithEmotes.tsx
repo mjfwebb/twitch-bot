@@ -127,8 +127,6 @@ export const ChatMessageWithEmotes = ({
         }
 
         if (emote) {
-          const growMultiplier = modifierClasses.includes('growx') ? 2 : 1;
-
           return (
             <img
               className={classNames(
@@ -137,10 +135,10 @@ export const ChatMessageWithEmotes = ({
               )}
               key={`${match}.${index}`}
               height={36}
-              width={36 * growMultiplier}
               src={emote.url}
               alt={match}
               title={match}
+              {...(modifierClasses.includes('growx') ? { width: emote.width || 36 * 2 } : {})}
             />
           );
         }

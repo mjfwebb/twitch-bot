@@ -39,7 +39,7 @@ const loadFrankerFaceZGlobalEmotes = async () => {
         if (frankerFaceZEmoteSet) {
           for (const emote of Object.values(frankerFaceZEmoteSet.emoticons)) {
             const name = emote.name;
-            const imageUrl = emote.urls['4'];
+            const imageUrl = emote.urls['1'];
 
             frankerFaceZEmotesForClient[name] = {
               url: imageUrl,
@@ -66,8 +66,8 @@ const loadSevenTVEmotes = async () => {
         if (sevenTVEmoteSet) {
           sevenTVEmoteSet.emotes.forEach((emote) => {
             const name = emote.name;
-            // Use the last in the array of files as it will be the largest WebP
-            const file = emote.data.host.files[emote.data.host.files.length - 1];
+            // Use the second in the array of files as it will be the smallest WebP
+            const file = emote.data.host.files[2];
             const imageUrl = `${emote.data.host.url}/${file.name}`;
 
             sevenTVEmotesForClient[name] = {
@@ -91,7 +91,7 @@ const loadBetterTTVEmotes = async () => {
     if (betterTTVUser) {
       betterTTVUser.sharedEmotes.forEach((emote) => {
         const name = emote.code;
-        const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/3x.${emote.imageType}`;
+        const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/1x.${emote.imageType}`;
 
         betterTTVEmotesForClient[name] = {
           url: imageUrl,
@@ -111,7 +111,7 @@ export const loadBetterTTVGlobalEmotes = async () => {
   if (betterTTVGlobalEmotes) {
     betterTTVGlobalEmotes.forEach((emote) => {
       const name = emote.code;
-      const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/3x.${emote.imageType}`;
+      const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/1x.${emote.imageType}`;
 
       betterTTVEmotesForClient[name] = {
         url: imageUrl,
