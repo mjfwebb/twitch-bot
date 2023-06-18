@@ -115,7 +115,7 @@ export const Chat = () => {
           itemContent={itemContent}
           totalCount={chatMessages.length}
           initialTopMostItemIndex={chatMessages.length - 1}
-          atTopThreshold={400}
+          atBottomThreshold={400}
         />
       )}
     </div>
