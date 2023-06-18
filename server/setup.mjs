@@ -5,6 +5,7 @@ const optionalExampleFiles = [
   'example.discordWebhookConfig.json',
   'example.githubConfig.json',
   'example.sevenTVConfig.json',
+  'example.frankerFaceZConfig.json',
 ]
 
 const requiredExampleFiles = [
