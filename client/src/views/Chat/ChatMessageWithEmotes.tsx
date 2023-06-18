@@ -5,7 +5,8 @@ import type { Emotes } from '../../twitchTypes';
 import useStore from '../../store/store';
 import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags';
 
-const emoteRegex = /(\w+)/g;
+// emote regex which separates strings based on whitespace
+const emoteRegex = /(\s+)/g;
 
 export const ChatMessageWithEmotes = ({
   emotes,
@@ -30,9 +31,9 @@ export const ChatMessageWithEmotes = ({
     Object.entries(emotes).forEach(([emoteUrlPart, positioning]) => {
       const emoteName = message.slice(Number(positioning[0].startPosition - offset), Number(positioning[0].endPosition - offset) + 1);
       twitchEmoteMap[emoteName] = {
-        url: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/3.0`,
-        width: 36,
-        height: 36,
+        url: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0`,
+        width: null,
+        height: null,
         modifier: false,
         hidden: false,
         modifierFlags: 0,
@@ -134,7 +135,6 @@ export const ChatMessageWithEmotes = ({
                 modifierClasses.map((flag) => `chat-emote--${flag}`)
               )}
               key={`${match}.${index}`}
-              height={36}
               src={emote.url}
               alt={match}
               title={match}
