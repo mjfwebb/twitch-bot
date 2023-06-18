@@ -93,6 +93,8 @@ export type ChatMessage = {
     avatarUrl: string;
   } | null;
   parsedMessage: ParsedMessage;
+  isDisappearingSoon: boolean;
+  disappeared: boolean;
 };
 
 export type ChatEmote = {
