@@ -99,6 +99,9 @@ export type ChatEmote = {
   url: string;
   width: number | null;
   height: number | null;
+  modifier: boolean;
+  hidden: boolean;
+  modifierFlags: number;
 };
 
 export type ChatBadge = {

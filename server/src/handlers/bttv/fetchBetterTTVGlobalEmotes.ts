@@ -1,4 +1,4 @@
-/// https://api.betterttv.net/3/cached/emotes/global
+// https://api.betterttv.net/3/cached/emotes/global
 
 import fetch from 'node-fetch';
 import Config from '../../config';

@@ -102,7 +102,27 @@
 
   &-emote {
     max-height: 36px;
+
+    &--flipy {
+      transform: scaleY(-1);
+    }
+
+    &--flipx {
+      transform: scaleX(-1);
+    }
+
+    &--cursed {
+      filter: grayscale(1) brightness(0.7) contrast(2.5);
+    }
+
+    &--hyperred {
+      filter: brightness(0.2) sepia(1) brightness(2.2) contrast(3) saturate(8);
+    }
   }
+}
+
+.chat-emote--flipy.chat-emote--flipx {
+  transform: scaleX(-1) scaleY(-1);
 }
 
 @keyframes hide {

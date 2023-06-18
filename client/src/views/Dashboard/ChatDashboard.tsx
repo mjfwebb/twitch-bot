@@ -50,7 +50,7 @@ export const ChatDashboard = () => {
   return (
     <>
       <h2>Chat</h2>
-      <p>When you change the URL, copy the new version of the link and update your browser source.</p>
+      <p>When you change options, copy the new version of the link and update your browser source.</p>
       <div className="link">
         <a target="_new" href={chatURL.href}>
           {chatURLString}

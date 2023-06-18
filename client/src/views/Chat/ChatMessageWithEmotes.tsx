@@ -1,32 +1,11 @@
-import type { ReactElement } from 'react';
+import classNames from 'classnames';
 
+import type { ChatEmote } from '../../types';
 import type { Emotes } from '../../twitchTypes';
 import useStore from '../../store/store';
+import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags';
 
 const emoteRegex = /(\w+)/g;
-
-type ReplacerFunction = (match: string, index: number, offset: number) => string | ReactElement;
-
-function replaceString(text: string, regExpMatch: RegExp, replacerFunction: ReplacerFunction): string | string[] {
-  let currentCharStart = 0;
-  let currentCharLength = 0;
-
-  const result = text.split(regExpMatch);
-
-  // Deliberately apply replacerFunction to all odd elements
-  for (let i = 1, length = result.length; i < length; i += 2) {
-    currentCharLength = result[i].length;
-    currentCharStart += result[i - 1].length;
-    result[i] = replacerFunction(result[i], i, currentCharStart) as unknown as string;
-    currentCharStart += currentCharLength;
-  }
-
-  return result;
-}
-
-function reactStringReplace(source: string, match: RegExp, fn: ReplacerFunction): (string | string[])[] {
-  return [source].map((x) => replaceString(x, match, fn)).flat();
-}
 
 export const ChatMessageWithEmotes = ({
   emotes,
@@ -45,24 +24,125 @@ export const ChatMessageWithEmotes = ({
     return <></>;
   }
 
-  const twitchEmoteMap: Record<string, string> = {};
+  const twitchEmoteMap: Record<string, ChatEmote> = {};
 
   if (emotes) {
     Object.entries(emotes).forEach(([emoteUrlPart, positioning]) => {
       const emoteName = message.slice(Number(positioning[0].startPosition - offset), Number(positioning[0].endPosition - offset) + 1);
-      twitchEmoteMap[emoteName] = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/3.0`;
+      twitchEmoteMap[emoteName] = {
+        url: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/3.0`,
+        width: 36,
+        height: 36,
+        modifier: false,
+        hidden: false,
+        modifierFlags: 0,
+      };
     });
   }
 
+  const messageParts: {
+    match: string;
+    emote: ChatEmote | undefined;
+    skip: boolean;
+  }[] = [];
+
+  message.split(emoteRegex).forEach((match) => {
+    if (twitchEmoteMap[match]) {
+      messageParts.push({
+        match,
+        emote: twitchEmoteMap[match],
+        skip: false,
+      });
+    } else if (chatEmotes[match] && !chatEmotes[match].hidden) {
+      messageParts.push({
+        match,
+        emote: chatEmotes[match],
+        skip: false,
+      });
+    } else {
+      messageParts.push({
+        match,
+        emote: undefined,
+        skip: false,
+      });
+    }
+  });
+
   return (
     <>
-      {reactStringReplace(message, emoteRegex, (match, index) => {
-        if (twitchEmoteMap[match]) {
-          return <img className="chat-emote" key={`${match}.${index}`} height={36} src={twitchEmoteMap[match]} alt={match} title={match} />;
-        } else if (chatEmotes[match]) {
-          return <img className="chat-emote" key={`${match}.${index}`} height={36} src={chatEmotes[match].url} alt={match} title={match} />;
-        } else {
+      {messageParts.map(({ match, emote, skip }, index) => {
+        if (!emote) {
           return match;
+        }
+
+        if (skip) {
+          return null;
+        }
+
+        const modifierClasses: string[] = [];
+        let nextIndex = index + 1;
+
+        while (nextIndex > -1) {
+          const nextMessagePart = messageParts[nextIndex];
+
+          // No next message part
+          if (!nextMessagePart) {
+            nextIndex = -1;
+            continue;
+          }
+
+          // Next message part is a space
+          if (nextMessagePart.match === ' ') {
+            nextIndex++;
+            continue;
+          }
+
+          // Next message part is not an emote
+          if (!nextMessagePart.emote) {
+            nextIndex = -1;
+            continue;
+          }
+
+          // Next message part is a modifier
+          if (nextMessagePart.emote && nextMessagePart.emote.modifierFlags > 0) {
+            const nextMessageParsedFlags = parseFrankerFaceZModifierFlags(nextMessagePart.emote.modifierFlags);
+
+            // Next message part is a modifier that applies to this emote
+            if (nextMessageParsedFlags.length > 0) {
+              // Hide the next message part
+              messageParts[nextIndex].skip = true;
+
+              // Add the modifier flags to this emote
+              const filteredFlags = nextMessageParsedFlags.filter((flag) => flag !== 'hidden');
+              modifierClasses.push(...filteredFlags);
+
+              // Continue to the next message part
+              nextIndex++;
+              continue;
+            }
+          }
+
+          // Next message part is not a modifier that applies to this emote
+          nextIndex = -1;
+        }
+
+        if (emote) {
+          const growMultiplier = modifierClasses.includes('growx') ? 2 : 1;
+
+          return (
+            <img
+              className={classNames(
+                'chat-emote',
+                modifierClasses.map((flag) => `chat-emote--${flag}`)
+              )}
+              key={`${match}.${index}`}
+              height={36}
+              width={36 * growMultiplier}
+              src={emote.url}
+              alt={match}
+              title={match}
+            />
+          );
         }
       })}
     </>

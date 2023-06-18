@@ -52,6 +52,10 @@ export type BetterTTVConfig = {
   providerId: string;
 } | null;
 
+export type FrankerFaceZConfig = {
+  broadcasterId: string;
+} | null;
+
 interface IConfig {
   environment: 'development' | 'production';
   twitch: TwitchConfig;
@@ -61,6 +65,7 @@ interface IConfig {
   github: GitHubConfig;
   sevenTV: SevenTVConfig;
   betterTTV: BetterTTVConfig;
+  frankerFaceZ: FrankerFaceZConfig;
 }
 
 function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
@@ -97,9 +102,9 @@ function assertSpotifyConfig(config: unknown): asserts config is SpotifyConfig {
 
 function readSpotifyConfig(): SpotifyConfig {
   try {
-    const SpotifyConfg: unknown = JSON.parse(readFileSync('./spotifyConfig.json', 'utf8'));
-    assertSpotifyConfig(SpotifyConfg);
-    return SpotifyConfg;
+    const spotifyConfg: unknown = JSON.parse(readFileSync('./spotifyConfig.json', 'utf8'));
+    assertSpotifyConfig(spotifyConfg);
+    return spotifyConfg;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional Spotify config error: ${error.message}`);
@@ -116,9 +121,9 @@ function assertGitHubConfig(config: unknown): asserts config is GitHubConfig {
 
 function readGitHubConfig(): GitHubConfig {
   try {
-    const GitHubConfg: unknown = JSON.parse(readFileSync('./githubConfig.json', 'utf8'));
-    assertGitHubConfig(GitHubConfg);
-    return GitHubConfg;
+    const gitHubConfg: unknown = JSON.parse(readFileSync('./githubConfig.json', 'utf8'));
+    assertGitHubConfig(gitHubConfg);
+    return gitHubConfg;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional GitHub config error: ${error.message}`);
@@ -133,9 +138,9 @@ function assertSevenTVConfig(config: unknown): asserts config is SevenTVConfig {
 
 function readSevenTVConfig(): SevenTVConfig {
   try {
-    const SevenTVConfg: unknown = JSON.parse(readFileSync('./sevenTVConfig.json', 'utf8'));
-    assertSevenTVConfig(SevenTVConfg);
-    return SevenTVConfg;
+    const sevenTVConfg: unknown = JSON.parse(readFileSync('./sevenTVConfig.json', 'utf8'));
+    assertSevenTVConfig(sevenTVConfg);
+    return sevenTVConfg;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional SevenTV config error: ${error.message}`);
@@ -151,12 +156,29 @@ function assertBetterTTVConfig(config: unknown): asserts config is BetterTTVConf
 
 function readBetterTTVConfig(): BetterTTVConfig {
   try {
-    const BetterTTVConfg: unknown = JSON.parse(readFileSync('./betterTTVConfig.json', 'utf8'));
-    assertBetterTTVConfig(BetterTTVConfg);
-    return BetterTTVConfg;
+    const betterTTVConfg: unknown = JSON.parse(readFileSync('./betterTTVConfig.json', 'utf8'));
+    assertBetterTTVConfig(betterTTVConfg);
+    return betterTTVConfg;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional BetterTTV config error: ${error.message}`);
+    }
+  }
+  return null;
+}
+
+function assertFrankerFaceZConfig(config: unknown): asserts config is FrankerFaceZConfig {
+  assert(Object.prototype.hasOwnProperty.call(config, 'broadcasterId'), 'Missing FrankerFaceZ config: broadcasterId');
+}
+
+function readFrankerFaceZConfig(): FrankerFaceZConfig {
+  try {
+    const frankerFaceZConfg: unknown = JSON.parse(readFileSync('./frankerFaceZConfig.json', 'utf8'));
+    assertFrankerFaceZConfig(frankerFaceZConfg);
+    return frankerFaceZConfg;
+  } catch (error) {
+    if (isError(error)) {
+      console.log(`Optional FrankerFaceZ config error: ${error.message}`);
     }
   }
   return null;
@@ -211,6 +233,7 @@ const Config: IConfig = {
   github: readGitHubConfig(),
   sevenTV: readSevenTVConfig(),
   betterTTV: readBetterTTVConfig(),
+  frankerFaceZ: readFrankerFaceZConfig(),
 };
 
 export default Config;

@@ -15,6 +15,7 @@ Ensure you have [setup your environment and configuration files](SETUP.md) befor
 | optional      | githubConfig.json         | example.githubConfig.json         |
 | optional      | sevenTVConfig.json        | example.sevenTVConfig.json        |
 | optional      | betterTTVConfig.json      | example.betterTTVConfig.json      |
+| optional      | frankerFaceZConfig.json   | example.frankerFaceZConfig.json   |
 
 * It is highly recommended you include mongoDB connections to enable features of the bot which need storage.
 
@@ -59,6 +60,10 @@ Enter your userId which you can get from the URL on your account page in 7tv.app
 ### betterTTVConfig.json
 
 You probably want to set provider as twitch and the ID is your twitch broadcaster ID (the same as set in your twitchConfig.json).
+
+### frankerFaceZConfig.json
+
+Enter your broadcaster ID (the same as set in your twitchConfig.json).
 
 ## Set up your commands
 
