@@ -9,7 +9,7 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
   const userId = parsedMessage.tags?.['user-id'];
 
   if (userId && nick) {
-    const user = await getChatUser(userId, nick);
+    const user = await getChatUser(parsedMessage);
 
     if (new Date(user.lastSeen).getTime() < new Date(getStreamStartedAt()).getTime()) {
       if (user.welcomeMessage) {

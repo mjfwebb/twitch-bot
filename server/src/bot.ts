@@ -74,12 +74,13 @@ export function runBot() {
                   discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
 
                   const userId = parsedMessage.tags?.['user-id'];
-                  const nick = parsedMessage.source.nick;
 
                   if (userId) {
-                    getChatUser(userId, nick)
+                    getChatUser(parsedMessage)
                       .then((user) => {
-                        addChatMessage({ user, parsedMessage });
+                        if (user) {
+                          addChatMessage({ user, parsedMessage });
+                        }
                       })
                       .catch((e) => {
                         console.error(e);

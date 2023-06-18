@@ -4,16 +4,16 @@ import { fetchUserInformationByName } from '../../handlers/twitch/helix/fetchUse
 import { getTwitchViewerBotNames } from '../../handlers/twitchinsights/twitchViewerBots';
 import type { User } from '../../models/user-model';
 import UserModel from '../../models/user-model';
-import type { UserInformation } from '../../types';
+import type { ParsedMessage, UserInformation } from '../../types';
 
-function nonDBUser(userInformation: UserInformation | null): User {
+function getNonDBUser({ displayName, userId, avatarUrl }: { displayName: string; userId: string; avatarUrl: string }): User {
   return {
-    nick: userInformation?.display_name || 'unknown',
+    nick: displayName,
     points: 0,
     experience: 0,
-    userId: userInformation?.id || 'unknown',
-    displayName: userInformation?.display_name || 'unknown',
-    avatarUrl: userInformation?.profile_image_url || '',
+    userId: userId,
+    displayName: displayName,
+    avatarUrl,
     lastSeen: '0',
   };
 }
@@ -24,10 +24,9 @@ export async function findOrCreateUserByName(displayName: string): Promise<User 
   }
 
   const userInformation = await fetchUserInformationByName(displayName);
-
   // If there is no database then just return the collected data, if possible
   if (!Config.mongoDB) {
-    return nonDBUser(userInformation);
+    return getNonDBUser({ displayName, userId: userInformation?.id || '', avatarUrl: userInformation?.profile_image_url || '' });
   }
 
   let user = await UserModel.findOne({ displayName });
@@ -50,13 +49,23 @@ export async function findOrCreateUserByName(displayName: string): Promise<User 
   return user;
 }
 
-export async function getChatUser(userId: string, nick: string) {
-  const userInformation = await fetchUserInformationByName(nick);
+export async function getChatUser(parsedMessage: ParsedMessage): Promise<User> {
+  const userId = parsedMessage.tags?.['user-id'];
+
+  const nonDBUser = getNonDBUser({
+    displayName: parsedMessage.tags?.['display-name'] || 'unknwown',
+    userId: userId || 'unknown',
+    avatarUrl: '',
+  });
+
+  const nick = parsedMessage.source?.nick;
 
   // If there is no database then just return the collected data, if possible
-  if (!Config.mongoDB) {
-    return nonDBUser(userInformation);
+  if (!userId || !nick || !Config.mongoDB) {
+    return nonDBUser;
   }
+
+  const userInformation = await fetchUserInformationByName(nick);
 
   return await findOrCreateUserById(userId, nick, userInformation);
 }
