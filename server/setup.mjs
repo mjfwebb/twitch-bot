@@ -293,7 +293,7 @@ async function main() {
         break;
       }
 
-      case 'discord': {
+      case 'discord_webhook': {
         const discord_webhookConfigParts = [
           {
             name: 'id',
