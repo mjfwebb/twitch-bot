@@ -1,7 +1,7 @@
 
 # Configuration
 
-Ensure you have [setup your environment and configuration files](SETUP.md) before continuing,
+Ensure you have [setup your environment and configuration file](SETUP.md) before continuing,
 
 **WARNING**: The configuration file `config.json` files will contain sensitive information. Do not share this information.
 
