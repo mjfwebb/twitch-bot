@@ -2,12 +2,14 @@ import Config from './config';
 import { fetchBetterTTVGlobalEmotes } from './handlers/bttv/fetchBetterTTVGlobalEmotes';
 import { fetchBetterTTVUser } from './handlers/bttv/fetchBetterTTVUser';
 import { fetchFrankerFaceZGlobalEmotes } from './handlers/frankerfacez/fetchFrankerFaceZGlobalEmotes';
+import { fetchFrankerFaceZRoomEmotes } from './handlers/frankerfacez/fetchFrankerFaceZRoomEmotes';
 import { fetchSevenTVEmoteSet } from './handlers/sevenTV/fetchSevenTVEmoteSets';
 import { fetchSevenTVUser } from './handlers/sevenTV/fetchSevenTVUser';
 import { getIO } from './runSocketServer';
 
 export type ChatEmote = {
-  url: string;
+  src: string;
+  srcSet?: string;
   width: number | null;
   height: number | null;
   modifier: boolean;
@@ -23,6 +25,7 @@ export const loadEmotes = async () => {
   await loadSevenTVEmotes();
   await loadBetterTTVEmotes();
   await loadBetterTTVGlobalEmotes();
+  await loadFrankerFaceZRoomEmotes();
   await loadFrankerFaceZGlobalEmotes();
 
   // Change the order of this destructuring for your preferered emote prioritisation
@@ -42,7 +45,7 @@ const loadFrankerFaceZGlobalEmotes = async () => {
             const imageUrl = emote.urls['1'];
 
             frankerFaceZEmotesForClient[name] = {
-              url: imageUrl,
+              src: imageUrl,
               width: emote.width,
               height: emote.height,
               modifier: emote.modifier,
@@ -50,6 +53,30 @@ const loadFrankerFaceZGlobalEmotes = async () => {
               modifierFlags: emote.modifier_flags,
             };
           }
+        }
+      }
+    }
+  }
+};
+
+const loadFrankerFaceZRoomEmotes = async () => {
+  if (Config.frankerFaceZ.enabled) {
+    const frankerFaceZGlobalEmotes = await fetchFrankerFaceZRoomEmotes();
+    if (frankerFaceZGlobalEmotes) {
+      const emoteSets = frankerFaceZGlobalEmotes.sets;
+      for (const emoteSet of Object.values(emoteSets)) {
+        for (const emote of Object.values(emoteSet.emoticons)) {
+          const name = emote.name;
+          const imageUrl = emote.urls['1'];
+
+          frankerFaceZEmotesForClient[name] = {
+            src: imageUrl,
+            width: emote.width,
+            height: emote.height,
+            modifier: emote.modifier,
+            hidden: emote.hidden,
+            modifierFlags: emote.modifier_flags,
+          };
         }
       }
     }
@@ -71,7 +98,7 @@ const loadSevenTVEmotes = async () => {
             const imageUrl = `${emote.data.host.url}/${file.name}`;
 
             sevenTVEmotesForClient[name] = {
-              url: imageUrl,
+              src: imageUrl,
               width: file.width,
               height: file.height,
               modifier: false,
@@ -94,7 +121,7 @@ const loadBetterTTVEmotes = async () => {
         const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/1x.${emote.imageType}`;
 
         betterTTVEmotesForClient[name] = {
-          url: imageUrl,
+          src: imageUrl,
           width: null,
           height: null,
           modifier: false,
@@ -111,10 +138,9 @@ export const loadBetterTTVGlobalEmotes = async () => {
   if (betterTTVGlobalEmotes) {
     betterTTVGlobalEmotes.forEach((emote) => {
       const name = emote.code;
-      const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/1x.${emote.imageType}`;
 
       betterTTVEmotesForClient[name] = {
-        url: imageUrl,
+        src: `https://cdn.betterttv.net/emote/${emote.id}/1x.${emote.imageType}`,
         width: null,
         height: null,
         modifier: false,
