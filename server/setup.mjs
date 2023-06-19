@@ -4,9 +4,13 @@ import { input } from '@inquirer/prompts';
 import { readFileSync, writeFileSync } from 'fs';
 
 function readJsonFile(filename) {
-  const file = readFileSync(filename);
-  const json = JSON.parse(file.toString());
-  return json;
+  try {
+    const file = readFileSync(filename);
+    const json = JSON.parse(file.toString());
+    return json;
+  } catch (err) {
+    return null;
+  }
 };
 
 function writeJsonFile(filename, json) {
@@ -16,7 +20,10 @@ function writeJsonFile(filename, json) {
 
 async function main() {
   const exampleConfig = readJsonFile('./example.config.json');
-  const currentConfig = readJsonFile('./config.json');
+  let currentConfig = readJsonFile('./config.json');
+  if (currentConfig === null) {
+    currentConfig = exampleConfig;
+  }
 
   const confirmResult = await confirm({
     message: 'Have you made sure that no one else can see your screen?',
