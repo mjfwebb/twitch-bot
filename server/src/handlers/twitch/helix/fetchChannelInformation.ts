@@ -18,30 +18,29 @@ type ChannelInfomation = {
 };
 
 export const fetchChannelInformation = async (): Promise<ChannelInfomation | null> => {
-  if (Config.twitch) {
-    try {
-      const url = `${TWITCH_HELIX_URL}channels?broadcaster_id=${Config.twitch.broadcaster_id}`;
-      const accessToken = getCurrentAccessToken();
+  try {
+    const url = `${TWITCH_HELIX_URL}channels?broadcaster_id=${Config.twitch.broadcaster_id}`;
+    const accessToken = getCurrentAccessToken();
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Client-Id': Config.twitch.client_id,
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Client-Id': Config.twitch.client_id,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-      const result: unknown = await response.json();
+    const result: unknown = await response.json();
 
-      if (hasOwnProperty(result, 'data')) {
-        assertArray(result.data);
-        if (result.data.length > 0 && hasOwnProperty(result.data[0], 'broadcaster_id') && typeof result.data[0].broadcaster_id === 'string') {
-          return result.data[0] as ChannelInfomation;
-        }
+    if (hasOwnProperty(result, 'data')) {
+      assertArray(result.data);
+      if (result.data.length > 0 && hasOwnProperty(result.data[0], 'broadcaster_id') && typeof result.data[0].broadcaster_id === 'string') {
+        return result.data[0] as ChannelInfomation;
       }
-    } catch (error) {
-      console.error(error);
     }
+  } catch (error) {
+    console.error(error);
   }
+
   return null;
 };

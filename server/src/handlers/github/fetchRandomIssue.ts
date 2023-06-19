@@ -3,7 +3,7 @@ import Config from '../../config';
 import { getRandomNumberInRange } from '../../utils/getRandomNumberInRange';
 
 export const fetchRandomIssue = async () => {
-  if (Config.github) {
+  if (Config.github.enabled) {
     try {
       const octokit = new Octokit({ auth: Config.github.access_token });
 
@@ -20,5 +20,6 @@ export const fetchRandomIssue = async () => {
       console.error(error);
     }
   }
+
   return null;
 };

@@ -9,7 +9,7 @@ const currentSong: SpotifySong | null = null;
 export const getCurrentSpotifySong = () => currentSong;
 
 export const getPlaybackQueue = async (): Promise<SpotifyTrack[] | null> => {
-  if (Config.spotify) {
+  if (Config.spotify.enabled) {
     try {
       const url = `${SPOTIFY_API_URL}me/player/queue`;
 
@@ -28,5 +28,6 @@ export const getPlaybackQueue = async (): Promise<SpotifyTrack[] | null> => {
       console.error(error);
     }
   }
+
   return null;
 };

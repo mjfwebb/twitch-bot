@@ -5,7 +5,7 @@ import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SpotifyTrack } from './types';
 
 export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> => {
-  if (Config.spotify) {
+  if (Config.spotify.enabled) {
     try {
       const url = `${SPOTIFY_API_URL}tracks/${trackId}`;
 
@@ -23,5 +23,6 @@ export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> =>
       console.error(error);
     }
   }
+
   return null;
 };

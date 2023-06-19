@@ -19,7 +19,7 @@ async function main() {
     await loadBotCommands();
 
     await getTwitchAccessToken(Config.twitch);
-    if (Config.spotify) {
+    if (Config.spotify.enabled) {
       await getSpotifyAccessToken();
     }
     await fetchCustomRewards();

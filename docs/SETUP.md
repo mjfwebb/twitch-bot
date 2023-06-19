@@ -18,34 +18,12 @@ npm install
 
 ## Setup configuration files
 
-It is highly recommended you use the setup script named `setup.mjs` to create these files. Do note however that the values in the created configuration files need to be updated with your own unique data.
-
-Usage of setup.mjs:
+It is highly recommended you use the setup script named `setup.mjs` to set the configuration.json settings. To do so, run the `node setup.mjs` script.
 
 ```
   cd server
   node setup.mjs
 ```
 
-If you want to forcefully recreate files:
-
-```
-  cd server
-  node setup.mjs --force
-```
-
-If you want to create all files, including optional files:
-
-```
-  cd server
-  node setup.mjs --all
-```
-
-If you want to forcefully recreate all files, including optional files:
-
-```
-  cd server
-  node setup.mjs --all --force
-```
 
 Once you have these files, go ahead and [configure them](CONFIGURATION.md)

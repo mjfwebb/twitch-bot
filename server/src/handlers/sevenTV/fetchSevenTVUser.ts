@@ -6,7 +6,7 @@ import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SevenTVUser } from './types';
 
 export const fetchSevenTVUser = async (): Promise<SevenTVUser | null> => {
-  if (Config.sevenTV) {
+  if (Config.sevenTV.enabled) {
     try {
       const url = `https://7tv.io/v3/users/${Config.sevenTV.userId}`;
       const response = await fetch(url, { method: 'GET' });
@@ -23,5 +23,6 @@ export const fetchSevenTVUser = async (): Promise<SevenTVUser | null> => {
       console.error(error);
     }
   }
+
   return null;
 };

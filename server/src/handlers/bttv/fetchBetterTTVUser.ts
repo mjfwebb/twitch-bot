@@ -6,7 +6,7 @@ import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { BttvUser } from './types';
 
 export const fetchBetterTTVUser = async (): Promise<BttvUser | null> => {
-  if (Config.betterTTV) {
+  if (Config.betterTTV.enabled) {
     try {
       const url = `https://api.betterttv.net/3/cached/users/${Config.betterTTV.provider}/${Config.betterTTV.providerId}`;
       const response = await fetch(url, { method: 'GET' });
@@ -24,5 +24,6 @@ export const fetchBetterTTVUser = async (): Promise<BttvUser | null> => {
       console.error(error);
     }
   }
+
   return null;
 };

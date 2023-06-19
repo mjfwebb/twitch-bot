@@ -10,7 +10,7 @@ let currentSong: SpotifySong | null = null;
 export const getCurrentSpotifySong = () => currentSong;
 
 export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
-  if (Config.spotify) {
+  if (Config.spotify.enabled) {
     try {
       const url = `${SPOTIFY_API_URL}me/player/currently-playing`;
 
@@ -36,5 +36,6 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
       console.error(error);
     }
   }
+
   return null;
 };

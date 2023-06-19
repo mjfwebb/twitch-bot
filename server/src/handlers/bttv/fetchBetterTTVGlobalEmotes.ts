@@ -6,7 +6,7 @@ import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { BttvEmote } from './types';
 
 export const fetchBetterTTVGlobalEmotes = async (): Promise<BttvEmote[] | null> => {
-  if (Config.betterTTV) {
+  if (Config.betterTTV.enabled) {
     try {
       const url = `https://api.betterttv.net/3/cached/emotes/global`;
       const response = await fetch(url, { method: 'GET' });
@@ -26,5 +26,6 @@ export const fetchBetterTTVGlobalEmotes = async (): Promise<BttvEmote[] | null> 
       console.error(error);
     }
   }
+
   return null;
 };

@@ -3,7 +3,7 @@ import { Octokit } from 'octokit';
 import Config from '../../config';
 
 export const createIssue = async (issueTitle: string, issueDescription: string) => {
-  if (Config.github) {
+  if (Config.github.enabled) {
     try {
       const octokit = new Octokit({ auth: Config.github.access_token });
 
@@ -21,5 +21,6 @@ export const createIssue = async (issueTitle: string, issueDescription: string) 
       console.error(error);
     }
   }
+
   return null;
 };

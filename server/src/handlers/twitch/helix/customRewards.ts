@@ -47,23 +47,21 @@ let customRewards: CustomReward[];
 export const getCustomRewards = () => customRewards;
 
 export const createCustomReward = async (newReward: NewCustomReward): Promise<void> => {
-  if (Config.twitch) {
-    try {
-      const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
-      const accessToken = getCurrentAccessToken();
+  try {
+    const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
+    const accessToken = getCurrentAccessToken();
 
-      await fetchWithRetry(url, {
-        method: 'POST',
-        headers: {
-          'Client-Id': Config.twitch.client_id,
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newReward),
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await fetchWithRetry(url, {
+      method: 'POST',
+      headers: {
+        'Client-Id': Config.twitch.client_id,
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newReward),
+    });
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -74,51 +72,47 @@ export const editCustomReward = async (customRewardId: string, reward: NewCustom
     throw new Error('Cannot find custom reward');
   }
 
-  if (Config.twitch) {
-    try {
-      const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}&id=${customRewardId}`;
-      const accessToken = getCurrentAccessToken();
+  try {
+    const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}&id=${customRewardId}`;
+    const accessToken = getCurrentAccessToken();
 
-      const result = await fetchWithRetry(url, {
-        method: 'PATCH',
-        headers: {
-          'Client-Id': Config.twitch.client_id,
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(reward),
-      });
-      if (hasOwnProperty(result, 'data')) {
-        const customRewardsData: unknown = result.data;
-        assertArray(customRewardsData);
-        await fetchCustomRewards();
-      }
-    } catch (error) {
-      console.error(error);
+    const result = await fetchWithRetry(url, {
+      method: 'PATCH',
+      headers: {
+        'Client-Id': Config.twitch.client_id,
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reward),
+    });
+    if (hasOwnProperty(result, 'data')) {
+      const customRewardsData: unknown = result.data;
+      assertArray(customRewardsData);
+      await fetchCustomRewards();
     }
+  } catch (error) {
+    console.error(error);
   }
 };
 
 export const fetchCustomRewards = async (): Promise<void> => {
-  if (Config.twitch) {
-    try {
-      const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
-      const accessToken = getCurrentAccessToken();
+  try {
+    const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
+    const accessToken = getCurrentAccessToken();
 
-      const result = await fetchWithRetry(url, {
-        method: 'GET',
-        headers: {
-          'Client-Id': Config.twitch.client_id,
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (hasOwnProperty(result, 'data')) {
-        const customRewardsData: unknown = result.data;
-        assertArray(customRewardsData);
-        customRewards = customRewardsData as CustomReward[];
-      }
-    } catch (error) {
-      console.error(error);
+    const result = await fetchWithRetry(url, {
+      method: 'GET',
+      headers: {
+        'Client-Id': Config.twitch.client_id,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (hasOwnProperty(result, 'data')) {
+      const customRewardsData: unknown = result.data;
+      assertArray(customRewardsData);
+      customRewards = customRewardsData as CustomReward[];
     }
+  } catch (error) {
+    console.error(error);
   }
 };

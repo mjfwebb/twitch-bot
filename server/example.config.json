@@ -1,0 +1,50 @@
+{
+  "twitch": {
+    "broadcaster_id": "12345678",
+    "client_id": "client_id",
+    "client_secret": "client_secret",
+    "grant_type": "authorization_code",
+    "account": "your_account_name",
+    "channel": "target_channel_name",
+    "auth_code": "your_auth_code",
+    "redirect_uri": "redirect_uri"
+  },
+  "mongodb": {
+    "enabled": false,
+    "url": "mongodb://localhost:27017/",
+    "db": "twitch-bot"
+  },
+  "spotify": {
+    "enabled": false,
+    "client_id": "client_id",
+    "client_secret": "client_secret",
+    "grant_type": "authorization_code",
+    "auth_code": "your_auth_code",
+    "redirect_uri": "redirect_uri"
+  },
+  "github": {
+    "enabled": false,
+    "owner": "owner",
+    "repo": "repo",
+    "access_token": "access_token"
+  },
+  "seventv": {
+    "enabled": false,
+    "user_id": "user_id"
+  },
+  "betterttv": {
+    "enabled": false,
+    "provider": "twitch",
+    "provider_id": "12345678"
+  },
+  "frankerfacez": {
+    "enabled": false,
+    "broadcaster_id": "12345678"
+  },
+  "discord_webhook": {
+    "enabled": false,
+    "id": "",
+    "token": "",
+    "url": ""
+  }
+}

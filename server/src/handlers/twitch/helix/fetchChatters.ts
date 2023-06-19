@@ -12,27 +12,26 @@ type Chatter = {
 };
 
 export const fetchChatters = async (): Promise<Chatter[]> => {
-  if (Config.twitch) {
-    try {
-      const url = `${TWITCH_HELIX_URL}chat/chatters?broadcaster_id=${Config.twitch.broadcaster_id}&moderator_id=${Config.twitch.broadcaster_id}`;
-      const accessToken = getCurrentAccessToken();
+  try {
+    const url = `${TWITCH_HELIX_URL}chat/chatters?broadcaster_id=${Config.twitch.broadcaster_id}&moderator_id=${Config.twitch.broadcaster_id}`;
+    const accessToken = getCurrentAccessToken();
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Client-Id': Config.twitch.client_id,
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const result: unknown = await response.json();
-      if (hasOwnProperty(result, 'data')) {
-        const onlineChatters: unknown = result.data;
-        assertArray(onlineChatters);
-        return onlineChatters as Chatter[];
-      }
-    } catch (error) {
-      console.error(error);
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Client-Id': Config.twitch.client_id,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const result: unknown = await response.json();
+    if (hasOwnProperty(result, 'data')) {
+      const onlineChatters: unknown = result.data;
+      assertArray(onlineChatters);
+      return onlineChatters as Chatter[];
     }
+  } catch (error) {
+    console.error(error);
   }
+
   return [];
 };

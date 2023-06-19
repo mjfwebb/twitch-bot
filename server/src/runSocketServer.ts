@@ -24,7 +24,7 @@ export const getIO = () => io;
 export function runSocketServer() {
   io.on('connection', (socket) => {
     socket.on('getTask', async () => {
-      if (Config.mongoDB) {
+      if (Config.mongoDB.enabled) {
         const task = await TaskModel.findOne({}, {}, { sort: { createdAt: -1 } });
         if (task) {
           socket.emit('task', task.content);

@@ -7,12 +7,10 @@ import Config from './config';
  * @returns A Promise that resolves once the connection is established.
  */
 export const setupMongoose = async (): Promise<void> => {
-  const mongoDB = Config.mongoDB;
-
-  if (mongoDB) {
-    console.info(`setupMongoose: Starting Mongoose with connection URL ${mongoDB.url}${mongoDB.db}.`);
+  if (Config.mongoDB.enabled) {
+    console.info(`setupMongoose: Starting Mongoose with connection URL ${Config.mongoDB.url}${Config.mongoDB.db}.`);
     mongoose.set('strictQuery', true);
-    await mongoose.connect(`${mongoDB.url}${mongoDB.db}`);
-    console.info(`setupMongoose: Successfully connected to ${mongoDB.url}${mongoDB.db}.`);
+    await mongoose.connect(`${Config.mongoDB.url}${Config.mongoDB.db}`);
+    console.info(`setupMongoose: Successfully connected to ${Config.mongoDB.url}${Config.mongoDB.db}.`);
   }
 };

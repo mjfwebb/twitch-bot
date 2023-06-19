@@ -3,19 +3,18 @@
 
 Ensure you have [setup your environment and configuration files](SETUP.md) before continuing,
 
-**WARNING**: The resulting `.json` files will contain sensitive information when filled in correctly. Do not share this information.
+**WARNING**: The configuration file `config.json` files will contain sensitive information. Do not share this information.
 
-| Required file | Desired filename          | Example filename                  |
-| ------------- | ------------------------- | --------------------------------- |
-| required      | twitchConfig.json         | example.twitchConfig.json         |
-| required      | tokens.json               | example.tokens.json               |
-| optional*     | mongoDBConfig.json        | example.mongoDBConfig.json        |
-| optional      | discordWebhookConfig.json | example.discordWebhookConfig.json |
-| optional      | spotifyConfig.json        | example.spotifyConfig.json        |
-| optional      | githubConfig.json         | example.githubConfig.json         |
-| optional      | sevenTVConfig.json        | example.sevenTVConfig.json        |
-| optional      | betterTTVConfig.json      | example.betterTTVConfig.json      |
-| optional      | frankerFaceZConfig.json   | example.frankerFaceZConfig.json   |
+| Feature         | Optional?  |
+| --------------- | -----------|
+| twitch          | required   |
+| mongodb         | optional*  |
+| spotify         | optional   |
+| github          | optional   |
+| seventv         | optional   |
+| betterttv       | optional   |  
+| frankerfacez    | optional   |     
+| discord_webhook | optional   |     
 
 * It is highly recommended you include mongoDB connections to enable features of the bot which need storage.
 
@@ -23,7 +22,7 @@ Ensure you have [setup your environment and configuration files](SETUP.md) befor
 
 The listed scopes are relevant for the existing commands in the repository. If you would like to add new features with more in-depth API interactions then you should adjust the scopes accordingly.
 
-### twitchConfig.json
+### twitch
 
 To get the auth_code construct your URL and enter it into the browser.  Here's an example:
 
@@ -33,7 +32,7 @@ Once you open this and authorize access, it will redirect you. Take the auth cod
 
 The required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
 
-### spotifyConfig.json
+### spotify
 
 Visit https://developer.spotify.com/documentation/web-api/tutorials/getting-started to create an app and obtain the `client_id` and `client_secret`
 
@@ -47,23 +46,23 @@ Once you open this and authorize access, it will redirect you. Take the auth cod
 
 The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`. 
 
-### githubConfig.json
+### github
 
 Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
 
 Ensure that the personal access token includes the scope to access and modify issues.
 
-### sevenTVConfig.json
+### sevenTV
 
 Enter your userId which you can get from the URL on your account page in 7tv.app.
 
-### betterTTVConfig.json
+### betterTTV
 
-You probably want to set provider as twitch and the ID is your twitch broadcaster ID (the same as set in your twitchConfig.json).
+You probably want to set provider as twitch and the ID is your twitch broadcaster ID (likely the same as set in twitch).
 
-### frankerFaceZConfig.json
+### frankerFaceZ
 
-Enter your broadcaster ID (the same as set in your twitchConfig.json).
+Enter your broadcaster ID (likely the same as set in twitch).
 
 ## Set up your commands
 

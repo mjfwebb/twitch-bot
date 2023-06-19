@@ -2,11 +2,9 @@ import Config from '../config';
 import { eventSubscribe } from './eventSubscribe';
 
 export const subscribeToSubscriptionGifts = async (sessionId: string) => {
-  if (Config.twitch) {
-    try {
-      await eventSubscribe(sessionId, 'channel.subscription.gift', { broadcaster_user_id: Config.twitch.broadcaster_id });
-    } catch (error) {
-      console.error(error);
-    }
+  try {
+    await eventSubscribe(sessionId, 'channel.subscription.gift', { broadcaster_user_id: Config.twitch.broadcaster_id });
+  } catch (error) {
+    console.error(error);
   }
 };

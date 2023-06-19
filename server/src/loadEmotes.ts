@@ -30,7 +30,7 @@ export const loadEmotes = async () => {
 };
 
 const loadFrankerFaceZGlobalEmotes = async () => {
-  if (Config.frankerFaceZ) {
+  if (Config.frankerFaceZ.enabled) {
     const frankerFaceZGlobalEmotes = await fetchFrankerFaceZGlobalEmotes();
     if (frankerFaceZGlobalEmotes) {
       const emoteSets = frankerFaceZGlobalEmotes.default_sets;
@@ -57,7 +57,7 @@ const loadFrankerFaceZGlobalEmotes = async () => {
 };
 
 const loadSevenTVEmotes = async () => {
-  if (Config.sevenTV) {
+  if (Config.sevenTV.enabled) {
     const sevenTVUser = await fetchSevenTVUser();
     if (sevenTVUser) {
       const emoteSets = [sevenTVUser.emote_sets[0].id, 'global'];
@@ -86,7 +86,7 @@ const loadSevenTVEmotes = async () => {
 };
 
 const loadBetterTTVEmotes = async () => {
-  if (Config.betterTTV) {
+  if (Config.betterTTV.enabled) {
     const betterTTVUser = await fetchBetterTTVUser();
     if (betterTTVUser) {
       betterTTVUser.sharedEmotes.forEach((emote) => {

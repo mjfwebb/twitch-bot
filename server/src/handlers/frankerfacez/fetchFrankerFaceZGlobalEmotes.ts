@@ -28,7 +28,7 @@ type FrankerFaceZGlobalEmotes = {
 };
 
 export const fetchFrankerFaceZGlobalEmotes = async (): Promise<FrankerFaceZGlobalEmotes | null> => {
-  if (Config.frankerFaceZ) {
+  if (Config.frankerFaceZ.enabled) {
     try {
       const url = `https://api.frankerfacez.com/v1/set/global`;
       const response = await fetch(url, { method: 'GET' });
@@ -41,5 +41,6 @@ export const fetchFrankerFaceZGlobalEmotes = async (): Promise<FrankerFaceZGloba
       console.error(error);
     }
   }
+
   return null;
 };

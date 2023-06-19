@@ -22,7 +22,7 @@ async function handleCommand(connection: websocket.connection, queuedCommand: Pa
   if (typeof result === 'boolean' && result === false) {
     sendChatMessage(connection, `That's not right. Use !help ${queuedCommand.commandName} to get more information`);
   } else {
-    if (Config.mongoDB) {
+    if (Config.mongoDB.enabled) {
       await CommandModel.updateOne({ commandId: queuedCommand.botCommand.id }, { $inc: { timesUsed: 1 } }, { upsert: true });
     }
   }

@@ -3,7 +3,7 @@ import { SPOTIFY_API_URL } from '../../constants';
 import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 
 export const addSongToPlaybackQueue = async (trackURI: string): Promise<void> => {
-  if (Config.spotify) {
+  if (Config.spotify.enabled) {
     try {
       const url = `${SPOTIFY_API_URL}me/player/queue?uri=${encodeURIComponent(trackURI)}`;
 

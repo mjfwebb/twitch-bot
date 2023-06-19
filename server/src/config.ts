@@ -1,10 +1,8 @@
 import assert from 'assert';
-import { config } from 'dotenv';
 import { readFileSync } from 'fs';
 
+import { hasOwnProperty } from './utils/hasOwnProperty';
 import { isError } from './utils/isError';
-
-config({ path: `./.env.${process.env.NODE_ENV || ''}` });
 
 export type WebhookConfig = {
   service: string;
@@ -25,39 +23,44 @@ export interface TwitchConfig {
 }
 
 export type MongoDBConfig = {
+  enabled: boolean;
   url: string;
   db: string;
-} | null;
+};
 
 export type SpotifyConfig = {
+  enabled: boolean;
   client_id: string;
   client_secret: string;
   grant_type: string;
   auth_code: string;
   redirect_uri: string;
-} | null;
+};
 
 export type GitHubConfig = {
+  enabled: boolean;
   owner: string;
   repo: string;
   access_token: string;
-} | null;
+};
 
 export type SevenTVConfig = {
+  enabled: boolean;
   userId: string;
-} | null;
+};
 
 export type BetterTTVConfig = {
+  enabled: boolean;
   provider: string;
   providerId: string;
-} | null;
+};
 
 export type FrankerFaceZConfig = {
+  enabled: boolean;
   broadcasterId: string;
-} | null;
+};
 
 interface IConfig {
-  environment: 'development' | 'production';
   twitch: TwitchConfig;
   webhooks: Record<string, WebhookConfig>;
   mongoDB: MongoDBConfig;
@@ -68,22 +71,22 @@ interface IConfig {
   frankerFaceZ: FrankerFaceZConfig;
 }
 
-function assertTwitchConfig(config: unknown): asserts config is TwitchConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'broadcaster_id'), 'Missing Twitch config: broadcaster_id');
-  assert(Object.prototype.hasOwnProperty.call(config, 'client_id'), 'Missing Twitch config: client_id');
-  assert(Object.prototype.hasOwnProperty.call(config, 'client_secret'), 'Missing Twitch config: client_secret');
-  assert(Object.prototype.hasOwnProperty.call(config, 'grant_type'), 'Missing Twitch config: grant_type');
-  assert(Object.prototype.hasOwnProperty.call(config, 'account'), 'Missing Twitch config: account');
-  assert(Object.prototype.hasOwnProperty.call(config, 'channel'), 'Missing Twitch config: channel');
-  assert(Object.prototype.hasOwnProperty.call(config, 'auth_code'), 'Missing Twitch config: auth_code');
-  assert(Object.prototype.hasOwnProperty.call(config, 'redirect_uri'), 'Missing Twitch config: redirect_uri');
+function assertTwitchConfig(config: unknown): asserts config is { twitch: TwitchConfig } {
+  assert(hasOwnProperty(config, 'twitch'), 'Missing in config.json: twitch');
+  assert(hasOwnProperty(config.twitch, 'broadcaster_id'), 'Missing in config.json: twitch.broadcaster_id');
+  assert(hasOwnProperty(config.twitch, 'client_id'), 'Missing in config.json: twitch.client_id');
+  assert(hasOwnProperty(config.twitch, 'client_secret'), 'Missing in config.json: twitch.client_secret');
+  assert(hasOwnProperty(config.twitch, 'grant_type'), 'Missing in config.json: twitch.grant_type');
+  assert(hasOwnProperty(config.twitch, 'account'), 'Missing in config.json: twitch.account');
+  assert(hasOwnProperty(config.twitch, 'channel'), 'Missing in config.json: twitch.channel');
+  assert(hasOwnProperty(config.twitch, 'auth_code'), 'Missing in config.json: twitch.auth_code');
+  assert(hasOwnProperty(config.twitch, 'redirect_uri'), 'Missing in config.json: twitch.redirect_uri');
 }
 
-function readTwitchConfig(): TwitchConfig {
+function readTwitchConfig(config: unknown): TwitchConfig {
   try {
-    const twitchConfig: unknown = JSON.parse(readFileSync('./twitchConfig.json', 'utf8'));
-    assertTwitchConfig(twitchConfig);
-    return twitchConfig;
+    assertTwitchConfig(config);
+    return config.twitch;
   } catch (error) {
     if (isError(error)) {
       console.log(`Error when loading Twitch config: ${error.message}`);
@@ -92,128 +95,160 @@ function readTwitchConfig(): TwitchConfig {
   throw new Error('Failed to read Twitch config');
 }
 
-function assertSpotifyConfig(config: unknown): asserts config is SpotifyConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'client_id'), 'Missing Spotify config: client_id');
-  assert(Object.prototype.hasOwnProperty.call(config, 'client_secret'), 'Missing Spotify config: client_secret');
-  assert(Object.prototype.hasOwnProperty.call(config, 'grant_type'), 'Missing Spotify config: grant_type');
-  assert(Object.prototype.hasOwnProperty.call(config, 'auth_code'), 'Missing Spotify config: auth_code');
-  assert(Object.prototype.hasOwnProperty.call(config, 'redirect_uri'), 'Missing Spotify config: redirect_uri');
+function assertSpotifyConfig(config: unknown): asserts config is { spotify: SpotifyConfig } {
+  assert(hasOwnProperty(config, 'spotify'), 'Missing in config.json: spotify');
+  assert(hasOwnProperty(config.spotify, 'enabled'), 'Missing in config.json: spotify.enabled');
+  assert(hasOwnProperty(config.spotify, 'client_id'), 'Missing in config.json: spotify.client_id');
+  assert(hasOwnProperty(config.spotify, 'client_secret'), 'Missing in config.json: spotify.client_secret');
+  assert(hasOwnProperty(config.spotify, 'grant_type'), 'Missing in config.json: spotify.grant_type');
+  assert(hasOwnProperty(config.spotify, 'auth_code'), 'Missing in config.json: spotify.auth_code');
+  assert(hasOwnProperty(config.spotify, 'redirect_uri'), 'Missing in config.json: spotify.redirect_uri');
 }
 
-function readSpotifyConfig(): SpotifyConfig {
+function readSpotifyConfig(config: unknown): SpotifyConfig {
   try {
-    const spotifyConfg: unknown = JSON.parse(readFileSync('./spotifyConfig.json', 'utf8'));
-    assertSpotifyConfig(spotifyConfg);
-    return spotifyConfg;
+    assertSpotifyConfig(config);
+    return config.spotify;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional Spotify config error: ${error.message}`);
     }
   }
-  return null;
+  return {
+    enabled: false,
+    client_id: '',
+    client_secret: '',
+    grant_type: '',
+    auth_code: '',
+    redirect_uri: '',
+  };
 }
 
-function assertGitHubConfig(config: unknown): asserts config is GitHubConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'owner'), 'Missing GitHub config: owner');
-  assert(Object.prototype.hasOwnProperty.call(config, 'repo'), 'Missing GitHub config: repo');
-  assert(Object.prototype.hasOwnProperty.call(config, 'access_token'), 'Missing GitHub config: access_token');
+function assertGitHubConfig(config: unknown): asserts config is { github: GitHubConfig } {
+  assert(hasOwnProperty(config, 'github'), 'Missing in config.json: github');
+  assert(hasOwnProperty(config.github, 'enabled'), 'Missing in config.json: github.enabled');
+  assert(hasOwnProperty(config.github, 'owner'), 'Missing in config.json: github.owner');
+  assert(hasOwnProperty(config.github, 'repo'), 'Missing in config.json: github.repo');
+  assert(hasOwnProperty(config.github, 'access_token'), 'Missing in config.json: github.access_token');
 }
 
-function readGitHubConfig(): GitHubConfig {
+function readGitHubConfig(config: unknown): GitHubConfig {
   try {
-    const gitHubConfg: unknown = JSON.parse(readFileSync('./githubConfig.json', 'utf8'));
-    assertGitHubConfig(gitHubConfg);
-    return gitHubConfg;
+    assertGitHubConfig(config);
+    return config.github;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional GitHub config error: ${error.message}`);
     }
   }
-  return null;
+  return {
+    enabled: false,
+    owner: '',
+    repo: '',
+    access_token: '',
+  };
 }
 
-function assertSevenTVConfig(config: unknown): asserts config is SevenTVConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'userId'), 'Missing SevenTV (7tv) config: userId');
+function assertSevenTVConfig(config: unknown): asserts config is { seventv: SevenTVConfig } {
+  assert(hasOwnProperty(config, 'seventv'), 'Missing in config.json: seventv');
+  assert(hasOwnProperty(config.seventv, 'enabled'), 'Missing in config.json: seventv.enabled');
+  assert(hasOwnProperty(config.seventv, 'user_id'), 'Missing in config.json: seventv.user_id');
 }
 
-function readSevenTVConfig(): SevenTVConfig {
+function readSevenTVConfig(config: unknown): SevenTVConfig {
   try {
-    const sevenTVConfg: unknown = JSON.parse(readFileSync('./sevenTVConfig.json', 'utf8'));
-    assertSevenTVConfig(sevenTVConfg);
-    return sevenTVConfg;
+    assertSevenTVConfig(config);
+    return config.seventv;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional SevenTV config error: ${error.message}`);
     }
   }
-  return null;
+  return {
+    enabled: false,
+    userId: '',
+  };
 }
 
-function assertBetterTTVConfig(config: unknown): asserts config is BetterTTVConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'provider'), 'Missing BetterTTV config: provider');
-  assert(Object.prototype.hasOwnProperty.call(config, 'providerId'), 'Missing BetterTTV config: providerId');
+function assertBetterTTVConfig(config: unknown): asserts config is { betterttv: BetterTTVConfig } {
+  assert(hasOwnProperty(config, 'betterttv'), 'Missing BetterTTV config: betterttv');
+  assert(hasOwnProperty(config.betterttv, 'enabled'), 'Missing in config.json: betterttv.enabled');
+  assert(hasOwnProperty(config.betterttv, 'provider'), 'Missing in config.json: betterttv.provider');
+  assert(hasOwnProperty(config.betterttv, 'provider_id'), 'Missing in config.json: betterttv.provider_id');
 }
 
-function readBetterTTVConfig(): BetterTTVConfig {
+function readBetterTTVConfig(config: unknown): BetterTTVConfig {
   try {
-    const betterTTVConfg: unknown = JSON.parse(readFileSync('./betterTTVConfig.json', 'utf8'));
-    assertBetterTTVConfig(betterTTVConfg);
-    return betterTTVConfg;
+    assertBetterTTVConfig(config);
+    return config.betterttv;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional BetterTTV config error: ${error.message}`);
     }
   }
-  return null;
+  return {
+    enabled: false,
+    provider: '',
+    providerId: '',
+  };
 }
 
-function assertFrankerFaceZConfig(config: unknown): asserts config is FrankerFaceZConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'broadcasterId'), 'Missing FrankerFaceZ config: broadcasterId');
+function assertFrankerFaceZConfig(config: unknown): asserts config is { frankerfacez: FrankerFaceZConfig } {
+  assert(hasOwnProperty(config, 'frankerfacez'), 'Missing in config.json: frankerfacez');
+  assert(hasOwnProperty(config.frankerfacez, 'enabled'), 'Missing in config.json: frankerfacez.enabled');
+  assert(hasOwnProperty(config.frankerfacez, 'broadcaster_id'), 'Missing in config.json: frankerfacez.broadcaster_id');
 }
 
-function readFrankerFaceZConfig(): FrankerFaceZConfig {
+function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   try {
-    const frankerFaceZConfg: unknown = JSON.parse(readFileSync('./frankerFaceZConfig.json', 'utf8'));
-    assertFrankerFaceZConfig(frankerFaceZConfg);
-    return frankerFaceZConfg;
+    assertFrankerFaceZConfig(config);
+    return config.frankerfacez;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional FrankerFaceZ config error: ${error.message}`);
     }
   }
-  return null;
+  return {
+    enabled: false,
+    broadcasterId: '',
+  };
 }
 
-function assertMongoDBConfig(config: unknown): asserts config is MongoDBConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'url'), 'Missing mongoDB config: url');
-  assert(Object.prototype.hasOwnProperty.call(config, 'db'), 'Missing mongoDB config: db');
+function assertMongoDBConfig(config: unknown): asserts config is { mongodb: MongoDBConfig } {
+  assert(hasOwnProperty(config, 'mongodb'), 'Missing in config.json: mongodb');
+  assert(hasOwnProperty(config.mongodb, 'enabled'), 'Missing in config.json: mongodb.enabled');
+  assert(hasOwnProperty(config.mongodb, 'url'), 'Missing in config.json: mongodb.url');
+  assert(hasOwnProperty(config.mongodb, 'db'), 'Missing in config.json: mongodb.db');
 }
 
-function readMongoDBConfig(): MongoDBConfig {
+function readMongoDBConfig(config: unknown): MongoDBConfig {
   try {
-    const mongoDBConfg: unknown = JSON.parse(readFileSync('./mongoDBConfig.json', 'utf8'));
-    assertMongoDBConfig(mongoDBConfg);
-    return mongoDBConfg;
+    assertMongoDBConfig(config);
+    return config.mongodb;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional MongoDB config error: ${error.message}`);
     }
   }
-  return null;
+  return {
+    enabled: false,
+    url: '',
+    db: '',
+  };
 }
 
-function assertWebhookConfig(config: unknown): asserts config is WebhookConfig {
-  assert(Object.prototype.hasOwnProperty.call(config, 'service'), 'Missing Webhook config: service');
-  assert(Object.prototype.hasOwnProperty.call(config, 'id'), 'Missing Webhook config: id');
-  assert(Object.prototype.hasOwnProperty.call(config, 'token'), 'Missing Webhook config: token');
-  assert(Object.prototype.hasOwnProperty.call(config, 'url'), 'Missing Webhook config: url');
+function assertWebhookConfig(config: unknown): asserts config is { discord_webhook: WebhookConfig } {
+  assert(hasOwnProperty(config, 'discord_webhook'), 'Missing in config.json: discord_webhook');
+  assert(hasOwnProperty(config.discord_webhook, 'enabled'), 'Missing in config.json: discord_webhook.enabled');
+  assert(hasOwnProperty(config.discord_webhook, 'id'), 'Missing in config.json: discord_webhook.id');
+  assert(hasOwnProperty(config.discord_webhook, 'token'), 'Missing in config.json: discord_webhook.token');
+  assert(hasOwnProperty(config.discord_webhook, 'url'), 'Missing in config.json: discord_webhook.url');
 }
 
-function readDiscordWebhookConfig(): WebhookConfig {
+function readDiscordWebhookConfig(config: unknown): WebhookConfig {
   try {
-    const discordWebhookConfig: unknown = JSON.parse(readFileSync('./discordWebhookConfig.json', 'utf8'));
-    assertWebhookConfig(discordWebhookConfig);
-    return discordWebhookConfig;
+    assertWebhookConfig(config);
+    return config.discord_webhook;
   } catch (error) {
     if (isError(error)) {
       console.log(`Optional Discord Webhook config error: ${error.message}`);
@@ -222,18 +257,19 @@ function readDiscordWebhookConfig(): WebhookConfig {
   return null;
 }
 
+const config: unknown = JSON.parse(readFileSync('./config.json', 'utf8'));
+
 const Config: IConfig = {
-  environment: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  twitch: readTwitchConfig(),
+  twitch: readTwitchConfig(config),
   webhooks: {
-    discordChatHook: readDiscordWebhookConfig(),
+    discordChatHook: readDiscordWebhookConfig(config),
   },
-  mongoDB: readMongoDBConfig(),
-  spotify: readSpotifyConfig(),
-  github: readGitHubConfig(),
-  sevenTV: readSevenTVConfig(),
-  betterTTV: readBetterTTVConfig(),
-  frankerFaceZ: readFrankerFaceZConfig(),
+  mongoDB: readMongoDBConfig(config),
+  spotify: readSpotifyConfig(config),
+  github: readGitHubConfig(config),
+  sevenTV: readSevenTVConfig(config),
+  betterTTV: readBetterTTVConfig(config),
+  frankerFaceZ: readFrankerFaceZConfig(config),
 };
 
 export default Config;
