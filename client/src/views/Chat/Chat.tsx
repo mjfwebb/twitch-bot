@@ -73,7 +73,7 @@ export const Chat = () => {
   const chatMessages = useStore((s) => s.chatMessages);
   const virtuoso = useRef<VirtuosoHandle>(null);
   const searchParams = new URLSearchParams(window.location.search);
-  const foreground = searchParams.get('foreground');
+  const foreground = searchParams.get('foreground') || 'white';
   const background = searchParams.get('background') || 'transparent';
   const showAvatars = searchParams.get('avatars') === 'false' ? false : true;
   const showBorders = searchParams.get('borders') === 'false' ? false : true;
