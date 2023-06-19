@@ -1,5 +1,5 @@
 import type websocket from 'websocket';
-import { getChatUser } from '../../../commands/helpers/findOrCreateUser';
+import { findOrCreateUserById } from '../../../commands/helpers/findOrCreateUser';
 import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
 import { getStreamStartedAt } from '../../../streamState';
 import type { ParsedMessage } from '../../../types';
@@ -9,9 +9,11 @@ export async function firstMessageOfStreamHandler(connection: websocket.connecti
   const userId = parsedMessage.tags?.['user-id'];
 
   if (userId && nick) {
-    const user = await getChatUser(parsedMessage);
+    const user = await findOrCreateUserById(userId, nick);
 
     if (new Date(user.lastSeen).getTime() < new Date(getStreamStartedAt()).getTime()) {
+      user.lastSeen = new Date().toISOString();
+      await user.save();
       if (user.welcomeMessage) {
         if (user.welcomeMessage.startsWith('!') || user.welcomeMessage.startsWith('/')) {
           return;
