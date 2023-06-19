@@ -8,7 +8,7 @@ import type { SevenTVUser } from './types';
 export const fetchSevenTVUser = async (): Promise<SevenTVUser | null> => {
   if (Config.sevenTV.enabled) {
     try {
-      const url = `https://7tv.io/v3/users/${Config.sevenTV.userId}`;
+      const url = `https://7tv.io/v3/users/${Config.sevenTV.user_id}`;
       const response = await fetch(url, { method: 'GET' });
       const data: unknown = await response.json();
       if (

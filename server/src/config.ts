@@ -46,18 +46,18 @@ export type GitHubConfig = {
 
 export type SevenTVConfig = {
   enabled: boolean;
-  userId: string;
+  user_id: string;
 };
 
 export type BetterTTVConfig = {
   enabled: boolean;
   provider: string;
-  providerId: string;
+  provider_id: string;
 };
 
 export type FrankerFaceZConfig = {
   enabled: boolean;
-  broadcasterId: string;
+  broadcaster_id: string;
 };
 
 interface IConfig {
@@ -166,7 +166,7 @@ function readSevenTVConfig(config: unknown): SevenTVConfig {
   }
   return {
     enabled: false,
-    userId: '',
+    user_id: '',
   };
 }
 
@@ -189,7 +189,7 @@ function readBetterTTVConfig(config: unknown): BetterTTVConfig {
   return {
     enabled: false,
     provider: '',
-    providerId: '',
+    provider_id: '',
   };
 }
 
@@ -210,7 +210,7 @@ function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   }
   return {
     enabled: false,
-    broadcasterId: '',
+    broadcaster_id: '',
   };
 }
 
