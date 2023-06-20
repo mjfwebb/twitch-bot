@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import useSocketContext from '../../hooks/useSocketContext';
 import { CopyButton } from '../../components/CopyButton';
 
 const defaultHeight = '100vh';
@@ -9,6 +10,7 @@ const defaultBackground = '#000000';
 const defaultForeground = '#ffffff';
 
 export const ChatDashboard = () => {
+  const socket = useSocketContext();
   const [chatDisabledBorders, setChatDisabledBorders] = useState<boolean>(false);
   const [chatDisabledAvatars, setChatDisabledAvatars] = useState<boolean>(false);
   const [chatBackground, setChatBackground] = useState<string>(defaultBackground);
@@ -17,6 +19,7 @@ export const ChatDashboard = () => {
   const [chatWidth, setChatWidth] = useState<string>(defaultWidth);
   const [chatDisappears, setChatDisappears] = useState<boolean>(false);
   const [chatDisappearsTime, setChatDisappearsTime] = useState<string>(defaultDisappearsTime);
+  const [numberOfFakeMessages, setNumberOfFakeMessages] = useState<number>(5);
 
   const chatURL = new URL(`${document.location.href}chat`);
 
@@ -102,6 +105,20 @@ export const ChatDashboard = () => {
           <input type="text" id="chat_height" value={chatHeight} onChange={(event) => setChatHeight(event.target.value)} />
           <label htmlFor="chat_height">Height</label>
           <button onClick={() => setChatHeight(defaultHeight)}>reset</button>
+        </div>
+        <hr />
+        <div>
+          <div>Send some test messages to your chat?</div>
+          <div className="chat-modifiers-row">
+            <input
+              type="number"
+              id="chat_number_of_fake_messages"
+              value={numberOfFakeMessages}
+              onChange={(event) => setNumberOfFakeMessages(Number(event.target.value))}
+            />
+            <label htmlFor="chat_number_of_fake_messages">Amount</label>
+            <button onClick={() => socket.sendToServer('getFakeChatMessages', numberOfFakeMessages)}>send</button>
+          </div>
         </div>
       </div>
     </>
