@@ -49,20 +49,21 @@ const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }: ChatEn
           showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
         )}
       >
-        {showAvatars && (
-          <div className="chat-message-avatar">
-            {user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
-          </div>
-        )}
-
         <span className="chat-message-content">
           <div className="chat-message-user">
+            {showAvatars && (
+              <span className="chat-message-avatar">
+                {user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
+              </span>
+            )}
             <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
             <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', background) }}>
               {user.displayName}
             </span>
           </div>
-          <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={chatMessage.parsedMessage.parameters} />
+          <span className="chat-message-text">
+            <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={chatMessage.parsedMessage.parameters} />
+          </span>
         </span>
       </div>
     </button>
