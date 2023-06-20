@@ -3,15 +3,11 @@ import { create } from 'zustand';
 import type { ChatBadge, ChatEmote, ChatMessage, SpotifySong } from '../types';
 import type { TaskMessage } from '../twitchTypes';
 
-function filterOldMessages(now: number, timeoutSeconds: number, message: ChatMessage, onChanges?: () => void): boolean {
+function filterOldMessages(now: number, timeoutSeconds: number, message: ChatMessage): boolean {
   const messageTime = new Date(Number(message.parsedMessage.tags['tmi-sent-ts'])).getTime();
   const timeoutMilliseconds = timeoutSeconds * 1000;
   const differenceBetweenMessageAndNow = now - messageTime;
   const old = timeoutMilliseconds + 3000 < differenceBetweenMessageAndNow;
-
-  if (onChanges && old) {
-    onChanges();
-  }
 
   return !old;
 }
@@ -73,34 +69,28 @@ const useStore = create<Store>((set, get) => ({
   markOrRemoveOldMessages: (timeoutSeconds: number) => {
     let changes = false;
     const now = Date.now();
-    const filteredChatMessages = get()
-      .chatMessages.filter((chatMessage) =>
-        filterOldMessages(now, timeoutSeconds, chatMessage, () => {
-          changes = true;
-        })
-      )
-      .map((chatMessage) => {
-        if (chatMessage.disappeared) {
-          return chatMessage;
-        }
+    const filteredChatMessages = get().chatMessages.map((chatMessage) => {
+      if (chatMessage.disappeared) {
+        return chatMessage;
+      }
 
-        const messageTime = new Date(Number(chatMessage.parsedMessage.tags['tmi-sent-ts'])).getTime();
-        const timeoutMilliseconds = timeoutSeconds * 1000;
-        const isDisappearingSoon = messageTime + timeoutMilliseconds - 1000 < now;
-        const disappeared = messageTime + timeoutMilliseconds < now;
+      const messageTime = new Date(Number(chatMessage.parsedMessage.tags['tmi-sent-ts'])).getTime();
+      const timeoutMilliseconds = timeoutSeconds * 1000;
+      const isDisappearingSoon = messageTime + timeoutMilliseconds - 1000 < now;
+      const disappeared = messageTime + timeoutMilliseconds < now;
 
-        if (isDisappearingSoon || disappeared) {
-          changes = true;
+      if (isDisappearingSoon || disappeared) {
+        changes = true;
 
-          return {
-            ...chatMessage,
-            isDisappearingSoon,
-            disappeared,
-          };
-        } else {
-          return chatMessage;
-        }
-      });
+        return {
+          ...chatMessage,
+          isDisappearingSoon,
+          disappeared,
+        };
+      } else {
+        return chatMessage;
+      }
+    });
 
     if (changes) {
       set((state) => ({
