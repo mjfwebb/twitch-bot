@@ -1,8 +1,6 @@
 import type { User } from './models/user-model';
 import { getIO } from './runSocketServer';
-import type { ParsedMessage } from './types';
-
-type ChatMessage = { user: User; parsedMessage: ParsedMessage };
+import type { ChatMessage, ParsedMessage } from './types';
 
 const CHAT_MESSAGES_TO_RETAIN = 20;
 const chatMessages: ChatMessage[] = [];

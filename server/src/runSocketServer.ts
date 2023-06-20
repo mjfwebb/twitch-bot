@@ -2,6 +2,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getChatMessages } from './chatMessages';
 import Config from './config';
+import { getFakeChatMessages } from './getFakeChatMessages';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
 import { loadBadges } from './loadBadges';
 import { loadEmotes } from './loadEmotes';
@@ -40,11 +41,15 @@ export function runSocketServer() {
     socket.on('getBadges', async () => {
       await loadBadges();
     });
-    socket.on('setSelectedDisplayName', (displayName) => {
+    socket.on('setSelectedDisplayName', (displayName: string) => {
       getIO().emit('setSelectedDisplayName', displayName);
     });
     socket.on('getChatMessages', () => {
       getChatMessages();
+    });
+
+    socket.on('getFakeChatMessages', (amount: number) => {
+      getFakeChatMessages(amount);
     });
   });
   httpServer.listen(6969);

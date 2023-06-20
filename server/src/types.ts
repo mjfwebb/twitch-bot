@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import type websocket from 'websocket';
+import type { User } from './models/user-model';
 
 export type TwitchWebsocketMetadata = {
   message_id: string;
@@ -269,3 +270,5 @@ export type UserInformation = {
   email: string;
   created_at: string;
 };
+
+export type ChatMessage = { user: User; parsedMessage: ParsedMessage };
