@@ -31,7 +31,8 @@ export const ChatMessageWithEmotes = ({
     Object.entries(emotes).forEach(([emoteUrlPart, positioning]) => {
       const emoteName = message.slice(Number(positioning[0].startPosition - offset), Number(positioning[0].endPosition - offset) + 1);
       twitchEmoteMap[emoteName] = {
-        url: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0`,
+        src: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0`,
+        srcSet: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0 1x, https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/3.0 4x`,
         width: null,
         height: null,
         modifier: false,
@@ -135,7 +136,8 @@ export const ChatMessageWithEmotes = ({
                 modifierClasses.map((flag) => `chat-emote--${flag}`)
               )}
               key={`${match}.${index}`}
-              src={emote.url}
+              src={emote.src}
+              srcSet={emote.srcSet}
               alt={match}
               title={match}
               {...(modifierClasses.includes('growx') ? { width: emote.width || 36 * 2 } : {})}

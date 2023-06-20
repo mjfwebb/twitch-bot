@@ -98,7 +98,8 @@ export type ChatMessage = {
 };
 
 export type ChatEmote = {
-  url: string;
+  src: string;
+  srcSet?: string;
   width: number | null;
   height: number | null;
   modifier: boolean;
