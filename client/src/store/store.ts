@@ -28,7 +28,6 @@ interface Store {
   addBadges: (badge: Record<string, ChatBadge>) => void;
   addChatMessage: (chatMessage: ChatMessage) => void;
   addChatMessages: (chatMessages: ChatMessage[]) => void;
-  markOrRemoveOldMessages: (timeoutSeconds: number) => void;
 }
 
 const useStore = create<Store>((set, get) => ({
@@ -66,40 +65,16 @@ const useStore = create<Store>((set, get) => ({
       chatBadges: { ...state.chatBadges, ...badges },
     }));
   },
-  markOrRemoveOldMessages: (timeoutSeconds: number) => {
-    let changes = false;
-    const now = Date.now();
-    const filteredChatMessages = get().chatMessages.map((chatMessage) => {
-      if (chatMessage.disappeared) {
-        return chatMessage;
-      }
-
-      const messageTime = new Date(Number(chatMessage.parsedMessage.tags['tmi-sent-ts'])).getTime();
-      const timeoutMilliseconds = timeoutSeconds * 1000;
-      const isDisappearingSoon = messageTime + timeoutMilliseconds - 1000 < now;
-      const disappeared = messageTime + timeoutMilliseconds < now;
-
-      if (isDisappearingSoon || disappeared) {
-        changes = true;
-
-        return {
-          ...chatMessage,
-          isDisappearingSoon,
-          disappeared,
-        };
-      } else {
-        return chatMessage;
-      }
-    });
-
-    if (changes) {
-      set((state) => ({
-        ...state,
-        chatMessages: filteredChatMessages,
-      }));
-    }
-  },
   addChatMessage: (chatMessage: ChatMessage) => {
+    const now = Date.now();
+    const searchParams = new URLSearchParams(window.location.search);
+    const disappears = searchParams.get('disappears') === 'true' ? true : false;
+
+    if (disappears) {
+      const disappearsTime = searchParams.get('disappears-time') !== null ? Number(searchParams.get('disappears-time')) : 10;
+      chatMessage.disappearAt = now + disappearsTime * 1000;
+    }
+
     set((state) => ({
       ...state,
       chatMessages: [...state.chatMessages, chatMessage],

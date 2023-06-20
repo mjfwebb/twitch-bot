@@ -20,8 +20,8 @@
     line-height: 1;
     padding-bottom: 4px;
 
-    &-disappearing-soon:not(&-disappeared) {
-      animation: hide 1s linear;
+    &-disappearing:not(&-disappeared) {
+      animation: hide 1s forwards;
     }
 
     &-disappeared {
@@ -128,11 +128,11 @@
 }
 
 @keyframes hide {
-  0% {
+  from {
     opacity: 1;
   }
 
-  100% {
+  to {
     opacity: 0;
   }
 }
