@@ -25,7 +25,7 @@ export function runBot() {
   });
 
   client.on('connect', function (connection) {
-    console.log('WebSocket Client Connected');
+    console.log('IRC WebSocket Client Connected');
 
     // Store the connection ref so it can be exported
     connectionRef = connection;

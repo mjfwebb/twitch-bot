@@ -24,30 +24,30 @@ async function main() {
     console.log('Startup: loading bot commands');
     await loadBotCommands();
 
-    console.log('Startup: getting twitch access token');
+    console.log('Startup: getting Twitch access token');
     await getTwitchAccessToken(Config.twitch);
 
     if (Config.spotify.enabled) {
-      console.log('Startup: getting spotify access token');
+      console.log('Startup: getting Spotify access token');
       await getSpotifyAccessToken();
     }
 
-    console.log('Startup: getting twitch custom rewards');
+    console.log('Startup: getting Twitch custom rewards');
     await fetchCustomRewards();
 
-    console.log('Startup: getting twitch viewer bots');
+    console.log('Startup: getting Twitch viewer bots');
     await fetchKnownTwitchViewerBots();
 
-    console.log('Startup: getting twitch stream status');
+    console.log('Startup: getting Twitch stream status');
     setStreamStatus(await fetchStreamStatus());
 
-    console.log('Startup: getting twitch channel information and setting display name');
+    console.log('Startup: getting Twitch channel information and setting display name');
     setDisplayName((await fetchChannelInformation())?.broadcaster_name || Config.twitch.account);
 
-    console.log('Startup: running IRC client');
+    console.log('Startup: running Twitch IRC WebSocket client');
     runBot();
 
-    console.log('Startup: running websocket client');
+    console.log('Startup: running Twitch Websocket client');
     runTwitchWebsocket();
 
     if (Config.features.interval_commands) {
