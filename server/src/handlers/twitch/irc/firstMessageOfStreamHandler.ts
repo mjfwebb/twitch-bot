@@ -1,10 +1,16 @@
 import type websocket from 'websocket';
 import { findOrCreateUserById } from '../../../commands/helpers/findOrCreateUser';
 import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
+import Config from '../../../config';
 import { getStreamStartedAt } from '../../../streamState';
 import type { ParsedMessage } from '../../../types';
 
-export async function firstMessageOfStreamHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
+export async function firstMessageOfStreamHandler(connection: websocket.connection, parsedMessage: ParsedMessage): Promise<void> {
+  // If mongoDB is not enabled, then we don't handle this event as it relies on the database to store the welcome message
+  if (!Config.mongoDB.enabled) {
+    return;
+  }
+
   const nick = parsedMessage.source?.nick;
   const userId = parsedMessage.tags?.['user-id'];
 
