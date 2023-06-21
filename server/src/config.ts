@@ -72,6 +72,8 @@ interface IConfig {
   frankerFaceZ: FrankerFaceZConfig;
 }
 
+const configFileName = 'config.json';
+
 function assertTwitchConfig(config: unknown): asserts config is { twitch: TwitchConfig } {
   assert(hasOwnProperty(config, 'twitch'), 'Missing in config.json: twitch');
   assert(hasOwnProperty(config.twitch, 'broadcaster_id'), 'Missing in config.json: twitch.broadcaster_id');
@@ -264,7 +266,7 @@ function readDiscordWebhookConfig(config: unknown): WebhookConfig {
   };
 }
 
-const config: unknown = JSON.parse(readFileSync('./config.json', 'utf8'));
+const config: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
 
 const Config: IConfig = {
   twitch: readTwitchConfig(config),
