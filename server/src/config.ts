@@ -5,11 +5,12 @@ import { hasOwnProperty } from './utils/hasOwnProperty';
 import { isError } from './utils/isError';
 
 export type WebhookConfig = {
+  enabled: boolean;
   service: string;
   id: string;
   token: string;
   url: string;
-} | null;
+};
 
 export interface TwitchConfig {
   broadcaster_id: string;
@@ -254,7 +255,13 @@ function readDiscordWebhookConfig(config: unknown): WebhookConfig {
       console.log(`Optional Discord Webhook config error: ${error.message}`);
     }
   }
-  return null;
+  return {
+    enabled: false,
+    service: 'discord',
+    id: '',
+    token: '',
+    url: '',
+  };
 }
 
 const config: unknown = JSON.parse(readFileSync('./config.json', 'utf8'));
