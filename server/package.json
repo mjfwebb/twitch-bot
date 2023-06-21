@@ -14,7 +14,8 @@
     "build:live": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
     "lint": "eslint -c .eslintrc.js --ext .ts src/",
     "test": "jest",
-    "dev": "nodemon -L src/index.ts"
+    "dev": "nodemon -L src/index.ts",
+    "setup": "node ./setup.mjs"
   },
   "engines": {
     "node": ">=18.16.0"
