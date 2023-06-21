@@ -61,7 +61,7 @@ export async function getChatUser(parsedMessage: ParsedMessage): Promise<User> {
   const nick = parsedMessage.source?.nick;
 
   // If there is no database then just return the collected data, if possible
-  if (!userId || !nick || !Config.mongoDB) {
+  if (!userId || !nick || !Config.mongoDB.enabled) {
     return nonDBUser;
   }
 
@@ -75,6 +75,10 @@ export async function findOrCreateUserById(
   nick: string,
   userInformation: UserInformation | null = null,
 ): Promise<HydratedDocument<User>> {
+  if (!Config.mongoDB.enabled) {
+    throw new Error('Cannot find or create user by id when MongoDB is disabled');
+  }
+
   let user = await UserModel.findOne({ userId });
 
   // User doesn't exist yet, so make it!
