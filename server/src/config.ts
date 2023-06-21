@@ -61,6 +61,14 @@ export type FrankerFaceZConfig = {
   broadcaster_id: string;
 };
 
+export type FeaturesConfig = {
+  interval_commands: boolean;
+  bit_handler: boolean;
+  first_message_handler: boolean;
+  first_message_of_stream_handler: boolean;
+  returning_chatter_handler: boolean;
+};
+
 interface IConfig {
   twitch: TwitchConfig;
   webhooks: Record<string, WebhookConfig>;
@@ -70,6 +78,7 @@ interface IConfig {
   sevenTV: SevenTVConfig;
   betterTTV: BetterTTVConfig;
   frankerFaceZ: FrankerFaceZConfig;
+  features: FeaturesConfig;
 }
 
 const configFileName = 'config.json';
@@ -217,6 +226,33 @@ function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   };
 }
 
+function assertFeaturesConfig(config: unknown): asserts config is { features: FeaturesConfig } {
+  assert(hasOwnProperty(config, 'features'), 'Missing in config.json: features. Enabling all features by default.');
+  assert(hasOwnProperty(config.features, 'interval_commands'), 'Missing in config.json: features.interval_commands');
+  assert(hasOwnProperty(config.features, 'bit_handler'), 'Missing in config.json: features.bit_handler');
+  assert(hasOwnProperty(config.features, 'first_message_handler'), 'Missing in config.json: features.first_message_handler');
+  assert(hasOwnProperty(config.features, 'first_message_of_stream_handler'), 'Missing in config.json: features.first_message_of_stream_handler');
+  assert(hasOwnProperty(config.features, 'returning_chatter_handler'), 'Missing in config.json: features.returning_chatter_handler');
+}
+
+function readFeaturesConfig(config: unknown): FeaturesConfig {
+  try {
+    assertFeaturesConfig(config);
+    return config.features;
+  } catch (error) {
+    if (isError(error)) {
+      console.log(`Optional features config error: ${error.message}`);
+    }
+  }
+  return {
+    interval_commands: true,
+    bit_handler: true,
+    first_message_handler: true,
+    first_message_of_stream_handler: true,
+    returning_chatter_handler: true,
+  };
+}
+
 function assertMongoDBConfig(config: unknown): asserts config is { mongodb: MongoDBConfig } {
   assert(hasOwnProperty(config, 'mongodb'), 'Missing in config.json: mongodb');
   assert(hasOwnProperty(config.mongodb, 'enabled'), 'Missing in config.json: mongodb.enabled');
@@ -279,6 +315,7 @@ const Config: IConfig = {
   sevenTV: readSevenTVConfig(config),
   betterTTV: readBetterTTVConfig(config),
   frankerFaceZ: readFrankerFaceZConfig(config),
+  features: readFeaturesConfig(config),
 };
 
 export default Config;

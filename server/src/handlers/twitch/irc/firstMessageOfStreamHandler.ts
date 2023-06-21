@@ -6,6 +6,11 @@ import { getStreamStartedAt } from '../../../streamState';
 import type { ParsedMessage } from '../../../types';
 
 export async function firstMessageOfStreamHandler(connection: websocket.connection, parsedMessage: ParsedMessage): Promise<void> {
+  // If the feature is disabled, then we don't handle this event
+  if (!Config.features.first_message_of_stream_handler) {
+    return;
+  }
+
   // If mongoDB is not enabled, then we don't handle this event as it relies on the database to store the welcome message
   if (!Config.mongoDB.enabled) {
     return;

@@ -50,8 +50,10 @@ async function main() {
     console.log('Startup: running websocket client');
     runTwitchWebsocket();
 
-    console.log('Startup: running interval commands');
-    runIntervalCommands();
+    if (Config.features.interval_commands) {
+      console.log('Startup: running interval commands');
+      runIntervalCommands();
+    }
 
     console.log('Startup: running localhost socket server');
     runSocketServer();

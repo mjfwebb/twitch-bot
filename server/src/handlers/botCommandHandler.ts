@@ -51,7 +51,7 @@ function addCooldown(commandId: string, cooldownLength = 0) {
   }
 }
 
-export async function botCommandHandler(connection: websocket.connection, parsedMessage: ParsedMessage) {
+export async function botCommandHandler(connection: websocket.connection, parsedMessage: ParsedMessage): Promise<void> {
   const commandName = parsedMessage.command?.botCommand;
   if (!commandName) {
     return;
