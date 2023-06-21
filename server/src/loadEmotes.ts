@@ -8,6 +8,7 @@ import { fetchSevenTVUser } from './handlers/sevenTV/fetchSevenTVUser';
 import { getIO } from './runSocketServer';
 
 export type ChatEmote = {
+  origin: 'sevenTV' | 'betterTTV' | 'frankerFaceZ' | 'twitch';
   src: string;
   srcSet?: string;
   width: number | null;
@@ -23,6 +24,7 @@ const frankerFaceZEmotesForClient: Record<string, ChatEmote> = {};
 
 export const loadEmotes = async () => {
   await loadSevenTVEmotes();
+  await loadSevenTVGlobalEmotes();
   await loadBetterTTVEmotes();
   await loadBetterTTVGlobalEmotes();
   await loadFrankerFaceZRoomEmotes();
@@ -45,6 +47,7 @@ const loadFrankerFaceZGlobalEmotes = async () => {
             const imageUrl = emote.urls['1'];
 
             frankerFaceZEmotesForClient[name] = {
+              origin: 'frankerFaceZ',
               src: imageUrl,
               width: emote.width,
               height: emote.height,
@@ -70,6 +73,7 @@ const loadFrankerFaceZRoomEmotes = async () => {
           const imageUrl = emote.urls['1'];
 
           frankerFaceZEmotesForClient[name] = {
+            origin: 'frankerFaceZ',
             src: imageUrl,
             width: emote.width,
             height: emote.height,
@@ -98,16 +102,41 @@ const loadSevenTVEmotes = async () => {
             const imageUrl = `${emote.data.host.url}/${file.name}`;
 
             sevenTVEmotesForClient[name] = {
+              origin: 'sevenTV',
               src: imageUrl,
               width: file.width,
               height: file.height,
               modifier: false,
               hidden: false,
-              modifierFlags: 0,
+              modifierFlags: emote.data.flags,
             };
           });
         }
       }
+    }
+  }
+};
+
+const loadSevenTVGlobalEmotes = async () => {
+  if (Config.sevenTV.enabled) {
+    const sevenTVEmoteSet = await fetchSevenTVEmoteSet('global');
+    if (sevenTVEmoteSet) {
+      sevenTVEmoteSet.emotes.forEach((emote) => {
+        const name = emote.name;
+        // Use the second in the array of files as it will be the smallest WebP
+        const file = emote.data.host.files[2];
+        const imageUrl = `${emote.data.host.url}/${file.name}`;
+
+        sevenTVEmotesForClient[name] = {
+          origin: 'sevenTV',
+          src: imageUrl,
+          width: file.width,
+          height: file.height,
+          modifier: false,
+          hidden: false,
+          modifierFlags: emote.data.flags,
+        };
+      });
     }
   }
 };
@@ -121,6 +150,7 @@ const loadBetterTTVEmotes = async () => {
         const imageUrl = `https://cdn.betterttv.net/emote/${emote.id}/1x.${emote.imageType}`;
 
         betterTTVEmotesForClient[name] = {
+          origin: 'betterTTV',
           src: imageUrl,
           width: null,
           height: null,
@@ -140,6 +170,7 @@ export const loadBetterTTVGlobalEmotes = async () => {
       const name = emote.code;
 
       betterTTVEmotesForClient[name] = {
+        origin: 'betterTTV',
         src: `https://cdn.betterttv.net/emote/${emote.id}/1x.${emote.imageType}`,
         width: null,
         height: null,

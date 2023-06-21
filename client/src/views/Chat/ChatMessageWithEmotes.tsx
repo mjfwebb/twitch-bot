@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import type { ChatEmote } from '../../types';
 import type { Emotes } from '../../twitchTypes';
 import useStore from '../../store/store';
+import { parseSevenTVModifierFlags } from './parseSevenTVModifierFlags';
 import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags';
 
 // emote regex which separates strings based on whitespace
@@ -31,6 +32,7 @@ export const ChatMessageWithEmotes = ({
     Object.entries(emotes).forEach(([emoteUrlPart, positioning]) => {
       const emoteName = message.slice(Number(positioning[0].startPosition - offset), Number(positioning[0].endPosition - offset) + 1);
       twitchEmoteMap[emoteName] = {
+        origin: 'twitch',
         src: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0`,
         srcSet: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0 1x, https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/3.0 4x`,
         width: null,
@@ -82,6 +84,7 @@ export const ChatMessageWithEmotes = ({
         }
 
         const modifierClasses: string[] = [];
+        const zeroWidthEmotes: ChatEmote[] = [];
         let nextIndex = index + 1;
 
         while (nextIndex > -1) {
@@ -107,10 +110,18 @@ export const ChatMessageWithEmotes = ({
 
           // Next message part is a modifier
           if (nextMessagePart.emote && nextMessagePart.emote.modifierFlags > 0) {
-            const nextMessageParsedFlags = parseFrankerFaceZModifierFlags(nextMessagePart.emote.modifierFlags);
+            let nextMessageParsedFlags: string[] = [];
+            if (nextMessagePart.emote.origin === 'sevenTV') {
+              nextMessageParsedFlags = parseSevenTVModifierFlags(nextMessagePart.emote.modifierFlags);
+            } else if (nextMessagePart.emote.origin === 'frankerFaceZ') {
+              nextMessageParsedFlags = parseFrankerFaceZModifierFlags(nextMessagePart.emote.modifierFlags);
+            }
 
             // Next message part is a modifier that applies to this emote
             if (nextMessageParsedFlags.length > 0) {
+              if (nextMessagePart.emote.origin === 'sevenTV' && nextMessageParsedFlags.includes('zerowidth')) {
+                zeroWidthEmotes.push(nextMessagePart.emote);
+              }
               // Hide the next message part
               messageParts[nextIndex].skip = true;
 
@@ -129,20 +140,50 @@ export const ChatMessageWithEmotes = ({
         }
 
         if (emote) {
-          return (
-            <img
-              className={classNames(
-                'chat-emote',
-                modifierClasses.map((flag) => `chat-emote--${flag}`)
-              )}
-              key={`${match}.${index}`}
-              src={emote.src}
-              srcSet={emote.srcSet}
-              alt={match}
-              title={match}
-              {...(modifierClasses.includes('growx') ? { width: emote.width || 36 * 2 } : {})}
-            />
-          );
+          if (zeroWidthEmotes.length > 0) {
+            return (
+              <div className="chat-emote--zero-width-wrapper" key={`${match}.${index}`}>
+                <img
+                  className={classNames(
+                    'chat-emote',
+                    modifierClasses.map((flag) => `chat-emote--${flag}`)
+                  )}
+                  key={`${match}.${index}`}
+                  src={emote.src}
+                  srcSet={emote.srcSet}
+                  alt={match}
+                  title={match}
+                  {...(modifierClasses.includes('growx') ? { width: emote.width || 36 * 2 } : {})}
+                />
+                {zeroWidthEmotes.map((zeroWidthEmote, index) => (
+                  <span key={index} className="chat-emote--zero-width-span">
+                    <img
+                      className={classNames('chat-emote', 'chat-emote--zero-width-img')}
+                      src={zeroWidthEmote.src}
+                      srcSet={zeroWidthEmote.srcSet}
+                      alt={''}
+                      title={''}
+                    />
+                  </span>
+                ))}
+              </div>
+            );
+          } else {
+            return (
+              <img
+                className={classNames(
+                  'chat-emote',
+                  modifierClasses.map((flag) => `chat-emote--${flag}`)
+                )}
+                key={`${match}.${index}`}
+                src={emote.src}
+                srcSet={emote.srcSet}
+                alt={match}
+                title={match}
+                {...(modifierClasses.includes('growx') ? { width: emote.width || 36 * 2 } : {})}
+              />
+            );
+          }
         }
       })}
     </>

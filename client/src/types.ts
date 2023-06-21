@@ -98,6 +98,7 @@ export type ChatMessage = {
 };
 
 export type ChatEmote = {
+  origin: 'sevenTV' | 'betterTTV' | 'frankerFaceZ' | 'twitch';
   src: string;
   srcSet?: string;
   width: number | null;
