@@ -17,7 +17,7 @@ export const getConnection = () => connectionRef;
 
 export function runBot() {
   const client = new websocket.client();
-  const channel = `#${Config.twitch.channel}`; // Replace with your channel.
+  const channel = `#${Config.twitch.channel}`;
 
   client.on('connectFailed', function (error: unknown) {
     console.log(`Connect Error: ${String(error)}`);
