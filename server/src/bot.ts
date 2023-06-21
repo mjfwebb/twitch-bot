@@ -2,6 +2,7 @@ import websocket from 'websocket';
 import { addChatMessage } from './chatMessages';
 import { getChatUser } from './commands/helpers/findOrCreateUser';
 import Config from './config';
+import { TWITCH_CHAT_IRC_WS_URL } from './constants';
 import { botCommandHandler } from './handlers/botCommandHandler';
 import { discordChatWebhook } from './handlers/discord/discord';
 import { bitHandler } from './handlers/twitch/irc/bitHandler';
@@ -120,5 +121,5 @@ export function runBot() {
       }
     });
   });
-  client.connect('ws://irc-ws.chat.twitch.tv:80');
+  client.connect(TWITCH_CHAT_IRC_WS_URL);
 }
