@@ -3,20 +3,7 @@
 
 Ensure you have [setup your environment and configuration file](SETUP.md) before continuing,
 
-**WARNING**: The configuration file `config.json` files will contain sensitive information. Do not share this information.
-
-| Feature         | Optional?  |
-| --------------- | -----------|
-| twitch          | required   |
-| mongodb         | optional*  |
-| spotify         | optional   |
-| github          | optional   |
-| seventv         | optional   |
-| betterttv       | optional   |  
-| frankerfacez    | optional   |     
-| discord_webhook | optional   |     
-
-* It is highly recommended you include mongoDB connections to enable features of the bot which need storage.
+**WARNING**: The configuration file `config.json` files will contain sensitive information. Do not share this information. 
 
 ## Where to get the data
 
