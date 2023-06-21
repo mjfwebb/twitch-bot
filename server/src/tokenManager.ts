@@ -1,7 +1,13 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
 const tokensfileName = 'tokens.json';
+
+export const assertTokenFileExists = () => {
+  if (!existsSync(tokensfileName)) {
+    writeFileSync(tokensfileName, `example.${tokensfileName}`);
+  }
+};
 
 /**
  * Sets a token in the tokens file by its name and value.

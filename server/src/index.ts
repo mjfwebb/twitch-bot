@@ -10,11 +10,15 @@ import { runSocketServer } from './runSocketServer';
 import { setupMongoose } from './setupMongoose';
 import { getSpotifyAccessToken } from './spotify';
 import { setDisplayName, setStreamStatus } from './streamState';
+import { assertTokenFileExists } from './tokenManager';
 import { getTwitchAccessToken } from './twitch';
 import { runTwitchWebsocket } from './twitchWebsocket';
 
 async function main() {
   try {
+    console.log('Startup: checking token file exists and creating if not');
+    assertTokenFileExists();
+
     await setupMongoose();
 
     console.log('Startup: loading bot commands');
