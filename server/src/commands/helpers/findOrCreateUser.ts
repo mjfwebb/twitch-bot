@@ -25,7 +25,7 @@ export async function findOrCreateUserByName(displayName: string): Promise<User 
 
   const userInformation = await fetchUserInformationByName(displayName);
   // If there is no database then just return the collected data, if possible
-  if (!Config.mongoDB) {
+  if (!Config.mongoDB.enabled) {
     return getNonDBUser({ displayName, userId: userInformation?.id || '', avatarUrl: userInformation?.profile_image_url || '' });
   }
 

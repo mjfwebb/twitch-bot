@@ -6,7 +6,7 @@ import type { User } from '../../models/user-model';
 import UserModel from '../../models/user-model';
 
 export async function updateUserByName(displayName: string): Promise<HydratedDocument<User> | null> {
-  if (!Config.mongoDB) {
+  if (!Config.mongoDB.enabled) {
     return null;
   }
 

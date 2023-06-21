@@ -5,7 +5,7 @@ import { setStreamStartedAt } from '../../streamState';
 export async function updateStreamStartedAt(startedAt: string): Promise<void> {
   setStreamStartedAt(startedAt);
 
-  if (!Config.mongoDB) {
+  if (!Config.mongoDB.enabled) {
     return;
   }
 

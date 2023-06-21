@@ -113,7 +113,7 @@ const complexBotCommands: BotCommand[] = [
 
 async function loadMessageCommands(): Promise<BotCommand[]> {
   // If mongoDB isn't used then don't try to load these
-  if (!Config.mongoDB) {
+  if (!Config.mongoDB.enabled) {
     return [];
   }
 
