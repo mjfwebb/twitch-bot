@@ -1,6 +1,8 @@
 import { getIO } from './runSocketServer';
 import type { ChatMessage, ParsedMessage } from './types';
 
+let fakeChatMessageCount = 0;
+
 const words: string[] = [
   'sunshine',
   'tiger',
@@ -85,6 +87,7 @@ export const getFakeChatMessages = (amount: number) => {
     };
 
     const fakeChatMessage: ChatMessage = {
+      id: `fake-chat-message-id-${fakeChatMessageCount++}`,
       user,
       parsedMessage,
     };

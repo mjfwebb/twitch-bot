@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import classNames from 'classnames';
 
 import type { ChatMessage } from '../../types';
@@ -10,15 +8,13 @@ import { contrastCorrected } from './contrastCorrected';
 import { ChatMessageWithEmotes } from './ChatMessageWithEmotes';
 
 interface ChatEntryProps {
-  now: number;
   chatMessage: ChatMessage;
   background: string;
   showAvatars: boolean;
   showBorders: boolean;
 }
 
-export const ChatEntry = ({ now, chatMessage, background, showAvatars, showBorders }: ChatEntryProps) => {
-  const [isVisible, setIsVisible] = useState(true);
+export const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const { socket } = useSocketContext();
@@ -30,23 +26,9 @@ export const ChatEntry = ({ now, chatMessage, background, showAvatars, showBorde
   };
 
   const isSelected = selectedDisplayName === user.displayName;
-  const diff = chatMessage.disappearAt ? chatMessage.disappearAt - now : 0;
-
-  useEffect(() => {
-    if (diff) {
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-      }, diff);
-
-      return () => clearTimeout(timer); // Cleanup on unmount
-    }
-  }, [diff]);
 
   return (
-    <button
-      className={classNames('chat-message', !isVisible && 'chat-message-disappearing')}
-      onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}
-    >
+    <button className={classNames('chat-message')} onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}>
       <div
         className={classNames(
           'chat-message-body',

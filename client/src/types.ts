@@ -83,6 +83,7 @@ export type SpotifySong = {
 };
 
 export type ChatMessage = {
+  id: string;
   user: {
     userId: string;
     displayName: string;

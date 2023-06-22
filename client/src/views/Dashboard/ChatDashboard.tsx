@@ -22,6 +22,7 @@ export const ChatDashboard = () => {
   const [numberOfFakeMessages, setNumberOfFakeMessages] = useState<number>(5);
   const [numberOfFakeMessagesPerSecond, setNumberOfFakeMessagesPerSecond] = useState<number>(0);
   const [sendFakeMessagesPerSecond, setSendFakeMessagesPerSecond] = useState<boolean>(false);
+  const [animatedEntrance, setAnimatedEntrance] = useState<boolean>(true);
 
   useEffect(() => {
     if (sendFakeMessagesPerSecond && numberOfFakeMessagesPerSecond > 0) {
@@ -40,10 +41,10 @@ export const ChatDashboard = () => {
   if (chatForeground !== defaultForeground) {
     chatURL.searchParams.append('foreground', chatForeground);
   }
-  if (chatDisabledAvatars) {
+  if (chatDisabledAvatars === false) {
     chatURL.searchParams.append('avatars', 'false');
   }
-  if (chatDisabledBorders) {
+  if (chatDisabledBorders === false) {
     chatURL.searchParams.append('borders', 'false');
   }
   if (chatHeight !== defaultHeight) {
@@ -57,6 +58,9 @@ export const ChatDashboard = () => {
   }
   if (chatDisappears && chatDisappearsTime !== defaultDisappearsTime) {
     chatURL.searchParams.append('disappears-time', chatDisappearsTime);
+  }
+  if (animatedEntrance === false) {
+    chatURL.searchParams.append('animated-entry', 'false');
   }
 
   const chatURLString = `${chatURL.protocol}${'//'}${chatURL.host}${chatURL.pathname}${chatURL.search}`;
@@ -83,31 +87,6 @@ export const ChatDashboard = () => {
           <button onClick={() => setChatForeground(defaultForeground)}>reset</button>
         </div>
         <div className="chat-modifiers-row">
-          <input type="checkbox" id="chat_has_borders" value="0" onChange={(event) => setChatDisabledBorders(event.target.checked)} />
-          <label htmlFor="chat_has_borders">Disable borders</label>
-        </div>
-        <div className="chat-modifiers-row">
-          <input type="checkbox" id="chat_has_avatars" value="0" onChange={(event) => setChatDisabledAvatars(event.target.checked)} />
-          <label htmlFor="chat_has_avatars">Disable avatars</label>
-        </div>
-        <div className="chat-modifiers-row">
-          <input type="checkbox" id="chat_disappears" value="0" onChange={(event) => setChatDisappears(event.target.checked)} />
-          <label htmlFor="chat_disappears">Disappearing messages</label>
-          {chatDisappears && (
-            <>
-              <input
-                type="number"
-                id="chat_disappears_time"
-                value={chatDisappearsTime}
-                onChange={(event) => setChatDisappearsTime(event.target.value)}
-              />
-              <button onClick={() => setChatDisappearsTime(defaultDisappearsTime)}>reset</button>
-              <label htmlFor="chat_disappears_time">Time before messages disappear (seconds)</label>
-            </>
-          )}
-        </div>
-
-        <div className="chat-modifiers-row">
           <input type="text" id="chat_width" value={chatWidth} onChange={(event) => setChatWidth(event.target.value)} />
           <label htmlFor="chat_width">Width</label>
           <button onClick={() => setChatWidth(defaultWidth)}>reset</button>
@@ -116,6 +95,50 @@ export const ChatDashboard = () => {
           <input type="text" id="chat_height" value={chatHeight} onChange={(event) => setChatHeight(event.target.value)} />
           <label htmlFor="chat_height">Height</label>
           <button onClick={() => setChatHeight(defaultHeight)}>reset</button>
+        </div>
+        <div className="chat-modifiers-row">
+          <input
+            type="checkbox"
+            id="chat_has_animated_entrance"
+            checked={animatedEntrance}
+            onChange={(event) => setAnimatedEntrance(event.target.checked)}
+          />
+          <label htmlFor="chat_has_animated_entrance">Animate chat message entrance</label>
+        </div>
+        <div className="chat-modifiers-row">
+          <input
+            type="checkbox"
+            id="chat_has_borders"
+            checked={chatDisabledBorders}
+            onChange={(event) => setChatDisabledBorders(event.target.checked)}
+          />
+          <label htmlFor="chat_has_borders">Show chat message borders</label>
+        </div>
+        <div className="chat-modifiers-row">
+          <input
+            type="checkbox"
+            id="chat_has_avatars"
+            checked={chatDisabledAvatars}
+            onChange={(event) => setChatDisabledAvatars(event.target.checked)}
+          />
+          <label htmlFor="chat_has_avatars">Show user avatars</label>
+        </div>
+        <div className="chat-modifiers-row">
+          <input type="checkbox" id="chat_disappears" checked={chatDisappears} onChange={(event) => setChatDisappears(event.target.checked)} />
+          <label htmlFor="chat_disappears">Messages disappear</label>
+          {chatDisappears && (
+            <>
+              after
+              <input
+                type="number"
+                id="chat_disappears_time"
+                value={chatDisappearsTime}
+                onChange={(event) => setChatDisappearsTime(event.target.value)}
+              />
+              seconds
+              <button onClick={() => setChatDisappearsTime(defaultDisappearsTime)}>reset</button>
+            </>
+          )}
         </div>
         <hr />
         <div>

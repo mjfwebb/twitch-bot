@@ -271,4 +271,4 @@ export type UserInformation = {
   created_at: string;
 };
 
-export type ChatMessage = { user: User; parsedMessage: ParsedMessage };
+export type ChatMessage = { id: string; user: User; parsedMessage: ParsedMessage };

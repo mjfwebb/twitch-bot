@@ -3,15 +3,6 @@ import { create } from 'zustand';
 import type { ChatBadge, ChatEmote, ChatMessage, SpotifySong } from '../types';
 import type { TaskMessage } from '../twitchTypes';
 
-function filterOldMessages(now: number, timeoutSeconds: number, message: ChatMessage): boolean {
-  const messageTime = new Date(Number(message.parsedMessage.tags['tmi-sent-ts'])).getTime();
-  const timeoutMilliseconds = timeoutSeconds * 1000;
-  const differenceBetweenMessageAndNow = now - messageTime;
-  const old = timeoutMilliseconds + 3000 < differenceBetweenMessageAndNow;
-
-  return !old;
-}
-
 interface Store {
   reconnectAttempt: number;
   task: TaskMessage | null;
@@ -28,6 +19,7 @@ interface Store {
   addBadges: (badge: Record<string, ChatBadge>) => void;
   addChatMessage: (chatMessage: ChatMessage) => void;
   addChatMessages: (chatMessages: ChatMessage[]) => void;
+  removeChatMessage: (chatMessage: ChatMessage) => void;
 }
 
 const useStore = create<Store>((set, get) => ({
@@ -65,38 +57,24 @@ const useStore = create<Store>((set, get) => ({
       chatBadges: { ...state.chatBadges, ...badges },
     }));
   },
+  removeChatMessage: (chatMessage: ChatMessage) => {
+    set((state) => ({
+      ...state,
+      chatMessages: state.chatMessages.filter((message) => message.id !== chatMessage.id),
+    }));
+  },
   addChatMessage: (chatMessage: ChatMessage) => {
-    const now = Date.now();
-    const searchParams = new URLSearchParams(window.location.search);
-    const disappears = searchParams.get('disappears') === 'true' ? true : false;
-
-    if (disappears) {
-      const disappearsTime = searchParams.get('disappears-time') !== null ? Number(searchParams.get('disappears-time')) : 10;
-      chatMessage.disappearAt = now + disappearsTime * 1000;
-    }
-
     set((state) => ({
       ...state,
       chatMessages: [...state.chatMessages, chatMessage],
     }));
   },
   addChatMessages: (chatMessages: ChatMessage[]) => {
-    const now = Date.now();
-    const searchParams = new URLSearchParams(window.location.search);
-    const disappears = searchParams.get('disappears') === 'true' ? true : false;
-
-    if (disappears) {
-      const disappearsTime = searchParams.get('disappears-time') !== null ? Number(searchParams.get('disappears-time')) : 10;
-      set((state) => ({
-        ...state,
-        chatMessages: chatMessages.filter((chatMessage) => filterOldMessages(now, disappearsTime, chatMessage)),
-      }));
-    } else {
-      set((state) => ({
-        ...state,
-        chatMessages,
-      }));
-    }
+    set((state) => ({
+      ...state,
+      chatMessages,
+    }));
+    // }
   },
 }));
 
