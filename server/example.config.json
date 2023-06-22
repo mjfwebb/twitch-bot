@@ -52,6 +52,7 @@
     "bit_handler": true,
     "first_message_handler": true,
     "first_message_of_stream_handler": true,
-    "returning_chatter_handler": true
+    "returning_chatter_handler": true,
+    "commands_handler": true
   }
 }

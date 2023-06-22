@@ -21,8 +21,10 @@ async function main() {
 
     await setupMongoose();
 
-    console.log('Startup: loading bot commands');
-    await loadBotCommands();
+    if (Config.features.commands_handler) {
+      console.log('Startup: loading bot commands');
+      await loadBotCommands();
+    }
 
     console.log('Startup: getting Twitch access token');
     await getTwitchAccessToken(Config.twitch);

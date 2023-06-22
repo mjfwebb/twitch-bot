@@ -67,6 +67,7 @@ export type FeaturesConfig = {
   first_message_handler: boolean;
   first_message_of_stream_handler: boolean;
   returning_chatter_handler: boolean;
+  commands_handler: boolean;
 };
 
 interface IConfig {
@@ -82,22 +83,27 @@ interface IConfig {
 }
 
 const configFileName = 'config.json';
+const missingPropertyErrorMessage = (missingProperty: string) => `Missing in ${configFileName}: ${missingProperty}`;
 
-function assertTwitchConfig(config: unknown): asserts config is { twitch: TwitchConfig } {
-  assert(hasOwnProperty(config, 'twitch'), 'Missing in config.json: twitch');
-  assert(hasOwnProperty(config.twitch, 'broadcaster_id'), 'Missing in config.json: twitch.broadcaster_id');
-  assert(hasOwnProperty(config.twitch, 'client_id'), 'Missing in config.json: twitch.client_id');
-  assert(hasOwnProperty(config.twitch, 'client_secret'), 'Missing in config.json: twitch.client_secret');
-  assert(hasOwnProperty(config.twitch, 'grant_type'), 'Missing in config.json: twitch.grant_type');
-  assert(hasOwnProperty(config.twitch, 'account'), 'Missing in config.json: twitch.account');
-  assert(hasOwnProperty(config.twitch, 'channel'), 'Missing in config.json: twitch.channel');
-  assert(hasOwnProperty(config.twitch, 'auth_code'), 'Missing in config.json: twitch.auth_code');
-  assert(hasOwnProperty(config.twitch, 'redirect_uri'), 'Missing in config.json: twitch.redirect_uri');
+function checkConfig<T>(config: unknown, part: string, properties: string[]): asserts config is T {
+  assert(hasOwnProperty(config, part), `Missing in config.json: ${part}`);
+  for (const property of properties) {
+    assert(hasOwnProperty(config[part], property), missingPropertyErrorMessage(`${part}.${property}`));
+  }
 }
 
 function readTwitchConfig(config: unknown): TwitchConfig {
   try {
-    assertTwitchConfig(config);
+    checkConfig<{ twitch: TwitchConfig }>(config, 'twitch', [
+      'broadcaster_id',
+      'client_id',
+      'client_secret',
+      'grant_type',
+      'account',
+      'channel',
+      'auth_code',
+      'redirect_uri',
+    ]);
     return config.twitch;
   } catch (error) {
     if (isError(error)) {
@@ -107,19 +113,9 @@ function readTwitchConfig(config: unknown): TwitchConfig {
   throw new Error('Failed to read Twitch config');
 }
 
-function assertSpotifyConfig(config: unknown): asserts config is { spotify: SpotifyConfig } {
-  assert(hasOwnProperty(config, 'spotify'), 'Missing in config.json: spotify');
-  assert(hasOwnProperty(config.spotify, 'enabled'), 'Missing in config.json: spotify.enabled');
-  assert(hasOwnProperty(config.spotify, 'client_id'), 'Missing in config.json: spotify.client_id');
-  assert(hasOwnProperty(config.spotify, 'client_secret'), 'Missing in config.json: spotify.client_secret');
-  assert(hasOwnProperty(config.spotify, 'grant_type'), 'Missing in config.json: spotify.grant_type');
-  assert(hasOwnProperty(config.spotify, 'auth_code'), 'Missing in config.json: spotify.auth_code');
-  assert(hasOwnProperty(config.spotify, 'redirect_uri'), 'Missing in config.json: spotify.redirect_uri');
-}
-
 function readSpotifyConfig(config: unknown): SpotifyConfig {
   try {
-    assertSpotifyConfig(config);
+    checkConfig<{ spotify: SpotifyConfig }>(config, 'spotify', ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri']);
     return config.spotify;
   } catch (error) {
     if (isError(error)) {
@@ -136,17 +132,9 @@ function readSpotifyConfig(config: unknown): SpotifyConfig {
   };
 }
 
-function assertGitHubConfig(config: unknown): asserts config is { github: GitHubConfig } {
-  assert(hasOwnProperty(config, 'github'), 'Missing in config.json: github');
-  assert(hasOwnProperty(config.github, 'enabled'), 'Missing in config.json: github.enabled');
-  assert(hasOwnProperty(config.github, 'owner'), 'Missing in config.json: github.owner');
-  assert(hasOwnProperty(config.github, 'repo'), 'Missing in config.json: github.repo');
-  assert(hasOwnProperty(config.github, 'access_token'), 'Missing in config.json: github.access_token');
-}
-
 function readGitHubConfig(config: unknown): GitHubConfig {
   try {
-    assertGitHubConfig(config);
+    checkConfig<{ github: GitHubConfig }>(config, 'github', ['enabled', 'owner', 'repo', 'access_token']);
     return config.github;
   } catch (error) {
     if (isError(error)) {
@@ -161,15 +149,9 @@ function readGitHubConfig(config: unknown): GitHubConfig {
   };
 }
 
-function assertSevenTVConfig(config: unknown): asserts config is { seventv: SevenTVConfig } {
-  assert(hasOwnProperty(config, 'seventv'), 'Missing in config.json: seventv');
-  assert(hasOwnProperty(config.seventv, 'enabled'), 'Missing in config.json: seventv.enabled');
-  assert(hasOwnProperty(config.seventv, 'user_id'), 'Missing in config.json: seventv.user_id');
-}
-
 function readSevenTVConfig(config: unknown): SevenTVConfig {
   try {
-    assertSevenTVConfig(config);
+    checkConfig<{ seventv: SevenTVConfig }>(config, 'seventv', ['enabled', 'user_id']);
     return config.seventv;
   } catch (error) {
     if (isError(error)) {
@@ -182,16 +164,9 @@ function readSevenTVConfig(config: unknown): SevenTVConfig {
   };
 }
 
-function assertBetterTTVConfig(config: unknown): asserts config is { betterttv: BetterTTVConfig } {
-  assert(hasOwnProperty(config, 'betterttv'), 'Missing BetterTTV config: betterttv');
-  assert(hasOwnProperty(config.betterttv, 'enabled'), 'Missing in config.json: betterttv.enabled');
-  assert(hasOwnProperty(config.betterttv, 'provider'), 'Missing in config.json: betterttv.provider');
-  assert(hasOwnProperty(config.betterttv, 'provider_id'), 'Missing in config.json: betterttv.provider_id');
-}
-
 function readBetterTTVConfig(config: unknown): BetterTTVConfig {
   try {
-    assertBetterTTVConfig(config);
+    checkConfig<{ betterttv: BetterTTVConfig }>(config, 'betterttv', ['enabled', 'provider', 'provider_id']);
     return config.betterttv;
   } catch (error) {
     if (isError(error)) {
@@ -205,15 +180,9 @@ function readBetterTTVConfig(config: unknown): BetterTTVConfig {
   };
 }
 
-function assertFrankerFaceZConfig(config: unknown): asserts config is { frankerfacez: FrankerFaceZConfig } {
-  assert(hasOwnProperty(config, 'frankerfacez'), 'Missing in config.json: frankerfacez');
-  assert(hasOwnProperty(config.frankerfacez, 'enabled'), 'Missing in config.json: frankerfacez.enabled');
-  assert(hasOwnProperty(config.frankerfacez, 'broadcaster_id'), 'Missing in config.json: frankerfacez.broadcaster_id');
-}
-
 function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   try {
-    assertFrankerFaceZConfig(config);
+    checkConfig<{ frankerfacez: FrankerFaceZConfig }>(config, 'frankerfacez', ['enabled', 'broadcaster_id']);
     return config.frankerfacez;
   } catch (error) {
     if (isError(error)) {
@@ -226,18 +195,17 @@ function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   };
 }
 
-function assertFeaturesConfig(config: unknown): asserts config is { features: FeaturesConfig } {
-  assert(hasOwnProperty(config, 'features'), 'Missing in config.json: features. Enabling all features by default.');
-  assert(hasOwnProperty(config.features, 'interval_commands'), 'Missing in config.json: features.interval_commands');
-  assert(hasOwnProperty(config.features, 'bit_handler'), 'Missing in config.json: features.bit_handler');
-  assert(hasOwnProperty(config.features, 'first_message_handler'), 'Missing in config.json: features.first_message_handler');
-  assert(hasOwnProperty(config.features, 'first_message_of_stream_handler'), 'Missing in config.json: features.first_message_of_stream_handler');
-  assert(hasOwnProperty(config.features, 'returning_chatter_handler'), 'Missing in config.json: features.returning_chatter_handler');
-}
-
 function readFeaturesConfig(config: unknown): FeaturesConfig {
   try {
-    assertFeaturesConfig(config);
+    checkConfig<{ features: FeaturesConfig }>(config, 'features', [
+      'interval_commands',
+      'bit_handler',
+      'first_message_handler',
+      'first_message_of_stream_handler',
+      'returning_chatter_handler',
+      'commands_handler',
+    ]);
+
     return config.features;
   } catch (error) {
     if (isError(error)) {
@@ -250,19 +218,13 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
     first_message_handler: true,
     first_message_of_stream_handler: true,
     returning_chatter_handler: true,
+    commands_handler: true,
   };
-}
-
-function assertMongoDBConfig(config: unknown): asserts config is { mongodb: MongoDBConfig } {
-  assert(hasOwnProperty(config, 'mongodb'), 'Missing in config.json: mongodb');
-  assert(hasOwnProperty(config.mongodb, 'enabled'), 'Missing in config.json: mongodb.enabled');
-  assert(hasOwnProperty(config.mongodb, 'url'), 'Missing in config.json: mongodb.url');
-  assert(hasOwnProperty(config.mongodb, 'db'), 'Missing in config.json: mongodb.db');
 }
 
 function readMongoDBConfig(config: unknown): MongoDBConfig {
   try {
-    assertMongoDBConfig(config);
+    checkConfig<{ mongodb: MongoDBConfig }>(config, 'mongodb', ['enabled', 'url', 'db']);
     return config.mongodb;
   } catch (error) {
     if (isError(error)) {
@@ -276,17 +238,9 @@ function readMongoDBConfig(config: unknown): MongoDBConfig {
   };
 }
 
-function assertWebhookConfig(config: unknown): asserts config is { discord_webhook: WebhookConfig } {
-  assert(hasOwnProperty(config, 'discord_webhook'), 'Missing in config.json: discord_webhook');
-  assert(hasOwnProperty(config.discord_webhook, 'enabled'), 'Missing in config.json: discord_webhook.enabled');
-  assert(hasOwnProperty(config.discord_webhook, 'id'), 'Missing in config.json: discord_webhook.id');
-  assert(hasOwnProperty(config.discord_webhook, 'token'), 'Missing in config.json: discord_webhook.token');
-  assert(hasOwnProperty(config.discord_webhook, 'url'), 'Missing in config.json: discord_webhook.url');
-}
-
 function readDiscordWebhookConfig(config: unknown): WebhookConfig {
   try {
-    assertWebhookConfig(config);
+    checkConfig<{ discord_webhook: WebhookConfig }>(config, 'discord_webhook', ['enabled', 'id', 'token', 'url']);
     return config.discord_webhook;
   } catch (error) {
     if (isError(error)) {

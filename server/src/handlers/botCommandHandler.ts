@@ -52,6 +52,11 @@ function addCooldown(commandId: string, cooldownLength = 0) {
 }
 
 export async function botCommandHandler(connection: websocket.connection, parsedMessage: ParsedMessage): Promise<void> {
+  // If the feature is disabled, then we don't handle this event
+  if (!Config.features.commands_handler) {
+    return;
+  }
+
   const commandName = parsedMessage.command?.botCommand;
   if (!commandName) {
     return;
