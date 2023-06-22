@@ -45,7 +45,7 @@ export function parseCommand(rawCommandComponent: string): Command | null {
         command: commandParts[0],
       };
       break;
-    case '421':
+    case '421': // Unknown command.
       console.log(`Unsupported IRC command: ${commandParts[2]}`);
       return null;
     case '001': // Logged in (successfully authenticated).
@@ -62,7 +62,6 @@ export function parseCommand(rawCommandComponent: string): Command | null {
     case '372':
     case '375':
     case '376':
-      console.log(`numeric message: ${commandParts[0]}`);
       return null;
     default:
       console.log(`\nUnexpected command: ${commandParts[0]}\n`);
