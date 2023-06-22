@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useSocketContext from '../../hooks/useSocketContext';
 import { CopyButton } from '../../components/CopyButton';
@@ -20,6 +20,17 @@ export const ChatDashboard = () => {
   const [chatDisappears, setChatDisappears] = useState<boolean>(false);
   const [chatDisappearsTime, setChatDisappearsTime] = useState<string>(defaultDisappearsTime);
   const [numberOfFakeMessages, setNumberOfFakeMessages] = useState<number>(5);
+  const [numberOfFakeMessagesPerSecond, setNumberOfFakeMessagesPerSecond] = useState<number>(0);
+  const [sendFakeMessagesPerSecond, setSendFakeMessagesPerSecond] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (sendFakeMessagesPerSecond && numberOfFakeMessagesPerSecond > 0) {
+      const interval = setInterval(() => {
+        socket.sendToServer('getFakeChatMessages', numberOfFakeMessagesPerSecond);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [sendFakeMessagesPerSecond, numberOfFakeMessagesPerSecond, socket]);
 
   const chatURL = new URL(`${document.location.href}chat`);
 
@@ -118,6 +129,19 @@ export const ChatDashboard = () => {
             />
             <label htmlFor="chat_number_of_fake_messages">Amount</label>
             <button onClick={() => socket.sendToServer('getFakeChatMessages', numberOfFakeMessages)}>send</button>
+          </div>
+          <div>Send some test messages to your chat per second?</div>
+          <div className="chat-modifiers-row">
+            <input
+              type="number"
+              id="chat_number_of_fake_messages_per_second"
+              value={numberOfFakeMessagesPerSecond}
+              onChange={(event) => setNumberOfFakeMessagesPerSecond(Number(event.target.value))}
+            />
+            <label htmlFor="chat_number_of_fake_messages_per_second">Amount per second</label>
+            <button onClick={() => setSendFakeMessagesPerSecond(!sendFakeMessagesPerSecond)}>
+              {!sendFakeMessagesPerSecond ? 'start sending' : 'stop sending'}
+            </button>
           </div>
         </div>
       </div>
