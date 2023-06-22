@@ -1,28 +1,28 @@
 import websocket from 'websocket';
 import { TWITCH_WEBSOCKET_EVENTSUB_URL } from './constants';
-import { subscribeToRedeems } from './subscribers/subscribeToRedeems';
+import { websocketEventHandler } from './handlers/websocketEventHandler';
 import { subscribeToFollows } from './subscribers/subscribeToFollows';
 import { subscribeToRaids } from './subscribers/subscribeToRaids';
-import { websocketEventHandler } from './handlers/websocketEventHandler';
-import type { TwitchWebsocketMessage } from './types';
-import { hasOwnProperty } from './utils/hasOwnProperty';
-import { subscribeToSubscriptions } from './subscribers/subscribeToSubscriptions';
-import { subscribeToSubscriptionGifts } from './subscribers/subscribeToSubscriptionGifts';
+import { subscribeToRedeems } from './subscribers/subscribeToRedeems';
 import { subscribeToStreamOfflineNotifications } from './subscribers/subscribeToStreamOfflineNotifications';
 import { subscribeToStreamOnlineNotifications } from './subscribers/subscribeToStreamOnlineNotifications';
+import { subscribeToSubscriptionGifts } from './subscribers/subscribeToSubscriptionGifts';
+import { subscribeToSubscriptions } from './subscribers/subscribeToSubscriptions';
+import type { TwitchWebsocketMessage } from './types';
+import { hasOwnProperty } from './utils/hasOwnProperty';
 
 export function runTwitchWebsocket() {
   const client = new websocket.client();
 
   client.on('connectFailed', function (error: unknown) {
-    console.log(`Connect Error: ${String(error)}`);
+    console.log(`Twitch Websocket: Connect Error: ${String(error)}`);
   });
 
   client.on('connect', function (connection) {
     console.log('Twitch Websocket: Client Connected');
 
     connection.on('error', function (error) {
-      console.log('Connection Error: ' + error.toString());
+      console.log('Twitch Websocket: Connection Error: ' + error.toString());
     });
 
     connection.on('close', function () {
