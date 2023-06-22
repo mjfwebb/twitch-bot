@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import type { ChatMessage } from '../../types';
 import useStore from '../../store/store';
+import { useChatSearchParams } from './useChatSearchParams';
 import { ChatEntry } from './ChatEntry';
 
 type MessageProps = {
@@ -11,31 +12,35 @@ type MessageProps = {
 };
 
 const Message = ({ chatMessage }: MessageProps) => {
-  const searchParams = new URLSearchParams(window.location.search);
-  const background = searchParams.get('background') || 'transparent';
-  const disappearsTime = searchParams.get('disappears-time') !== null ? Number(searchParams.get('disappears-time')) : 10;
-  const showAvatars = searchParams.get('avatars') === 'false' ? false : true;
-  const showBorders = searchParams.get('borders') === 'false' ? false : true;
-  const animatedEntry = searchParams.get('animated-entry') === 'false' ? false : true;
+  const chatSearchParams = useChatSearchParams();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       useStore.getState().removeChatMessage(chatMessage);
-    }, disappearsTime * 1000);
+    }, chatSearchParams.disappearsTime * 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [disappearsTime, chatMessage]);
+  }, [chatSearchParams.disappearsTime, chatMessage]);
 
-  if (animatedEntry) {
+  const ChatEntryProps = {
+    chatMessage,
+    background: chatSearchParams.background,
+    showAvatars: chatSearchParams.showAvatars,
+    showBorders: chatSearchParams.showBorders,
+    dropShadow: chatSearchParams.dropShadow,
+    dropShadowColor: chatSearchParams.dropShadowColor,
+  };
+
+  if (chatSearchParams.animatedEntry) {
     return (
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="message">
-        <ChatEntry chatMessage={chatMessage} background={background} showAvatars={showAvatars} showBorders={showBorders} />
+        <ChatEntry {...ChatEntryProps} />
       </motion.div>
     );
   } else {
-    return <ChatEntry chatMessage={chatMessage} background={background} showAvatars={showAvatars} showBorders={showBorders} />;
+    return <ChatEntry {...ChatEntryProps} />;
   }
 };
 

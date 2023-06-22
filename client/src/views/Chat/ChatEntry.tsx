@@ -12,9 +12,11 @@ interface ChatEntryProps {
   background: string;
   showAvatars: boolean;
   showBorders: boolean;
+  dropShadow: boolean;
+  dropShadowColor: string;
 }
 
-export const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }: ChatEntryProps) => {
+export const ChatEntry = ({ chatMessage, background, showAvatars, showBorders, dropShadow, dropShadowColor }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const { socket } = useSocketContext();
@@ -35,6 +37,13 @@ export const ChatEntry = ({ chatMessage, background, showAvatars, showBorders }:
           isSelected && 'chat-message-body-selected',
           showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
         )}
+        style={
+          dropShadow
+            ? {
+                textShadow: `1px 1px 2px ${dropShadowColor}`,
+              }
+            : {}
+        }
       >
         <span className="chat-message-content">
           <div className="chat-message-user">

@@ -1,28 +1,26 @@
 import { useEffect, useState } from 'react';
 
+import { useChatSettingsStore } from '../../store/chatSettingsStore';
 import useSocketContext from '../../hooks/useSocketContext';
+import { DEFAULT_CHAT_SETTINGS_VALUES } from '../../constants';
 import { CopyButton } from '../../components/CopyButton';
-
-const defaultHeight = '100vh';
-const defaultWidth = '500px';
-const defaultDisappearsTime = '10';
-const defaultBackground = '#000000';
-const defaultForeground = '#ffffff';
 
 export const ChatDashboard = () => {
   const socket = useSocketContext();
-  const [chatDisabledBorders, setChatDisabledBorders] = useState<boolean>(false);
-  const [chatDisabledAvatars, setChatDisabledAvatars] = useState<boolean>(false);
-  const [chatBackground, setChatBackground] = useState<string>(defaultBackground);
-  const [chatForeground, setChatForeground] = useState<string>(defaultForeground);
-  const [chatHeight, setChatHeight] = useState<string>(defaultHeight);
-  const [chatWidth, setChatWidth] = useState<string>(defaultWidth);
-  const [chatDisappears, setChatDisappears] = useState<boolean>(false);
-  const [chatDisappearsTime, setChatDisappearsTime] = useState<string>(defaultDisappearsTime);
   const [numberOfFakeMessages, setNumberOfFakeMessages] = useState<number>(5);
   const [numberOfFakeMessagesPerSecond, setNumberOfFakeMessagesPerSecond] = useState<number>(0);
   const [sendFakeMessagesPerSecond, setSendFakeMessagesPerSecond] = useState<boolean>(false);
-  const [animatedEntrance, setAnimatedEntrance] = useState<boolean>(true);
+  const backgroundColor = useChatSettingsStore((s) => s.backgroundColor);
+  const foregroundColor = useChatSettingsStore((s) => s.foregroundColor);
+  const showAvatars = useChatSettingsStore((s) => s.showAvatars);
+  const showBorders = useChatSettingsStore((s) => s.showBorders);
+  const height = useChatSettingsStore((s) => s.height);
+  const width = useChatSettingsStore((s) => s.width);
+  const disappears = useChatSettingsStore((s) => s.disappears);
+  const disappearsTime = useChatSettingsStore((s) => s.disappearsTime);
+  const animatedEntry = useChatSettingsStore((s) => s.animatedEntry);
+  const dropShadow = useChatSettingsStore((s) => s.dropShadow);
+  const dropShadowColor = useChatSettingsStore((s) => s.dropShadowColor);
 
   useEffect(() => {
     if (sendFakeMessagesPerSecond && numberOfFakeMessagesPerSecond > 0) {
@@ -35,38 +33,44 @@ export const ChatDashboard = () => {
 
   const chatURL = new URL(`${document.location.href}chat`);
 
-  if (chatBackground !== defaultBackground) {
-    chatURL.searchParams.append('background', chatBackground);
+  if (backgroundColor !== DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor) {
+    chatURL.searchParams.append('background', backgroundColor);
   }
-  if (chatForeground !== defaultForeground) {
-    chatURL.searchParams.append('foreground', chatForeground);
+  if (foregroundColor !== DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor) {
+    chatURL.searchParams.append('foreground', foregroundColor);
   }
-  if (chatDisabledAvatars === false) {
+  if (showAvatars === false) {
     chatURL.searchParams.append('avatars', 'false');
   }
-  if (chatDisabledBorders === false) {
+  if (showBorders === false) {
     chatURL.searchParams.append('borders', 'false');
   }
-  if (chatHeight !== defaultHeight) {
-    chatURL.searchParams.append('height', chatHeight);
+  if (height !== DEFAULT_CHAT_SETTINGS_VALUES.height) {
+    chatURL.searchParams.append('height', height);
   }
-  if (chatWidth !== defaultWidth) {
-    chatURL.searchParams.append('width', chatWidth);
+  if (width !== DEFAULT_CHAT_SETTINGS_VALUES.width) {
+    chatURL.searchParams.append('width', width);
   }
-  if (chatDisappears) {
+  if (disappears) {
     chatURL.searchParams.append('disappears', 'true');
   }
-  if (chatDisappears && chatDisappearsTime !== defaultDisappearsTime) {
-    chatURL.searchParams.append('disappears-time', chatDisappearsTime);
+  if (disappears && disappearsTime !== DEFAULT_CHAT_SETTINGS_VALUES.disappearsTime) {
+    chatURL.searchParams.append('disappears-time', String(disappearsTime));
   }
-  if (animatedEntrance === false) {
+  if (animatedEntry === false) {
     chatURL.searchParams.append('animated-entry', 'false');
+  }
+  if (dropShadow) {
+    chatURL.searchParams.append('drop-shadow', 'true');
+  }
+  if (dropShadow && dropShadowColor !== DEFAULT_CHAT_SETTINGS_VALUES.dropShadowColor) {
+    chatURL.searchParams.append('drop-shadow-color', dropShadowColor);
   }
 
   const chatURLString = `${chatURL.protocol}${'//'}${chatURL.host}${chatURL.pathname}${chatURL.search}`;
 
   return (
-    <>
+    <div className="chat-dashboard">
       <h2>Chat</h2>
       <p>When you change options, copy the new version of the link and update your browser source.</p>
       <div className="link">
@@ -77,31 +81,62 @@ export const ChatDashboard = () => {
       <CopyButton textToCopy={chatURLString} />
       <div className="chat-modifiers">
         <div className="chat-modifiers-row">
-          <input type="color" id="chat_background" value={chatBackground} onChange={(event) => setChatBackground(event.target.value)} />
-          <label htmlFor="chat_background">Background color</label>
-          <button onClick={() => setChatBackground(defaultBackground)}>reset</button>
+          <input
+            type="color"
+            id="chat_background"
+            value={backgroundColor}
+            onChange={(event) => useChatSettingsStore.getState().setBackgroundColor(event.target.value)}
+          />
+          <label htmlFor="chat_background">Background color (default is transparent)</label>
+          <button onClick={() => useChatSettingsStore.getState().setBackgroundColor(DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor)}>reset</button>
         </div>
         <div className="chat-modifiers-row">
-          <input type="color" id="chat_foreground" value={chatForeground} onChange={(event) => setChatForeground(event.target.value)} />
+          <input
+            type="color"
+            id="chat_foreground"
+            value={foregroundColor}
+            onChange={(event) => useChatSettingsStore.getState().setForegroundColor(event.target.value)}
+          />
           <label htmlFor="chat_foreground">Foreground color</label>
-          <button onClick={() => setChatForeground(defaultForeground)}>reset</button>
+          <button onClick={() => useChatSettingsStore.getState().setForegroundColor(DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor)}>reset</button>
         </div>
         <div className="chat-modifiers-row">
-          <input type="text" id="chat_width" value={chatWidth} onChange={(event) => setChatWidth(event.target.value)} />
+          <input
+            type="checkbox"
+            id="chat_has_drop_shadow"
+            checked={dropShadow}
+            onChange={(event) => useChatSettingsStore.getState().setDropShadow(event.target.checked)}
+          />
+          <label htmlFor="chat_has_drop_shadow">Message content has drop shadow</label>
+        </div>
+        {dropShadow && (
+          <div className="chat-modifiers-row">
+            <input
+              type="color"
+              id="chat_drop_shadow"
+              value={dropShadowColor}
+              onChange={(event) => useChatSettingsStore.getState().setDropShadowColor(event.target.value)}
+            />
+            <label htmlFor="chat_drop_shadow">Drop shadow color</label>
+            <button onClick={() => useChatSettingsStore.getState().setDropShadowColor(DEFAULT_CHAT_SETTINGS_VALUES.dropShadowColor)}>reset</button>
+          </div>
+        )}
+        <div className="chat-modifiers-row">
+          <input type="text" id="chat_width" value={width} onChange={(event) => useChatSettingsStore.getState().setWidth(event.target.value)} />
           <label htmlFor="chat_width">Width</label>
-          <button onClick={() => setChatWidth(defaultWidth)}>reset</button>
+          <button onClick={() => useChatSettingsStore.getState().setWidth(DEFAULT_CHAT_SETTINGS_VALUES.width)}>reset</button>
         </div>
         <div className="chat-modifiers-row">
-          <input type="text" id="chat_height" value={chatHeight} onChange={(event) => setChatHeight(event.target.value)} />
+          <input type="text" id="chat_height" value={height} onChange={(event) => useChatSettingsStore.getState().setHeight(event.target.value)} />
           <label htmlFor="chat_height">Height</label>
-          <button onClick={() => setChatHeight(defaultHeight)}>reset</button>
+          <button onClick={() => useChatSettingsStore.getState().setHeight(DEFAULT_CHAT_SETTINGS_VALUES.height)}>reset</button>
         </div>
         <div className="chat-modifiers-row">
           <input
             type="checkbox"
             id="chat_has_animated_entrance"
-            checked={animatedEntrance}
-            onChange={(event) => setAnimatedEntrance(event.target.checked)}
+            checked={animatedEntry}
+            onChange={(event) => useChatSettingsStore.getState().setAnimatedEntry(event.target.checked)}
           />
           <label htmlFor="chat_has_animated_entrance">Animate chat message entrance</label>
         </div>
@@ -109,8 +144,8 @@ export const ChatDashboard = () => {
           <input
             type="checkbox"
             id="chat_has_borders"
-            checked={chatDisabledBorders}
-            onChange={(event) => setChatDisabledBorders(event.target.checked)}
+            checked={showBorders}
+            onChange={(event) => useChatSettingsStore.getState().setShowBorders(event.target.checked)}
           />
           <label htmlFor="chat_has_borders">Show chat message borders</label>
         </div>
@@ -118,25 +153,32 @@ export const ChatDashboard = () => {
           <input
             type="checkbox"
             id="chat_has_avatars"
-            checked={chatDisabledAvatars}
-            onChange={(event) => setChatDisabledAvatars(event.target.checked)}
+            checked={showAvatars}
+            onChange={(event) => useChatSettingsStore.getState().setShowAvatars(event.target.checked)}
           />
           <label htmlFor="chat_has_avatars">Show user avatars</label>
         </div>
         <div className="chat-modifiers-row">
-          <input type="checkbox" id="chat_disappears" checked={chatDisappears} onChange={(event) => setChatDisappears(event.target.checked)} />
+          <input
+            type="checkbox"
+            id="chat_disappears"
+            checked={disappears}
+            onChange={(event) => useChatSettingsStore.getState().setDisappears(event.target.checked)}
+          />
           <label htmlFor="chat_disappears">Messages disappear</label>
-          {chatDisappears && (
+          {disappears && (
             <>
               after
               <input
                 type="number"
                 id="chat_disappears_time"
-                value={chatDisappearsTime}
-                onChange={(event) => setChatDisappearsTime(event.target.value)}
+                value={disappearsTime}
+                onChange={(event) => useChatSettingsStore.getState().setDisappearsTime(Number(event.target.value))}
               />
               seconds
-              <button onClick={() => setChatDisappearsTime(defaultDisappearsTime)}>reset</button>
+              <button onClick={() => useChatSettingsStore.getState().setDisappearsTime(Number(DEFAULT_CHAT_SETTINGS_VALUES.disappearsTime))}>
+                reset
+              </button>
             </>
           )}
         </div>
@@ -150,7 +192,7 @@ export const ChatDashboard = () => {
               value={numberOfFakeMessages}
               onChange={(event) => setNumberOfFakeMessages(Number(event.target.value))}
             />
-            <label htmlFor="chat_number_of_fake_messages">Amount</label>
+            <label htmlFor="chat_number_of_fake_messages">messages</label>
             <button onClick={() => socket.sendToServer('getFakeChatMessages', numberOfFakeMessages)}>send</button>
           </div>
           <div>Send some test messages to your chat per second?</div>
@@ -161,13 +203,13 @@ export const ChatDashboard = () => {
               value={numberOfFakeMessagesPerSecond}
               onChange={(event) => setNumberOfFakeMessagesPerSecond(Number(event.target.value))}
             />
-            <label htmlFor="chat_number_of_fake_messages_per_second">Amount per second</label>
+            <label htmlFor="chat_number_of_fake_messages_per_second">messages per second</label>
             <button onClick={() => setSendFakeMessagesPerSecond(!sendFakeMessagesPerSecond)}>
               {!sendFakeMessagesPerSecond ? 'start sending' : 'stop sending'}
             </button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
