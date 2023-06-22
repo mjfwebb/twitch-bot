@@ -1,13 +1,13 @@
 import { getConnection } from '../bot';
-import { REWARDS } from '../constants';
 import { getBotCommands } from '../botCommands';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
+import { REWARDS } from '../constants';
 import { playSound } from '../playSound';
 import { setStreamStatus } from '../streamState';
 import type { ParsedCommand, TwitchWebsocketMessage } from '../types';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
 import type { EventFromSubscriptionType, EventSubResponse } from '../typings/twitchEvents';
+import { hasOwnProperty } from '../utils/hasOwnProperty';
 
 const emptyParsedCommand: ParsedCommand = {
   commandName: '',
@@ -64,7 +64,7 @@ export async function websocketEventHandler(data: TwitchWebsocketMessage) {
         const connection = getConnection();
         if (connection) {
           if (!event.is_gift) {
-            sendChatMessage(connection, `Thank you for subscribing ${event.user_name}, .`);
+            sendChatMessage(connection, `Thank you for subscribing ${event.user_name}, you sure do know a good time when you find one.`);
           }
         }
         break;
