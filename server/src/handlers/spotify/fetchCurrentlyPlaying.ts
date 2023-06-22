@@ -21,6 +21,13 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
+
+      // If the result is an error, return null
+      if (!result) {
+        console.log('No result from Spotify, are you sure you have a song playing?');
+        return null;
+      }
+
       if (
         hasOwnProperty(result, 'item') &&
         hasOwnProperty(result.item, 'name') &&
