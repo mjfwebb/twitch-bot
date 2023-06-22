@@ -16,7 +16,6 @@ import { runTwitchWebsocket } from './twitchWebsocket';
 
 async function main() {
   try {
-    console.log('Startup: checking token file exists and creating if not');
     assertTokenFileExists();
 
     await setupMongoose();
