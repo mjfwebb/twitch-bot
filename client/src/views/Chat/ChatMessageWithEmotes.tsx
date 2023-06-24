@@ -75,7 +75,7 @@ export const ChatMessageWithEmotes = ({
   return (
     <>
       {messageParts.map(({ match, emote, skip }, index) => {
-        if (!emote) {
+        if (!emote || !emote.src) {
           return match;
         }
 
