@@ -1,31 +1,34 @@
 import { DEFAULT_CHAT_SETTINGS_VALUES } from '../../constants';
+import { chatSearchParamsMap } from './chatSearchParamsMap';
 
 export const useChatSearchParams = () => {
   const searchParams = new URLSearchParams(window.location.search);
 
-  const animatedEntry = searchParams.get('animated-entry') === 'false' ? false : true;
-  const background = searchParams.get('background') || DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor;
-  const chatHeight = searchParams.get('height') || DEFAULT_CHAT_SETTINGS_VALUES.height;
-  const chatWidth = searchParams.get('width') || DEFAULT_CHAT_SETTINGS_VALUES.width;
-  const disappears = searchParams.get('disappears') === 'true' ? true : false;
-  const disappearsTime =
-    searchParams.get('disappears-time') !== null ? Number(searchParams.get('disappears-time')) : DEFAULT_CHAT_SETTINGS_VALUES.disappearsTime;
-  const dropShadow = searchParams.get('drop-shadow') === 'true' ? true : false;
-  const dropShadowColor = searchParams.get('drop-shadow-color') || DEFAULT_CHAT_SETTINGS_VALUES.dropShadowColor;
-  const foreground = searchParams.get('foreground') || DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor;
-  const showAvatars = searchParams.get('avatars') === 'false' ? false : true;
-  const showBorders = searchParams.get('borders') === 'false' ? false : true;
+  const animatedEntry = searchParams.get(chatSearchParamsMap.animatedEntry) === 'false' ? false : true;
+  const backgroundColor = searchParams.get(chatSearchParamsMap.backgroundColor) || DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor;
+  const height = searchParams.get(chatSearchParamsMap.height) || DEFAULT_CHAT_SETTINGS_VALUES.height;
+  const width = searchParams.get(chatSearchParamsMap.width) || DEFAULT_CHAT_SETTINGS_VALUES.width;
+  const animatedExit = searchParams.get(chatSearchParamsMap.animatedExit) === 'true' ? true : false;
+  const secondsBeforeExit =
+    searchParams.get(chatSearchParamsMap.secondsBeforeExit) !== null
+      ? Number(searchParams.get(chatSearchParamsMap.secondsBeforeExit))
+      : DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit;
+  const dropShadowEnabled = searchParams.get(chatSearchParamsMap.dropShadowEnabled) === 'true' ? true : false;
+  const dropShadowSettings = searchParams.get(chatSearchParamsMap.dropShadowSettings) || DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings;
+  const foregroundColor = searchParams.get(chatSearchParamsMap.foregroundColor) || DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor;
+  const showAvatars = searchParams.get(chatSearchParamsMap.showAvatars) === 'false' ? false : true;
+  const showBorders = searchParams.get(chatSearchParamsMap.showBorders) === 'false' ? false : true;
 
   return {
     animatedEntry,
-    background,
-    chatHeight,
-    chatWidth,
-    disappears,
-    disappearsTime,
-    dropShadow,
-    dropShadowColor,
-    foreground,
+    backgroundColor,
+    height,
+    width,
+    animatedExit,
+    secondsBeforeExit,
+    dropShadowEnabled,
+    dropShadowSettings,
+    foregroundColor,
     showAvatars,
     showBorders,
   };

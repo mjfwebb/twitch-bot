@@ -8,10 +8,10 @@ interface ChatPersistedSettings {
   backgroundColor: string;
   height: string;
   width: string;
-  disappears: boolean;
-  disappearsTime: number;
-  dropShadow: boolean;
-  dropShadowColor: string;
+  animatedExit: boolean;
+  secondsBeforeExit: number;
+  dropShadowEnabled: boolean;
+  dropShadowSettings: string;
   foregroundColor: string;
   showAvatars: boolean;
   showBorders: boolean;
@@ -19,10 +19,10 @@ interface ChatPersistedSettings {
   setBackgroundColor: (backgroundColor: string) => void;
   setHeight: (height: string) => void;
   setWidth: (width: string) => void;
-  setDisappears: (disappears: boolean) => void;
-  setDisappearsTime: (disappearsTime: number) => void;
-  setDropShadow: (dropShadow: boolean) => void;
-  setDropShadowColor: (dropShadowColor: string) => void;
+  setAnimatedExit: (disappears: boolean) => void;
+  setSecondsBeforeExit: (secondsBeforeExit: number) => void;
+  setDropShadowEnabled: (dropShadowEnabled: boolean) => void;
+  setDropShadowSettings: (dropShadowSettings: string) => void;
   setForegroundColor: (foregroundColor: string) => void;
   setShowAvatars: (showAvatars: boolean) => void;
   setShowBorders: (showBorders: boolean) => void;
@@ -36,10 +36,10 @@ export const useChatSettingsStore = create(
       backgroundColor: DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor,
       height: DEFAULT_CHAT_SETTINGS_VALUES.height,
       width: DEFAULT_CHAT_SETTINGS_VALUES.width,
-      disappears: false,
-      disappearsTime: DEFAULT_CHAT_SETTINGS_VALUES.disappearsTime,
-      dropShadow: false,
-      dropShadowColor: DEFAULT_CHAT_SETTINGS_VALUES.dropShadowColor,
+      animatedExit: false,
+      secondsBeforeExit: DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit,
+      dropShadowEnabled: false,
+      dropShadowSettings: DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings,
       foregroundColor: DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor,
       showAvatars: true,
       showBorders: true,
@@ -55,17 +55,17 @@ export const useChatSettingsStore = create(
       setWidth: (width: string) => {
         set(() => ({ width }));
       },
-      setDisappears: (disappears: boolean) => {
-        set(() => ({ disappears }));
+      setAnimatedExit: (animatedExit: boolean) => {
+        set(() => ({ animatedExit }));
       },
-      setDisappearsTime: (disappearsTime: number) => {
-        set(() => ({ disappearsTime }));
+      setSecondsBeforeExit: (secondsBeforeExit: number) => {
+        set(() => ({ secondsBeforeExit }));
       },
-      setDropShadow: (dropShadow: boolean) => {
-        set(() => ({ dropShadow }));
+      setDropShadowEnabled: (dropShadowEnabled: boolean) => {
+        set(() => ({ dropShadowEnabled }));
       },
-      setDropShadowColor: (dropShadowColor: string) => {
-        set(() => ({ dropShadowColor }));
+      setDropShadowSettings: (dropShadowSettings: string) => {
+        set(() => ({ dropShadowSettings }));
       },
       setForegroundColor: (foregroundColor: string) => {
         set(() => ({ foregroundColor }));

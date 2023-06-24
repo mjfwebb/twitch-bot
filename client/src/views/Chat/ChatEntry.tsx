@@ -9,14 +9,14 @@ import { ChatMessageWithEmotes } from './ChatMessageWithEmotes';
 
 interface ChatEntryProps {
   chatMessage: ChatMessage;
-  background: string;
+  backgroundColor: string;
   showAvatars: boolean;
   showBorders: boolean;
-  dropShadow: boolean;
-  dropShadowColor: string;
+  dropShadowEnabled: boolean;
+  dropShadowSettings: string;
 }
 
-export const ChatEntry = ({ chatMessage, background, showAvatars, showBorders, dropShadow, dropShadowColor }: ChatEntryProps) => {
+export const ChatEntry = ({ chatMessage, backgroundColor, showAvatars, showBorders, dropShadowEnabled, dropShadowSettings }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const { socket } = useSocketContext();
@@ -38,9 +38,9 @@ export const ChatEntry = ({ chatMessage, background, showAvatars, showBorders, d
           showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
         )}
         style={
-          dropShadow
+          dropShadowEnabled
             ? {
-                textShadow: `1px 1px 2px ${dropShadowColor}`,
+                textShadow: dropShadowSettings,
               }
             : {}
         }
@@ -53,7 +53,7 @@ export const ChatEntry = ({ chatMessage, background, showAvatars, showBorders, d
               </span>
             )}
             <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
-            <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', background) }}>
+            <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', backgroundColor) }}>
               {user.displayName}
             </span>
           </div>

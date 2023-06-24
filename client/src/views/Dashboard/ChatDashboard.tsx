@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import { chatSearchParamsMap } from '../Chat/chatSearchParamsMap';
 import { useChatSettingsStore } from '../../store/chatSettingsStore';
 import useSocketContext from '../../hooks/useSocketContext';
 import { DEFAULT_CHAT_SETTINGS_VALUES } from '../../constants';
-import { CopyButton } from '../../components/CopyButton';
+import { TextShadowPicker } from '../../components/TextShadowPicker';
+import { CopyButton } from '../../components/CopyButton/CopyButton';
+import './ChatDashboard.less';
 
 export const ChatDashboard = () => {
   const socket = useSocketContext();
@@ -16,11 +19,11 @@ export const ChatDashboard = () => {
   const showBorders = useChatSettingsStore((s) => s.showBorders);
   const height = useChatSettingsStore((s) => s.height);
   const width = useChatSettingsStore((s) => s.width);
-  const disappears = useChatSettingsStore((s) => s.disappears);
-  const disappearsTime = useChatSettingsStore((s) => s.disappearsTime);
+  const animatedExit = useChatSettingsStore((s) => s.animatedExit);
+  const secondsBeforeExit = useChatSettingsStore((s) => s.secondsBeforeExit);
   const animatedEntry = useChatSettingsStore((s) => s.animatedEntry);
-  const dropShadow = useChatSettingsStore((s) => s.dropShadow);
-  const dropShadowColor = useChatSettingsStore((s) => s.dropShadowColor);
+  const dropShadowEnabled = useChatSettingsStore((s) => s.dropShadowEnabled);
+  const dropShadowSettings = useChatSettingsStore((s) => s.dropShadowSettings);
 
   useEffect(() => {
     if (sendFakeMessagesPerSecond && numberOfFakeMessagesPerSecond > 0) {
@@ -34,37 +37,37 @@ export const ChatDashboard = () => {
   const chatURL = new URL(`${document.location.href}chat`);
 
   if (backgroundColor !== DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor) {
-    chatURL.searchParams.append('background', backgroundColor);
+    chatURL.searchParams.append(chatSearchParamsMap.backgroundColor, backgroundColor);
   }
   if (foregroundColor !== DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor) {
-    chatURL.searchParams.append('foreground', foregroundColor);
+    chatURL.searchParams.append(chatSearchParamsMap.foregroundColor, foregroundColor);
   }
   if (showAvatars === false) {
-    chatURL.searchParams.append('avatars', 'false');
+    chatURL.searchParams.append(chatSearchParamsMap.showAvatars, 'false');
   }
   if (showBorders === false) {
-    chatURL.searchParams.append('borders', 'false');
+    chatURL.searchParams.append(chatSearchParamsMap.showBorders, 'false');
   }
   if (height !== DEFAULT_CHAT_SETTINGS_VALUES.height) {
-    chatURL.searchParams.append('height', height);
+    chatURL.searchParams.append(chatSearchParamsMap.height, height);
   }
   if (width !== DEFAULT_CHAT_SETTINGS_VALUES.width) {
-    chatURL.searchParams.append('width', width);
+    chatURL.searchParams.append(chatSearchParamsMap.width, width);
   }
-  if (disappears) {
-    chatURL.searchParams.append('disappears', 'true');
+  if (animatedExit) {
+    chatURL.searchParams.append(chatSearchParamsMap.animatedExit, 'true');
   }
-  if (disappears && disappearsTime !== DEFAULT_CHAT_SETTINGS_VALUES.disappearsTime) {
-    chatURL.searchParams.append('disappears-time', String(disappearsTime));
+  if (animatedExit && secondsBeforeExit !== DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit) {
+    chatURL.searchParams.append(chatSearchParamsMap.secondsBeforeExit, String(secondsBeforeExit));
   }
   if (animatedEntry === false) {
-    chatURL.searchParams.append('animated-entry', 'false');
+    chatURL.searchParams.append(chatSearchParamsMap.animatedEntry, 'false');
   }
-  if (dropShadow) {
-    chatURL.searchParams.append('drop-shadow', 'true');
+  if (dropShadowEnabled) {
+    chatURL.searchParams.append(chatSearchParamsMap.dropShadowEnabled, 'true');
   }
-  if (dropShadow && dropShadowColor !== DEFAULT_CHAT_SETTINGS_VALUES.dropShadowColor) {
-    chatURL.searchParams.append('drop-shadow-color', dropShadowColor);
+  if (dropShadowEnabled && dropShadowSettings !== DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings) {
+    chatURL.searchParams.append(chatSearchParamsMap.dropShadowSettings, dropShadowSettings);
   }
 
   const chatURLString = `${chatURL.protocol}${'//'}${chatURL.host}${chatURL.pathname}${chatURL.search}`;
@@ -72,7 +75,9 @@ export const ChatDashboard = () => {
   return (
     <div className="chat-dashboard">
       <h2>Chat</h2>
-      <p>When you change options, copy the new version of the link and update your browser source.</p>
+      <p>
+        <span className="chat-dashboard-note">Note</span>When you change options, copy the new version of the link and update your browser source.
+      </p>
       <div className="link">
         <a target="_new" href={chatURL.href}>
           {chatURLString}
@@ -104,21 +109,30 @@ export const ChatDashboard = () => {
           <input
             type="checkbox"
             id="chat_has_drop_shadow"
-            checked={dropShadow}
-            onChange={(event) => useChatSettingsStore.getState().setDropShadow(event.target.checked)}
+            checked={dropShadowEnabled}
+            onChange={(event) => useChatSettingsStore.getState().setDropShadowEnabled(event.target.checked)}
           />
           <label htmlFor="chat_has_drop_shadow">Message content has drop shadow</label>
         </div>
-        {dropShadow && (
+        {dropShadowEnabled && (
           <div className="chat-modifiers-row">
-            <input
+            {/* <input
               type="color"
               id="chat_drop_shadow"
-              value={dropShadowColor}
-              onChange={(event) => useChatSettingsStore.getState().setDropShadowColor(event.target.value)}
+              value={dropShadowSettings}
+              onChange={(event) => useChatSettingsStore.getState().setDropShadowSettings(event.target.value)}
+            /> */}
+            <TextShadowPicker
+              value={dropShadowSettings}
+              // id="chat_drop_shadow"
+              onChange={(value) => {
+                useChatSettingsStore.getState().setDropShadowSettings(value);
+              }}
             />
-            <label htmlFor="chat_drop_shadow">Drop shadow color</label>
-            <button onClick={() => useChatSettingsStore.getState().setDropShadowColor(DEFAULT_CHAT_SETTINGS_VALUES.dropShadowColor)}>reset</button>
+            <label htmlFor="chat_drop_shadow">Drop shadow settings</label>
+            <button onClick={() => useChatSettingsStore.getState().setDropShadowSettings(DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings)}>
+              reset
+            </button>
           </div>
         )}
         <div className="chat-modifiers-row">
@@ -162,21 +176,21 @@ export const ChatDashboard = () => {
           <input
             type="checkbox"
             id="chat_disappears"
-            checked={disappears}
-            onChange={(event) => useChatSettingsStore.getState().setDisappears(event.target.checked)}
+            checked={animatedExit}
+            onChange={(event) => useChatSettingsStore.getState().setAnimatedExit(event.target.checked)}
           />
           <label htmlFor="chat_disappears">Messages disappear</label>
-          {disappears && (
+          {animatedExit && (
             <>
               after
               <input
                 type="number"
                 id="chat_disappears_time"
-                value={disappearsTime}
-                onChange={(event) => useChatSettingsStore.getState().setDisappearsTime(Number(event.target.value))}
+                value={secondsBeforeExit}
+                onChange={(event) => useChatSettingsStore.getState().setSecondsBeforeExit(Number(event.target.value))}
               />
               seconds
-              <button onClick={() => useChatSettingsStore.getState().setDisappearsTime(Number(DEFAULT_CHAT_SETTINGS_VALUES.disappearsTime))}>
+              <button onClick={() => useChatSettingsStore.getState().setSecondsBeforeExit(Number(DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit))}>
                 reset
               </button>
             </>

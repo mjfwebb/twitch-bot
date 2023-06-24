@@ -14,17 +14,15 @@ export const NonDisappearingChat = () => {
   const chatMessages = useStore((s) => s.chatMessages);
   const virtuoso = useRef<VirtuosoHandle>(null);
 
-  console.log('NonDisappearingChat', chatMessages);
-
   const InnerItem = memo(({ index }: { index: number }) => {
     return (
       <ChatEntry
         chatMessage={chatMessages[index]}
-        background={chatSearchParams.background}
+        backgroundColor={chatSearchParams.backgroundColor}
         showAvatars={chatSearchParams.showAvatars}
         showBorders={chatSearchParams.showBorders}
-        dropShadow={chatSearchParams.dropShadow}
-        dropShadowColor={chatSearchParams.dropShadowColor}
+        dropShadowEnabled={chatSearchParams.dropShadowEnabled}
+        dropShadowSettings={chatSearchParams.dropShadowSettings}
       />
     );
   });

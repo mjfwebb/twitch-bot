@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useCopyToClipboard } from 'react-use';
 
+import './CopyButton.less';
+
 export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
   const [copyState, copyToClipboard] = useCopyToClipboard();
   const [showCopied, setShowCopied] = useState<boolean>(false);
-  const showCopiedTimeout = useRef<number>();
+  const showCopiedTimeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (copyState.error || copyState.value) {
@@ -20,7 +22,7 @@ export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
   }, [copyState]);
 
   return (
-    <div>
+    <div className="copy-button-wrapper">
       <button
         onClick={() => {
           setShowCopied(true);
@@ -30,7 +32,7 @@ export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
         copy
       </button>
       {showCopied && (
-        <span className="link-copy">{copyState.error ? 'Something went wrong!' : copyState.value ? 'Link copied to clipboard' : ''}</span>
+        <span className="copy-button-text">{copyState.error ? 'Something went wrong!' : copyState.value ? 'Link copied to clipboard' : ''}</span>
       )}
     </div>
   );

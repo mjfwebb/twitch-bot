@@ -17,20 +17,20 @@ const Message = ({ chatMessage }: MessageProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       useStore.getState().removeChatMessage(chatMessage);
-    }, chatSearchParams.disappearsTime * 1000);
+    }, chatSearchParams.secondsBeforeExit * 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [chatSearchParams.disappearsTime, chatMessage]);
+  }, [chatSearchParams.secondsBeforeExit, chatMessage]);
 
   const ChatEntryProps = {
     chatMessage,
-    background: chatSearchParams.background,
+    backgroundColor: chatSearchParams.backgroundColor,
     showAvatars: chatSearchParams.showAvatars,
     showBorders: chatSearchParams.showBorders,
-    dropShadow: chatSearchParams.dropShadow,
-    dropShadowColor: chatSearchParams.dropShadowColor,
+    dropShadowEnabled: chatSearchParams.dropShadowEnabled,
+    dropShadowSettings: chatSearchParams.dropShadowSettings,
   };
 
   if (chatSearchParams.animatedEntry) {
