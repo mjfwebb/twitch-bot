@@ -1,8 +1,8 @@
 import type { connection } from 'websocket';
-import { getConnection } from './bot';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { SECOND_MS } from './constants';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
+import { getConnection } from './ircWebsocket';
 import { getStreamStatus } from './streamState';
 
 interface IntervalCommand {

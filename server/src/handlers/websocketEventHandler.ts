@@ -1,8 +1,8 @@
-import { getConnection } from '../bot';
 import { getBotCommands } from '../botCommands';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
 import { REWARDS } from '../constants';
+import { getConnection } from '../ircWebsocket';
 import { playSound } from '../playSound';
 import { setStreamStatus } from '../streamState';
 import type { ParsedCommand, TwitchWebsocketMessage } from '../types';

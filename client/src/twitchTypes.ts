@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 export type Command = {
   command: string;
-  channel?: string;
+  channel: string;
   isCapRequestEnabled?: boolean;
-  botCommand?: string;
-  botCommandParams?: string;
+  botCommand: string;
+  botCommandParams: string;
 };
 
 export type Source = {
@@ -180,12 +180,12 @@ export type Tags = Partial<
 
 export type ParsedMessage = {
   tags: Tags;
-  source: Source | null;
-  command: Command | null;
+  source: Source;
+  command: Command;
   parameters: string;
 };
 
-export type CommandWithBotCommandParams = Omit<Command, 'botCommand'> & { botCommandParams: string };
+export type CommandWithBotCommandParams = Omit<Command, 'botCommandParams'> & { botCommandParams: string };
 
 export type TaskMessage = {
   tags: Tags;

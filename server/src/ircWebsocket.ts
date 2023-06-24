@@ -16,7 +16,7 @@ let connectionRef: websocket.connection | undefined;
 
 export const getConnection = () => connectionRef;
 
-export function runBot() {
+export function runIrcWebsocket() {
   const client = new websocket.client();
   const channel = `#${Config.twitch.channel}`;
 
@@ -25,7 +25,7 @@ export function runBot() {
   });
 
   client.on('connect', function (connection) {
-    console.log('IRC WebSocket Client Connected');
+    console.log('IRC WebSocket: Client Connected');
 
     // Store the connection ref so it can be exported
     connectionRef = connection;
@@ -54,7 +54,7 @@ export function runBot() {
     connection.on('message', function (ircMessage) {
       if (ircMessage.type === 'utf8') {
         const rawIrcMessage = ircMessage.utf8Data.trimEnd();
-        // console.log(`Message received (${new Date().toISOString()}): '${rawIrcMessage}'\n`);
+        console.log(`Message received (${new Date().toISOString()}): '${rawIrcMessage}'\n`);
 
         const messages = rawIrcMessage.split('\r\n'); // The IRC message may contain one or more messages.
         messages.forEach((message) => {
@@ -71,7 +71,7 @@ export function runBot() {
                 firstMessageOfStreamHandler(connection, parsedMessage).catch((e) => console.error(e));
                 returningChatterHandler(connection, parsedMessage);
 
-                if (!botCommand && parsedMessage.source?.nick && parsedMessage.parameters) {
+                if ((!botCommand || botCommand === 'ACTION') && parsedMessage.source?.nick && parsedMessage.parameters) {
                   discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
 
                   const userId = parsedMessage.tags?.['user-id'];

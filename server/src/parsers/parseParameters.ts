@@ -3,16 +3,16 @@
 import type { Command } from '../types';
 
 export function parseParameters(rawParametersComponent: string, command: Command) {
-  const idx = 0;
-  const commandParts: string = rawParametersComponent.slice(idx + 1).trim();
-  const paramsIdx = commandParts.indexOf(' ');
+  const index = 0;
+  const commandParts: string = rawParametersComponent.slice(index + 1).trim();
+  const paramsIndex = commandParts.indexOf(' ');
 
-  if (-1 == paramsIdx) {
+  if (paramsIndex === -1) {
     // no parameters
     command.botCommand = commandParts.slice(0);
   } else {
-    command.botCommand = commandParts.slice(0, paramsIdx);
-    command.botCommandParams = commandParts.slice(paramsIdx).trim();
+    command.botCommand = commandParts.slice(0, paramsIndex);
+    command.botCommandParams = commandParts.slice(paramsIndex).trim();
     // TODO: remove extra spaces in parameters string
   }
 

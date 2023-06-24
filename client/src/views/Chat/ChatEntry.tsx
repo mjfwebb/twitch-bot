@@ -19,6 +19,12 @@ interface ChatEntryProps {
 export const ChatEntry = ({ chatMessage, backgroundColor, showAvatars, showBorders, dropShadowEnabled, dropShadowSettings }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
+  const actionMessage = chatMessage.parsedMessage.command.botCommand === 'ACTION';
+  const message =
+    chatMessage.parsedMessage.command.botCommand === 'ACTION'
+      ? chatMessage.parsedMessage.command.botCommandParams
+      : chatMessage.parsedMessage.parameters;
+
   const { socket } = useSocketContext();
 
   // Set default user if no user
@@ -57,8 +63,8 @@ export const ChatEntry = ({ chatMessage, backgroundColor, showAvatars, showBorde
               {user.displayName}
             </span>
           </div>
-          <span className="chat-message-text">
-            <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={chatMessage.parsedMessage.parameters} />
+          <span className={classNames('chat-message-text', actionMessage && 'chat-message-text-action')}>
+            <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={message} />
           </span>
         </span>
       </div>

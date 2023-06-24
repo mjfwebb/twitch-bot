@@ -7,11 +7,11 @@
 // Expects the caller to pass a single message. (Remember, the Twitch
 // IRC server may send one or more IRC messages in a single message.)
 
-import { parseCommand } from './parseCommand';
-import { parseTags } from './parseTags';
 import type { ParsedMessage } from '../types';
-import { parseSource } from './parseSource';
+import { parseCommand } from './parseCommand';
 import { parseParameters } from './parseParameters';
+import { parseSource } from './parseSource';
+import { parseTags } from './parseTags';
 
 export function parseMessage(message: string) {
   const parsedMessage: ParsedMessage = {
@@ -23,7 +23,7 @@ export function parseMessage(message: string) {
   };
 
   // The start index. Increments as we parse the IRC message.
-  let idx = 0;
+  let index = 0;
 
   // The raw components of the IRC message.
   let rawTagsComponent: string | null = null;
@@ -32,36 +32,36 @@ export function parseMessage(message: string) {
   let rawParametersComponent: string | null = null;
 
   // If the message includes tags, get the tags component of the IRC message.
-  if (message[idx] === '@') {
+  if (message[index] === '@') {
     // The message includes tags.
-    const endIdx = message.indexOf(' ');
-    rawTagsComponent = message.slice(1, endIdx);
-    idx = endIdx + 1; // Should now point to source colon (:).
+    const endIndex = message.indexOf(' ');
+    rawTagsComponent = message.slice(1, endIndex);
+    index = endIndex + 1; // Should now point to source colon (:).
   }
 
   // Get the source component (nick and host) of the IRC message.
-  // The idx should point to the source part; otherwise, it's a PING command.
-  if (message[idx] === ':') {
-    idx += 1;
-    const endIdx = message.indexOf(' ', idx);
-    rawSourceComponent = message.slice(idx, endIdx);
-    idx = endIdx + 1; // Should point to the command part of the message.
+  // The index should point to the source part; otherwise, it's a PING command.
+  if (message[index] === ':') {
+    index += 1;
+    const endIndex = message.indexOf(' ', index);
+    rawSourceComponent = message.slice(index, endIndex);
+    index = endIndex + 1; // Should point to the command part of the message.
   }
 
   // Get the command component of the IRC message.
-  let endIdx = message.indexOf(':', idx); // Looking for the parameters part of the message.
-  if (-1 == endIdx) {
+  let endIndex = message.indexOf(':', index); // Looking for the parameters part of the message.
+  if (endIndex === -1) {
     // But not all messages include the parameters part.
-    endIdx = message.length;
+    endIndex = message.length;
   }
 
-  rawCommandComponent = message.slice(idx, endIdx).trim();
+  rawCommandComponent = message.slice(index, endIndex).trim();
 
   // Get the parameters component of the IRC message.
-  if (endIdx != message.length) {
+  if (endIndex != message.length) {
     // Check if the IRC message contains a parameters component.
-    idx = endIdx + 1; // Should point to the parameters part of the message.
-    rawParametersComponent = message.slice(idx);
+    index = endIndex + 1; // Should point to the parameters part of the message.
+    rawParametersComponent = message.slice(index);
   }
 
   // Parse the command component of the IRC message.
@@ -73,7 +73,7 @@ export function parseMessage(message: string) {
     // Is null if it's a message we don't care about.
     return null;
   } else {
-    if (null !== rawTagsComponent) {
+    if (rawTagsComponent !== null) {
       // The IRC message contains tags.
       parsedMessage.tags = parseTags(rawTagsComponent);
     }
@@ -85,7 +85,14 @@ export function parseMessage(message: string) {
       // The user entered a bot command in the chat window.
       parsedMessage.command = parseParameters(rawParametersComponent, parsedMessage.command);
     }
+
+    if (rawParametersComponent && rawParametersComponent[0] === '\x01') {
+      // This is an ACTION message.
+      parsedMessage.command.botCommand = 'ACTION';
+      parsedMessage.command.botCommandParams = rawParametersComponent.slice(7, -1).trim();
+    }
   }
 
+  console.log('parsedMessage: ', parsedMessage, '\n');
   return parsedMessage;
 }

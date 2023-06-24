@@ -1,4 +1,3 @@
-import { runBot } from './bot';
 import { loadBotCommands } from './botCommands';
 import Config from './config';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
@@ -6,6 +5,7 @@ import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInf
 import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
 import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
 import { runIntervalCommands } from './intervalCommands';
+import { runIrcWebsocket } from './ircWebsocket';
 import { runSocketServer } from './runSocketServer';
 import { setupMongoose } from './setupMongoose';
 import { getSpotifyAccessToken } from './spotify';
@@ -46,7 +46,7 @@ async function main() {
     setDisplayName((await fetchChannelInformation())?.broadcaster_name || Config.twitch.account);
 
     console.log('Startup: running Twitch IRC WebSocket client');
-    runBot();
+    runIrcWebsocket();
 
     console.log('Startup: running Twitch Websocket client');
     runTwitchWebsocket();
