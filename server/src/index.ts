@@ -48,8 +48,10 @@ async function main() {
     console.log('Startup: running Twitch IRC WebSocket client');
     runIrcWebsocket();
 
-    console.log('Startup: running Twitch Websocket client');
-    runTwitchWebsocket();
+    if (Config.features.events_handler) {
+      console.log('Startup: running Twitch Websocket client');
+      runTwitchWebsocket();
+    }
 
     if (Config.features.interval_commands) {
       console.log('Startup: running interval commands');
