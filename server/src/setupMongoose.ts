@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import pc from 'picocolors';
 
 import Config from './config';
 
@@ -8,9 +9,9 @@ import Config from './config';
  */
 export const setupMongoose = async (): Promise<void> => {
   if (Config.mongoDB.enabled) {
-    console.info(`setupMongoose: Starting Mongoose with connection URL ${Config.mongoDB.url}${Config.mongoDB.db}.`);
+    console.log(`${pc.blue('Startup:')} Starting Mongoose with connection URL ${Config.mongoDB.url}${Config.mongoDB.db}.`);
     mongoose.set('strictQuery', true);
     await mongoose.connect(`${Config.mongoDB.url}${Config.mongoDB.db}`);
-    console.info(`setupMongoose: Successfully connected to ${Config.mongoDB.url}${Config.mongoDB.db}.`);
+    console.log(`${pc.blue('Startup:')} Successfully connected to ${Config.mongoDB.url}${Config.mongoDB.db}.`);
   }
 };

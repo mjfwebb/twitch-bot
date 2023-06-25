@@ -21,7 +21,7 @@ export function runIrcWebsocket() {
   const channel = `#${Config.twitch.channel}`;
 
   client.on('connectFailed', function (error: unknown) {
-    console.log(`Connect Error: ${String(error)}`);
+    console.log(`IRC WebSocket: Connect Error: ${String(error)}`);
   });
 
   client.on('connect', function (connection) {
@@ -39,11 +39,11 @@ export function runIrcWebsocket() {
     connection.send(`NICK ${Config.twitch.account}`);
 
     connection.on('error', function (error) {
-      console.log('Connection Error: ' + error.toString());
+      console.log('IRC WebSocket: Connection Error: ' + error.toString());
     });
 
     connection.on('close', function () {
-      console.log('Connection Closed');
+      console.log('IRC WebSocket: Connection Closed');
       connectionRef = undefined;
       // console.log(`close description: ${connection.closeDescription}`);
       // console.log(`close reason code: ${connection.closeReasonCode}`);

@@ -20,7 +20,6 @@ export const getPlaybackQueue = async (): Promise<SpotifyTrack[] | null> => {
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
-      console.log({ result });
       if (hasOwnProperty(result, 'currently_playing') && hasOwnProperty(result, 'queue')) {
         return result.queue as SpotifyTrack[];
       }

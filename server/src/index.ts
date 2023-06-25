@@ -1,3 +1,4 @@
+import pc from 'picocolors';
 import { loadBotCommands } from './botCommands';
 import Config from './config';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
@@ -21,44 +22,44 @@ async function main() {
     await setupMongoose();
 
     if (Config.features.commands_handler) {
-      console.log('Startup: loading bot commands');
+      console.log(`${pc.blue('Startup:')} Loading bot commands`);
       await loadBotCommands();
     }
 
-    console.log('Startup: getting Twitch access token');
+    console.log(`${pc.blue('Startup:')} Getting Twitch access token`);
     await getTwitchAccessToken(Config.twitch);
 
     if (Config.spotify.enabled) {
-      console.log('Startup: getting Spotify access token');
+      console.log(`${pc.blue('Startup:')} Getting Spotify access token`);
       await getSpotifyAccessToken();
     }
 
-    console.log('Startup: getting Twitch custom rewards');
+    console.log(`${pc.blue('Startup:')} Getting Twitch custom rewards`);
     await fetchCustomRewards();
 
-    console.log('Startup: getting Twitch viewer bots');
+    console.log(`${pc.blue('Startup:')} Getting Twitch viewer bots`);
     await fetchKnownTwitchViewerBots();
 
-    console.log('Startup: getting Twitch stream status');
+    console.log(`${pc.blue('Startup:')} Getting Twitch stream status`);
     setStreamStatus(await fetchStreamStatus());
 
-    console.log('Startup: getting Twitch channel information and setting display name');
+    console.log(`${pc.blue('Startup:')} Getting Twitch channel information and setting display name`);
     setDisplayName((await fetchChannelInformation())?.broadcaster_name || Config.twitch.account);
 
-    console.log('Startup: running Twitch IRC WebSocket client');
+    console.log(`${pc.blue('Startup:')} Running Twitch IRC WebSocket client`);
     runIrcWebsocket();
 
     if (Config.features.events_handler) {
-      console.log('Startup: running Twitch Websocket client');
+      console.log(`${pc.blue('Startup:')} Running Twitch Websocket client`);
       runTwitchWebsocket();
     }
 
     if (Config.features.interval_commands) {
-      console.log('Startup: running interval commands');
+      console.log(`${pc.blue('Startup:')} Running interval commands`);
       runIntervalCommands();
     }
 
-    console.log('Startup: running localhost socket server');
+    console.log(`${pc.blue('Startup:')} Running localhost socket server`);
     runSocketServer();
   } catch (error) {
     console.error(error);

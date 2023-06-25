@@ -56,7 +56,7 @@ export function runTwitchWebsocket() {
             break;
 
           default:
-            console.info({ messageType: data.metadata.message_type, payload: data.payload });
+            // console.info({ messageType: data.metadata.message_type, payload: data.payload });
             break;
         }
       }
