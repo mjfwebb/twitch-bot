@@ -43,6 +43,7 @@
   },
   "discord_webhook": {
     "enabled": false,
+    "service": "discord",
     "id": "",
     "token": "",
     "url": ""
