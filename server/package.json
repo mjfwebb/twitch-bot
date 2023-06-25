@@ -42,7 +42,7 @@
     "open": "^8.4.0",
     "picocolors": "^1.0.0",
     "play-sound": "^1.1.5",
-    "socket.io": "^4.5.4",
+    "socket.io": "^4.7.0",
     "vitest": "^0.32.2",
     "websocket": "^1.0.34"
   },
