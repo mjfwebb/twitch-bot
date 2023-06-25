@@ -54,7 +54,7 @@ export function runIrcWebsocket() {
     connection.on('message', function (ircMessage) {
       if (ircMessage.type === 'utf8') {
         const rawIrcMessage = ircMessage.utf8Data.trimEnd();
-        console.log(`Message received (${new Date().toISOString()}): '${rawIrcMessage}'\n`);
+        // console.log(`Message received (${new Date().toISOString()}): '${rawIrcMessage}'\n`);
 
         const messages = rawIrcMessage.split('\r\n'); // The IRC message may contain one or more messages.
         messages.forEach((message) => {

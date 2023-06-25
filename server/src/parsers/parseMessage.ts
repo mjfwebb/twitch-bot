@@ -93,6 +93,5 @@ export function parseMessage(message: string) {
     }
   }
 
-  console.log('parsedMessage: ', parsedMessage, '\n');
   return parsedMessage;
 }
