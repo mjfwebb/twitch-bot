@@ -68,12 +68,11 @@ describe('parseTags', () => {
       expect(parsedMessage?.tags?.['reply-parent-msg-id']).toEqual('b34ccfc7-4977-403a-8a94-33c6bac34fb8');
     });
   });
-  describe.only('action PRIVMSG test message', () => {
+  describe('action PRIVMSG test message', () => {
     const message =
       '@badge-info=subscriber/24;badges=broadcaster/1,subscriber/12,game-developer/1;color=#5052B2;display-name=Athano;emotes=;first-msg=0;flags=;id=33bcfbc3-87b1-44ad-bf3c-48d4ddb970f7;mod=0;returning-chatter=0;room-id=30458956;subscriber=1;tmi-sent-ts=1687641213092;turbo=0;user-id=30458956;user-type= :athano!athano@athano.tmi.twitch.tv PRIVMSG #athano :\x01ACTION does a thing\x01';
     const parsedMessage = parseMessage(message);
-    console.log(parsedMessage);
-    test.only('should have action property', () => {
+    test('should have action property', () => {
       expect(parsedMessage?.command?.botCommand).toEqual('ACTION');
       expect(parsedMessage?.command?.botCommandParams).toEqual('does a thing');
     });
