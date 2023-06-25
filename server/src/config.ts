@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-
+import pc from 'picocolors';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
 export type WebhookConfig = {
@@ -82,7 +82,7 @@ interface IConfig {
 }
 
 const configFileName = 'config.json';
-const missingPropertyErrorMessage = (missingProperty: string) => `Missing in ${configFileName}: ${missingProperty}`;
+const missingPropertyErrorMessage = (missingProperty: string) => `${pc.red('Error:')} Missing configuration in ${configFileName}: ${missingProperty}`;
 
 function parseConfig<T>({ config, defaultConfig, part, properties }: { config: unknown; defaultConfig: T; part: string; properties: string[] }): T {
   if (!hasOwnProperty(config, part)) {
