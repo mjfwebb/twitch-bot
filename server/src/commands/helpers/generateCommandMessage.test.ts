@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import type { Command } from '../../models/command-model';
 import { generateCommandMessage } from './generateCommandMessage';
 

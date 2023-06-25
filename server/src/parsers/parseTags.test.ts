@@ -1,6 +1,8 @@
 // Example messages taken from https://dev.twitch.tv/docs/irc/tags
 
 /* eslint-disable max-len */
+import { describe, expect, test } from 'vitest';
+
 import { parseMessage } from './parseMessage';
 
 describe('parseTags', () => {
