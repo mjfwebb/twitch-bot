@@ -35,7 +35,6 @@
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^5.1.0",
     "http-status-codes": "^2.2.0",
-    "mongodb": "^4.13.0",
     "mongoose": "^7.3.1",
     "node-fetch": "^2.6.7",
     "octokit": "^2.0.14",
