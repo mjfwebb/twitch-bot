@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { styled } from 'styled-components';
-import type { ShadowPosition } from 'react-shadow-picker/dist/types';
 
 import type { ShadowOffset, TextShadowPickerParams } from './types';
 import SliderField from './fields/SliderField';
@@ -33,7 +32,7 @@ export interface Props {
 const useShadowParameters = (
   onChange: Props['onChange'],
   value?: string
-): [TextShadowPickerParams, (column: keyof TextShadowPickerParams) => (value: string | ShadowOffset | ShadowPosition | undefined) => void] => {
+): [TextShadowPickerParams, (column: keyof TextShadowPickerParams) => (value: string | ShadowOffset | undefined) => void] => {
   const isControlled = value && onChange;
   const [state, setState] = useState<TextShadowPickerParams>({ offset: { x: '1px', y: '1px' }, blur: '2px', color: '#000000ff' });
 
@@ -51,7 +50,7 @@ const useShadowParameters = (
     onChange(newValue);
   }, [isControlled, state, onChange]);
 
-  const updateState = (column: keyof TextShadowPickerParams) => (value: string | ShadowOffset | ShadowPosition | undefined) => {
+  const updateState = (column: keyof TextShadowPickerParams) => (value: string | ShadowOffset | undefined) => {
     const newParams: TextShadowPickerParams = { ...state, [column]: value };
     onChange(buildShadowString(newParams));
     !isControlled && setState(newParams);
