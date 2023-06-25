@@ -1,8 +1,6 @@
-import assert from 'assert';
 import { readFileSync } from 'fs';
 
 import { hasOwnProperty } from './utils/hasOwnProperty';
-import { isError } from './utils/isError';
 
 export type WebhookConfig = {
   enabled: boolean;
@@ -68,6 +66,7 @@ export type FeaturesConfig = {
   first_message_of_stream_handler: boolean;
   returning_chatter_handler: boolean;
   commands_handler: boolean;
+  events_handler: boolean;
 };
 
 interface IConfig {
@@ -85,44 +84,58 @@ interface IConfig {
 const configFileName = 'config.json';
 const missingPropertyErrorMessage = (missingProperty: string) => `Missing in ${configFileName}: ${missingProperty}`;
 
-function checkConfig<T>(config: unknown, part: string, properties: string[]): asserts config is T {
-  assert(hasOwnProperty(config, part), `Missing in config.json: ${part}`);
-  for (const property of properties) {
-    assert(hasOwnProperty(config[part], property), missingPropertyErrorMessage(`${part}.${property}`));
+function parseConfig<T>({ config, defaultConfig, part, properties }: { config: unknown; defaultConfig: T; part: string; properties: string[] }): T {
+  if (!hasOwnProperty(config, part)) {
+    console.error(`Missing in config.json: ${part}`);
+
+    return defaultConfig;
   }
+
+  let loadedConfig: T = { ...defaultConfig };
+
+  const configPart = config[part];
+
+  if (!configPart || typeof configPart !== 'object') {
+    console.error(`Invalid ${part} config`);
+
+    return defaultConfig;
+  }
+
+  for (const property of properties) {
+    if (!hasOwnProperty(configPart, property)) {
+      console.error(missingPropertyErrorMessage(`${part}.${property}`));
+    } else {
+      loadedConfig = { ...loadedConfig, [property]: configPart[property] };
+    }
+  }
+
+  return loadedConfig;
 }
 
 function readTwitchConfig(config: unknown): TwitchConfig {
-  try {
-    checkConfig<{ twitch: TwitchConfig }>(config, 'twitch', [
-      'broadcaster_id',
-      'client_id',
-      'client_secret',
-      'grant_type',
-      'account',
-      'channel',
-      'auth_code',
-      'redirect_uri',
-    ]);
-    return config.twitch;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Error when loading Twitch config: ${error.message}`);
-    }
-  }
-  throw new Error('Failed to read Twitch config');
+  const defaultTwitchConfig: TwitchConfig = {
+    broadcaster_id: '',
+    client_id: '',
+    client_secret: '',
+    grant_type: '',
+    account: '',
+    channel: '',
+    auth_code: '',
+    redirect_uri: '',
+  };
+
+  const parsedTwitchConfig = parseConfig<TwitchConfig>({
+    config,
+    defaultConfig: defaultTwitchConfig,
+    part: 'twitch',
+    properties: ['broadcaster_id', 'client_id', 'client_secret', 'grant_type', 'account', 'channel', 'auth_code', 'redirect_uri'],
+  });
+
+  return parsedTwitchConfig;
 }
 
 function readSpotifyConfig(config: unknown): SpotifyConfig {
-  try {
-    checkConfig<{ spotify: SpotifyConfig }>(config, 'spotify', ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri']);
-    return config.spotify;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional Spotify config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultSpotifyConfig: SpotifyConfig = {
     enabled: false,
     client_id: '',
     client_secret: '',
@@ -130,130 +143,147 @@ function readSpotifyConfig(config: unknown): SpotifyConfig {
     auth_code: '',
     redirect_uri: '',
   };
+
+  const parsedSpotifyConfig = parseConfig<SpotifyConfig>({
+    config,
+    defaultConfig: defaultSpotifyConfig,
+    part: 'spotify',
+    properties: ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri'],
+  });
+
+  return parsedSpotifyConfig;
 }
 
 function readGitHubConfig(config: unknown): GitHubConfig {
-  try {
-    checkConfig<{ github: GitHubConfig }>(config, 'github', ['enabled', 'owner', 'repo', 'access_token']);
-    return config.github;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional GitHub config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultGitHubConfig: GitHubConfig = {
     enabled: false,
     owner: '',
     repo: '',
     access_token: '',
   };
+
+  const parsedGitHubConfig = parseConfig<GitHubConfig>({
+    config,
+    defaultConfig: defaultGitHubConfig,
+    part: 'github',
+    properties: ['enabled', 'owner', 'repo', 'access_token'],
+  });
+
+  return parsedGitHubConfig;
 }
 
 function readSevenTVConfig(config: unknown): SevenTVConfig {
-  try {
-    checkConfig<{ seventv: SevenTVConfig }>(config, 'seventv', ['enabled', 'user_id']);
-    return config.seventv;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional SevenTV config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultSevenTVConfig: SevenTVConfig = {
     enabled: false,
     user_id: '',
   };
+
+  const parsedSevenTVConfig = parseConfig<SevenTVConfig>({
+    config,
+    defaultConfig: defaultSevenTVConfig,
+    part: 'seventv',
+    properties: ['enabled', 'user_id'],
+  });
+
+  return parsedSevenTVConfig;
 }
 
 function readBetterTTVConfig(config: unknown): BetterTTVConfig {
-  try {
-    checkConfig<{ betterttv: BetterTTVConfig }>(config, 'betterttv', ['enabled', 'provider', 'provider_id']);
-    return config.betterttv;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional BetterTTV config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultBetterTTVConfig: BetterTTVConfig = {
     enabled: false,
     provider: '',
     provider_id: '',
   };
+
+  const parsedBetterTTVConfig = parseConfig<BetterTTVConfig>({
+    config,
+    defaultConfig: defaultBetterTTVConfig,
+    part: 'betterttv',
+    properties: ['enabled', 'provider', 'provider_id'],
+  });
+
+  return parsedBetterTTVConfig;
 }
 
 function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
-  try {
-    checkConfig<{ frankerfacez: FrankerFaceZConfig }>(config, 'frankerfacez', ['enabled', 'broadcaster_id']);
-    return config.frankerfacez;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional FrankerFaceZ config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultFrankerFaceZConfig: FrankerFaceZConfig = {
     enabled: false,
     broadcaster_id: '',
   };
+
+  const parsedFrankerFaceZConfig = parseConfig<FrankerFaceZConfig>({
+    config,
+    defaultConfig: defaultFrankerFaceZConfig,
+    part: 'frankerfacez',
+    properties: ['enabled', 'broadcaster_id'],
+  });
+
+  return parsedFrankerFaceZConfig;
 }
 
 function readFeaturesConfig(config: unknown): FeaturesConfig {
-  try {
-    checkConfig<{ features: FeaturesConfig }>(config, 'features', [
-      'interval_commands',
-      'bit_handler',
-      'first_message_handler',
-      'first_message_of_stream_handler',
-      'returning_chatter_handler',
-      'commands_handler',
-    ]);
-
-    return config.features;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional features config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultFeaturesConfig: FeaturesConfig = {
     interval_commands: true,
     bit_handler: true,
     first_message_handler: true,
     first_message_of_stream_handler: true,
     returning_chatter_handler: true,
     commands_handler: true,
+    events_handler: true,
   };
+
+  const parsedFeaturesConfig = parseConfig<FeaturesConfig>({
+    config,
+    defaultConfig: defaultFeaturesConfig,
+    part: 'features',
+    properties: [
+      'interval_commands',
+      'bit_handler',
+      'first_message_handler',
+      'first_message_of_stream_handler',
+      'returning_chatter_handler',
+      'commands_handler',
+      'events_handler',
+    ],
+  });
+
+  return parsedFeaturesConfig;
 }
 
 function readMongoDBConfig(config: unknown): MongoDBConfig {
-  try {
-    checkConfig<{ mongodb: MongoDBConfig }>(config, 'mongodb', ['enabled', 'url', 'db']);
-    return config.mongodb;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional MongoDB config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultMongoDBConfig: MongoDBConfig = {
     enabled: false,
     url: '',
     db: '',
   };
+
+  const parsedMongoDBConfig = parseConfig<MongoDBConfig>({
+    config,
+    defaultConfig: defaultMongoDBConfig,
+    part: 'mongodb',
+    properties: ['enabled', 'url', 'db'],
+  });
+
+  return parsedMongoDBConfig;
 }
 
 function readDiscordWebhookConfig(config: unknown): WebhookConfig {
-  try {
-    checkConfig<{ discord_webhook: WebhookConfig }>(config, 'discord_webhook', ['enabled', 'id', 'token', 'url']);
-    return config.discord_webhook;
-  } catch (error) {
-    if (isError(error)) {
-      console.log(`Optional Discord Webhook config error: ${error.message}`);
-    }
-  }
-  return {
+  const defaultDiscordWebhookConfig: WebhookConfig = {
     enabled: false,
     service: 'discord',
     id: '',
     token: '',
     url: '',
   };
+
+  const parsedDiscordWebhookConfig = parseConfig<WebhookConfig>({
+    config,
+    defaultConfig: defaultDiscordWebhookConfig,
+    part: 'discord_webhook',
+    properties: ['enabled', 'service', 'id', 'token', 'url'],
+  });
+
+  return parsedDiscordWebhookConfig;
 }
 
 const config: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
