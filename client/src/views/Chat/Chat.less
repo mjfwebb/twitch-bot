@@ -25,16 +25,8 @@
     all: unset;
     box-sizing: border-box;
     width: 100%;
-    line-height: 1;
-    padding-bottom: 4px;
-
-    &-disappearing:not(&-disappeared) {
-      animation: hide 1s forwards;
-    }
-
-    &-disappeared {
-      opacity: 0;
-    }
+    overflow-wrap: anywhere;
+    padding: 0.2rem;
 
     &-body {
       cursor: pointer;
@@ -52,7 +44,7 @@
         border-left: 3px solid rgb(114, 90, 30);
         border-right: 3px solid rgb(255, 249, 171);
         background-image: linear-gradient(90deg, rgb(114, 90, 30), rgb(255, 249, 171)), linear-gradient(90deg, rgb(114, 90, 30), rgb(255, 249, 171));
-        padding: 4px;
+        padding: 6px 4px;
       }
 
       &-selected {
@@ -68,34 +60,30 @@
       }
     }
 
-    &-user {
-      display: inline-flex;
-      align-items: baseline;
-      justify-content: flex-end;
-      gap: 0.2em;
-    }
-
     &-nick {
       font-weight: 700;
-      padding-right: 8px;
-      overflow: hidden;
+      padding-right: 0.2em;
+      overflow: visible;
       white-space: nowrap;
       text-overflow: ellipsis;
-      padding: 0.2em;
+      display: inline-block;
     }
 
-    &-content {
+    &-text {
       word-break: break-word;
-      padding: 2px;
-    }
 
-    &-badges {
-      display: inline-flex;
-      gap: 0.2em;
+      &-action {
+        font-style: italic;
+      }
     }
 
     &-badge {
+      height: 1.2rem;
+      width: unset;
       border-radius: 3px;
+      margin-bottom: 0.3rem;
+      margin-right: 0.3rem;
+      vertical-align: middle;
     }
 
     &-avatar {
@@ -104,14 +92,8 @@
         max-height: 36px;
         display: inline-block;
         vertical-align: middle;
-      }
-    }
-
-    &-text {
-      display: inline;
-
-      &-action {
-        font-style: italic;
+        margin-bottom: 0.05rem;
+        margin-right: 0.3rem;
       }
     }
   }

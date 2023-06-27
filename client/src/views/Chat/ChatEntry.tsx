@@ -51,18 +51,16 @@ export const ChatEntry = ({ chatMessage, backgroundColor, showAvatars, showBorde
             : {}
         }
       >
-        <span className="chat-message-content">
-          <div className="chat-message-user">
-            {showAvatars && (
-              <span className="chat-message-avatar">
-                {user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
-              </span>
-            )}
-            <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
-            <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', backgroundColor) }}>
-              {user.displayName}
+        <span>
+          {showAvatars && (
+            <span className="chat-message-avatar">
+              {user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
             </span>
-          </div>
+          )}
+          <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
+          <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', backgroundColor) }}>
+            {user.displayName}
+          </span>
           <span className={classNames('chat-message-text', actionMessage && 'chat-message-text-action')}>
             <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={message} />
           </span>

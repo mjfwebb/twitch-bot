@@ -35,7 +35,7 @@ const Message = ({ chatMessage }: MessageProps) => {
 
   if (chatSearchParams.animatedEntry) {
     return (
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="message">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="message">
         <ChatEntry {...ChatEntryProps} />
       </motion.div>
     );

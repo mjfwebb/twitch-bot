@@ -22,5 +22,5 @@ export const UserBadges = ({ badges }: BadgesProps) => {
     return <img className="chat-message-badge" alt="" key={foundBadge.name} src={foundBadge.url} width={18}></img>;
   });
 
-  return <span className="chat-message-badges">{badgeImages}</span>;
+  return <>{badgeImages}</>;
 };
