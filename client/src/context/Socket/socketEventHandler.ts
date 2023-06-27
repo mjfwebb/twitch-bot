@@ -1,7 +1,7 @@
 import type { Socket } from 'socket.io-client';
 import JSConfetti from 'js-confetti';
 
-import type { ChatBadge, ChatEmote, ChatMessage, SpotifySong } from '../../types';
+import type { ChatBadge, ChatCheer, ChatEmote, ChatMessage, SpotifySong } from '../../types';
 import type { TaskMessage } from '../../twitchTypes';
 import useStore from '../../store/store';
 
@@ -30,6 +30,9 @@ function socketEventHandler(socket: Socket) {
   });
   socket.on('badges', (data: Record<string, ChatBadge>) => {
     useStore.getState().addBadges(data);
+  });
+  socket.on('cheers', (data: Record<string, ChatCheer>) => {
+    useStore.getState().addCheers(data);
   });
   socket.on('setSelectedDisplayName', (data: string) => {
     useStore.getState().setSelectedDisplayName(data);

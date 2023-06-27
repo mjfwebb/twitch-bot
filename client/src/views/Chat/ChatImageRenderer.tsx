@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import type { ChatEmote } from '../../types';
+import type { ChatCheer, ChatEmote } from '../../types';
 import type { Emotes } from '../../twitchTypes';
 import useStore from '../../store/store';
 import { parseSevenTVModifierFlags } from './parseSevenTVModifierFlags';
@@ -9,16 +9,19 @@ import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags
 // emote regex which separates strings based on whitespace
 const emoteRegex = /(\s+)/g;
 
-export const ChatMessageWithEmotes = ({
+export const ChatImageRenderer = ({
   emotes,
+  bits,
   message = '',
   offset = 0,
 }: {
-  emotes: Emotes | undefined;
+  emotes?: Emotes;
+  bits?: number;
   message: string;
   offset?: number;
 }): JSX.Element => {
   const chatEmotes = useStore((s) => s.chatEmotes);
+  const chatCheers = useStore((s) => s.chatCheers);
 
   message = message.slice(offset);
 
@@ -47,26 +50,62 @@ export const ChatMessageWithEmotes = ({
   const messageParts: {
     match: string;
     emote: ChatEmote | undefined;
+    cheer: ChatCheer | undefined;
     skip: boolean;
   }[] = [];
 
   message.split(emoteRegex).forEach((match) => {
+    if (bits) {
+      let closestCheer: ChatCheer | undefined = undefined;
+      // A match might look like VoHiYo199, but the cheer name is VoHiYo, so we need to remove the bits
+      const cheerName = match.replace(/\d+$/, '');
+      for (const cheer of Object.values(chatCheers)) {
+        // Check if the cheer name matches the message part
+        if (!cheer.name.startsWith(cheerName)) {
+          continue;
+        }
+
+        if (cheer.minBits <= bits) {
+          if (!closestCheer || cheer.minBits > closestCheer.minBits) {
+            closestCheer = cheer;
+            continue;
+          }
+
+          closestCheer = cheer;
+        }
+      }
+
+      if (closestCheer) {
+        console.log({ match, closestCheer });
+        messageParts.push({
+          match,
+          emote: undefined,
+          cheer: closestCheer,
+          skip: false,
+        });
+        return;
+      }
+    }
+
     if (twitchEmoteMap[match]) {
       messageParts.push({
         match,
         emote: twitchEmoteMap[match],
+        cheer: undefined,
         skip: false,
       });
     } else if (chatEmotes[match] && !chatEmotes[match].hidden) {
       messageParts.push({
         match,
         emote: chatEmotes[match],
+        cheer: undefined,
         skip: false,
       });
     } else {
       messageParts.push({
         match,
         emote: undefined,
+        cheer: undefined,
         skip: false,
       });
     }
@@ -74,7 +113,29 @@ export const ChatMessageWithEmotes = ({
 
   return (
     <>
-      {messageParts.map(({ match, emote, skip }, index) => {
+      {messageParts.map(({ match, emote, cheer, skip }, index) => {
+        if (cheer) {
+          // Get the cheer amount without the name:
+          const cheerAmount = Number(match.replace(/\D/g, ''));
+
+          return (
+            <>
+              <img
+                className={classNames('chat-cheer')}
+                key={`${match}.${index}`}
+                src={cheer.url}
+                // srcSet={emote.srcSet}
+                alt={match}
+                title={match}
+                width={28}
+              />
+              <span className={classNames('chat-cheer-amount')} style={{ color: cheer.color }}>
+                {cheerAmount}
+              </span>
+            </>
+          );
+        }
+
         if (!emote || !emote.src) {
           return match;
         }

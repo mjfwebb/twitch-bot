@@ -113,3 +113,10 @@ export type ChatBadge = {
   name: string;
   url: string;
 };
+
+export type ChatCheer = {
+  name: string;
+  url: string;
+  color: string;
+  minBits: number;
+};

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { ChatBadge, ChatEmote, ChatMessage, SpotifySong } from '../types';
+import type { ChatBadge, ChatCheer, ChatEmote, ChatMessage, SpotifySong } from '../types';
 import type { TaskMessage } from '../twitchTypes';
 
 interface Store {
@@ -10,13 +10,15 @@ interface Store {
   selectedDisplayName: string;
   chatEmotes: Record<string, ChatEmote>;
   chatBadges: Record<string, ChatBadge>;
+  chatCheers: Record<string, ChatCheer>;
   chatMessages: ChatMessage[];
   setTask: (task: TaskMessage) => void;
   setCurrentSong: (song: SpotifySong) => void;
   resetState: () => void;
   setSelectedDisplayName: (displayName: string) => void;
   addEmotes: (emotes: Record<string, ChatEmote>) => void;
-  addBadges: (badge: Record<string, ChatBadge>) => void;
+  addBadges: (badges: Record<string, ChatBadge>) => void;
+  addCheers: (cheers: Record<string, ChatCheer>) => void;
   addChatMessage: (chatMessage: ChatMessage) => void;
   addChatMessages: (chatMessages: ChatMessage[]) => void;
   removeChatMessage: (chatMessage: ChatMessage) => void;
@@ -29,6 +31,7 @@ const useStore = create<Store>((set, get) => ({
   selectedDisplayName: '',
   chatEmotes: {},
   chatBadges: {},
+  chatCheers: {},
   chatMessages: [],
   setTask: (task: TaskMessage) => {
     set(() => ({ task }));
@@ -55,6 +58,12 @@ const useStore = create<Store>((set, get) => ({
     set((state) => ({
       ...state,
       chatBadges: { ...state.chatBadges, ...badges },
+    }));
+  },
+  addCheers: (cheers: Record<string, ChatCheer>) => {
+    set((state) => ({
+      ...state,
+      chatCheers: { ...state.chatCheers, ...cheers },
     }));
   },
   removeChatMessage: (chatMessage: ChatMessage) => {

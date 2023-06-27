@@ -60,6 +60,7 @@ const SocketProvider = (props: SocketProviderProps) => {
             sendToServer('getSong');
             sendToServer('getEmotes');
             sendToServer('getBadges');
+            sendToServer('getCheers');
             sendToServer('getChatMessages');
           });
         }

@@ -31,7 +31,7 @@ export type Command = {
   botCommandParams?: string;
 };
 
-export type CommandWithBotCommandParams = Omit<Command, 'botCommand'> & { botCommandParams: string };
+export type CommandWithBotCommandParams = Omit<Command, 'botCommandParams'> & { botCommandParams: string };
 
 export type Source = {
   nick: string | null;
@@ -269,6 +269,55 @@ export type UserInformation = {
   view_count: number;
   email: string;
   created_at: string;
+};
+
+export type Cheermote = {
+  prefix: string;
+  tiers: {
+    min_bits: number;
+    id: '1' | '100' | '500' | '1000' | '5000' | '10000' | '100000';
+    color: string;
+    can_cheer: boolean;
+    show_in_bits_card: boolean;
+    images: {
+      dark: {
+        animated: {
+          '1': string;
+          '1.5': string;
+          '2': string;
+          '3': string;
+          '4': string;
+        };
+        static: {
+          '1': string;
+          '1.5': string;
+          '2': string;
+          '3': string;
+          '4': string;
+        };
+      };
+      light: {
+        animated: {
+          '1': string;
+          '1.5': string;
+          '2': string;
+          '3': string;
+          '4': string;
+        };
+        static: {
+          '1': string;
+          '1.5': string;
+          '2': string;
+          '3': string;
+          '4': string;
+        };
+      };
+    };
+  }[];
+  type: 'global_first_party' | 'global_third_party' | 'channel_custom' | 'display_only' | 'sponsored';
+  last_updated: string;
+  order: number;
+  is_charitable: boolean;
 };
 
 export type ChatMessage = { id: string; user: User; parsedMessage: ParsedMessage };

@@ -5,6 +5,7 @@ import Config from './config';
 import { getFakeChatMessages } from './getFakeChatMessages';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
 import { loadBadges } from './loadBadges';
+import { loadCheers } from './loadCheers';
 import { loadEmotes } from './loadEmotes';
 import TaskModel from './models/task-model';
 
@@ -40,6 +41,9 @@ export function runSocketServer() {
     });
     socket.on('getBadges', async () => {
       await loadBadges();
+    });
+    socket.on('getCheers', async () => {
+      await loadCheers();
     });
     socket.on('setSelectedDisplayName', (displayName: string) => {
       getIO().emit('setSelectedDisplayName', displayName);

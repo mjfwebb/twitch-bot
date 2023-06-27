@@ -5,7 +5,7 @@ import useStore from '../../store/store';
 import useSocketContext from '../../hooks/useSocketContext';
 import { UserBadges } from './UserBadges';
 import { contrastCorrected } from './contrastCorrected';
-import { ChatMessageWithEmotes } from './ChatMessageWithEmotes';
+import { ChatImageRenderer } from './ChatImageRenderer';
 
 interface ChatEntryProps {
   chatMessage: ChatMessage;
@@ -58,7 +58,11 @@ export const ChatEntry = ({ chatMessage, backgroundColor, showAvatars, showBorde
             {user.displayName}
           </span>
           <span className={classNames('chat-message-text', actionMessage && 'chat-message-text-action')}>
-            <ChatMessageWithEmotes emotes={chatMessage.parsedMessage.tags.emotes} message={message} />
+            <ChatImageRenderer
+              emotes={chatMessage.parsedMessage.tags.emotes}
+              bits={Number(chatMessage.parsedMessage.tags.bits || '')}
+              message={message}
+            />
           </span>
         </span>
       </div>
