@@ -76,7 +76,6 @@ export const ChatImageRenderer = ({
       }
 
       if (closestCheer) {
-        console.log({ match, closestCheer });
         messageParts.push({
           match,
           emote: undefined,
