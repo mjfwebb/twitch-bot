@@ -68,3 +68,9 @@ You can use `%user%` and `%target` in the message text as placeholders for the c
 To update descriptions use `!setdescription <commandId> this is my description`. Where `<commandId>` is replaced with the command ID in question. For example: `!setdescription test This is a test command!`
 
 To update cooldowns use `!setcooldown <commandId> 1000`. Where `<commandId>` is replaced with the command ID in question, and the amount is in milliseconds. For example: `!setcooldown test 10000` would set a 10 second cooldown to the command "test".
+
+## Add users to the chat exclusion list
+
+Open `chat-exclusion-list.txt` in the root directory of the project. Add the usernames of the users you want to exclude from chat commands. Each username should be on a new line.
+
+This file will be created automatically when you run the server for the first time.

@@ -1,5 +1,6 @@
 import pc from 'picocolors';
 import { loadBotCommands } from './botCommands';
+import { loadChatExclusionList } from './chatExclusionList';
 import Config from './config';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
@@ -33,6 +34,8 @@ async function main() {
       console.log(`${pc.green('[Spotify enabled] ')}${pc.blue('Startup:')} Getting Spotify access token`);
       await getSpotifyAccessToken();
     }
+
+    loadChatExclusionList();
 
     console.log(`${pc.blue('Startup:')} Getting Twitch custom rewards`);
     await fetchCustomRewards();
