@@ -1,6 +1,6 @@
 // https://api.twitch.tv/helix/channel_points/custom_rewards
 
-import Config from '../config';
+import Config from '../../config';
 import { eventSubscribe } from './eventSubscribe';
 
 export const subscribeToFollows = async (sessionId: string) => {

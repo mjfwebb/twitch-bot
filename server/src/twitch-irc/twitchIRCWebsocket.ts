@@ -1,22 +1,22 @@
 import websocket from 'websocket';
-import { addChatMessage } from './chatMessages';
-import { getChatUser } from './commands/helpers/findOrCreateUser';
-import Config from './config';
-import { TWITCH_CHAT_IRC_WS_URL } from './constants';
-import { botCommandHandler } from './handlers/botCommandHandler';
-import { discordChatWebhook } from './handlers/discord/discord';
-import { bitHandler } from './handlers/twitch/irc/bitHandler';
-import { firstMessageHandler } from './handlers/twitch/irc/firstMessageHandler';
-import { firstMessageOfStreamHandler } from './handlers/twitch/irc/firstMessageOfStreamHandler';
-import { returningChatterHandler } from './handlers/twitch/irc/returningChatterHandler';
-import { parseMessage } from './parsers/parseMessage';
-import { getCurrentAccessToken } from './twitch';
+import { addChatMessage } from '../chatMessages';
+import { getChatUser } from '../commands/helpers/findOrCreateUser';
+import Config from '../config';
+import { TWITCH_CHAT_IRC_WS_URL } from '../constants';
+import { botCommandHandler } from '../handlers/botCommandHandler';
+import { discordChatWebhook } from '../handlers/discord/discord';
+import { bitHandler } from '../handlers/twitch/irc/bitHandler';
+import { firstMessageHandler } from '../handlers/twitch/irc/firstMessageHandler';
+import { firstMessageOfStreamHandler } from '../handlers/twitch/irc/firstMessageOfStreamHandler';
+import { returningChatterHandler } from '../handlers/twitch/irc/returningChatterHandler';
+import { parseMessage } from '../parsers/parseMessage';
+import { getCurrentAccessToken } from '../twitch';
 
 let connectionRef: websocket.connection | undefined;
 
 export const getConnection = () => connectionRef;
 
-export function runIrcWebsocket() {
+export function runTwitchIRCWebsocket() {
   const client = new websocket.client();
   const channel = `#${Config.twitch.channel}`;
 
@@ -50,7 +50,6 @@ export function runIrcWebsocket() {
     });
 
     // Process the Twitch IRC message.
-
     connection.on('message', function (ircMessage) {
       if (ircMessage.type === 'utf8') {
         const rawIrcMessage = ircMessage.utf8Data.trimEnd();

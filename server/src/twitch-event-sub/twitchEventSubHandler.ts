@@ -2,9 +2,9 @@ import { getBotCommands } from '../botCommands';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
 import { REWARDS } from '../constants';
-import { getConnection } from '../ircWebsocket';
 import { playSound } from '../playSound';
 import { setStreamStatus } from '../streamState';
+import { getConnection } from '../twitch-irc/twitchIRCWebsocket';
 import type { ParsedCommand, TwitchWebsocketMessage } from '../types';
 import type { EventFromSubscriptionType, EventSubResponse } from '../typings/twitchEvents';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -33,7 +33,8 @@ function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
     typeof payload.subscription.type === 'string'
   );
 }
-export async function websocketEventHandler(data: TwitchWebsocketMessage) {
+
+export async function twitchEventSubHandler(data: TwitchWebsocketMessage) {
   if (isSubscriptionEvent(data.payload)) {
     switch (data.payload.subscription.type) {
       case 'stream.online': {

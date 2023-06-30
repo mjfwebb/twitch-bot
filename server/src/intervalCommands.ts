@@ -2,8 +2,8 @@ import type { connection } from 'websocket';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { SECOND_MS } from './constants';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
-import { getConnection } from './ircWebsocket';
 import { getStreamStatus } from './streamState';
+import { getConnection } from './twitch-irc/twitchIRCWebsocket';
 
 interface IntervalCommand {
   callback: ((connection: connection) => void) | ((connection: connection) => Promise<void>);

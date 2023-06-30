@@ -1,6 +1,7 @@
 import websocket from 'websocket';
-import { TWITCH_WEBSOCKET_EVENTSUB_URL } from './constants';
-import { websocketEventHandler } from './handlers/websocketEventHandler';
+import { TWITCH_WEBSOCKET_EVENTSUB_URL } from '../constants';
+import type { TwitchWebsocketMessage } from '../types';
+import { hasOwnProperty } from '../utils/hasOwnProperty';
 import { subscribeToFollows } from './subscribers/subscribeToFollows';
 import { subscribeToRaids } from './subscribers/subscribeToRaids';
 import { subscribeToRedeems } from './subscribers/subscribeToRedeems';
@@ -8,25 +9,24 @@ import { subscribeToStreamOfflineNotifications } from './subscribers/subscribeTo
 import { subscribeToStreamOnlineNotifications } from './subscribers/subscribeToStreamOnlineNotifications';
 import { subscribeToSubscriptionGifts } from './subscribers/subscribeToSubscriptionGifts';
 import { subscribeToSubscriptions } from './subscribers/subscribeToSubscriptions';
-import type { TwitchWebsocketMessage } from './types';
-import { hasOwnProperty } from './utils/hasOwnProperty';
+import { twitchEventSubHandler } from './twitchEventSubHandler';
 
-export function runTwitchWebsocket() {
+export function runTwitchEventSubWebsocket() {
   const client = new websocket.client();
 
   client.on('connectFailed', function (error: unknown) {
-    console.log(`Twitch Websocket: Connect Error: ${String(error)}`);
+    console.log(`Twitch EventSub Websocket: Connect Error: ${String(error)}`);
   });
 
   client.on('connect', function (connection) {
-    console.log('Twitch Websocket: Client Connected');
+    console.log('Twitch EventSub Websocket: Client Connected');
 
     connection.on('error', function (error) {
-      console.log('Twitch Websocket: Connection Error: ' + error.toString());
+      console.log('Twitch EventSub Websocket: Connection Error: ' + error.toString());
     });
 
     connection.on('close', function () {
-      console.log('Twitch Websocket: Connection Closed');
+      console.log('Twitch EventSub Websocket: Connection Closed');
     });
 
     connection.on('message', function (message) {
@@ -51,7 +51,7 @@ export function runTwitchWebsocket() {
             break;
 
           case 'notification':
-            websocketEventHandler(data).catch((e) => console.error(e));
+            twitchEventSubHandler(data).catch((e) => console.error(e));
 
             break;
 

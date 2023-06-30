@@ -6,14 +6,14 @@ import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInf
 import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
 import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
 import { runIntervalCommands } from './intervalCommands';
-import { runIrcWebsocket } from './ircWebsocket';
 import { runSocketServer } from './runSocketServer';
 import { setupMongoose } from './setupMongoose';
 import { getSpotifyAccessToken } from './spotify';
 import { setDisplayName, setStreamStatus } from './streamState';
 import { assertTokenFileExists } from './tokenManager';
 import { getTwitchAccessToken } from './twitch';
-import { runTwitchWebsocket } from './twitchWebsocket';
+import { runTwitchEventSubWebsocket } from './twitch-event-sub/twitchEventSubWebsocket';
+import { runTwitchIRCWebsocket } from './twitch-irc/twitchIRCWebsocket';
 
 async function main() {
   try {
@@ -47,11 +47,11 @@ async function main() {
     setDisplayName((await fetchChannelInformation())?.broadcaster_name || Config.twitch.account);
 
     console.log(`${pc.blue('Startup:')} Running Twitch IRC WebSocket client`);
-    runIrcWebsocket();
+    runTwitchIRCWebsocket();
 
     if (Config.features.events_handler) {
       console.log(`${pc.blue('Startup:')} Running Twitch Websocket client`);
-      runTwitchWebsocket();
+      runTwitchEventSubWebsocket();
     }
 
     if (Config.features.interval_commands) {
