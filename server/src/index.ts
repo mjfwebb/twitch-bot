@@ -22,7 +22,7 @@ async function main() {
     await setupMongoose();
 
     if (Config.features.commands_handler) {
-      console.log(`${pc.blue('Startup:')} Loading bot commands`);
+      console.log(`${pc.green('[Commands handler enabled] ')}${pc.blue('Startup:')} Loading bot commands`);
       await loadBotCommands();
     }
 
@@ -30,7 +30,7 @@ async function main() {
     await getTwitchAccessToken(Config.twitch);
 
     if (Config.spotify.enabled) {
-      console.log(`${pc.blue('Startup:')} Getting Spotify access token`);
+      console.log(`${pc.green('[Spotify enabled] ')}${pc.blue('Startup:')} Getting Spotify access token`);
       await getSpotifyAccessToken();
     }
 
@@ -50,12 +50,12 @@ async function main() {
     runTwitchIRCWebsocket();
 
     if (Config.features.events_handler) {
-      console.log(`${pc.blue('Startup:')} Running Twitch Websocket client`);
+      console.log(`${pc.green('[Events handler enabled] ')}${pc.blue('Startup:')} Running Twitch Websocket client`);
       runTwitchEventSubWebsocket();
     }
 
     if (Config.features.interval_commands) {
-      console.log(`${pc.blue('Startup:')} Running interval commands`);
+      console.log(`${pc.green('[Interval commands enabled] ')}${pc.blue('Startup:')} Running interval commands`);
       runIntervalCommands();
     }
 
