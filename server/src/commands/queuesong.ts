@@ -13,21 +13,46 @@ export const queuesong: BotCommand = {
   description: 'Add a song to the playback queue (on Spotify)',
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+      // Get the track input from the command params (the bit after the command)
       const trackInput = parsedCommand.parsedMessage.command.botCommandParams;
+
+      // Define the start of a spotify url and uri
+      const urlStart = 'https://open.spotify.com/track/';
       const trackStart = 'spotify:track:';
-      if (!trackInput.startsWith(trackStart)) {
-        sendChatMessage(connection, `That doesn't look right... athanoThink it needs to be like spotify:track:stuff`);
-      } else {
-        const trackId = trackInput.slice(trackStart.length);
-        const track = await getTrack(trackId);
-        await addSongToPlaybackQueue(trackInput);
-        if (!track) {
-          sendChatMessage(connection, `Song added to queue athanoCool`);
-        } else {
-          const trackArtists = track.artists.map((artist) => artist.name).join(', ');
-          sendChatMessage(connection, `Song ${track.name} - ${trackArtists} added to queue athanoCool`);
+
+      // By default, assume the user has pasted a spotify uri, extract the track id
+      let trackId = trackInput.slice(trackStart.length);
+
+      // If the user has pasted a spotify url, extract the track id
+      if (trackInput.startsWith(urlStart)) {
+        trackId = trackInput.slice(urlStart.length);
+
+        // If the url has a query string, remove it
+        if (trackId.includes('?')) {
+          trackId = trackId.split('?')[0];
         }
       }
+
+      // If the input is neither a url or a uri, send a message to the chat and exit
+      if (!trackInput.startsWith(trackStart) && !trackInput.startsWith(urlStart)) {
+        sendChatMessage(connection, `That doesn't look right... athanoThink it needs to be like ${trackStart}stuff or ${urlStart}stuff}`);
+        return;
+      }
+
+      // Get the track from spotify
+      const track = await getTrack(trackId);
+      // Add the track to the playback queue
+      await addSongToPlaybackQueue(`${trackStart}${trackId}`);
+
+      // If the track is not found, send a message to the chat and exit
+      if (!track) {
+        sendChatMessage(connection, `Song added to queue athanoCool`);
+        return;
+      }
+
+      // // If the track is found, send a message to the chat and exit
+      const trackArtists = track.artists.map((artist) => artist.name).join(', ');
+      sendChatMessage(connection, `Song ${track.name} - ${trackArtists} added to queue athanoCool`);
     }
   },
 };
