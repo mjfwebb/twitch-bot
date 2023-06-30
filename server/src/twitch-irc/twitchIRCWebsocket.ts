@@ -1,6 +1,4 @@
 import websocket from 'websocket';
-import { addChatMessage } from '../chatMessages';
-import { getChatUser } from '../commands/helpers/findOrCreateUser';
 import Config from '../config';
 import { TWITCH_CHAT_IRC_WS_URL } from '../constants';
 import { botCommandHandler } from '../handlers/botCommandHandler';
@@ -8,6 +6,7 @@ import { discordChatWebhook } from '../handlers/discord/discord';
 import { bitHandler } from '../handlers/twitch/irc/bitHandler';
 import { firstMessageHandler } from '../handlers/twitch/irc/firstMessageHandler';
 import { firstMessageOfStreamHandler } from '../handlers/twitch/irc/firstMessageOfStreamHandler';
+import { messageHandler } from '../handlers/twitch/irc/messageHandler';
 import { returningChatterHandler } from '../handlers/twitch/irc/returningChatterHandler';
 import { parseMessage } from '../parsers/parseMessage';
 import { getCurrentAccessToken } from '../twitch';
@@ -72,21 +71,7 @@ export function runTwitchIRCWebsocket() {
 
                 if ((!botCommand || botCommand === 'ACTION') && parsedMessage.source?.nick && parsedMessage.parameters) {
                   discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
-
-                  const userId = parsedMessage.tags?.['user-id'];
-                  const chatMessageId = parsedMessage.tags?.['id'];
-
-                  if (userId && chatMessageId) {
-                    getChatUser(parsedMessage)
-                      .then((user) => {
-                        if (user) {
-                          addChatMessage({ id: chatMessageId, user, parsedMessage });
-                        }
-                      })
-                      .catch((e) => {
-                        console.error(e);
-                      });
-                  }
+                  messageHandler(parsedMessage).catch((e) => console.error(e));
                 }
                 break;
               case 'PING':
