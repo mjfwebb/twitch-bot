@@ -17,7 +17,7 @@ To get the auth_code construct your URL and enter it into the browser.  Here's a
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-The required scopes are `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
+The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
 
 ### spotify
 
