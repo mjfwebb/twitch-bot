@@ -7,7 +7,10 @@ import type { SpotifyTrack } from './types';
 export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> => {
   if (Config.spotify.enabled) {
     try {
-      const url = `${SPOTIFY_API_URL}tracks/${trackId}`;
+      let url = `${SPOTIFY_API_URL}tracks/${trackId}`;
+      if (Config.spotify.country_code) {
+        url += `?market=${Config.spotify.country_code}`;
+      }
 
       const result = await fetchWithRetry(url, {
         method: 'GET',

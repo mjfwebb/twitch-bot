@@ -35,14 +35,27 @@ export const queuesong: BotCommand = {
 
       // If the input is neither a url or a uri, send a message to the chat and exit
       if (!trackInput.startsWith(trackStart) && !trackInput.startsWith(urlStart)) {
-        sendChatMessage(connection, `That doesn't look right... athanoThink it needs to be like ${trackStart}stuff or ${urlStart}stuff}`);
+        sendChatMessage(connection, `That doesn't look right... athanoThink it needs to be like ${trackStart}stuff or ${urlStart}stuff`);
         return;
       }
 
       // Get the track from spotify
       const track = await getTrack(trackId);
+
+      // Check if the song is playable in the streamer's country
+      if (track && !track.is_playable) {
+        sendChatMessage(connection, `Song "${track.name}" is not available for me athanoSad`);
+        return;
+      }
+
       // Add the track to the playback queue
-      await addSongToPlaybackQueue(`${trackStart}${trackId}`);
+      const songAddedToQueue = await addSongToPlaybackQueue(`${trackStart}${trackId}`);
+
+      // If the track is not added to the queue, send a message to the chat and exit
+      if (!songAddedToQueue) {
+        sendChatMessage(connection, `Something went wrong adding the song to the queue athanoSad. Try again?`);
+        return;
+      }
 
       // If the track is not found, send a message to the chat and exit
       if (!track) {
@@ -52,7 +65,7 @@ export const queuesong: BotCommand = {
 
       // // If the track is found, send a message to the chat and exit
       const trackArtists = track.artists.map((artist) => artist.name).join(', ');
-      sendChatMessage(connection, `Song ${track.name} - ${trackArtists} added to queue athanoCool`);
+      sendChatMessage(connection, `Song "${track.name} - ${trackArtists}" added to the queue athanoCool`);
     }
   },
 };

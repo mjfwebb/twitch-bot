@@ -34,6 +34,7 @@ export type SpotifyConfig = {
   grant_type: string;
   auth_code: string;
   redirect_uri: string;
+  country_code: string;
 };
 
 export type GitHubConfig = {
@@ -142,13 +143,14 @@ function readSpotifyConfig(config: unknown): SpotifyConfig {
     grant_type: '',
     auth_code: '',
     redirect_uri: '',
+    country_code: '',
   };
 
   const parsedSpotifyConfig = parseConfig<SpotifyConfig>({
     config,
     defaultConfig: defaultSpotifyConfig,
     part: 'spotify',
-    properties: ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri'],
+    properties: ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri', 'country_code'],
   });
 
   return parsedSpotifyConfig;

@@ -2,7 +2,7 @@ import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
 import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 
-export const addSongToPlaybackQueue = async (trackURI: string): Promise<void> => {
+export const addSongToPlaybackQueue = async (trackURI: string): Promise<boolean> => {
   if (Config.spotify.enabled) {
     try {
       const url = `${SPOTIFY_API_URL}me/player/queue?uri=${encodeURIComponent(trackURI)}`;
@@ -13,8 +13,10 @@ export const addSongToPlaybackQueue = async (trackURI: string): Promise<void> =>
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
+      return true;
     } catch (error) {
       console.error(error);
     }
   }
+  return false;
 };
