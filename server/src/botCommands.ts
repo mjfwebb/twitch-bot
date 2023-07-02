@@ -43,6 +43,7 @@ import { w } from './commands/w';
 import { wary } from './commands/wary';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
+import Config from './config';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
 import { Commands } from './storage-models/command-model';
 import type { BotCommand } from './types';
@@ -50,20 +51,46 @@ import { mention } from './utils/mention';
 
 const botCommands: BotCommand[] = [];
 
-export function loadBotCommands() {
-  const messageCommands = loadMessageCommands();
-  botCommands.length = 0;
-  botCommands.push(...complexBotCommands, ...messageCommands);
+export function reloadBotCommands() {
+  const customCommands = loadCustomCommands();
+  const spotifyCommands = loadSpotifyCommands();
+  const githubCommands = loadGitHubCommands();
+  botCommands.push(...spotifyCommands, ...githubCommands, ...customCommands);
 }
 
-export function getBotCommands() {
+export function loadCustomCommands(): BotCommand[] {
+  if (Config.features.commands_handler) {
+    const messageCommands = loadMessageCommands();
+    return [...complexBotCommands, ...messageCommands];
+  }
+  return [];
+}
+
+export function loadSpotifyCommands(): BotCommand[] {
+  if (Config.spotify.enabled) {
+    return spotifyCommands;
+  }
+  return [];
+}
+
+export function getBotCommands(): BotCommand[] {
   return botCommands;
 }
+
+export function loadGitHubCommands(): BotCommand[] {
+  if (Config.github.enabled) {
+    return githubCommands;
+  }
+  return [];
+}
+
+const spotifyCommands: BotCommand[] = [skipsong, song, songqueue, queuesong];
+
+const githubCommands: BotCommand[] = [addissue, randomissue];
 
 const complexBotCommands: BotCommand[] = [
   addburpee,
   addcommand,
-  addissue,
   addpushup,
   addsquat,
   athanotime,
@@ -80,8 +107,6 @@ const complexBotCommands: BotCommand[] = [
   lutf1sk,
   party,
   play,
-  queuesong,
-  randomissue,
   removecommand,
   roll,
   setalias,
@@ -91,10 +116,7 @@ const complexBotCommands: BotCommand[] = [
   settags,
   settask,
   settitle,
-  skipsong,
   skiptts,
-  song,
-  songqueue,
   success,
   task,
   thechaosbean,

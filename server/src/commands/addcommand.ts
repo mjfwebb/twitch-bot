@@ -1,4 +1,4 @@
-import { loadBotCommands } from '../botCommands';
+import { reloadBotCommands } from '../botCommands';
 import type { Command } from '../storage-models/command-model';
 import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
@@ -35,7 +35,7 @@ export const addcommand: BotCommand = {
             updatedAt: isoString,
           };
           Commands.saveOne(newCommand);
-          loadBotCommands();
+          reloadBotCommands();
           sendChatMessage(connection, `The command ${newCommandName} has been added!`);
         }
       }

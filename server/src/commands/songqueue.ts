@@ -7,8 +7,8 @@ import { songDetails } from './helpers/songDetail';
 export const songqueue: BotCommand = {
   command: ['songqueue', 'sq'],
   id: 'songqueue',
-  cooldown: 1 * SECOND_MS,
-  privileged: true,
+  cooldown: 10 * SECOND_MS,
+  privileged: false,
   description: 'Shows the next songs in the playback queue (from Spotify)',
   callback: async (connection) => {
     const queue = await getPlaybackQueue();

@@ -12,8 +12,21 @@ interface IntervalCommand {
   tickOffset: number;
 }
 
-export function runIntervalCommands() {
-  const intervalCommands: IntervalCommand[] = [
+export const intervalCommands: IntervalCommand[] = [];
+
+export const loadSpotifyIntervalCommands = () => {
+  intervalCommands.push({
+    callback: async () => {
+      await fetchCurrentlyPlaying();
+    },
+    tickInterval: 5,
+    currentTick: 0,
+    tickOffset: 0,
+  });
+};
+
+export const loadIntervalCommands = () => {
+  intervalCommands.push(
     {
       callback: (connection) =>
         sendChatMessage(
@@ -31,16 +44,10 @@ export function runIntervalCommands() {
       currentTick: 0,
       tickOffset: 120,
     },
-    {
-      callback: async () => {
-        await fetchCurrentlyPlaying();
-      },
-      tickInterval: 5,
-      currentTick: 0,
-      tickOffset: 0,
-    },
-  ];
+  );
+};
 
+export function runIntervalCommands() {
   async function runInterval() {
     const connection = getConnection();
     if (!connection) {

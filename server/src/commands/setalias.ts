@@ -1,4 +1,4 @@
-import { loadBotCommands } from '../botCommands';
+import { reloadBotCommands } from '../botCommands';
 import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
@@ -28,7 +28,7 @@ export const setalias: BotCommand = {
             }
             command.updatedAt = new Date().toISOString();
             Commands.saveOne(command);
-            loadBotCommands();
+            reloadBotCommands();
             sendChatMessage(connection, `The alias for the command ${commandName} has been added!`);
           } else {
             sendChatMessage(connection, `Unable to find a command with the name ${commandName}.`);

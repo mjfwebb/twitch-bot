@@ -4,7 +4,6 @@ import { findBotCommand } from '../commands/helpers/findBotCommand';
 import { isPrivileged } from '../commands/helpers/isPrivileged';
 import { isUser } from '../commands/helpers/isUser';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
-import Config from '../config';
 import { Commands } from '../storage-models/command-model';
 import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
 
@@ -67,11 +66,6 @@ function addCooldown(commandId: string, cooldownLength = 0) {
 }
 
 export async function botCommandHandler(connection: websocket.connection, parsedMessage: ParsedMessage): Promise<void> {
-  // If the feature is disabled, then we don't handle this event
-  if (!Config.features.commands_handler) {
-    return;
-  }
-
   const commandName = parsedMessage.command?.botCommand;
   if (!commandName) {
     return;

@@ -8,8 +8,8 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const queuesong: BotCommand = {
   command: ['queuesong', 'qs'],
   id: 'queuesong',
-  cooldown: 1 * SECOND_MS,
-  privileged: true,
+  cooldown: 10 * SECOND_MS,
+  privileged: false,
   description: 'Add a song to the playback queue (on Spotify)',
   callback: async (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
