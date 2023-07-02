@@ -1,15 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
-import type { Command } from '../../models/command-model';
 import { generateCommandMessage } from './generateCommandMessage';
 
 describe('generateCommandMessage', () => {
   const punctuationMarks = ['..', ':', '?', '!'];
-
-  const commandData: Command = {
-    commandId: 'testComand',
-    timesUsed: 10,
-  };
 
   for (const punctuationMark of punctuationMarks) {
     test(`should make sure is a single punctuation mark when using ${punctuationMark}`, () => {
@@ -21,7 +15,7 @@ describe('generateCommandMessage', () => {
           description: `This test description ends in an punctuation mark${punctuationMark}`,
           callback: () => false,
         },
-        commandData,
+        10,
       );
       expect(message).not.toContain(`punctuation mark${punctuationMark}.`);
       expect(message).toContain(`punctuation mark${punctuationMark} `);

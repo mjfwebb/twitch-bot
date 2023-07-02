@@ -66,7 +66,7 @@ export function runTwitchIRCWebsocket() {
                 botCommandHandler(connection, parsedMessage).catch((e) => console.error(e));
                 bitHandler(connection, parsedMessage).catch((e) => console.error(e));
                 firstMessageHandler(connection, parsedMessage);
-                firstMessageOfStreamHandler(connection, parsedMessage).catch((e) => console.error(e));
+                firstMessageOfStreamHandler(connection, parsedMessage);
                 returningChatterHandler(connection, parsedMessage);
 
                 if ((!botCommand || botCommand === 'ACTION') && parsedMessage.source?.nick && parsedMessage.parameters) {

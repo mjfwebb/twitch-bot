@@ -5,7 +5,7 @@ import { isPrivileged } from '../commands/helpers/isPrivileged';
 import { isUser } from '../commands/helpers/isUser';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import Config from '../config';
-import CommandModel from '../models/command-model';
+import { Commands } from '../storage-models/command-model';
 import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
 
 const cooldowns: BotCommandCooldown[] = [];
@@ -22,8 +22,23 @@ async function handleCommand(connection: websocket.connection, queuedCommand: Pa
   if (typeof result === 'boolean' && result === false) {
     sendChatMessage(connection, `That's not right. Use !help ${queuedCommand.commandName} to get more information`);
   } else {
-    if (Config.mongoDB.enabled) {
-      await CommandModel.updateOne({ commandId: queuedCommand.botCommand.id }, { $inc: { timesUsed: 1 } }, { upsert: true });
+    const command = Commands.findOneByCommandId(queuedCommand.botCommand.id);
+    if (command) {
+      Commands.increaseTimesUsed(command);
+    } else {
+      // If the command doesn't exist as a stored command, but instead as a file,
+      // then we create it so we can store the times used
+      const isoString = new Date().toISOString();
+      Commands.saveOne({
+        command: [queuedCommand.commandName],
+        commandId: queuedCommand.botCommand.id,
+        message: '',
+        timesUsed: 1,
+        cooldown: 0,
+        description: '',
+        createdAt: isoString,
+        updatedAt: isoString,
+      });
     }
   }
 }

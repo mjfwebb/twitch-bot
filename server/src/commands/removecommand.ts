@@ -1,5 +1,5 @@
 import { loadBotCommands } from '../botCommands';
-import CommandModel from '../models/command-model';
+import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
@@ -10,7 +10,7 @@ export const removecommand: BotCommand = {
   privileged: true,
   hidden: true,
   description: '',
-  callback: async (connection, parsedCommand) => {
+  callback: (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const commandId = parsedCommand.parsedMessage.command?.botCommandParams;
       if (commandId) {
@@ -18,10 +18,10 @@ export const removecommand: BotCommand = {
         if (newCommandParts.length > 1) {
           return sendChatMessage(connection, 'Huh?');
         }
-        const command = await CommandModel.findOne({ commandId });
+        const command = Commands.findOneByCommandId(commandId);
         if (command) {
-          await CommandModel.deleteOne({ commandId });
-          await loadBotCommands();
+          Commands.deleteOne(command);
+          loadBotCommands();
           sendChatMessage(connection, `The command ${commandId} has been removed!`);
         }
       }

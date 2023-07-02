@@ -1,13 +1,12 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getChatMessages } from './chatMessages';
-import Config from './config';
 import { getFakeChatMessages } from './getFakeChatMessages';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
 import { loadBadges } from './loadBadges';
 import { loadCheers } from './loadCheers';
 import { loadEmotes } from './loadEmotes';
-import TaskModel from './models/task-model';
+import { Tasks } from './storage-models/task-model';
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -25,12 +24,10 @@ export const getIO = () => io;
  */
 export function runSocketServer() {
   io.on('connection', (socket) => {
-    socket.on('getTask', async () => {
-      if (Config.mongoDB.enabled) {
-        const task = await TaskModel.findOne({}, {}, { sort: { createdAt: -1 } });
-        if (task) {
-          socket.emit('task', task.content);
-        }
+    socket.on('getTask', () => {
+      const task = Tasks.data[0];
+      if (task) {
+        socket.emit('task', task.content);
       }
     });
     socket.on('getSong', async () => {

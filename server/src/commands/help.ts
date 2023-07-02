@@ -1,6 +1,6 @@
+import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { findBotCommand } from './helpers/findBotCommand';
-import { findOrCreateCommand } from './helpers/findOrCreateCommand';
 import { generateCommandMessage } from './helpers/generateCommandMessage';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
@@ -9,7 +9,7 @@ export const help: BotCommand = {
   command: ['help'],
   id: 'command',
   description: 'Use this command to find out more about a command',
-  callback: async (connection, parsedCommand) => {
+  callback: (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const commandToGetDetailsAbout = parsedCommand.parsedMessage.command?.botCommandParams?.replace('!', '');
       if (!commandToGetDetailsAbout) {
@@ -20,8 +20,8 @@ export const help: BotCommand = {
         sendChatMessage(connection, "I don't know about that command");
         return;
       }
-      const commandData = await findOrCreateCommand(foundBotCommand.id);
-      const message = generateCommandMessage(commandToGetDetailsAbout, foundBotCommand, commandData);
+      const command = Commands.findOneByCommandId(foundBotCommand.id);
+      const message = generateCommandMessage(commandToGetDetailsAbout, foundBotCommand, command?.timesUsed || 0);
       sendChatMessage(connection, message);
     }
   },

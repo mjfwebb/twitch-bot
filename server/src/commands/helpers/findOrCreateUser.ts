@@ -1,104 +1,80 @@
-import type { HydratedDocument } from 'mongoose';
-import Config from '../../config';
 import { fetchUserInformationByName } from '../../handlers/twitch/helix/fetchUserInformation';
 import { getTwitchViewerBotNames } from '../../handlers/twitchinsights/twitchViewerBots';
-import type { User } from '../../models/user-model';
-import UserModel from '../../models/user-model';
-import type { ParsedMessage, UserInformation } from '../../types';
+import type { User } from '../../storage-models/user-model';
+import { Users } from '../../storage-models/user-model';
+import type { UserInformation } from '../../types';
 
-function getNonDBUser({ displayName, userId, avatarUrl }: { displayName: string; userId: string; avatarUrl: string }): User {
-  return {
-    nick: displayName,
-    points: 0,
-    experience: 0,
-    userId: userId,
-    displayName: displayName,
-    avatarUrl,
-    lastSeen: '0',
-  };
-}
-
+// Unlike findOrCreateUserById, this function uses the data returned from the Twitch API to create a new user.
 export async function findOrCreateUserByName(displayName: string): Promise<User | null> {
   if (getTwitchViewerBotNames().includes(displayName)) {
     return null;
   }
 
   const userInformation = await fetchUserInformationByName(displayName);
-  // If there is no database then just return the collected data, if possible
-  if (!Config.mongoDB.enabled) {
-    return getNonDBUser({ displayName, userId: userInformation?.id || '', avatarUrl: userInformation?.profile_image_url || '' });
-  }
-
-  let user = await UserModel.findOne({ displayName });
+  let user = Users.findOneByDisplayName(displayName);
 
   if (userInformation && userInformation.id && userInformation.display_name) {
     if (!user) {
-      user = new UserModel({
+      const isoString = new Date().toISOString();
+      user = {
         userId: userInformation.id,
+        nick: displayName,
         displayName: userInformation.display_name,
+        welcomeMessage: '',
+        points: 0,
+        experience: 0,
+        lastSeen: '0',
         avatarUrl: userInformation.profile_image_url,
-      });
-      await user.save();
+        createdAt: isoString,
+        updatedAt: isoString,
+      };
     } else {
       user.displayName = userInformation.display_name;
       user.avatarUrl = userInformation.profile_image_url;
-      await user.save();
     }
+    Users.saveOne(user);
   }
 
   return user;
 }
 
-export async function getChatUser(parsedMessage: ParsedMessage): Promise<User> {
-  const userId = parsedMessage.tags?.['user-id'];
+export async function getChatUser(userId: string, userNick: string, userDisplayName: string): Promise<User> {
+  const userInformation = await fetchUserInformationByName(userNick);
 
-  const nonDBUser = getNonDBUser({
-    displayName: parsedMessage.tags?.['display-name'] || 'unknwown',
-    userId: userId || 'unknown',
-    avatarUrl: '',
-  });
-
-  const nick = parsedMessage.source?.nick;
-
-  // If there is no database then just return the collected data, if possible
-  if (!userId || !nick || !Config.mongoDB.enabled) {
-    return nonDBUser;
-  }
-
-  const userInformation = await fetchUserInformationByName(nick);
-
-  return await findOrCreateUserById(userId, nick, userInformation);
+  return findOrCreateUserById(userId, userNick, userDisplayName, userInformation);
 }
 
-export async function findOrCreateUserById(
+export function findOrCreateUserById(
   userId: string,
-  nick: string,
+  userNick: string,
+  userDisplayName: string,
   userInformation: UserInformation | null = null,
-): Promise<HydratedDocument<User>> {
-  if (!Config.mongoDB.enabled) {
-    throw new Error('Cannot find or create user by id when MongoDB is disabled');
-  }
-
-  let user = await UserModel.findOne({ userId });
+): User {
+  let user = Users.findOneByUserId(userId);
 
   // User doesn't exist yet, so make it!
   if (!user) {
-    user = new UserModel({
+    const isoString = new Date().toISOString();
+    user = {
       userId,
-      nick,
-    });
-    await user.save();
-  } else {
-    // Always set nick. A user can be made through display names, at which point the nick is unknown
-    user.nick = nick;
+      nick: userNick,
+      displayName: userDisplayName,
+      welcomeMessage: '',
+      points: 0,
+      experience: 0,
+      lastSeen: '0',
+      avatarUrl: '',
+      createdAt: isoString,
+      updatedAt: isoString,
+    };
   }
 
   // If we got a response from the API with additional information, then add it
   if (userInformation && userInformation.id && userInformation.display_name) {
     user.displayName = userInformation.display_name;
     user.avatarUrl = userInformation.profile_image_url;
-    await user.save();
   }
+  Users.saveOne(user);
 
   return user;
 }

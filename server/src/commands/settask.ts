@@ -1,8 +1,9 @@
 import { SECOND_MS } from '../constants';
-import TaskModel from '../models/task-model';
 import { getIO } from '../runSocketServer';
+import type { Task } from '../storage-models/task-model';
+import { Tasks } from '../storage-models/task-model';
 import type { BotCommand } from '../types';
-import { hasBotCommandParams } from './helpers/hasBotCommandParams';
+import { parsedMessageHasAllProps } from './helpers/parsedMessageHasAllProps';
 import { sendChatMessage } from './helpers/sendChatMessage';
 
 export const settask: BotCommand = {
@@ -11,12 +12,16 @@ export const settask: BotCommand = {
   mustBeUser: ['athano', 'jumpylionnn'],
   description: 'Sets the current task',
   cooldown: 5 * SECOND_MS,
-  callback: async (connection, parsedCommand) => {
-    if (hasBotCommandParams(parsedCommand.parsedMessage)) {
-      const task = new TaskModel({
+  callback: (connection, parsedCommand) => {
+    if (parsedMessageHasAllProps(parsedCommand.parsedMessage)) {
+      const isoDate = new Date().toISOString();
+      const task: Task = {
         content: parsedCommand.parsedMessage,
-      });
-      await task.save();
+        updatedAt: isoDate,
+        createdAt: isoDate,
+      };
+      Tasks.data = [...Tasks.data, task];
+      Tasks.save();
       sendChatMessage(connection, `Task successfully updated 🎉`);
       getIO().emit('task', parsedCommand.parsedMessage);
     }

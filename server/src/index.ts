@@ -1,14 +1,13 @@
 import pc from 'picocolors';
 import { loadBotCommands } from './botCommands';
 import { loadChatExclusionList } from './chatExclusionList';
-import Config from './config';
+import Config, { assertConfigFileExists } from './config';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
 import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
 import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
 import { runIntervalCommands } from './intervalCommands';
 import { runSocketServer } from './runSocketServer';
-import { setupMongoose } from './setupMongoose';
 import { getSpotifyAccessToken } from './spotify';
 import { setDisplayName, setStreamStatus } from './streamState';
 import { assertTokenFileExists } from './tokenManager';
@@ -18,13 +17,12 @@ import { runTwitchIRCWebsocket } from './twitch-irc/twitchIRCWebsocket';
 
 async function main() {
   try {
+    assertConfigFileExists();
     assertTokenFileExists();
-
-    await setupMongoose();
 
     if (Config.features.commands_handler) {
       console.log(`${pc.green('[Commands handler enabled] ')}${pc.blue('Startup:')} Loading bot commands`);
-      await loadBotCommands();
+      loadBotCommands();
     }
 
     console.log(`${pc.blue('Startup:')} Getting Twitch access token`);

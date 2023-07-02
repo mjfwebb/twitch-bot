@@ -1,4 +1,3 @@
-import type { HydratedDocument } from 'mongoose';
 import { addburpee } from './commands/addburpee';
 import { addcommand } from './commands/addcommand';
 import { addissue } from './commands/addissue';
@@ -39,23 +38,20 @@ import { success } from './commands/success';
 import { task } from './commands/task';
 import { thechaosbean } from './commands/thechaosbean';
 import { tts } from './commands/tts';
-import { updateUser } from './commands/updateUser';
 import { viewers } from './commands/viewers';
 import { w } from './commands/w';
 import { wary } from './commands/wary';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
-import Config from './config';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
-import type { Command } from './models/command-model';
-import CommandModel from './models/command-model';
+import { Commands } from './storage-models/command-model';
 import type { BotCommand } from './types';
 import { mention } from './utils/mention';
 
 const botCommands: BotCommand[] = [];
 
-export async function loadBotCommands() {
-  const messageCommands = await loadMessageCommands();
+export function loadBotCommands() {
+  const messageCommands = loadMessageCommands();
   botCommands.length = 0;
   botCommands.push(...complexBotCommands, ...messageCommands);
 }
@@ -103,7 +99,6 @@ const complexBotCommands: BotCommand[] = [
   task,
   thechaosbean,
   tts,
-  updateUser,
   viewers,
   w,
   wary,
@@ -111,47 +106,38 @@ const complexBotCommands: BotCommand[] = [
   whoami,
 ];
 
-async function loadMessageCommands(): Promise<BotCommand[]> {
-  // If mongoDB isn't used then don't try to load these
-  if (!Config.mongoDB.enabled) {
-    return [];
-  }
+function loadMessageCommands(): BotCommand[] {
+  const commands = Commands.data;
 
-  const commands = await CommandModel.find({ message: { $ne: null } });
+  const botCommands: BotCommand[] = commands.map((c) => ({
+    command: c.command,
+    id: c.commandId,
+    description: c.description || '',
+    cooldown: c.cooldown || 0,
+    callback: async (connection, parsedCommand) => {
+      const command = Commands.data.find((cmd) => cmd.command === c.command);
+      if (!command) {
+        return;
+      }
 
-  type CommandWithMessage = HydratedDocument<Command> & { message: string; command: string };
+      let target = 'unknown';
+      if (hasBotCommandParams(parsedCommand.parsedMessage)) {
+        const chatters = await fetchChatters();
 
-  const botCommands: BotCommand[] = commands
-    .filter((c): c is CommandWithMessage => !!(c.message && c.command))
-    .map((c) => ({
-      command: c.command,
-      id: c.commandId,
-      description: c.description || '',
-      cooldown: c.cooldown || 0,
-      callback: async (connection, parsedCommand) => {
-        const command = await CommandModel.findOne({ command: c.command });
-        if (!command) {
-          return;
+        const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
+        if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
+          target = mention(botCommandParam);
         }
+      }
 
-        let target = 'unknown';
-        if (hasBotCommandParams(parsedCommand.parsedMessage)) {
-          const chatters = await fetchChatters();
+      let user = 'unknown';
+      if (parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
+        user = parsedCommand.parsedMessage.tags['display-name'];
+      }
 
-          const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
-          if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
-            target = mention(botCommandParam);
-          }
-        }
-
-        let user = 'unknown';
-        if (parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
-          user = parsedCommand.parsedMessage.tags['display-name'];
-        }
-
-        sendChatMessage(connection, c.message.replace('%user%', user).replace('%target%', target).replace('%count%', String(command.timesUsed)));
-      },
-    }));
+      sendChatMessage(connection, c.message.replace('%user%', user).replace('%target%', target).replace('%count%', String(command.timesUsed)));
+    },
+  }));
 
   return botCommands;
 }

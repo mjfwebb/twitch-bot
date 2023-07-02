@@ -70,6 +70,9 @@ export const getFakeChatMessages = (amount: number) => {
       experience: 0,
       lastSeen: sentTime,
       avatarUrl: `https://picsum.photos/100/100?random=${index + 1}`,
+      welcomeMessage: '',
+      createdAt: sentTime,
+      updatedAt: sentTime,
     };
 
     const parsedMessage: ParsedMessage = {

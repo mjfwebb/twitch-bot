@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import type websocket from 'websocket';
-import type { User } from './models/user-model';
+import type { User } from './storage-models/user-model';
 
 export type TwitchWebsocketMetadata = {
   message_id: string;
@@ -209,6 +209,13 @@ export type ParsedMessage = {
   source: Source | null;
   command: Command | null;
   parameters: string | null;
+};
+
+export type ParsedMessageWithAllProps = {
+  tags: Tags;
+  source: Source;
+  command: CommandWithBotCommandParams;
+  parameters: string;
 };
 
 export type ParsedMessageWithCommand = {

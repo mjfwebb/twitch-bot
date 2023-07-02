@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import pc from 'picocolors';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
@@ -20,12 +20,6 @@ export interface TwitchConfig {
   auth_code: string;
   redirect_uri: string;
 }
-
-export type MongoDBConfig = {
-  enabled: boolean;
-  url: string;
-  db: string;
-};
 
 export type SpotifyConfig = {
   enabled: boolean;
@@ -73,7 +67,6 @@ export type FeaturesConfig = {
 interface IConfig {
   twitch: TwitchConfig;
   webhooks: Record<string, WebhookConfig>;
-  mongoDB: MongoDBConfig;
   spotify: SpotifyConfig;
   github: GitHubConfig;
   sevenTV: SevenTVConfig;
@@ -84,6 +77,13 @@ interface IConfig {
 
 const configFileName = 'config.json';
 const missingPropertyErrorMessage = (missingProperty: string) => `${pc.red('Error:')} Missing configuration in ${configFileName}: ${missingProperty}`;
+
+export function assertConfigFileExists(): void {
+  if (!existsSync(configFileName)) {
+    console.error(`${pc.red('Error:')} Missing ${configFileName} file`);
+    process.exit(1);
+  }
+}
 
 function parseConfig<T>({ config, defaultConfig, part, properties }: { config: unknown; defaultConfig: T; part: string; properties: string[] }): T {
   if (!hasOwnProperty(config, part)) {
@@ -252,23 +252,6 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
   return parsedFeaturesConfig;
 }
 
-function readMongoDBConfig(config: unknown): MongoDBConfig {
-  const defaultMongoDBConfig: MongoDBConfig = {
-    enabled: false,
-    url: '',
-    db: '',
-  };
-
-  const parsedMongoDBConfig = parseConfig<MongoDBConfig>({
-    config,
-    defaultConfig: defaultMongoDBConfig,
-    part: 'mongodb',
-    properties: ['enabled', 'url', 'db'],
-  });
-
-  return parsedMongoDBConfig;
-}
-
 function readDiscordWebhookConfig(config: unknown): WebhookConfig {
   const defaultDiscordWebhookConfig: WebhookConfig = {
     enabled: false,
@@ -295,7 +278,6 @@ const Config: IConfig = {
   webhooks: {
     discordChatHook: readDiscordWebhookConfig(config),
   },
-  mongoDB: readMongoDBConfig(config),
   spotify: readSpotifyConfig(config),
   github: readGitHubConfig(config),
   sevenTV: readSevenTVConfig(config),

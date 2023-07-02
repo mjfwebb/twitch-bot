@@ -89,7 +89,6 @@ async function main() {
   }
   
   // Disable all features by default
-  currentConfig.mongodb.enabled = false;
   currentConfig.spotify.enabled = false;
   currentConfig.seventv.enabled = false;
   currentConfig.betterttv.enabled = false;
@@ -100,7 +99,6 @@ async function main() {
   const selectedFeatures = await checkbox({
     message: 'Select optional features to enable',
     choices: [
-      { name: 'mongodb', value: 'mongodb', checked: true },
       { name: 'spotify', value: 'spotify' , checked: true },
       { name: '7TV', value: 'seventv', checked: true },
       { name: 'BTTV', value: 'betterttv', checked: true },
@@ -113,35 +111,6 @@ async function main() {
   // Enable selected features
   for (const selectedFeature of selectedFeatures) {
     switch (selectedFeature) {
-      case 'mongodb': {
-        const mongodbConfigParts = [
-          {
-            name: 'url',
-            default: exampleConfig.mongodb.url,
-            help: 'The URL of the mongodb database to use for the bot',
-          },
-          {
-            name: 'db',
-            default: exampleConfig.mongodb.db,
-            help: 'The name of the mongodb database to use for the bot',
-          },
-        ];
-
-        currentConfig.mongodb.enabled = true;
-
-        // Ask for each part of the mongodb config
-        for (const part of mongodbConfigParts) {
-          const defaultValue = currentConfig.mongodb[part.name] === part.name ? part.default : currentConfig.mongodb[part.name];
-          const answer = await input({ message: `Enter your mongodb.${part.name} (${part.help})`, default: defaultValue });
-          if (!answer) {
-            console.error(`You must enter mongodb.${part}`);
-            return;
-          } else {
-            currentConfig.mongodb[part.name] = answer;
-          }
-        }
-        break;
-      }
       case 'github': {
         const githubConfigParts = [
           {

@@ -1,5 +1,5 @@
 import { loadBotCommands } from '../botCommands';
-import CommandModel from '../models/command-model';
+import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
@@ -10,7 +10,7 @@ export const setalias: BotCommand = {
   privileged: true,
   hidden: true,
   description: '',
-  callback: async (connection, parsedCommand) => {
+  callback: (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const newCommand = parsedCommand.parsedMessage.command?.botCommandParams;
       if (newCommand) {
@@ -19,15 +19,16 @@ export const setalias: BotCommand = {
           const commandName = newCommandParts[0];
           const commandAlias = newCommandParts[1];
 
-          const command = await CommandModel.findOne({ commandId: commandName });
+          const command = Commands.findOneByCommandId(commandName);
           if (command && command.command) {
             if (Array.isArray(command.command)) {
               command.command = [...command.command, commandAlias];
             } else {
               command.command = [command.command, commandAlias];
             }
-            await command.save();
-            await loadBotCommands();
+            command.updatedAt = new Date().toISOString();
+            Commands.saveOne(command);
+            loadBotCommands();
             sendChatMessage(connection, `The alias for the command ${commandName} has been added!`);
           } else {
             sendChatMessage(connection, `Unable to find a command with the name ${commandName}.`);

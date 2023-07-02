@@ -5,12 +5,14 @@ import type { ParsedMessage } from '../../../types';
 
 export async function messageHandler(parsedMessage: ParsedMessage): Promise<void> {
   const userId = parsedMessage.tags?.['user-id'];
+  const nick = parsedMessage.source?.nick;
+  const displayName = parsedMessage.tags?.['display-name'];
   const chatMessageId = parsedMessage.tags?.['id'];
 
   const chatExcludedUsers = getChatExlusionList();
 
-  if (userId && chatMessageId) {
-    const chatUser = await getChatUser(parsedMessage);
+  if (userId && nick && displayName && chatMessageId) {
+    const chatUser = await getChatUser(userId, nick, displayName);
 
     // If the user is in the chat exclusion list, don't add the message
     if (chatExcludedUsers.has(chatUser.displayName.toLowerCase())) {

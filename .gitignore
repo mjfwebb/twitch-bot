@@ -17,3 +17,8 @@ betterTTVConfig.json
 frankerFaceZConfig.json
 config.json
 chat-exclusion-list.txt
+
+# Storage files
+users.json
+commands.json
+tasks.json

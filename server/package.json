@@ -34,7 +34,6 @@
     "discord.js": "^14.11.0",
     "ffmpeg-static": "^5.1.0",
     "http-status-codes": "^2.2.0",
-    "mongoose": "^7.3.1",
     "node-fetch": "^2.6.7",
     "octokit": "^2.0.14",
     "open": "^8.4.0",

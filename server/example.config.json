@@ -9,11 +9,6 @@
     "auth_code": "your_auth_code",
     "redirect_uri": "redirect_uri"
   },
-  "mongodb": {
-    "enabled": false,
-    "url": "mongodb://localhost:27017/",
-    "db": "twitch-bot"
-  },
   "spotify": {
     "enabled": false,
     "client_id": "client_id",
