@@ -23,7 +23,7 @@ export const fetchStreamStatus = async (): Promise<StreamStatus> => {
       if (result.data.length > 0) {
         const data = result.data[0] as unknown;
         if (hasOwnProperty(data, 'started_at') && typeof data.started_at === 'string') {
-          await updateStreamStartedAt(data.started_at);
+          updateStreamStartedAt(data.started_at);
         }
         return 'online';
       }
