@@ -1,4 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import pc from 'picocolors';
+import { isError } from './utils/isError';
 
 type DataValidator<T> = (data: unknown) => data is T;
 
@@ -22,6 +24,13 @@ export class FileManager<T> {
     try {
       parsedFileContent = JSON.parse(fileContent);
     } catch (error) {
+      if (isError(error)) {
+        if (error.message.includes('Unexpected end of JSON input')) {
+          console.log(`${pc.magenta('Error handled gracefully:')} Empty JSON in file ${this.fileName}. Setting data to empty array.`);
+          this.data = [] as T;
+          return this.data;
+        }
+      }
       throw new Error(`Invalid JSON in file ${this.fileName}`);
     }
     if (this.validator(parsedFileContent)) {
