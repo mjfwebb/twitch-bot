@@ -6,9 +6,9 @@ import type { TwitchGame } from '../../../types';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
-export const fetchGameByName = async (name: string): Promise<TwitchGame | null> => {
+export const fetchGameById = async (id: string): Promise<TwitchGame | null> => {
   try {
-    const url = `${TWITCH_HELIX_URL}games?name=${name}`;
+    const url = `${TWITCH_HELIX_URL}games?id=${id}`;
     const accessToken = getCurrentAccessToken();
 
     const response = await fetch(url, {

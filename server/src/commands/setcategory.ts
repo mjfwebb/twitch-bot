@@ -14,9 +14,9 @@ export const setcategory: BotCommand = {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const newCategory = parsedCommand.parsedMessage.command?.botCommandParams;
       if (newCategory) {
-        const newCategoryId = await fetchGameByName(newCategory);
-        if (newCategoryId) {
-          await setStreamGame(newCategoryId);
+        const game = await fetchGameByName(newCategory);
+        if (game) {
+          await setStreamGame(game.id);
           sendChatMessage(connection, `Category updated to ${newCategory} 🎉`);
         }
       }

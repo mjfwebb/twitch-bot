@@ -2,9 +2,10 @@ import fetch from 'node-fetch';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
-import type { StreamStatus } from '../../../streamState';
+import { setStreamCategory, type StreamStatus } from '../../../streamState';
 import { getCurrentAccessToken } from '../../../twitch';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
+import { fetchGameById } from './fetchGameById';
 
 export const fetchStreamStatus = async (): Promise<StreamStatus> => {
   try {
@@ -24,6 +25,12 @@ export const fetchStreamStatus = async (): Promise<StreamStatus> => {
         const data = result.data[0] as unknown;
         if (hasOwnProperty(data, 'started_at') && typeof data.started_at === 'string') {
           updateStreamStartedAt(data.started_at);
+        }
+        if (hasOwnProperty(data, 'game_id') && typeof data.game_id === 'string') {
+          const game = await fetchGameById(data.game_id);
+          if (game) {
+            setStreamCategory(game.name);
+          }
         }
         return 'online';
       }
