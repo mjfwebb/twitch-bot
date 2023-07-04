@@ -68,7 +68,7 @@ const commandValidator = (data: unknown): data is Command[] => {
             case 'createdAt':
             case 'updatedAt':
               if (typeof command[property] !== 'string') {
-                console.log(`Error: Invalid command format, property ${property} must be a number`);
+                console.log(`Error: Invalid command format, property ${property} must be a string`);
                 return false;
               }
               break;
