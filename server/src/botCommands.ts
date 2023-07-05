@@ -20,6 +20,7 @@ import { lutf1sk } from './commands/lutf1sk';
 import { party } from './commands/party';
 import { play } from './commands/play';
 import { queuesong } from './commands/queuesong';
+import { quote } from './commands/quote';
 import { randomissue } from './commands/randomissue';
 import { removecommand } from './commands/removecommand';
 import { roll } from './commands/roll';
@@ -107,6 +108,7 @@ const complexBotCommands: BotCommand[] = [
   lutf1sk,
   party,
   play,
+  quote,
   removecommand,
   roll,
   setalias,

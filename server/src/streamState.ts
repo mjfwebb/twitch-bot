@@ -1,7 +1,7 @@
 export type StreamStatus = 'online' | 'offline';
 
 let streamStatus: StreamStatus = 'offline';
-let streamCategory = '';
+let streamCategory = 'unknown';
 let streamStartedAt: string;
 let displayName = '';
 
