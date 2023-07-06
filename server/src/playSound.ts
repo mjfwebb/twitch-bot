@@ -97,7 +97,7 @@ async function workQueue() {
 
     await new Promise(function (resolve) {
       timeOutResolve = resolve;
-      playSoundTimeout = setTimeout(resolve, soundToPlay.duration) as NodeJS.Timeout;
+      playSoundTimeout = setTimeout(resolve, soundToPlay.duration);
     });
 
     workingQueue = false;
