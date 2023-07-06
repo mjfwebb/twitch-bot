@@ -7,7 +7,7 @@
 // Expects the caller to pass a single message. (Remember, the Twitch
 // IRC server may send one or more IRC messages in a single message.)
 
-import type { ParsedMessage } from '../types';
+import type { ParsedMessage } from '../../types';
 import { parseCommand } from './parseCommand';
 import { parseParameters } from './parseParameters';
 import { parseSource } from './parseSource';

@@ -9,7 +9,7 @@ import { firstMessageHandler } from '../handlers/twitch/irc/firstMessageHandler'
 import { firstMessageOfStreamHandler } from '../handlers/twitch/irc/firstMessageOfStreamHandler';
 import { messageHandler } from '../handlers/twitch/irc/messageHandler';
 import { returningChatterHandler } from '../handlers/twitch/irc/returningChatterHandler';
-import { parseMessage } from '../parsers/parseMessage';
+import { parseMessage } from './parsers/parseMessage';
 
 let connectionRef: websocket.connection | undefined;
 
