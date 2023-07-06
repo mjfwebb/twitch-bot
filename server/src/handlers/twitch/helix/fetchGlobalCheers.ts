@@ -1,9 +1,9 @@
 // https://api.twitch.tv/helix/bits/cheermotes
 
 import fetch from 'node-fetch';
+import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
-import { getCurrentAccessToken } from '../../../twitch';
 import type { Cheermote } from '../../../types';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';

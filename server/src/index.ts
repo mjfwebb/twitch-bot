@@ -1,4 +1,7 @@
 import pc from 'picocolors';
+import { getSpotifyAccessToken } from './auth/spotify';
+import { assertTokenFileExists } from './auth/tokenManager';
+import { getTwitchAccessToken } from './auth/twitch';
 import { reloadBotCommands } from './botCommands';
 import { loadChatExclusionList } from './chat/chatExclusionList';
 import Config, { assertConfigFileExists } from './config';
@@ -8,10 +11,7 @@ import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
 import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
 import { intervalCommands, loadIntervalCommands, loadSpotifyIntervalCommands, runIntervalCommands } from './intervalCommands';
 import { runSocketServer } from './runSocketServer';
-import { getSpotifyAccessToken } from './spotify';
 import { setDisplayName, setStreamStatus } from './streamState';
-import { assertTokenFileExists } from './tokenManager';
-import { getTwitchAccessToken } from './twitch';
 import { runTwitchEventSubWebsocket } from './twitch-event-sub/twitchEventSubWebsocket';
 import { runTwitchIRCWebsocket } from './twitch-irc/twitchIRCWebsocket';
 

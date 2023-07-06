@@ -1,4 +1,5 @@
 import websocket from 'websocket';
+import { getCurrentAccessToken } from '../auth/twitch';
 import Config from '../config';
 import { TWITCH_CHAT_IRC_WS_URL } from '../constants';
 import { botCommandHandler } from '../handlers/botCommandHandler';
@@ -9,7 +10,6 @@ import { firstMessageOfStreamHandler } from '../handlers/twitch/irc/firstMessage
 import { messageHandler } from '../handlers/twitch/irc/messageHandler';
 import { returningChatterHandler } from '../handlers/twitch/irc/returningChatterHandler';
 import { parseMessage } from '../parsers/parseMessage';
-import { getCurrentAccessToken } from '../twitch';
 
 let connectionRef: websocket.connection | undefined;
 

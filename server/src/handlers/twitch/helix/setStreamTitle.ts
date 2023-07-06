@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
+import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
-import { getCurrentAccessToken } from '../../../twitch';
 
 export const setStreamTitle = async (title: string): Promise<void> => {
   try {

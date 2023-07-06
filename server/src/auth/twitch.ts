@@ -2,12 +2,12 @@ import assert from 'assert';
 import { StatusCodes } from 'http-status-codes';
 import type { RequestInit } from 'node-fetch';
 import fetch from 'node-fetch';
-import type { TwitchConfig } from './config';
-import Config from './config';
-import { TWITCH_AUTH_URL } from './constants';
+import type { TwitchConfig } from '../config';
+import Config from '../config';
+import { TWITCH_AUTH_URL } from '../constants';
+import { errorMessage } from '../utils/errorMessage';
+import { hasOwnProperty } from '../utils/hasOwnProperty';
 import { getTokenFromFile, setTokenInFile } from './tokenManager';
-import { errorMessage } from './utils/errorMessage';
-import { hasOwnProperty } from './utils/hasOwnProperty';
 
 /**
  * Validates the access token by making a request to the Twitch authentication API.

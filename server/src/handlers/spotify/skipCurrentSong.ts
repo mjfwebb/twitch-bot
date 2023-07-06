@@ -1,6 +1,6 @@
+import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
-import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 
 export const skipCurrentSong = async (): Promise<void> => {
   if (Config.spotify.enabled) {

@@ -1,6 +1,6 @@
+import { fetchWithRetry, getCurrentAccessToken } from '../../auth/twitch';
 import Config from '../../config';
 import { TWITCH_HELIX_URL } from '../../constants';
-import { fetchWithRetry, getCurrentAccessToken } from '../../twitch';
 import type { EventSubCondition, EventsubSubscriptionType } from '../../typings/twitchEvents';
 
 export const eventSubscribe = async (sessionId: string, type: EventsubSubscriptionType, condition: EventSubCondition) => {

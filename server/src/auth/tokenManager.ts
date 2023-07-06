@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
-import { hasOwnProperty } from './utils/hasOwnProperty';
+import { hasOwnProperty } from '../utils/hasOwnProperty';
 
 const tokensfileName = 'tokens.json';
 

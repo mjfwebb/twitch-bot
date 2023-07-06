@@ -2,12 +2,12 @@ import assert from 'assert';
 import { StatusCodes } from 'http-status-codes';
 import type { RequestInit } from 'node-fetch';
 import fetch from 'node-fetch';
-import type { SpotifyConfig } from './config';
-import Config from './config';
-import { SPOTIFY_AUTH_URL } from './constants';
+import type { SpotifyConfig } from '../config';
+import Config from '../config';
+import { SPOTIFY_AUTH_URL } from '../constants';
+import { errorMessage } from '../utils/errorMessage';
+import { hasOwnProperty } from '../utils/hasOwnProperty';
 import { getTokenFromFile, setTokenInFile } from './tokenManager';
-import { errorMessage } from './utils/errorMessage';
-import { hasOwnProperty } from './utils/hasOwnProperty';
 
 export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_token');
 

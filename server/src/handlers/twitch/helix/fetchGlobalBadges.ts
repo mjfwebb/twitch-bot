@@ -1,9 +1,9 @@
 // https://api.twitch.tv/helix/chat/badges/global
 
 import fetch from 'node-fetch';
+import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
-import { getCurrentAccessToken } from '../../../twitch';
 import type { BadgeSet } from '../../../types';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';

@@ -1,6 +1,6 @@
+import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
-import { fetchWithRetry, getCurrentAccessToken } from '../../spotify';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SpotifySong, SpotifyTrack } from './types';
 

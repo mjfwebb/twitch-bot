@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
+import { getCurrentAccessToken } from '../../../auth/twitch';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { setStreamCategory, type StreamStatus } from '../../../streamState';
-import { getCurrentAccessToken } from '../../../twitch';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { fetchGameById } from './fetchGameById';
 
