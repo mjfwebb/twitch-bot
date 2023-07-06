@@ -9,11 +9,11 @@ import { runTwitchEventSubWebsocket } from './handlers/twitch/event-sub/twitchEv
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
 import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
+import { runTwitchIRCWebsocket } from './handlers/twitch/irc/twitchIRCWebsocket';
 import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
 import { intervalCommands, loadIntervalCommands, loadSpotifyIntervalCommands, runIntervalCommands } from './intervalCommands';
 import { runSocketServer } from './runSocketServer';
 import { setDisplayName, setStreamStatus } from './streamState';
-import { runTwitchIRCWebsocket } from './twitch-irc/twitchIRCWebsocket';
 
 async function main() {
   try {

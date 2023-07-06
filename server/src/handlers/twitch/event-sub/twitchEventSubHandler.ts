@@ -4,10 +4,10 @@ import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamSta
 import { REWARDS } from '../../../constants';
 import { playSound } from '../../../playSound';
 import { setStreamStatus } from '../../../streamState';
-import { getConnection } from '../../../twitch-irc/twitchIRCWebsocket';
 import type { ParsedCommand, TwitchWebsocketMessage } from '../../../types';
 import type { EventFromSubscriptionType, EventSubResponse } from '../../../typings/twitchEvents';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
+import { getConnection } from '../irc/twitchIRCWebsocket';
 
 const emptyParsedCommand: ParsedCommand = {
   commandName: '',

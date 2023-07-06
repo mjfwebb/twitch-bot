@@ -1,4 +1,4 @@
-import type { Tags } from '../../types';
+import type { Tags } from '../../../../types';
 
 // Parses the tags component of the IRC message.
 export function parseTags(tags: string): Tags {

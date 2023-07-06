@@ -1,15 +1,15 @@
 import websocket from 'websocket';
-import { getCurrentAccessToken } from '../auth/twitch';
-import Config from '../config';
-import { TWITCH_CHAT_IRC_WS_URL } from '../constants';
-import { botCommandHandler } from '../handlers/botCommandHandler';
-import { discordChatWebhook } from '../handlers/discord/discord';
-import { bitHandler } from '../handlers/twitch/irc/bitHandler';
-import { firstMessageHandler } from '../handlers/twitch/irc/firstMessageHandler';
-import { firstMessageOfStreamHandler } from '../handlers/twitch/irc/firstMessageOfStreamHandler';
-import { messageHandler } from '../handlers/twitch/irc/messageHandler';
-import { returningChatterHandler } from '../handlers/twitch/irc/returningChatterHandler';
+import { getCurrentAccessToken } from '../../../auth/twitch';
+import Config from '../../../config';
+import { TWITCH_CHAT_IRC_WS_URL } from '../../../constants';
+import { botCommandHandler } from '../../botCommandHandler';
+import { discordChatWebhook } from '../../discord/discord';
+import { bitHandler } from './bitHandler';
+import { firstMessageHandler } from './firstMessageHandler';
+import { firstMessageOfStreamHandler } from './firstMessageOfStreamHandler';
+import { messageHandler } from './messageHandler';
 import { parseMessage } from './parsers/parseMessage';
+import { returningChatterHandler } from './returningChatterHandler';
 
 let connectionRef: websocket.connection | undefined;
 

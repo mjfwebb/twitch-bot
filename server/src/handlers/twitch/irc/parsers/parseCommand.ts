@@ -1,4 +1,4 @@
-import type { Command } from '../../types';
+import type { Command } from '../../../../types';
 
 // Parses the command component of the IRC message.
 export function parseCommand(rawCommandComponent: string): Command | null {
