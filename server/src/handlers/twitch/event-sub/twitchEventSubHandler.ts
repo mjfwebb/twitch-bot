@@ -1,13 +1,13 @@
-import { getBotCommands } from '../botCommands';
-import { sendChatMessage } from '../commands/helpers/sendChatMessage';
-import { updateStreamStartedAt } from '../commands/helpers/updateStreamStartedAt';
-import { REWARDS } from '../constants';
-import { playSound } from '../playSound';
-import { setStreamStatus } from '../streamState';
-import { getConnection } from '../twitch-irc/twitchIRCWebsocket';
-import type { ParsedCommand, TwitchWebsocketMessage } from '../types';
-import type { EventFromSubscriptionType, EventSubResponse } from '../typings/twitchEvents';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import { getBotCommands } from '../../../botCommands';
+import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
+import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
+import { REWARDS } from '../../../constants';
+import { playSound } from '../../../playSound';
+import { setStreamStatus } from '../../../streamState';
+import { getConnection } from '../../../twitch-irc/twitchIRCWebsocket';
+import type { ParsedCommand, TwitchWebsocketMessage } from '../../../types';
+import type { EventFromSubscriptionType, EventSubResponse } from '../../../typings/twitchEvents';
+import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
 const emptyParsedCommand: ParsedCommand = {
   commandName: '',

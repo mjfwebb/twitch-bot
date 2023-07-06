@@ -5,6 +5,7 @@ import { getTwitchAccessToken } from './auth/twitch';
 import { loadBotCommands } from './botCommands';
 import { loadChatExclusionList } from './chat/chatExclusionList';
 import Config, { assertConfigFileExists } from './config';
+import { runTwitchEventSubWebsocket } from './handlers/twitch/event-sub/twitchEventSubWebsocket';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
 import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
@@ -12,7 +13,6 @@ import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchView
 import { intervalCommands, loadIntervalCommands, loadSpotifyIntervalCommands, runIntervalCommands } from './intervalCommands';
 import { runSocketServer } from './runSocketServer';
 import { setDisplayName, setStreamStatus } from './streamState';
-import { runTwitchEventSubWebsocket } from './twitch-event-sub/twitchEventSubWebsocket';
 import { runTwitchIRCWebsocket } from './twitch-irc/twitchIRCWebsocket';
 
 async function main() {

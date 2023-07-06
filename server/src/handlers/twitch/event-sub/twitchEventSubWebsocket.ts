@@ -1,7 +1,7 @@
 import websocket from 'websocket';
-import { TWITCH_WEBSOCKET_EVENTSUB_URL } from '../constants';
-import type { TwitchWebsocketMessage } from '../types';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import { TWITCH_WEBSOCKET_EVENTSUB_URL } from '../../../constants';
+import type { TwitchWebsocketMessage } from '../../../types';
+import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { subscribeToFollows } from './subscribers/subscribeToFollows';
 import { subscribeToRaids } from './subscribers/subscribeToRaids';
 import { subscribeToRedeems } from './subscribers/subscribeToRedeems';

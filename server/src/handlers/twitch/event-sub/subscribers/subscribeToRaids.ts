@@ -1,4 +1,4 @@
-import Config from '../../config';
+import Config from '../../../../config';
 import { eventSubscribe } from './eventSubscribe';
 
 export const subscribeToRaids = async (sessionId: string) => {
