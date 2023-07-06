@@ -1,5 +1,5 @@
-import { getIO } from './runSocketServer';
-import type { ChatMessage, ParsedMessage } from './types';
+import { getIO } from '../runSocketServer';
+import type { ChatMessage, ParsedMessage } from '../types';
 
 let fakeChatMessageCount = 0;
 

@@ -1,6 +1,6 @@
 import pc from 'picocolors';
 import { reloadBotCommands } from './botCommands';
-import { loadChatExclusionList } from './chatExclusionList';
+import { loadChatExclusionList } from './chat/chatExclusionList';
 import Config, { assertConfigFileExists } from './config';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';

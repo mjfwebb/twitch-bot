@@ -1,11 +1,11 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { getChatMessages } from './chatMessages';
-import { getFakeChatMessages } from './getFakeChatMessages';
+import { getChatMessages } from './chat/chatMessages';
+import { getFakeChatMessages } from './chat/getFakeChatMessages';
+import { loadBadges } from './chat/loadBadges';
+import { loadCheers } from './chat/loadCheers';
+import { loadEmotes } from './chat/loadEmotes';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
-import { loadBadges } from './loadBadges';
-import { loadCheers } from './loadCheers';
-import { loadEmotes } from './loadEmotes';
 import { Tasks } from './storage-models/task-model';
 
 const httpServer = createServer();

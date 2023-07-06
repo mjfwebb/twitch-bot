@@ -1,11 +1,11 @@
-import Config from './config';
-import { fetchBetterTTVGlobalEmotes } from './handlers/bttv/fetchBetterTTVGlobalEmotes';
-import { fetchBetterTTVUser } from './handlers/bttv/fetchBetterTTVUser';
-import { fetchFrankerFaceZGlobalEmotes } from './handlers/frankerfacez/fetchFrankerFaceZGlobalEmotes';
-import { fetchFrankerFaceZRoomEmotes } from './handlers/frankerfacez/fetchFrankerFaceZRoomEmotes';
-import { fetchSevenTVEmoteSet } from './handlers/sevenTV/fetchSevenTVEmoteSets';
-import { fetchSevenTVUser } from './handlers/sevenTV/fetchSevenTVUser';
-import { getIO } from './runSocketServer';
+import Config from '../config';
+import { fetchBetterTTVGlobalEmotes } from '../handlers/bttv/fetchBetterTTVGlobalEmotes';
+import { fetchBetterTTVUser } from '../handlers/bttv/fetchBetterTTVUser';
+import { fetchFrankerFaceZGlobalEmotes } from '../handlers/frankerfacez/fetchFrankerFaceZGlobalEmotes';
+import { fetchFrankerFaceZRoomEmotes } from '../handlers/frankerfacez/fetchFrankerFaceZRoomEmotes';
+import { fetchSevenTVEmoteSet } from '../handlers/sevenTV/fetchSevenTVEmoteSets';
+import { fetchSevenTVUser } from '../handlers/sevenTV/fetchSevenTVUser';
+import { getIO } from '../runSocketServer';
 
 export type ChatEmote = {
   origin: 'sevenTV' | 'betterTTV' | 'frankerFaceZ' | 'twitch';

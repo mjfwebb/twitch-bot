@@ -1,5 +1,5 @@
-import { getChatExlusionList } from '../../../chatExclusionList';
-import { addChatMessage } from '../../../chatMessages';
+import { getChatExlusionList } from '../../../chat/chatExclusionList';
+import { addChatMessage } from '../../../chat/chatMessages';
 import { getChatUser } from '../../../commands/helpers/findOrCreateUser';
 import type { ParsedMessage } from '../../../types';
 

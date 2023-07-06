@@ -1,6 +1,6 @@
-import { fetchChannelBadges } from './handlers/twitch/helix/fetchChannelBadges';
-import { fetchGlobalBadges } from './handlers/twitch/helix/fetchGlobalBadges';
-import { getIO } from './runSocketServer';
+import { fetchChannelBadges } from '../handlers/twitch/helix/fetchChannelBadges';
+import { fetchGlobalBadges } from '../handlers/twitch/helix/fetchGlobalBadges';
+import { getIO } from '../runSocketServer';
 
 type ChatBadge = {
   name: string;

@@ -1,6 +1,6 @@
-import { fetchChannelCheers } from './handlers/twitch/helix/fetchChannelCheers';
-import { fetchGlobalCheers } from './handlers/twitch/helix/fetchGlobalCheers';
-import { getIO } from './runSocketServer';
+import { fetchChannelCheers } from '../handlers/twitch/helix/fetchChannelCheers';
+import { fetchGlobalCheers } from '../handlers/twitch/helix/fetchGlobalCheers';
+import { getIO } from '../runSocketServer';
 
 type ChatCheer = {
   name: string;

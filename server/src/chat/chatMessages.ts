@@ -1,5 +1,5 @@
-import { getIO } from './runSocketServer';
-import type { ChatMessage } from './types';
+import { getIO } from '../runSocketServer';
+import type { ChatMessage } from '../types';
 
 const CHAT_MESSAGES_TO_RETAIN = 20;
 const chatMessages: ChatMessage[] = [];
