@@ -52,7 +52,7 @@ import { mention } from './utils/mention';
 
 const botCommands: BotCommand[] = [];
 
-export function reloadBotCommands() {
+export function loadBotCommands() {
   const customCommands = loadCustomCommands();
   const spotifyCommands = loadSpotifyCommands();
   const githubCommands = loadGitHubCommands();

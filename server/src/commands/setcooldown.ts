@@ -1,4 +1,4 @@
-import { reloadBotCommands } from '../botCommands';
+import { loadBotCommands } from '../botCommands';
 import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
@@ -26,7 +26,7 @@ export const setcooldown: BotCommand = {
             command.cooldown = newCommandCooldown;
             command.updatedAt = new Date().toISOString();
             Commands.saveOne(command);
-            reloadBotCommands();
+            loadBotCommands();
             sendChatMessage(connection, `The cooldown for the command ${commandName} has been updated!`);
           } else {
             sendChatMessage(connection, `Unable to find a command with the name ${commandName}.`);

@@ -2,7 +2,7 @@ import pc from 'picocolors';
 import { getSpotifyAccessToken } from './auth/spotify';
 import { assertTokenFileExists } from './auth/tokenManager';
 import { getTwitchAccessToken } from './auth/twitch';
-import { reloadBotCommands } from './botCommands';
+import { loadBotCommands } from './botCommands';
 import { loadChatExclusionList } from './chat/chatExclusionList';
 import Config, { assertConfigFileExists } from './config';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
@@ -20,7 +20,7 @@ async function main() {
     assertConfigFileExists();
     assertTokenFileExists();
 
-    reloadBotCommands();
+    loadBotCommands();
 
     if (Config.features.commands_handler) {
       console.log(`${pc.blue('Startup:')} ${pc.green('[Commands handler enabled]')} Loading bot commands`);

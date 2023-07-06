@@ -1,4 +1,4 @@
-import { reloadBotCommands } from '../botCommands';
+import { loadBotCommands } from '../botCommands';
 import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
@@ -21,7 +21,7 @@ export const removecommand: BotCommand = {
         const command = Commands.findOneByCommandId(commandId);
         if (command) {
           Commands.deleteOne(command);
-          reloadBotCommands();
+          loadBotCommands();
           sendChatMessage(connection, `The command ${commandId} has been removed!`);
         }
       }
