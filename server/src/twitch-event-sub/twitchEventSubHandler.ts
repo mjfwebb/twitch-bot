@@ -40,7 +40,7 @@ export async function twitchEventSubHandler(data: TwitchWebsocketMessage) {
       case 'stream.online': {
         const event = data.payload.event as EventFromSubscriptionType<'stream.online'>;
         if (event.started_at) {
-          await updateStreamStartedAt(event.started_at);
+          updateStreamStartedAt(event.started_at);
         }
         setStreamStatus('online');
         break;
