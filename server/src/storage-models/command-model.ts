@@ -10,9 +10,13 @@ export interface Command extends Timestamp {
   description: string;
   message: string;
   timesUsed: number;
+  privileged?: boolean;
+  hidden?: boolean;
+  mustBeUser?: string[];
 }
 
-const commandProperties = ['command', 'commandId', 'cooldown', 'description', 'message', 'timesUsed'] as const;
+const commandProperties = ['command', 'commandId', 'cooldown', 'description', 'message', 'timesUsed'];
+const optionalCommandProperties = ['hidden', 'privileged', 'mustBeUser'];
 
 const fileName = 'commands.json';
 
@@ -23,7 +27,7 @@ const commandValidator = (data: unknown): data is Command[] => {
         return false;
       }
 
-      for (const property of [...commandProperties, ...timestampProperties]) {
+      for (const property of [...commandProperties, ...optionalCommandProperties, ...timestampProperties]) {
         if (hasOwnProperty(command, property)) {
           switch (property) {
             case 'command':
@@ -73,11 +77,31 @@ const commandValidator = (data: unknown): data is Command[] => {
                 return false;
               }
               break;
+            case 'hidden':
+            case 'privileged':
+              if (typeof command[property] !== 'boolean') {
+                logger.error(`Invalid command format, property ${property} must be a boolean`);
+                return false;
+              }
+              break;
+            case 'mustBeUser':
+              if (!Array.isArray(command.mustBeUser)) {
+                logger.error(`Invalid command format, property ${property} must be an array`);
+                return false;
+              }
+              if (!command.mustBeUser.every((command) => typeof command === 'string')) {
+                logger.error(`Invalid command format, property ${property} must be an array of strings`);
+                return false;
+              }
+              break;
             default:
               logger.error(`Invalid command format, unknown property ${JSON.stringify(property)}`);
               return false;
           }
         } else {
+          if (optionalCommandProperties.includes(property)) {
+            continue;
+          }
           logger.error(`Invalid command format, missing property ${property}`);
           return false;
         }

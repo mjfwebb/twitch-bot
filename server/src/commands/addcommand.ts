@@ -10,7 +10,7 @@ export const addcommand: BotCommand = {
   id: 'addcommand',
   privileged: true,
   hidden: true,
-  description: '',
+  description: 'Adds a new command to the bot',
   callback: (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const newCommand = parsedCommand.parsedMessage.command?.botCommandParams;

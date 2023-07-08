@@ -3,21 +3,15 @@ import { addcommand } from './commands/addcommand';
 import { addissue } from './commands/addissue';
 import { addpushup } from './commands/addpushup';
 import { addsquat } from './commands/addsquat';
-import { athanotime } from './commands/athanotime';
-import { bot } from './commands/bot';
 import { commands } from './commands/commands';
 import { delvoid } from './commands/delvoid';
-import { fail } from './commands/fail';
 import { followage } from './commands/followage';
 import { forodor } from './commands/forodor';
 import { help } from './commands/help';
 import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { issue } from './commands/issue';
-import { l } from './commands/l';
-import { lurk } from './commands/lurk';
 import { lutf1sk } from './commands/lutf1sk';
-import { party } from './commands/party';
 import { play } from './commands/play';
 import { queuesong } from './commands/queuesong';
 import { quote } from './commands/quote';
@@ -35,18 +29,15 @@ import { skipsong } from './commands/skipsong';
 import { skiptts } from './commands/skiptts';
 import { song } from './commands/song';
 import { songqueue } from './commands/songqueue';
-import { success } from './commands/success';
 import { task } from './commands/task';
-import { thechaosbean } from './commands/thechaosbean';
 import { tts } from './commands/tts';
 import { viewers } from './commands/viewers';
-import { w } from './commands/w';
-import { wary } from './commands/wary';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
 import Config from './config';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
 import { playSound } from './playSound';
+import { getIO } from './runSocketServer';
 import { Commands } from './storage-models/command-model';
 import type { BotCommand } from './types';
 import { mention } from './utils/mention';
@@ -95,19 +86,13 @@ const complexBotCommands: BotCommand[] = [
   addcommand,
   addpushup,
   addsquat,
-  athanotime,
-  bot,
   commands,
   delvoid,
-  fail,
   followage,
   forodor,
   help,
   issue,
-  l,
-  lurk,
   lutf1sk,
-  party,
   play,
   quote,
   removecommand,
@@ -120,13 +105,9 @@ const complexBotCommands: BotCommand[] = [
   settask,
   settitle,
   skiptts,
-  success,
   task,
-  thechaosbean,
   tts,
   viewers,
-  w,
-  wary,
   welcome,
   whoami,
 ];
@@ -155,12 +136,22 @@ function loadMessageCommands(): BotCommand[] {
         }
       }
 
-      // Remove all instances of %sound:[something]% from the message
-      const message = c.message.replace(soundMatchRegex, '');
+      const messagesToEmit: string[] = [];
+      const messageMatchRegex = /%emit:([a-zA-Z0-9-_.]+)%/g;
+      if (c.message.includes('%emit')) {
+        let match;
+
+        while ((match = messageMatchRegex.exec(c.message)) !== null) {
+          messagesToEmit.push(match[1]);
+        }
+      }
+
+      // Remove all instances of %sound:[something]% and %emit:[something]% from the message
+      const message = c.message.replace(soundMatchRegex, '').replace(messageMatchRegex, '');
 
       // If there was a message other than just sounds, send it
       if (message) {
-        let target = 'unknown';
+        let target = '';
         if (message.includes('%target%') && hasBotCommandParams(parsedCommand.parsedMessage)) {
           const chatters = await fetchChatters();
 
@@ -180,8 +171,16 @@ function loadMessageCommands(): BotCommand[] {
           message
             .replace('%user%', user)
             .replace('%target%', target)
+            .replace('%now%', new Date().toTimeString())
             .replace('%count%', String(command.timesUsed + 1)),
         );
+      }
+
+      // Emit all messages in sequence to the local socket server
+      if (messagesToEmit.length > 0) {
+        for (const message of messagesToEmit) {
+          getIO().emit(message);
+        }
       }
 
       // Play all sounds in sequence
