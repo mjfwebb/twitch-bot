@@ -110,7 +110,6 @@ async function workQueue() {
  * @returns A Promise that resolves once the sound has finished playing.
  * @remarks Supports both predefined sound effects and custom sound files.
  */
-export async function playSound<T extends string>(sound: T): Promise<void>;
 export async function playSound<T extends SoundEffect | string>(sound: T, fileType?: SoundFileType): Promise<void> {
   const fileExtension: string = fileType || 'wav';
 

@@ -64,6 +64,7 @@ You can use `%count%` in the message text to display how many times that command
 
 You can use `%user%` and `%target` in the message text as placeholders for the command user and the user name of the command target. For example: `!addcommand wave %user% waves at %target%`.
 
+You can use `%sound:<name>%` in the message text to play a sound. For example: `!addcommand %sound:beep%` would play the sound `beep.wav` from the `sounds` folder. If you want to play an mp3 file, you can use `%sound:bang.mp3%` which will play the file `bang.mp3` from the `sounds` folder.
 
 To update descriptions use `!setdescription <commandId> this is my description`. Where `<commandId>` is replaced with the command ID in question. For example: `!setdescription test This is a test command!`
 

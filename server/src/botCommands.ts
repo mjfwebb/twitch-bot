@@ -46,6 +46,7 @@ import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
 import Config from './config';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
+import { playSound } from './playSound';
 import { Commands } from './storage-models/command-model';
 import type { BotCommand } from './types';
 import { mention } from './utils/mention';
@@ -144,28 +145,61 @@ function loadMessageCommands(): BotCommand[] {
         return;
       }
 
-      let target = 'unknown';
-      if (hasBotCommandParams(parsedCommand.parsedMessage)) {
-        const chatters = await fetchChatters();
+      const soundsToPlay: string[] = [];
+      const soundMatchRegex = /%sound:([a-zA-Z0-9-_.]+)%/g;
+      if (c.message.includes('%sound')) {
+        let match;
 
-        const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
-        if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
-          target = mention(botCommandParam);
+        while ((match = soundMatchRegex.exec(c.message)) !== null) {
+          soundsToPlay.push(match[1]);
         }
       }
 
-      let user = 'unknown';
-      if (parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
-        user = parsedCommand.parsedMessage.tags['display-name'];
+      // Remove all instances of %sound:[something]% from the message
+      const message = c.message.replace(soundMatchRegex, '');
+
+      // If there was a message other than just sounds, send it
+      if (message) {
+        let target = 'unknown';
+        if (message.includes('%target%') && hasBotCommandParams(parsedCommand.parsedMessage)) {
+          const chatters = await fetchChatters();
+
+          const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
+          if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
+            target = mention(botCommandParam);
+          }
+        }
+
+        let user = 'unknown';
+        if (message.includes('%user%') && parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
+          user = parsedCommand.parsedMessage.tags['display-name'];
+        }
+
+        sendChatMessage(
+          connection,
+          message
+            .replace('%user%', user)
+            .replace('%target%', target)
+            .replace('%count%', String(command.timesUsed + 1)),
+        );
       }
 
-      sendChatMessage(
-        connection,
-        c.message
-          .replace('%user%', user)
-          .replace('%target%', target)
-          .replace('%count%', String(command.timesUsed + 1)),
-      );
+      // Play all sounds in sequence
+      if (soundsToPlay.length > 0) {
+        for (const sound of soundsToPlay) {
+          if (sound.includes('.')) {
+            const [soundName, soundExtension] = sound.split('.');
+            if (soundExtension !== 'mp3') {
+              // TODO: Support other sound formats
+              continue;
+            }
+            await playSound(soundName, 'mp3');
+          } else {
+            // Default to wav
+            await playSound(sound);
+          }
+        }
+      }
     },
   }));
 
