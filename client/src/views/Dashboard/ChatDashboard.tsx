@@ -18,6 +18,7 @@ export const ChatDashboard = () => {
   const foregroundColor = useChatSettingsStore((s) => s.foregroundColor);
   const showAvatars = useChatSettingsStore((s) => s.showAvatars);
   const showBorders = useChatSettingsStore((s) => s.showBorders);
+  const showColonAfterDisplayName = useChatSettingsStore((s) => s.showColonAfterDisplayName);
   const height = useChatSettingsStore((s) => s.height);
   const width = useChatSettingsStore((s) => s.width);
   const animatedExit = useChatSettingsStore((s) => s.animatedExit);
@@ -48,6 +49,9 @@ export const ChatDashboard = () => {
   }
   if (showBorders === false) {
     chatURL.searchParams.append(chatSearchParamsMap.showBorders, 'false');
+  }
+  if (showColonAfterDisplayName === true) {
+    chatURL.searchParams.append(chatSearchParamsMap.showColonAfterDisplayName, 'true');
   }
   if (height !== DEFAULT_CHAT_SETTINGS_VALUES.height) {
     chatURL.searchParams.append(chatSearchParamsMap.height, height);
@@ -201,6 +205,15 @@ export const ChatDashboard = () => {
             onChange={(event) => useChatSettingsStore.getState().setShowAvatars(event.target.checked)}
           />
           <label htmlFor="chat_has_avatars">Show user avatars</label>
+        </div>
+        <div className="chat-modifiers-row">
+          <input
+            type="checkbox"
+            id="chat_has_colon_after_display_name"
+            checked={showColonAfterDisplayName}
+            onChange={(event) => useChatSettingsStore.getState().setShowColonAfterDisplayName(event.target.checked)}
+          />
+          <label htmlFor="chat_has_colon_after_display_name">Show colon after username</label>
         </div>
         <div className="chat-modifiers-row">
           <input

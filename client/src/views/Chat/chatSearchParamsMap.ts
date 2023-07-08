@@ -10,4 +10,5 @@ export const chatSearchParamsMap = {
   foregroundColor: 'foreground-color',
   showAvatars: 'show-avatars',
   showBorders: 'show-borders',
+  showColonAfterDisplayName: 'show-colon-after-display-name',
 };

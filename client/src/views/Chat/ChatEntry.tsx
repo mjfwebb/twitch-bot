@@ -14,15 +14,24 @@ interface ChatEntryProps {
   showBorders: boolean;
   dropShadowEnabled: boolean;
   dropShadowSettings: string;
+  showColonAfterDisplayName: boolean;
 }
 
-export const ChatEntry = ({ chatMessage, backgroundColor, showAvatars, showBorders, dropShadowEnabled, dropShadowSettings }: ChatEntryProps) => {
+export const ChatEntry = ({
+  chatMessage,
+  backgroundColor,
+  showAvatars,
+  showBorders,
+  dropShadowEnabled,
+  dropShadowSettings,
+  showColonAfterDisplayName,
+}: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
   const actionMessage = chatMessage.parsedMessage.command.botCommand === 'ACTION';
   const message =
     chatMessage.parsedMessage.command.botCommand === 'ACTION'
-      ? chatMessage.parsedMessage.command.botCommandParams
+      ? chatMessage.parsedMessage.command.botCommandParams || chatMessage.parsedMessage.parameters
       : chatMessage.parsedMessage.parameters;
 
   const { socket } = useSocketContext();
@@ -57,6 +66,7 @@ export const ChatEntry = ({ chatMessage, backgroundColor, showAvatars, showBorde
           <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', backgroundColor) }}>
             {user.displayName}
           </span>
+          {showColonAfterDisplayName && !actionMessage && ': '}
           <span className={classNames('chat-message-text', actionMessage && 'chat-message-text-action')}>
             <ChatImageRenderer
               emotes={chatMessage.parsedMessage.tags.emotes}

@@ -15,6 +15,7 @@ interface ChatPersistedSettings {
   foregroundColor: string;
   showAvatars: boolean;
   showBorders: boolean;
+  showColonAfterDisplayName: boolean;
   setAnimatedEntry: (animatedEntry: boolean) => void;
   setBackgroundColor: (backgroundColor: string) => void;
   setHeight: (height: string) => void;
@@ -26,6 +27,7 @@ interface ChatPersistedSettings {
   setForegroundColor: (foregroundColor: string) => void;
   setShowAvatars: (showAvatars: boolean) => void;
   setShowBorders: (showBorders: boolean) => void;
+  setShowColonAfterDisplayName: (showColonAfterDisplayName: boolean) => void;
   resetState: () => void;
 }
 
@@ -43,6 +45,7 @@ export const useChatSettingsStore = create(
       foregroundColor: DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor,
       showAvatars: true,
       showBorders: true,
+      showColonAfterDisplayName: false,
       setAnimatedEntry: (animatedEntry: boolean) => {
         set(() => ({ animatedEntry }));
       },
@@ -75,6 +78,9 @@ export const useChatSettingsStore = create(
       },
       setShowBorders: (showBorders: boolean) => {
         set(() => ({ showBorders }));
+      },
+      setShowColonAfterDisplayName: (showColonAfterDisplayName: boolean) => {
+        set(() => ({ showColonAfterDisplayName }));
       },
       resetState: () => undefined,
     }),

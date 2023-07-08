@@ -23,6 +23,7 @@ export const NonDisappearingChat = () => {
         showBorders={chatSearchParams.showBorders}
         dropShadowEnabled={chatSearchParams.dropShadowEnabled}
         dropShadowSettings={chatSearchParams.dropShadowSettings}
+        showColonAfterDisplayName={chatSearchParams.showColonAfterDisplayName}
       />
     );
   });

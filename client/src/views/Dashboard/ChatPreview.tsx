@@ -8,6 +8,7 @@ export const ChatPreview = () => {
   const showBorders = useChatSettingsStore((s) => s.showBorders);
   const dropShadowEnabled = useChatSettingsStore((s) => s.dropShadowEnabled);
   const dropShadowSettings = useChatSettingsStore((s) => s.dropShadowSettings);
+  const showColonAfterDisplayName = useChatSettingsStore((s) => s.showColonAfterDisplayName);
 
   const chatMessageOne: ChatMessage = {
     id: '83d40613-4afc-46b5-9133-0367c89fa310',
@@ -32,7 +33,7 @@ export const ChatPreview = () => {
         },
         color: '#5052B2',
         'display-name': 'Athano',
-        emotes: null,
+        emotes: undefined,
         'first-msg': '0',
         id: '83d40613-4afc-46b5-9133-0367c89fa310',
         mod: '0',
@@ -65,6 +66,7 @@ export const ChatPreview = () => {
         showBorders={showBorders}
         dropShadowEnabled={dropShadowEnabled}
         dropShadowSettings={dropShadowSettings}
+        showColonAfterDisplayName={showColonAfterDisplayName}
       />
       <ChatEntry
         chatMessage={{
@@ -103,6 +105,7 @@ export const ChatPreview = () => {
         showBorders={showBorders}
         dropShadowEnabled={dropShadowEnabled}
         dropShadowSettings={dropShadowSettings}
+        showColonAfterDisplayName={showColonAfterDisplayName}
       />
     </>
   );

@@ -18,6 +18,7 @@ export const useChatSearchParams = () => {
   const foregroundColor = searchParams.get(chatSearchParamsMap.foregroundColor) || DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor;
   const showAvatars = searchParams.get(chatSearchParamsMap.showAvatars) === 'false' ? false : true;
   const showBorders = searchParams.get(chatSearchParamsMap.showBorders) === 'false' ? false : true;
+  const showColonAfterDisplayName = searchParams.get(chatSearchParamsMap.showColonAfterDisplayName) === 'false' ? false : true;
 
   return {
     animatedEntry,
@@ -31,5 +32,6 @@ export const useChatSearchParams = () => {
     foregroundColor,
     showAvatars,
     showBorders,
+    showColonAfterDisplayName,
   };
 };

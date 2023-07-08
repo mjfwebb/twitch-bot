@@ -82,7 +82,7 @@ type CommonTags = {
   badges: Badges;
   color: string; // The color of the user’s name in the chat room. This is a hexadecimal RGB color code in the form, #<RGB>. This tag may be empty if it is never set.
   'display-name': string; // 	The user’s display name, escaped as described in the IRCv3 spec. This tag may be empty if it is never set.
-  emotes: Emotes | null;
+  emotes: Emotes;
   id: string;
   mod: StringBoolean;
   'room-id': string;
