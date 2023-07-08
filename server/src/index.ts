@@ -5,6 +5,10 @@ import { getTwitchAccessToken } from './auth/twitch';
 import { loadBotCommands } from './botCommands';
 import { loadChatExclusionList } from './chat/chatExclusionList';
 import Config, { assertConfigFileExists } from './config';
+import { runBetterTTVWebsocket } from './handlers/bttv/betterTTVWebsocket';
+import { fetchSevenTVUser } from './handlers/sevenTV/fetchSevenTVUser';
+import { setSevenTVUser } from './handlers/sevenTV/sevenTVUser';
+import { runSevenTVWebsocket } from './handlers/sevenTV/sevenTVWebsocket';
 import { runTwitchEventSubWebsocket } from './handlers/twitch/event-sub/twitchEventSubWebsocket';
 import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
@@ -81,6 +85,19 @@ async function main() {
 
     console.log(`${pc.blue('Startup:')} Running localhost socket server`);
     runSocketServer();
+
+    if (Config.betterTTV.enabled) {
+      console.log(`${pc.blue('Startup:')} ${pc.green('[BetterTTV enabled]')} Running BetterTTV WebSocket client`);
+      runBetterTTVWebsocket();
+    }
+
+    if (Config.sevenTV.enabled) {
+      const sevenTVUser = await fetchSevenTVUser();
+      if (sevenTVUser) {
+        setSevenTVUser(sevenTVUser);
+        runSevenTVWebsocket(sevenTVUser);
+      }
+    }
   } catch (error) {
     console.error(error);
   }

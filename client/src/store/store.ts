@@ -51,7 +51,7 @@ const useStore = create<Store>((set, get) => ({
   addEmotes: (emotes: Record<string, ChatEmote>) => {
     set((state) => ({
       ...state,
-      chatEmotes: { ...state.chatEmotes, ...emotes },
+      chatEmotes: emotes,
     }));
   },
   addBadges: (badges: Record<string, ChatBadge>) => {

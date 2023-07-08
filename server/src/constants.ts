@@ -5,6 +5,8 @@ export const SPOTIFY_API_URL = 'https://api.spotify.com/v1/';
 export const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/';
 export const TWITCH_WEBSOCKET_EVENTSUB_URL = 'wss://eventsub.wss.twitch.tv/ws';
 export const TWITCH_INSIGHTS_URL = 'https://api.twitchinsights.net/v1/';
+export const SEVEN_TV_WEBSOCKET_URL = 'wss://events.7tv.io/v3';
+export const BETTER_TTV_WEBSOCKET_URL = 'wss://sockets.betterttv.net/ws';
 
 export const SECOND_MS = 1000;
 export const MINUTE_MS = 60000;
