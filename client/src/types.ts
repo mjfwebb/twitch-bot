@@ -94,8 +94,6 @@ export type ChatMessage = {
     avatarUrl: string;
   } | null;
   parsedMessage: ParsedMessage;
-  disappeared: boolean;
-  disappearAt: number;
 };
 
 export type ChatEmote = {

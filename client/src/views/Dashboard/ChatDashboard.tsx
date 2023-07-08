@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { chatSearchParamsMap } from '../Chat/chatSearchParamsMap';
 import { useChatSettingsStore } from '../../store/chatSettingsStore';
 import useSocketContext from '../../hooks/useSocketContext';
-import { DEFAULT_CHAT_SETTINGS_VALUES } from '../../constants';
+import { DEFAULT_CHAT_SETTINGS_VALUES, PRESET_CHAT_SETTINGS_VALUES } from '../../constants';
 import { TextShadowPicker } from '../../components/TextShadowPicker';
 import { CopyButton } from '../../components/CopyButton/CopyButton';
 import './ChatDashboard.less';
+import { ChatPreview } from './ChatPreview';
 
 export const ChatDashboard = () => {
   const socket = useSocketContext();
@@ -75,6 +76,7 @@ export const ChatDashboard = () => {
   return (
     <div className="chat-dashboard">
       <h2>Chat</h2>
+      <h3>Link to copy:</h3>
       <p>
         <span className="chat-dashboard-note">Note</span>When you change options, copy the new version of the link and update your browser source.
       </p>
@@ -84,6 +86,25 @@ export const ChatDashboard = () => {
         </a>
       </div>
       <CopyButton textToCopy={chatURLString} />
+      <h3>Preview:</h3>
+      <p>
+        <span className="chat-dashboard-note">Note</span> This is a preview of what the chat will look like. It may not be 100% accurate, but it
+        should be close. To get a better idea of what it will look like, you can copy the link above and open it in a new tab and send some test
+        messages.
+      </p>
+      <div className="chat-dashboard-preview-wrapper">
+        <div
+          className="chat-dashboard-preview"
+          style={{
+            background: backgroundColor,
+            color: foregroundColor,
+          }}
+        >
+          <ChatPreview />
+        </div>
+      </div>
+      <h3>Settings:</h3>
+      <p>These settings will be saved on this same computer for the next time you visit this page.</p>
       <div className="chat-modifiers">
         <div className="chat-modifiers-row">
           <input
@@ -93,7 +114,9 @@ export const ChatDashboard = () => {
             onChange={(event) => useChatSettingsStore.getState().setBackgroundColor(event.target.value)}
           />
           <label htmlFor="chat_background">Background color (default is transparent)</label>
-          <button onClick={() => useChatSettingsStore.getState().setBackgroundColor(DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor)}>reset</button>
+          <button onClick={() => useChatSettingsStore.getState().setBackgroundColor(DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor)}>
+            reset to default
+          </button>
         </div>
         <div className="chat-modifiers-row">
           <input
@@ -103,7 +126,9 @@ export const ChatDashboard = () => {
             onChange={(event) => useChatSettingsStore.getState().setForegroundColor(event.target.value)}
           />
           <label htmlFor="chat_foreground">Foreground color</label>
-          <button onClick={() => useChatSettingsStore.getState().setForegroundColor(DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor)}>reset</button>
+          <button onClick={() => useChatSettingsStore.getState().setForegroundColor(DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor)}>
+            reset to default
+          </button>
         </div>
         <div className="chat-modifiers-row">
           <input
@@ -116,22 +141,27 @@ export const ChatDashboard = () => {
         </div>
         {dropShadowEnabled && (
           <div className="chat-modifiers-row">
-            {/* <input
-              type="color"
-              id="chat_drop_shadow"
-              value={dropShadowSettings}
-              onChange={(event) => useChatSettingsStore.getState().setDropShadowSettings(event.target.value)}
-            /> */}
             <TextShadowPicker
               value={dropShadowSettings}
-              // id="chat_drop_shadow"
               onChange={(value) => {
                 useChatSettingsStore.getState().setDropShadowSettings(value);
               }}
             />
             <label htmlFor="chat_drop_shadow">Drop shadow settings</label>
-            <button onClick={() => useChatSettingsStore.getState().setDropShadowSettings(DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings)}>
-              reset
+            <button onClick={() => useChatSettingsStore.getState().setDropShadowSettings(PRESET_CHAT_SETTINGS_VALUES.dropShadowSettingsPresetSmall)}>
+              preset small
+            </button>
+            <button onClick={() => useChatSettingsStore.getState().setDropShadowSettings(PRESET_CHAT_SETTINGS_VALUES.dropShadowSettingsPresetMedium)}>
+              preset medium
+            </button>
+            <button onClick={() => useChatSettingsStore.getState().setDropShadowSettings(PRESET_CHAT_SETTINGS_VALUES.dropShadowSettingsPresetLarge)}>
+              preset large
+            </button>
+            <button
+              className="chat-dashboard-button_danger"
+              onClick={() => useChatSettingsStore.getState().setDropShadowSettings(DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings)}
+            >
+              reset to default (preset small)
             </button>
           </div>
         )}

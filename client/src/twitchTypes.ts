@@ -3,8 +3,8 @@ export type Command = {
   command: string;
   channel: string;
   isCapRequestEnabled?: boolean;
-  botCommand: string;
-  botCommandParams: string;
+  botCommand?: string;
+  botCommandParams?: string;
 };
 
 export type Source = {
@@ -44,20 +44,21 @@ type StringNumber = string;
  */
 type BadgeInfo = {
   subscriber: StringNumber;
-  founder: StringNumber;
+  founder?: StringNumber;
 };
 
 /**
  *  There are many possible badge values, but here are few
  */
 export type Badges = {
-  admin: StringBoolean;
-  bits: StringBoolean;
-  broadcaster: StringBoolean;
-  moderator: StringBoolean;
-  subscriber: StringBoolean;
-  staff: StringBoolean;
-  turbo: StringBoolean;
+  admin?: StringBoolean;
+  bits?: StringBoolean;
+  broadcaster?: StringBoolean;
+  moderator?: StringBoolean;
+  subscriber?: string;
+  staff?: StringBoolean;
+  turbo?: StringBoolean;
+  'game-developer'?: StringBoolean;
 };
 
 /**
@@ -81,10 +82,10 @@ type CommonTags = {
   badges: Badges;
   color: string; // The color of the user’s name in the chat room. This is a hexadecimal RGB color code in the form, #<RGB>. This tag may be empty if it is never set.
   'display-name': string; // 	The user’s display name, escaped as described in the IRCv3 spec. This tag may be empty if it is never set.
-  emotes: Emotes;
+  emotes: Emotes | null;
   id: string;
   mod: StringBoolean;
-  'room-id': number;
+  'room-id': string;
   subscriber: StringBoolean;
   'tmi-sent-ts': string;
   turbo: StringBoolean;

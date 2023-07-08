@@ -1,5 +1,9 @@
 .dashboard {
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
 
   &-title {
     font-weight: bold;
@@ -109,11 +113,13 @@
   &-tabs-root {
     display: flex;
     flex-direction: column;
+    width: 1000px;
   }
 
   &-tabs-list {
     flex-shrink: 0;
     display: flex;
+    justify-content: center;
   }
 
   &-tabs-trigger {

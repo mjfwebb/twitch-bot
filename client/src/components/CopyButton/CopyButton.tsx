@@ -14,7 +14,7 @@ export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
       clearTimeout(showCopiedTimeout.current);
       showCopiedTimeout.current = setTimeout(() => {
         setShowCopied(false);
-      }, 5000);
+      }, 2000);
     }
     () => {
       clearTimeout(showCopiedTimeout.current);
@@ -25,8 +25,8 @@ export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
     <div className="copy-button-wrapper">
       <button
         onClick={() => {
-          setShowCopied(true);
           copyToClipboard(textToCopy);
+          setShowCopied(true);
         }}
       >
         copy

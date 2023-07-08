@@ -5,7 +5,7 @@
   }
 
   &-note {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #ff4c4c;
     background: linear-gradient(90deg, #ff4c4c 0%, #ff00f2 100%);
@@ -13,5 +13,39 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     background-size: 200% auto;
+  }
+
+  &-preview {
+    &-wrapper {
+      background: linear-gradient(90deg, #866dff 0%, #f15757 80%);
+      animation: PreviewWrapperAnimation 15s ease infinite;
+      background-size: 200% 200%;
+    }
+
+    button {
+      background-color: transparent !important;
+    }
+
+    .chat-message {
+      all: unset;
+      box-sizing: border-box;
+      width: 100%;
+      overflow-wrap: anywhere;
+      padding: 0.2rem;
+    }
+  }
+}
+
+@keyframes PreviewWrapperAnimation {
+  0% {
+    background-position: 10% 0%
+  }
+
+  50% {
+    background-position: 91% 100%
+  }
+
+  100% {
+    background-position: 10% 0%
   }
 }
