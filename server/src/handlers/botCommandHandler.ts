@@ -33,8 +33,8 @@ async function handleCommand(connection: websocket.connection, queuedCommand: Pa
         commandId: queuedCommand.botCommand.id,
         message: '',
         timesUsed: 1,
-        cooldown: 0,
-        description: '',
+        cooldown: queuedCommand.botCommand.cooldown || 0,
+        description: queuedCommand.botCommand.description || '',
         createdAt: isoString,
         updatedAt: isoString,
       });
