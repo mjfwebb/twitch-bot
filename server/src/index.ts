@@ -60,7 +60,7 @@ async function main() {
     logger.info(`Getting Twitch stream status`);
     setStreamStatus(await fetchStreamStatus());
 
-    logger.info(`Getting Twitch channel information and setting display name`);
+    logger.info(`Getting Twitch channel information`);
     setDisplayName((await fetchChannelInformation())?.broadcaster_name || Config.twitch.account);
 
     logger.info(`Running Twitch IRC WebSocket client`);
@@ -97,6 +97,7 @@ async function main() {
       const sevenTVUser = await fetchSevenTVUser();
       if (sevenTVUser) {
         setSevenTVUser(sevenTVUser);
+        logger.info(`${pc.green('[7TV enabled]')} Running 7TV WebSocket client`);
         runSevenTVWebsocket(sevenTVUser);
       }
     }
