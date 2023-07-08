@@ -159,7 +159,13 @@ function loadMessageCommands(): BotCommand[] {
         user = parsedCommand.parsedMessage.tags['display-name'];
       }
 
-      sendChatMessage(connection, c.message.replace('%user%', user).replace('%target%', target).replace('%count%', String(command.timesUsed)));
+      sendChatMessage(
+        connection,
+        c.message
+          .replace('%user%', user)
+          .replace('%target%', target)
+          .replace('%count%', String(command.timesUsed + 1)),
+      );
     },
   }));
 
