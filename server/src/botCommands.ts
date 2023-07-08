@@ -45,6 +45,7 @@ import { mention } from './utils/mention';
 const botCommands: BotCommand[] = [];
 
 export function loadBotCommands() {
+  botCommands.length = 0;
   const customCommands = loadCustomCommands();
   const spotifyCommands = loadSpotifyCommands();
   const githubCommands = loadGitHubCommands();
