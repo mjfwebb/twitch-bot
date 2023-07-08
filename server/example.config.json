@@ -1,4 +1,5 @@
 {
+  "log_level": "info",
   "twitch": {
     "broadcaster_id": "12345678",
     "client_id": "client_id",
