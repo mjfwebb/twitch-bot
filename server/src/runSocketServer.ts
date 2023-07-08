@@ -6,6 +6,7 @@ import { loadBadges } from './chat/loadBadges';
 import { loadCheers } from './chat/loadCheers';
 import { loadEmotes } from './chat/loadEmotes';
 import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
+import { logger } from './logger';
 import { Tasks } from './storage-models/task-model';
 
 const httpServer = createServer();
@@ -54,4 +55,5 @@ export function runSocketServer() {
     });
   });
   httpServer.listen(6969);
+  logger.info('Localhost socket server listening on port 6969');
 }

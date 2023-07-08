@@ -1,6 +1,7 @@
 // https://api.frankerfacez.com/v1/set/global
 
 import Config from '../../config';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { FrankerFaceZEmoteSets } from './types';
 
@@ -20,7 +21,7 @@ export const fetchFrankerFaceZGlobalEmotes = async (): Promise<FrankerFaceZGloba
         return data as FrankerFaceZGlobalEmotes;
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

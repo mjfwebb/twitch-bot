@@ -1,6 +1,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
+import { logger } from '../../logger';
 
 export const addSongToPlaybackQueue = async (trackURI: string): Promise<boolean> => {
   if (Config.spotify.enabled) {
@@ -15,7 +16,7 @@ export const addSongToPlaybackQueue = async (trackURI: string): Promise<boolean>
       });
       return true;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
   return false;

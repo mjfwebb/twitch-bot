@@ -2,6 +2,7 @@ import websocket from 'websocket';
 import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_CHAT_IRC_WS_URL } from '../../../constants';
+import { logger } from '../../../logger';
 import { botCommandHandler } from '../../botCommandHandler';
 import { discordChatWebhook } from '../../discord/discord';
 import { bitHandler } from './bitHandler';
@@ -20,11 +21,11 @@ export function runTwitchIRCWebsocket() {
   const channel = `#${Config.twitch.channel}`;
 
   client.on('connectFailed', function (error: unknown) {
-    console.log(`IRC WebSocket: Connect Error: ${String(error)}`);
+    logger.error(`Twitch IRC WebSocket: Connect Error: ${String(error)}`);
   });
 
   client.on('connect', function (connection) {
-    console.log('IRC WebSocket: Client Connected');
+    logger.info('Twitch IRC WebSocket: Client Connected');
 
     // Store the connection ref so it can be exported
     connectionRef = connection;
@@ -38,11 +39,11 @@ export function runTwitchIRCWebsocket() {
     connection.send(`NICK ${Config.twitch.account}`);
 
     connection.on('error', function (error) {
-      console.log('IRC WebSocket: Connection Error: ' + error.toString());
+      logger.error('Twitch IRC WebSocket: Connection Error: ' + error.toString());
     });
 
     connection.on('close', function () {
-      console.log('IRC WebSocket: Connection Closed');
+      logger.info('Twitch IRC WebSocket: Connection Closed');
       connectionRef = undefined;
       // console.log(`close description: ${connection.closeDescription}`);
       // console.log(`close reason code: ${connection.closeReasonCode}`);
@@ -63,15 +64,15 @@ export function runTwitchIRCWebsocket() {
 
             switch (parsedMessage.command.command) {
               case 'PRIVMSG':
-                botCommandHandler(connection, parsedMessage).catch((e) => console.error(e));
-                bitHandler(connection, parsedMessage).catch((e) => console.error(e));
+                botCommandHandler(connection, parsedMessage).catch((e) => logger.error(e));
+                bitHandler(connection, parsedMessage).catch((e) => logger.error(e));
                 firstMessageHandler(connection, parsedMessage);
                 firstMessageOfStreamHandler(connection, parsedMessage);
                 returningChatterHandler(connection, parsedMessage);
 
                 if ((!botCommand || botCommand === 'ACTION') && parsedMessage.source?.nick && parsedMessage.parameters) {
                   discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
-                  messageHandler(parsedMessage).catch((e) => console.error(e));
+                  messageHandler(parsedMessage).catch((e) => logger.error(e));
                 }
                 break;
               case 'PING':
@@ -92,10 +93,10 @@ export function runTwitchIRCWebsocket() {
                 // If the authentication failed, leave the channel.
                 // The server will close the connection.
                 if ('Login authentication failed' === parsedMessage.parameters) {
-                  console.log(`Authentication failed; left ${channel}`);
+                  logger.error(`Twitch IRC WebSocket: Authentication failed; left ${channel}`);
                   connection.send(`PART ${channel}`);
                 } else if ("You don't have permission to perform that action" === parsedMessage.parameters) {
-                  console.log(`No permission. Check if the access token is still valid. Left ${channel}`);
+                  logger.error(`Twitch IRC WebSocket: No permission. Check if the access token is still valid. Left ${channel}`);
                   connection.send(`PART ${channel}`);
                 }
                 break;

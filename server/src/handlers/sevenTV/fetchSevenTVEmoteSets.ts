@@ -1,6 +1,7 @@
 /// https://7tv.io/v3/emote-sets/{emote-set-id}
 
 import fetch from 'node-fetch';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SevenTVEmoteSet } from './types';
 
@@ -13,7 +14,7 @@ export const fetchSevenTVEmoteSet = async (emoteSetId: string): Promise<SevenTVE
       return data as SevenTVEmoteSet;
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
   return null;
 };

@@ -5,6 +5,7 @@ import fetch from 'node-fetch';
 import type { SpotifyConfig } from '../config';
 import Config from '../config';
 import { SPOTIFY_AUTH_URL } from '../constants';
+import { logger } from '../logger';
 import { errorMessage } from '../utils/errorMessage';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 import { getTokenFromFile, setTokenInFile } from './tokenManager';
@@ -58,7 +59,7 @@ export const checkResponseForErrors = (data: unknown): boolean => {
 
     if (data.error.status === StatusCodes.UNAUTHORIZED) {
       // NOTE: Access token may have expired. Try to refresh.
-      refreshAccessToken(Config.spotify).catch((e) => console.error(e));
+      refreshAccessToken(Config.spotify).catch((e) => logger.error(e));
       return true;
     }
   }

@@ -1,5 +1,6 @@
 import { Octokit } from 'octokit';
 import Config from '../../config';
+import { logger } from '../../logger';
 import { getRandomNumberInRange } from '../../utils/getRandomNumberInRange';
 
 export const fetchRandomIssue = async () => {
@@ -17,7 +18,7 @@ export const fetchRandomIssue = async () => {
         return issues.data[randomIssueNumber];
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

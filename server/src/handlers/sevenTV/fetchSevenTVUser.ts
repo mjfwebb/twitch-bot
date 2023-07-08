@@ -2,6 +2,7 @@
 
 import fetch from 'node-fetch';
 import Config from '../../config';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SevenTVUser } from './types';
 
@@ -20,7 +21,7 @@ export const fetchSevenTVUser = async (): Promise<SevenTVUser | null> => {
         return data as SevenTVUser;
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

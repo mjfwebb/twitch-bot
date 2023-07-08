@@ -2,6 +2,7 @@
 
 import fetch from 'node-fetch';
 import Config from '../../config';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { BttvUser } from './types';
 
@@ -21,7 +22,7 @@ export const fetchBetterTTVUser = async (): Promise<BttvUser | null> => {
         return data as BttvUser;
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

@@ -1,5 +1,6 @@
 import websocket from 'websocket';
 import { TWITCH_WEBSOCKET_EVENTSUB_URL } from '../../../constants';
+import { logger } from '../../../logger';
 import type { TwitchWebsocketMessage } from '../../../types';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { subscribeToFollows } from './subscribers/subscribeToFollows';
@@ -15,18 +16,18 @@ export function runTwitchEventSubWebsocket() {
   const client = new websocket.client();
 
   client.on('connectFailed', function (error: unknown) {
-    console.log(`Twitch EventSub Websocket: Connect Error: ${String(error)}`);
+    logger.error(`Twitch EventSub WebSocket: Connect Error: ${String(error)}`);
   });
 
   client.on('connect', function (connection) {
-    console.log('Twitch EventSub Websocket: Client Connected');
+    logger.info('Twitch EventSub WebSocket: Client Connected');
 
     connection.on('error', function (error) {
-      console.log('Twitch EventSub Websocket: Connection Error: ' + error.toString());
+      logger.error('Twitch EventSub WebSocket: Connection Error: ' + error.toString());
     });
 
     connection.on('close', function () {
-      console.log('Twitch EventSub Websocket: Connection Closed');
+      logger.info('Twitch EventSub WebSocket: Connection Closed');
     });
 
     connection.on('message', function (message) {
@@ -38,20 +39,20 @@ export function runTwitchEventSubWebsocket() {
             {
               const sessionId = data.payload.session?.id;
               if (sessionId) {
-                subscribeToRedeems(sessionId).catch((e) => console.error(e));
-                subscribeToFollows(sessionId).catch((e) => console.error(e));
-                subscribeToRaids(sessionId).catch((e) => console.error(e));
-                subscribeToSubscriptions(sessionId).catch((e) => console.error(e));
-                subscribeToSubscriptionGifts(sessionId).catch((e) => console.error(e));
-                subscribeToStreamOnlineNotifications(sessionId).catch((e) => console.error(e));
-                subscribeToStreamOfflineNotifications(sessionId).catch((e) => console.error(e));
+                subscribeToRedeems(sessionId).catch((e) => logger.error(e));
+                subscribeToFollows(sessionId).catch((e) => logger.error(e));
+                subscribeToRaids(sessionId).catch((e) => logger.error(e));
+                subscribeToSubscriptions(sessionId).catch((e) => logger.error(e));
+                subscribeToSubscriptionGifts(sessionId).catch((e) => logger.error(e));
+                subscribeToStreamOnlineNotifications(sessionId).catch((e) => logger.error(e));
+                subscribeToStreamOfflineNotifications(sessionId).catch((e) => logger.error(e));
               }
             }
 
             break;
 
           case 'notification':
-            twitchEventSubHandler(data).catch((e) => console.error(e));
+            twitchEventSubHandler(data).catch((e) => logger.error(e));
 
             break;
 

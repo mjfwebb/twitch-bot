@@ -1,4 +1,5 @@
 import { FileManager } from '../fileManager';
+import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 import type { Timestamp } from './timestamp-model';
 import { timestampProperties, timestampPropertyTypes } from './timestamp-model';
@@ -42,11 +43,11 @@ const userValidator = (data: unknown): data is User[] => {
       for (const property of [...userProperties, ...timestampProperties]) {
         if (hasOwnProperty(user, property)) {
           if (typeof user[property] !== propertyTypes[property]) {
-            console.log(`Error: Invalid user format, property ${property} is not of type ${propertyTypes[property]}`);
+            logger.error(`Invalid user format, property ${property} is not of type ${propertyTypes[property]}`);
             return false;
           }
         } else {
-          console.log(`Error: Invalid user format, missing property ${property}`);
+          logger.error(`Invalid user format, missing property ${property}`);
           return false;
         }
       }
@@ -121,7 +122,7 @@ export class UserModel {
         this.users.splice(index, 1);
         this.fileManager.saveData(this.users);
       } else {
-        console.log(`Error deleting: user ${user.userId} not found`);
+        logger.error(`Problem deleting user: ${user.userId} not found`);
       }
     }
   }

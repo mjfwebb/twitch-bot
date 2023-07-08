@@ -3,6 +3,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
+import { logger } from '../../../logger';
 
 export const banUser = async (userId: string) => {
   try {
@@ -25,7 +26,7 @@ export const banUser = async (userId: string) => {
       body,
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 
@@ -43,6 +44,6 @@ export const unbanUser = async (userId: string) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };

@@ -1,5 +1,6 @@
 import { writeFileSync } from 'fs';
 import fetch from 'node-fetch';
+import { logger } from '../../logger';
 import { playSound } from '../../playSound';
 
 export const ttsStreamElementsHandler = async (voice: StreamElementsVoices, text: string) => {
@@ -15,7 +16,7 @@ export const ttsStreamElementsHandler = async (voice: StreamElementsVoices, text
 
     await playSound(`../tts/${id}.mp3`);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 

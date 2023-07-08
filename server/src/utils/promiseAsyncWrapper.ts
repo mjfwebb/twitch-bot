@@ -1,3 +1,5 @@
+import { logger } from '../logger';
+
 /**
  * Wraps an async callback function that returns a Promise in a Promise-like manner.
  * @param callback - The async callback function.
@@ -8,5 +10,5 @@ export function promiseAsyncWrapper(callback: (resolve: (value: void | PromiseLi
     void (async () => {
       await callback(resolve, reject);
     })();
-  }).catch((e) => console.log(e));
+  }).catch((e) => logger.error(e));
 }

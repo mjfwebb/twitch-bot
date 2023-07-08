@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
+import { logger } from '../../../logger';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
@@ -30,7 +31,7 @@ export const fetchChatters = async (): Promise<Chatter[]> => {
       return onlineChatters as Chatter[];
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 
   return [];

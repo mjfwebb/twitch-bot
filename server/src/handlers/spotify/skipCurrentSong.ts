@@ -1,6 +1,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
+import { logger } from '../../logger';
 
 export const skipCurrentSong = async (): Promise<void> => {
   if (Config.spotify.enabled) {
@@ -14,7 +15,7 @@ export const skipCurrentSong = async (): Promise<void> => {
         },
       });
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 };

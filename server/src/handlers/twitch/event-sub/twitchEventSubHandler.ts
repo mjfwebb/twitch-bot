@@ -2,6 +2,7 @@ import { getBotCommands } from '../../../botCommands';
 import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
 import { REWARDS } from '../../../constants';
+import { logger } from '../../../logger';
 import { playSound } from '../../../playSound';
 import { setStreamStatus } from '../../../streamState';
 import type { ParsedCommand, TwitchWebsocketMessage } from '../../../types';
@@ -140,7 +141,7 @@ export async function twitchEventSubHandler(data: TwitchWebsocketMessage) {
             }
             break;
           default:
-            console.log('Unsupported reward');
+            logger.error('Unsupported reward');
             break;
         }
         break;

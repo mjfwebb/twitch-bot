@@ -1,6 +1,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SpotifyTrack } from './types';
 
@@ -23,7 +24,7 @@ export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> =>
         return result as SpotifyTrack;
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

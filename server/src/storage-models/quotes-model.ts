@@ -1,4 +1,5 @@
 import { FileManager } from '../fileManager';
+import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 import { timestampProperties, timestampPropertyTypes, type Timestamp } from './timestamp-model';
 
@@ -35,11 +36,11 @@ const quoteValidator = (data: unknown): data is Quote[] => {
       for (const property of [...quoteProperties, ...timestampProperties]) {
         if (hasOwnProperty(quote, property)) {
           if (typeof quote[property] !== propertyTypes[property]) {
-            console.log(`Error: Invalid quote format, property ${property} is not of type ${propertyTypes[property]}`);
+            logger.error(`Invalid quote format, property ${property} is not of type ${propertyTypes[property]}`);
             return false;
           }
         } else {
-          console.log(`Error: Invalid quote format, missing property ${property}`);
+          logger.error(`Invalid quote format, missing property ${property}`);
           return false;
         }
       }
@@ -97,7 +98,7 @@ export class QuoteModel {
       this.quotes[index].updatedAt = isoString;
       this.fileManager.saveData(this.quotes);
     } else {
-      console.log(`Error deleting: quote ${quote.quoteId} not found`);
+      logger.error(`Problem when deleting quote ${quote.quoteId}: not found`);
     }
   }
 

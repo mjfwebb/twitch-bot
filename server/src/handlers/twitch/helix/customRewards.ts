@@ -4,6 +4,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
+import { logger } from '../../../logger';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
@@ -61,7 +62,7 @@ export const createCustomReward = async (newReward: NewCustomReward): Promise<vo
       body: JSON.stringify(newReward),
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 
@@ -91,7 +92,7 @@ export const editCustomReward = async (customRewardId: string, reward: NewCustom
       await fetchCustomRewards();
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 
@@ -113,6 +114,6 @@ export const fetchCustomRewards = async (): Promise<void> => {
       customRewards = customRewardsData as CustomReward[];
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };

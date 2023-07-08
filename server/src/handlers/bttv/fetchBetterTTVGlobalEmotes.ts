@@ -2,6 +2,7 @@
 
 import fetch from 'node-fetch';
 import Config from '../../config';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { BttvEmote } from './types';
 
@@ -23,7 +24,7 @@ export const fetchBetterTTVGlobalEmotes = async (): Promise<BttvEmote[] | null> 
         return data as BttvEmote[];
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

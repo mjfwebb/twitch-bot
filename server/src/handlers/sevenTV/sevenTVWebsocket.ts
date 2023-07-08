@@ -1,6 +1,7 @@
 import websocket from 'websocket';
 import { addSevenTVEmote, removeSevenTVEmote, sendEmotes } from '../../chat/loadEmotes';
 import { SEVEN_TV_WEBSOCKET_URL } from '../../constants';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SevenTVEmote, SevenTVUser } from './types';
 
@@ -129,18 +130,18 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
   const client = new websocket.client();
 
   client.on('connectFailed', function (error: unknown) {
-    console.log(`SevenTV WebSocket: Connect Error: ${String(error)}`);
+    logger.error(`SevenTV WebSocket: Connect Error: ${String(error)}`);
   });
 
   client.on('connect', function (connection) {
-    console.log('SevenTV WebSocket: Client Connected');
+    logger.info('SevenTV WebSocket: Client Connected');
 
     connection.on('error', function (error) {
-      console.log('SevenTV WebSocket: Connection Error: ' + error.toString());
+      logger.error('SevenTV WebSocket: Connection Error: ' + error.toString());
     });
 
     connection.on('close', function () {
-      console.log('SevenTV WebSocket: Connection Closed');
+      logger.info('SevenTV WebSocket: Connection Closed');
     });
 
     connection.on('message', function (message) {
@@ -158,7 +159,7 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
                 for (const entry of [...pushed, ...added]) {
                   if (entry.key === 'emotes') {
                     const emote = entry.value as SevenTVEmote;
-                    console.log(`SevenTV WebSocket: Emote added: "${emote.name}" with ID: ${emote.id}`);
+                    logger.info(`SevenTV WebSocket: Emote added: "${emote.name}" with ID: ${emote.id}`);
                     addSevenTVEmote(emote);
                     sendEmotes();
                   }
@@ -172,7 +173,7 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
                 for (const entry of [...removed, ...pulled]) {
                   if (entry.key === 'emotes') {
                     const emote = entry.old_value as SevenTVEmote;
-                    console.log(`SevenTV WebSocket: Emote removed: "${emote.name}" with ID: ${emote.id}`);
+                    logger.info(`SevenTV WebSocket: Emote removed: "${emote.name}" with ID: ${emote.id}`);
                     removeSevenTVEmote(emote.id);
                     sendEmotes();
                   }
@@ -183,7 +184,7 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
             }
             case SevenTVWebsocketOpCodes.Hello: {
               const { heartbeat_interval: heartbeatInterval, session_id: sessionId, subscription_limit: subscriptionLimit } = d as HelloMessage['d'];
-              console.log(
+              logger.debug(
                 `SevenTV WebSocket: Hello received: ${t}. Heartbeat interval: ${heartbeatInterval}. Session ID: ${sessionId}. Subscription limit: ${subscriptionLimit}`,
               );
               isConnected = true;
@@ -202,7 +203,7 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
 
                   // If we miss 3 heartbeats, close the connection
                   if (missedHeartbeats > 3) {
-                    console.log('SevenTV WebSocket: Too many missed heartbeats, closing connection.');
+                    logger.error('SevenTV WebSocket: Too many missed heartbeats, closing connection.');
                     connection.close(closeCodes.Timeout);
                     return;
                   }
@@ -212,24 +213,24 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
             }
             case SevenTVWebsocketOpCodes.Heartbeat: {
               const { count } = d as HeartbeatMessage['d'];
-              console.log(`SevenTV WebSocket: Heartbeat received with count: ${count}`);
+              logger.debug(`SevenTV WebSocket: Heartbeat received with count: ${count}`);
               missedHeartbeats = 0;
               break;
             }
             case SevenTVWebsocketOpCodes.Acknowledgement: {
               const { command } = d as AcknowledgementMessage['d'];
-              console.log(`SevenTV WebSocket: Acknowledgement received for command: ${command}`);
+              logger.debug(`SevenTV WebSocket: Acknowledgement received for command: ${command}`);
               break;
             }
             case SevenTVWebsocketOpCodes.EndOfStream: {
               const { code, message } = d as EndOfStreamMessage['d'];
-              console.log(`SevenTV WebSocket: End of stream received. Closing connection. Code: ${code} Reason: ${message}`);
+              logger.debug(`SevenTV WebSocket: End of stream received. Closing connection. Code: ${code} Reason: ${message}`);
 
               clearInterval(heartbeat);
               break;
             }
             default:
-              console.log(`SevenTV WebSocket: Unknown opcode received: ${op}`);
+              logger.debug(`SevenTV WebSocket: Unknown opcode received: ${op}`);
               break;
           }
         }
@@ -239,7 +240,7 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
   client.connect(SEVEN_TV_WEBSOCKET_URL);
   setInterval(() => {
     if (!isConnected) {
-      console.log('SevenTV WebSocket: Connecting...');
+      logger.info('SevenTV WebSocket: Connecting...');
       client.connect(SEVEN_TV_WEBSOCKET_URL);
     }
   }, 10000);

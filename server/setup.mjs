@@ -31,7 +31,7 @@ async function main() {
   });
 
   if (!confirmResult) {
-    console.error('You must make sure that no one else can see your screen');
+    logger.error('You must make sure that no one else can see your screen');
     return;
   }
 
@@ -81,7 +81,7 @@ async function main() {
     const defaultValue = currentConfig.twitch[part.name] === part.name ? part.default : currentConfig.twitch[part.name];
     const answer = await input({ message: `Enter your twitch ${part.name} (${part.help})`, default: defaultValue });
     if (!answer) {
-      console.error(`You must enter twitch.${part}`);
+      logger.error(`You must enter twitch.${part}`);
       return;
     } else {
       currentConfig.twitch[part.name] = answer;
@@ -137,7 +137,7 @@ async function main() {
           const defaultValue = currentConfig.github[part.name] === part.name ? part.default : currentConfig.github[part.name];
           const answer = await input({ message: `Enter your github ${part.name} (${part.help})`, default: defaultValue });
           if (!answer) {
-            console.error(`You must enter github.${part}`);
+            logger.error(`You must enter github.${part}`);
             return;
           } else {
             currentConfig.github[part.name] = answer;
@@ -181,7 +181,7 @@ async function main() {
           const defaultValue = currentConfig.spotify[part.name] === part.name ? part.default : currentConfig.spotify[part.name];
           const answer = await input({ message: `Enter your spotify ${part.name} (${part.help})`, default: defaultValue });
           if (!answer) {
-            console.error(`You must enter spotify.${part}`);
+            logger.error(`You must enter spotify.${part}`);
             return;
           } else {
             currentConfig.spotify[part.name] = answer;
@@ -205,7 +205,7 @@ async function main() {
           const defaultValue = currentConfig.seventv[part.name] === part.name ? part.default : currentConfig.seventv[part.name];
           const answer = await input({ message: `Enter your seventv ${part.name} (${part.help})`, default: defaultValue });
           if (!answer) {
-            console.error(`You must enter seventv.${part}`);
+            logger.error(`You must enter seventv.${part}`);
             return;
           } else {
             currentConfig.seventv[part.name] = answer;
@@ -235,7 +235,7 @@ async function main() {
           const defaultValue = currentConfig.betterttv[part.name] === part.name ? part.default : currentConfig.betterttv[part.name];
           const answer = await input({ message: `Enter your betterttv ${part.name} (${part.help})`, default: defaultValue });
           if (!answer) {
-            console.error(`You must enter betterttv.${part}`);
+            logger.error(`You must enter betterttv.${part}`);
             return;
           } else {
             currentConfig.betterttv[part.name] = answer;
@@ -260,7 +260,7 @@ async function main() {
           const defaultValue = currentConfig.frankerfacez[part.name] === part.name ? part.default : currentConfig.frankerfacez[part.name];
           const answer = await input({ message: `Enter your frankerfacez ${part.name} (${part.help})`, default: defaultValue });
           if (!answer) {
-            console.error(`You must enter frankerfacez.${part}`);
+            logger.error(`You must enter frankerfacez.${part}`);
             return;
           } else {
             currentConfig.frankerfacez[part.name] = answer;
@@ -295,7 +295,7 @@ async function main() {
           const defaultValue = currentConfig.discord_webhook[part.name] === part.name ? part.default : currentConfig.discord_webhook[part.name];
           const answer = await input({ message: `Enter your discord_webhook ${part.name} (${part.help})`, default: defaultValue });
           if (!answer) {
-            console.error(`You must enter discord_webhook.${part}`);
+            logger.error(`You must enter discord_webhook.${part}`);
             return;
           } else {
             currentConfig.discord_webhook[part.name] = answer;

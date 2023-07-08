@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { Octokit } from 'octokit';
 import Config from '../../config';
+import { logger } from '../../logger';
 
 export const createIssue = async (issueTitle: string, issueDescription: string) => {
   if (Config.github.enabled) {
@@ -18,7 +19,7 @@ export const createIssue = async (issueTitle: string, issueDescription: string) 
         return result.data;
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

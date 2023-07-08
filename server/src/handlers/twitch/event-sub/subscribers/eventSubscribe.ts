@@ -1,6 +1,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../../../auth/twitch';
 import Config from '../../../../config';
 import { TWITCH_HELIX_URL } from '../../../../constants';
+import { logger } from '../../../../logger';
 import type { EventSubCondition, EventsubSubscriptionType } from '../../../../typings/twitchEvents';
 
 export const eventSubscribe = async (sessionId: string, type: EventsubSubscriptionType, condition: EventSubCondition) => {
@@ -28,6 +29,6 @@ export const eventSubscribe = async (sessionId: string, type: EventsubSubscripti
       body,
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };

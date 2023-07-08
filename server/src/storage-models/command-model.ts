@@ -1,4 +1,5 @@
 import { FileManager } from '../fileManager';
+import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 import { timestampProperties, type Timestamp } from './timestamp-model';
 
@@ -27,57 +28,57 @@ const commandValidator = (data: unknown): data is Command[] => {
           switch (property) {
             case 'command':
               if (!Array.isArray(command.command)) {
-                console.log(`Error: Invalid command format, property ${property} must be an array`);
+                logger.error(`Invalid command format, property ${property} must be an array`);
                 return false;
               }
               if (!command.command.every((command) => typeof command === 'string')) {
-                console.log(`Error: Invalid command format, property ${property} must be an array of strings`);
+                logger.error(`Invalid command format, property ${property} must be an array of strings`);
                 return false;
               }
               break;
             case 'commandId':
               if (typeof command.commandId !== 'string') {
-                console.log(`Error: Invalid command format, property ${property} must be a string`);
+                logger.error(`Invalid command format, property ${property} must be a string`);
                 return false;
               }
               break;
             case 'cooldown':
               if (typeof command.cooldown !== 'number') {
-                console.log(`Error: Invalid command format, property ${property} must be a number`);
+                logger.error(`Invalid command format, property ${property} must be a number`);
                 return false;
               }
               break;
             case 'description':
               if (typeof command.description !== 'string') {
-                console.log(`Error: Invalid command format, property ${property} must be a string`);
+                logger.error(`Invalid command format, property ${property} must be a string`);
                 return false;
               }
               break;
             case 'message':
               if (typeof command.message !== 'string') {
-                console.log(`Error: Invalid command format, property ${property} must be a string`);
+                logger.error(`Invalid command format, property ${property} must be a string`);
                 return false;
               }
               break;
             case 'timesUsed':
               if (typeof command.timesUsed !== 'number') {
-                console.log(`Error: Invalid command format, property ${property} must be a number`);
+                logger.error(`Invalid command format, property ${property} must be a number`);
                 return false;
               }
               break;
             case 'createdAt':
             case 'updatedAt':
               if (typeof command[property] !== 'string') {
-                console.log(`Error: Invalid command format, property ${property} must be a string`);
+                logger.error(`Invalid command format, property ${property} must be a string`);
                 return false;
               }
               break;
             default:
-              console.log(`Error: Invalid command format, unknown property ${JSON.stringify(property)}`);
+              logger.error(`Invalid command format, unknown property ${JSON.stringify(property)}`);
               return false;
           }
         } else {
-          console.log(`Error: Invalid command format, missing property ${property}`);
+          logger.error(`Invalid command format, missing property ${property}`);
           return false;
         }
       }
@@ -141,7 +142,7 @@ export class CommandModel {
       this.commands.splice(index, 1);
       this.fileManager.saveData(this.commands);
     } else {
-      console.log(`Error deleting: command ${command.commandId} not found`);
+      logger.error(`Unable to delete: command ${command.commandId} not found`);
     }
   }
 
@@ -151,7 +152,7 @@ export class CommandModel {
       this.commands[index].timesUsed++;
       this.fileManager.saveData(this.commands);
     } else {
-      console.log(`Error increasing times used: command ${command.commandId} not found`);
+      logger.error(`Unable to increase times used: command ${command.commandId} not found`);
     }
   }
 }

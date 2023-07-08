@@ -1,3 +1,4 @@
+import { logger } from '../../../../logger';
 import type { Command } from '../../../../types';
 
 // Parses the command component of the IRC message.
@@ -40,13 +41,13 @@ export function parseCommand(rawCommandComponent: string): Command | null {
       };
       break;
     case 'RECONNECT':
-      console.log('The Twitch IRC server is about to terminate the connection for maintenance.');
+      logger.info('The Twitch IRC server is about to terminate the connection for maintenance.');
       parsedCommand = {
         command: commandParts[0],
       };
       break;
     case '421': // Unknown command.
-      console.log(`Unsupported IRC command: ${commandParts[2]}`);
+      logger.error(`Twitch IRC Parser: Unsupported IRC command: ${commandParts[2]}`);
       return null;
     case '001': // Logged in (successfully authenticated).
       parsedCommand = {
@@ -64,7 +65,7 @@ export function parseCommand(rawCommandComponent: string): Command | null {
     case '376':
       return null;
     default:
-      console.log(`\nUnexpected command: ${commandParts[0]}\n`);
+      logger.debug(`\nUnexpected command: ${commandParts[0]}\n`);
       return null;
   }
 

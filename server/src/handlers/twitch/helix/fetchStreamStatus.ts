@@ -3,6 +3,7 @@ import { getCurrentAccessToken } from '../../../auth/twitch';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
+import { logger } from '../../../logger';
 import { setStreamCategory, type StreamStatus } from '../../../streamState';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { fetchGameById } from './fetchGameById';
@@ -36,7 +37,7 @@ export const fetchStreamStatus = async (): Promise<StreamStatus> => {
       }
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 
   return 'offline';

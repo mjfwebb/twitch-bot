@@ -1,6 +1,7 @@
 // https://api.frankerfacez.com/v1/room/id/
 
 import Config from '../../config';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { FrankerFaceZEmoteSets } from './types';
 
@@ -19,7 +20,7 @@ export const fetchFrankerFaceZRoomEmotes = async (): Promise<FrankerFaceZRoomEmo
         return data as FrankerFaceZRoomEmotes;
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

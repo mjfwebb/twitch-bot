@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
+import { logger } from './logger';
 import { isError } from './utils/isError';
 
 type DataValidator<T> = (data: unknown) => data is T;
@@ -13,7 +14,7 @@ export class FileManager<T> {
     this.fileName = fileName;
     this.validator = validator;
     if (!existsSync(this.fileName)) {
-      console.log(`${this.fileName} does not exist, creating...`);
+      logger.info(`${this.fileName} does not exist, creating...`);
       writeFileSync(this.fileName, '');
     }
   }
@@ -26,7 +27,7 @@ export class FileManager<T> {
     } catch (error) {
       if (isError(error)) {
         if (error.message.includes('Unexpected end of JSON input')) {
-          console.log(`${pc.magenta('Error handled gracefully:')} Empty JSON in file ${this.fileName}. Setting data to empty array.`);
+          logger.info(`${pc.magenta('Error handled gracefully:')} Empty JSON in file ${this.fileName}. Setting data to empty array.`);
           this.data = [] as T;
           return this.data;
         }

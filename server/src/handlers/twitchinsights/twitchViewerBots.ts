@@ -2,6 +2,7 @@
 
 import fetch from 'node-fetch';
 import { TWITCH_INSIGHTS_URL } from '../../constants';
+import { logger } from '../../logger';
 import { assertArray } from '../../utils/assertArray';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 
@@ -40,6 +41,6 @@ export const fetchKnownTwitchViewerBots = async (): Promise<void> => {
       twitchViewerBotNames = botNames;
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };

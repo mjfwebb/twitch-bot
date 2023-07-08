@@ -1,6 +1,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
+import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SpotifySong, SpotifyTrack } from './types';
 
@@ -24,7 +25,7 @@ export const getPlaybackQueue = async (): Promise<SpotifyTrack[] | null> => {
         return result.queue as SpotifyTrack[];
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

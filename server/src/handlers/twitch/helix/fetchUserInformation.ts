@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
+import { logger } from '../../../logger';
 import type { UserInformation } from '../../../types';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
@@ -44,7 +45,7 @@ const fetchUserInformation = async (queryParams: string): Promise<UserInformatio
       }
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 
   return null;

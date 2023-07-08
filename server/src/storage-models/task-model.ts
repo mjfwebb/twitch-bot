@@ -1,5 +1,6 @@
 import { writeFileSync } from 'fs';
 import { FileManager } from '../fileManager';
+import { logger } from '../logger';
 import type { ParsedMessageWithAllProps } from '../types';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 import { timestampProperties, timestampPropertyTypes, type Timestamp } from './timestamp-model';
@@ -29,11 +30,11 @@ const taskValidator = (data: unknown): data is Task[] => {
       for (const property of [...taskProperties, ...timestampProperties]) {
         if (hasOwnProperty(task, property)) {
           if (typeof task[property] !== propertyTypes[property]) {
-            console.log(`Error: Invalid task format, property ${property} is not of type ${propertyTypes[property]}`);
+            logger.error(`Invalid task format, property ${property} is not of type ${propertyTypes[property]}`);
             return false;
           }
         } else {
-          console.log(`Error: Invalid task format, missing property ${property}`);
+          logger.error(`Invalid task format, missing property ${property}`);
           return false;
         }
       }

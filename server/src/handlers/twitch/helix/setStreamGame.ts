@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
+import { logger } from '../../../logger';
 
 export const setStreamGame = async (gameId: string): Promise<void> => {
   try {
@@ -27,6 +28,6 @@ export const setStreamGame = async (gameId: string): Promise<void> => {
       throw new Error(`setStreamGame: ${response.status} - ${response.statusText}`);
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };

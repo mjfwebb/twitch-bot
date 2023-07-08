@@ -1,6 +1,7 @@
 import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
+import { logger } from '../../logger';
 import { getIO } from '../../runSocketServer';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SpotifySong } from './types';
@@ -24,7 +25,7 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
 
       // If the result is an error, return null
       if (!result) {
-        console.log('No result from Spotify, are you sure you have a song playing?');
+        logger.info('No result from Spotify, are you sure you have a song playing?');
         return null;
       }
 
@@ -40,7 +41,7 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
         currentSong = result as SpotifySong;
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 

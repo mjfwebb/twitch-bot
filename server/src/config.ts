@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'fs';
-import pc from 'picocolors';
+import { logLevels, logger, type LogLevel } from './logger';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
 export type WebhookConfig = {
@@ -65,6 +65,7 @@ export type FeaturesConfig = {
 };
 
 interface IConfig {
+  logLevel: LogLevel;
   twitch: TwitchConfig;
   webhooks: Record<string, WebhookConfig>;
   spotify: SpotifyConfig;
@@ -76,18 +77,20 @@ interface IConfig {
 }
 
 const configFileName = 'config.json';
-const missingPropertyErrorMessage = (missingProperty: string) => `${pc.red('Error:')} Missing configuration in ${configFileName}: ${missingProperty}`;
+const missingPropertyErrorMessage = (missingProperty: string) => `Missing configuration in ${configFileName}: ${missingProperty}`;
+const invalidPropertyErrorMessage = (invalidProperty: string, validProperties: string[]) =>
+  `Invalid configuration in ${configFileName}: ${invalidProperty}. It should be one of: ${validProperties.join(', ')}`;
 
 export function assertConfigFileExists(): void {
   if (!existsSync(configFileName)) {
-    console.error(`${pc.red('Error:')} Missing ${configFileName} file`);
+    logger.error(`Missing ${configFileName} file`);
     process.exit(1);
   }
 }
 
 function parseConfig<T>({ config, defaultConfig, part, properties }: { config: unknown; defaultConfig: T; part: string; properties: string[] }): T {
   if (!hasOwnProperty(config, part)) {
-    console.error(`Missing in config.json: ${part}`);
+    logger.error(`Missing in config.json: ${part}`);
 
     return defaultConfig;
   }
@@ -97,14 +100,14 @@ function parseConfig<T>({ config, defaultConfig, part, properties }: { config: u
   const configPart = config[part];
 
   if (!configPart || typeof configPart !== 'object') {
-    console.error(`Invalid ${part} config`);
+    logger.error(`Invalid ${part} config`);
 
     return defaultConfig;
   }
 
   for (const property of properties) {
     if (!hasOwnProperty(configPart, property)) {
-      console.error(missingPropertyErrorMessage(`${part}.${property}`));
+      logger.error(missingPropertyErrorMessage(`${part}.${property}`));
     } else {
       loadedConfig = { ...loadedConfig, [property]: configPart[property] };
     }
@@ -271,9 +274,36 @@ function readDiscordWebhookConfig(config: unknown): WebhookConfig {
   return parsedDiscordWebhookConfig;
 }
 
+function readLogLevel(config: unknown): LogLevel {
+  const defaultLogLevel: LogLevel = 'info';
+
+  if (!hasOwnProperty(config, 'log_level')) {
+    logger.error(missingPropertyErrorMessage('log_level'));
+
+    return defaultLogLevel;
+  }
+
+  const logLevel = config['log_level'];
+
+  if (typeof logLevel !== 'string') {
+    logger.error(`Invalid log_level config`);
+
+    return defaultLogLevel;
+  }
+
+  if (typeof logLevel !== 'string' || !logLevels.includes(logLevel)) {
+    logger.error(invalidPropertyErrorMessage('log_level', logLevels));
+
+    return defaultLogLevel;
+  }
+
+  return logLevel;
+}
+
 const config: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
 
 const Config: IConfig = {
+  logLevel: readLogLevel(config),
   twitch: readTwitchConfig(config),
   webhooks: {
     discordChatHook: readDiscordWebhookConfig(config),

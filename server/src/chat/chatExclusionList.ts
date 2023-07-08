@@ -1,6 +1,6 @@
-import console from 'console';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
+import { logger } from '../logger';
 
 const chatExclusionList = new Set<string>();
 
@@ -25,10 +25,10 @@ export function loadChatExclusionList() {
     chatExcludedUsers.filter((user) => user.length > 0).forEach((user) => chatExclusionList.add(user.toLowerCase()));
 
     if (chatExclusionList.size > 0) {
-      console.log(`${pc.blue('Startup:')} Loaded ${chatExclusionList.size} users into chat exclusion list`);
+      logger.info(`${pc.blue('Startup:')} Loaded ${chatExclusionList.size} users into chat exclusion list`);
     }
   } else {
-    console.log(`${pc.blue('Startup:')} No chat exclusion list found, creating one`);
+    logger.info(`${pc.blue('Startup:')} No chat exclusion list found, creating one`);
     writeFileSync('chat-exclusion-list.txt', '');
   }
 }

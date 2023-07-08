@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
+import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
 
 const tokensfileName = 'tokens.json';
@@ -7,7 +8,7 @@ const tokensfileName = 'tokens.json';
 export const assertTokenFileExists = () => {
   if (!existsSync(tokensfileName)) {
     if (existsSync(`example.${tokensfileName}`)) {
-      console.log(`${pc.blue('Startup:')} ${tokensfileName} does not exist. Creating it now.`);
+      logger.info(`${pc.blue('Startup:')} ${tokensfileName} does not exist. Creating it now.`);
       const exampleFileContents = readFileSync(`example.${tokensfileName}`);
       writeFileSync(tokensfileName, exampleFileContents);
     }
