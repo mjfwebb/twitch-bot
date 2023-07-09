@@ -1,6 +1,6 @@
 import type { connection } from 'websocket';
-import type { Quote } from '../storage-models/quotes-model';
-import { Quotes } from '../storage-models/quotes-model';
+import type { Quote } from '../storage-models/quote-model';
+import { Quotes } from '../storage-models/quote-model';
 import { getStreamCategory } from '../streamState';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
