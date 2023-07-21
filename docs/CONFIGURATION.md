@@ -51,28 +51,21 @@ You probably want to set provider as twitch and the ID is your twitch broadcaste
 
 Enter your broadcaster ID (likely the same as set in twitch).
 
-## Set up your commands
+## Setting up your commands
 
+### Commands stored in commands.json
 
-Open `server\src\handlers\botCommands.ts` and change the commands to fit your needs. There are several examples of different commands here.
+There are many features available with commands created through `!addcommand`. You can use `!addcommand` to create commands that play sounds, emit events, and more. You can find more information about these features in the [commands configuration guide](COMMANDS.md)
 
-Open `server\src\constants.ts` and change the values in the constants to fit your needs.
+### Hard-coded commands
 
-Alternatively use the `!addcommand` bot command when the server is running to create commands through the Bot itself. The functionality of commands created with `!addcommand` are limited in comparison to the hard-coded commands. For example: `!addcommand hello Hello everyone!` would add the command `!hello` which would send the message `Hello everyone!`.
+A lot of the power of the bot comes from the commands that you set up. While a large majority of the commands you may want to add can be done through the `!addcommand` command, there are some commands that are hard-coded into the bot. These commands are more powerful and can be used to connect to APIs and perform more complex actions.
 
-You can use `%count%` in the message text to display how many times that command has been used. For example: `!addcommand test This command has been tested %count% times`.
+## Channel point reward redemptions
 
-You can use `%user%` and `%target` in the message text as placeholders for the command user and the user name of the command target. For example: `!addcommand wave %user% waves at %target%`. This would then be used like `!wave FriendlyChatter` with the result `Athano waves at FriendlyChatter`.
+The bot can automatically handle channel point reward redemptions.
 
-You can use `%sound:<name>%` in the message text to play a sound. For example: `!addcommand %sound:beep%` would play the sound `beep.wav` from the `sounds` folder. If you want to play an mp3 file, you can use `%sound:bang.mp3%` which will play the file `bang.mp3` from the `sounds` folder.
-
-You can use `%now%` in the message text to display the current time. For example: `!addcommand time The current time is %now%`.
-
-You can use `%emit:<event>%` in the message text to emit an event. For example: `!addcommand confetti %emit:confetti%` would emit the event `confetti` to the client.
-
-To update descriptions use `!setdescription <commandId> this is my description`. Where `<commandId>` is replaced with the command ID in question. For example: `!setdescription test This is a test command!`
-
-To update cooldowns use `!setcooldown <commandId> 1000`. Where `<commandId>` is replaced with the command ID in question, and the amount is in milliseconds. For example: `!setcooldown test 10000` would set a 10 second cooldown to the command "test".
+You can find more information about these features in the [channel point rewards configuration guide](CHANNEL_POINT_REWARDS.md)
 
 ## Add users to the chat exclusion list
 

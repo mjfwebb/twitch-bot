@@ -38,8 +38,9 @@ import Config from './config';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
 import { playSound } from './playSound';
 import { getIO } from './runSocketServer';
+import type { Command } from './storage-models/command-model';
 import { Commands } from './storage-models/command-model';
-import type { BotCommand } from './types';
+import type { BotCommand, BotCommandCallback } from './types';
 import { mention } from './utils/mention';
 
 const botCommands: BotCommand[] = [];
@@ -113,6 +114,98 @@ const complexBotCommands: BotCommand[] = [
   whoami,
 ];
 
+const soundMatchRegex = /%sound:([a-zA-Z0-9-_.]+)%/g;
+const messageMatchRegex = /%emit:([a-zA-Z0-9-_.]+)%/g;
+
+export const messageWithoutTags = (message: string): string => {
+  // Remove all instances of %sound:[something]% and %emit:[something]% from the message
+  return message.replace(soundMatchRegex, '').replace(messageMatchRegex, '');
+};
+
+export const runMessageTags = async (message: string) => {
+  const soundsToPlay: string[] = [];
+  if (message.includes('%sound')) {
+    let match;
+
+    while ((match = soundMatchRegex.exec(message)) !== null) {
+      soundsToPlay.push(match[1]);
+    }
+  }
+
+  const messagesToEmit: string[] = [];
+  if (message.includes('%emit')) {
+    let match;
+
+    while ((match = messageMatchRegex.exec(message)) !== null) {
+      messagesToEmit.push(match[1]);
+    }
+  }
+
+  // Emit all messages in sequence to the local socket server
+  if (messagesToEmit.length > 0) {
+    for (const message of messagesToEmit) {
+      getIO().emit(message);
+    }
+  }
+
+  // Play all sounds in sequence
+  if (soundsToPlay.length > 0) {
+    for (const sound of soundsToPlay) {
+      if (sound.includes('.')) {
+        const [soundName, soundExtension] = sound.split('.');
+        if (soundExtension !== 'mp3') {
+          // TODO: Support other sound formats
+          continue;
+        }
+        await playSound(soundName, 'mp3');
+      } else {
+        // Default to wav
+        await playSound(sound);
+      }
+    }
+  }
+};
+
+export const commandCallbackGenerator =
+  (c: Command): BotCommandCallback =>
+  async (connection, parsedCommand) => {
+    const command = Commands.data.find((cmd) => cmd.command === c.command);
+    if (!command) {
+      return;
+    }
+
+    const message = messageWithoutTags(c.message);
+
+    // If there was a message other than just sounds, send it
+    if (message) {
+      let target = '';
+      if (message.includes('%target%') && hasBotCommandParams(parsedCommand.parsedMessage)) {
+        const chatters = await fetchChatters();
+
+        const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
+        if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
+          target = mention(botCommandParam);
+        }
+      }
+
+      let user = 'unknown';
+      if (message.includes('%user%') && parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
+        user = parsedCommand.parsedMessage.tags['display-name'];
+      }
+
+      sendChatMessage(
+        connection,
+        message
+          .replace('%user%', user)
+          .replace('%target%', target)
+          .replace('%now%', new Date().toTimeString())
+          .replace('%count%', String(command.timesUsed + 1)),
+      );
+    }
+
+    await runMessageTags(c.message);
+  };
+
 function loadMessageCommands(): BotCommand[] {
   const commands = Commands.data;
 
@@ -121,86 +214,7 @@ function loadMessageCommands(): BotCommand[] {
     id: c.commandId,
     description: c.description || '',
     cooldown: c.cooldown || 0,
-    callback: async (connection, parsedCommand) => {
-      const command = Commands.data.find((cmd) => cmd.command === c.command);
-      if (!command) {
-        return;
-      }
-
-      const soundsToPlay: string[] = [];
-      const soundMatchRegex = /%sound:([a-zA-Z0-9-_.]+)%/g;
-      if (c.message.includes('%sound')) {
-        let match;
-
-        while ((match = soundMatchRegex.exec(c.message)) !== null) {
-          soundsToPlay.push(match[1]);
-        }
-      }
-
-      const messagesToEmit: string[] = [];
-      const messageMatchRegex = /%emit:([a-zA-Z0-9-_.]+)%/g;
-      if (c.message.includes('%emit')) {
-        let match;
-
-        while ((match = messageMatchRegex.exec(c.message)) !== null) {
-          messagesToEmit.push(match[1]);
-        }
-      }
-
-      // Remove all instances of %sound:[something]% and %emit:[something]% from the message
-      const message = c.message.replace(soundMatchRegex, '').replace(messageMatchRegex, '');
-
-      // If there was a message other than just sounds, send it
-      if (message) {
-        let target = '';
-        if (message.includes('%target%') && hasBotCommandParams(parsedCommand.parsedMessage)) {
-          const chatters = await fetchChatters();
-
-          const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
-          if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
-            target = mention(botCommandParam);
-          }
-        }
-
-        let user = 'unknown';
-        if (message.includes('%user%') && parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
-          user = parsedCommand.parsedMessage.tags['display-name'];
-        }
-
-        sendChatMessage(
-          connection,
-          message
-            .replace('%user%', user)
-            .replace('%target%', target)
-            .replace('%now%', new Date().toTimeString())
-            .replace('%count%', String(command.timesUsed + 1)),
-        );
-      }
-
-      // Emit all messages in sequence to the local socket server
-      if (messagesToEmit.length > 0) {
-        for (const message of messagesToEmit) {
-          getIO().emit(message);
-        }
-      }
-
-      // Play all sounds in sequence
-      if (soundsToPlay.length > 0) {
-        for (const sound of soundsToPlay) {
-          if (sound.includes('.')) {
-            const [soundName, soundExtension] = sound.split('.');
-            if (soundExtension !== 'mp3') {
-              // TODO: Support other sound formats
-              continue;
-            }
-            await playSound(soundName, 'mp3');
-          } else {
-            // Default to wav
-            await playSound(sound);
-          }
-        }
-      }
-    },
+    callback: async (connection, parsedCommand) => commandCallbackGenerator(c)(connection, parsedCommand),
   }));
 
   return botCommands;

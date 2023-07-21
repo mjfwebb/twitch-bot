@@ -1,16 +1,16 @@
-import { getBotCommands } from '../../../botCommands';
+import { messageWithoutTags, runMessageTags } from '../../../botCommands';
+import { findBotCommand } from '../../../commands/helpers/findBotCommand';
 import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
-import { REWARDS } from '../../../constants';
 import { logger } from '../../../logger';
-import { playSound } from '../../../playSound';
+import { ChannelPointRedeems } from '../../../storage-models/channel-point-redeem-model';
 import { setStreamStatus } from '../../../streamState';
-import type { ParsedCommand, TwitchWebsocketMessage } from '../../../types';
+import type { Command, ParsedCommand, TwitchWebsocketMessage } from '../../../types';
 import type { EventFromSubscriptionType, EventSubResponse } from '../../../typings/twitchEvents';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { getConnection } from '../irc/twitchIRCWebsocket';
 
-const emptyParsedCommand: ParsedCommand = {
+const fakeParsedCommand = (command: Command): ParsedCommand => ({
   commandName: '',
   botCommand: {
     command: '',
@@ -19,12 +19,12 @@ const emptyParsedCommand: ParsedCommand = {
     callback: () => false,
   },
   parsedMessage: {
-    command: null,
+    command,
     parameters: null,
     source: null,
     tags: null,
   },
-};
+});
 
 function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
   return (
@@ -90,59 +90,57 @@ export async function twitchEventSubHandler(data: TwitchWebsocketMessage) {
         break;
       }
 
+      case 'channel.channel_points_custom_reward_redemption.update':
       case 'channel.channel_points_custom_reward_redemption.add': {
         const event = data.payload.event as EventFromSubscriptionType<'channel.channel_points_custom_reward_redemption.add'>;
-        const reward = Object.values(REWARDS).find((value) => value === event.reward.id);
-        switch (reward) {
-          case REWARDS.pushup:
-          case REWARDS.burpee:
-          case REWARDS.squat:
-            await playSound('redeem');
-            {
+        // If the event status is canceled or unknown, we don't want to run it.
+        if (event.status === 'canceled' || event.status === 'unknown') {
+          return;
+        }
+
+        const reward = ChannelPointRedeems.findOneById(event.reward.id);
+        if (reward && reward.actions.length > 0) {
+          for (const action of reward.actions) {
+            // If the action is not for the current status, we don't want to run it.
+            if (action.onStatus !== event.status) {
+              return;
+            }
+
+            ChannelPointRedeems.increaseTimesUsed(reward);
+            const message = messageWithoutTags(action.message);
+
+            if (message) {
               const connection = getConnection();
               if (connection) {
-                sendChatMessage(connection, "It's time to get up and down");
+                sendChatMessage(
+                  connection,
+                  message
+                    .replace('%user%', event.user_name)
+                    .replace('%now%', new Date().toTimeString())
+                    .replace('%count%', String(reward.timesUsed + 1)),
+                );
               }
             }
-            break;
-          case REWARDS.pushupAddOne:
-            {
-              const addPushupCommand = getBotCommands().find((command) => command.command === 'addpushup');
-              const connection = getConnection();
-              if (addPushupCommand && connection) {
-                await playSound('redeem');
-                await addPushupCommand.callback(connection, emptyParsedCommand);
+
+            if (action.command) {
+              const foundCommand = findBotCommand(action.command);
+              if (foundCommand) {
+                const connection = getConnection();
+                if (connection) {
+                  const command: Command = {
+                    command: action.command,
+                    botCommand: action.command,
+                    botCommandParams: action.commandParams.replace('%input%', event.user_input),
+                  };
+
+                  await foundCommand.callback(connection, fakeParsedCommand(command));
+                }
               }
             }
-            break;
-          case REWARDS.squatAddOne:
-            {
-              const addSquatCommand = getBotCommands().find((command) => command.command === 'addsquat');
-              const connection = getConnection();
-              if (addSquatCommand && connection) {
-                await playSound('redeem');
-                await addSquatCommand.callback(connection, emptyParsedCommand);
-              }
-            }
-            break;
-          case REWARDS.burpeeAddOne:
-            {
-              const addBurpeeCommand = getBotCommands().find((command) => command.command === 'addburpee');
-              const connection = getConnection();
-              if (addBurpeeCommand && connection) {
-                await playSound('redeem');
-                await addBurpeeCommand.callback(connection, emptyParsedCommand);
-              }
-            }
-            break;
-          case REWARDS.test:
-            {
-              await playSound('redeem');
-            }
-            break;
-          default:
-            logger.error('Unsupported reward');
-            break;
+            await runMessageTags(action.message);
+          }
+        } else {
+          logger.error(`Could not find redeem for redeem with id ${event.reward.id}`);
         }
         break;
       }

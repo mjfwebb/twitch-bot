@@ -14,16 +14,6 @@ export const MAX_TWITCH_MESSAGE_LENGTH = 500;
 
 export const SOUNDS = ['success', 'fail', 'party', 'ominous_bell', 'redeem', 'oh_great_heavens'] as const;
 
-export const REWARDS = {
-  pushup: 'd17e63c6-208f-4275-bcd7-6a558cc5a494',
-  pushupAddOne: '0279c574-da62-4a22-acf1-e2e97523ea10',
-  squat: 'cf94a1db-681c-404c-a48c-33e0ea3bbe26',
-  squatAddOne: '25e7ed90-d66b-4b8d-982e-b93f1c97ecee',
-  burpee: '481c1a3e-0df3-4966-8b6b-6896fd713907',
-  burpeeAddOne: '91b0d48c-8ded-4d7d-9ef5-c4c5ea2d3417',
-  test: '634ddd00-d1a9-482c-b7c5-8693cdb591eb',
-};
-
 export const VOICES = {
   brian: {
     id: 'Brian',

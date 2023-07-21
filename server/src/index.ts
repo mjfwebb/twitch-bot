@@ -10,7 +10,7 @@ import { fetchSevenTVUser } from './handlers/sevenTV/fetchSevenTVUser';
 import { setSevenTVUser } from './handlers/sevenTV/sevenTVUser';
 import { runSevenTVWebsocket } from './handlers/sevenTV/sevenTVWebsocket';
 import { runTwitchEventSubWebsocket } from './handlers/twitch/event-sub/twitchEventSubWebsocket';
-import { fetchCustomRewards } from './handlers/twitch/helix/customRewards';
+import { fetchCustomRewards, getCustomRewards } from './handlers/twitch/helix/customRewards';
 import { fetchChannelInformation } from './handlers/twitch/helix/fetchChannelInformation';
 import { fetchStreamStatus } from './handlers/twitch/helix/fetchStreamStatus';
 import { runTwitchIRCWebsocket } from './handlers/twitch/irc/twitchIRCWebsocket';
@@ -53,6 +53,11 @@ async function main() {
 
     logger.info(`Getting Twitch custom rewards`);
     await fetchCustomRewards();
+    const customRewards = getCustomRewards();
+    if (customRewards.length > 0) {
+      logger.debug(`Loaded ${pc.green(`${customRewards.length}`)} custom rewards`);
+      customRewards.forEach((reward) => logger.debug(`  - ${pc.green(`${reward.title}`)} with ID ${pc.green(`${reward.id}`)}`));
+    }
 
     logger.info(`Getting Twitch viewer bots`);
     await fetchKnownTwitchViewerBots();

@@ -134,6 +134,8 @@ type ChannelPointsCustomReward = {
 
 export type EventFromSubscriptionType<T extends EventsubSubscriptionType> = T extends 'channel.channel_points_custom_reward_redemption.add'
   ? ChannelPointsCustomRewardRedemptionEvent
+  : T extends 'channel.channel_points_custom_reward_redemption.update'
+  ? ChannelPointsCustomRewardRedemptionEvent
   : T extends 'channel.raid'
   ? ChannelRaidEvent
   : T extends 'channel.follow'
