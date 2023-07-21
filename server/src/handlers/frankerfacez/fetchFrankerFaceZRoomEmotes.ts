@@ -12,7 +12,7 @@ type FrankerFaceZRoomEmotes = {
 export const fetchFrankerFaceZRoomEmotes = async (): Promise<FrankerFaceZRoomEmotes | null> => {
   if (Config.frankerFaceZ.enabled) {
     try {
-      const url = `https://api.frankerfacez.com/v1/room/id/${Config.frankerFaceZ.broadcaster_id}`;
+      const url = `https://api.frankerfacez.com/v1/room/id/${Config.twitch.broadcaster_id}`;
       const response = await fetch(url, { method: 'GET' });
       const data: unknown = await response.json();
 

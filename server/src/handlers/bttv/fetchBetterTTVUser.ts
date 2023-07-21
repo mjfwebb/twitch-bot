@@ -9,7 +9,7 @@ import type { BttvUser } from './types';
 export const fetchBetterTTVUser = async (): Promise<BttvUser | null> => {
   if (Config.betterTTV.enabled) {
     try {
-      const url = `https://api.betterttv.net/3/cached/users/${Config.betterTTV.provider}/${Config.betterTTV.provider_id}`;
+      const url = `https://api.betterttv.net/3/cached/users/twitch/${Config.twitch.broadcaster_id}`;
       const response = await fetch(url, { method: 'GET' });
       const data: unknown = await response.json();
       if (

@@ -40,18 +40,14 @@ export type GitHubConfig = {
 
 export type SevenTVConfig = {
   enabled: boolean;
-  user_id: string;
 };
 
 export type BetterTTVConfig = {
   enabled: boolean;
-  provider: string;
-  provider_id: string;
 };
 
 export type FrankerFaceZConfig = {
   enabled: boolean;
-  broadcaster_id: string;
 };
 
 export type FeaturesConfig = {
@@ -180,7 +176,6 @@ function readGitHubConfig(config: unknown): GitHubConfig {
 function readSevenTVConfig(config: unknown): SevenTVConfig {
   const defaultSevenTVConfig: SevenTVConfig = {
     enabled: false,
-    user_id: '',
   };
 
   const parsedSevenTVConfig = parseConfig<SevenTVConfig>({
@@ -196,8 +191,6 @@ function readSevenTVConfig(config: unknown): SevenTVConfig {
 function readBetterTTVConfig(config: unknown): BetterTTVConfig {
   const defaultBetterTTVConfig: BetterTTVConfig = {
     enabled: false,
-    provider: '',
-    provider_id: '',
   };
 
   const parsedBetterTTVConfig = parseConfig<BetterTTVConfig>({
@@ -213,7 +206,6 @@ function readBetterTTVConfig(config: unknown): BetterTTVConfig {
 function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   const defaultFrankerFaceZConfig: FrankerFaceZConfig = {
     enabled: false,
-    broadcaster_id: '',
   };
 
   const parsedFrankerFaceZConfig = parseConfig<FrankerFaceZConfig>({

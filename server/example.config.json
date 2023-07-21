@@ -26,17 +26,13 @@
     "access_token": "access_token"
   },
   "seventv": {
-    "enabled": false,
-    "user_id": "user_id"
+    "enabled": false
   },
   "betterttv": {
-    "enabled": false,
-    "provider": "twitch",
-    "provider_id": "12345678"
+    "enabled": false
   },
   "frankerfacez": {
-    "enabled": false,
-    "broadcaster_id": "12345678"
+    "enabled": false
   },
   "discord_webhook": {
     "enabled": false,

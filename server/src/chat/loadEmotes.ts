@@ -116,7 +116,7 @@ const loadSevenTVEmotes = async () => {
   if (Config.sevenTV.enabled) {
     const sevenTVUser = getSevenTVUser();
     if (sevenTVUser) {
-      const emoteSets = [sevenTVUser.emote_sets[0].id, 'global'];
+      const emoteSets = [sevenTVUser.emote_set.id, 'global'];
       for (const emoteSet of emoteSets) {
         const sevenTVEmoteSet = await fetchSevenTVEmoteSet(emoteSet);
         if (sevenTVEmoteSet) {

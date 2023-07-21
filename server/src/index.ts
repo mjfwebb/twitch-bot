@@ -6,7 +6,7 @@ import { loadBotCommands } from './botCommands';
 import { loadChatExclusionList } from './chat/chatExclusionList';
 import Config, { assertConfigFileExists } from './config';
 import { runBetterTTVWebsocket } from './handlers/bttv/betterTTVWebsocket';
-import { fetchSevenTVUser } from './handlers/sevenTV/fetchSevenTVUser';
+import { fetchSevenTVTwitchUser } from './handlers/sevenTV/fetchSevenTVTwitchUser';
 import { setSevenTVUser } from './handlers/sevenTV/sevenTVUser';
 import { runSevenTVWebsocket } from './handlers/sevenTV/sevenTVWebsocket';
 import { runTwitchEventSubWebsocket } from './handlers/twitch/event-sub/twitchEventSubWebsocket';
@@ -99,7 +99,7 @@ async function main() {
     }
 
     if (Config.sevenTV.enabled) {
-      const sevenTVUser = await fetchSevenTVUser();
+      const sevenTVUser = await fetchSevenTVTwitchUser();
       if (sevenTVUser) {
         setSevenTVUser(sevenTVUser);
         logger.info(`${pc.green('[7TV enabled]')} Running 7TV WebSocket client`);

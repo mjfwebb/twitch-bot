@@ -86,3 +86,26 @@ export type SevenTVUser = {
     };
   }[];
 };
+
+export type SevenTVTwitchUser = {
+  id: string;
+  platform: string;
+  username: string;
+  display_name: string;
+  linked_at: number;
+  emote_capacity: number;
+  emote_set_id: null;
+  emote_set: {
+    id: string;
+    name: string;
+    flags: number;
+    tags: string[];
+    immutable: boolean;
+    privileged: boolean;
+    emotes: SevenTVEmote[];
+    emote_count: number;
+    capacity: number;
+    owner: null;
+  };
+  user: SevenTVUser;
+};

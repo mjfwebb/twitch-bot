@@ -10,7 +10,7 @@ export function runBetterTTVWebsocket() {
   const client = new websocket.client();
 
   function joinChannel(connection: websocket.connection) {
-    connection.send(JSON.stringify({ name: 'join_channel', data: { name: `${Config.betterTTV.provider}:${Config.betterTTV.provider_id}` } }));
+    connection.send(JSON.stringify({ name: 'join_channel', data: { name: `twitch:${Config.twitch.broadcaster_id}` } }));
   }
 
   client.on('connectFailed', function (error: unknown) {

@@ -3,7 +3,7 @@ import { addSevenTVEmote, removeSevenTVEmote, sendEmotes } from '../../chat/load
 import { SEVEN_TV_WEBSOCKET_URL } from '../../constants';
 import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SevenTVEmote, SevenTVUser } from './types';
+import type { SevenTVEmote, SevenTVTwitchUser } from './types';
 
 const closeCodes = {
   ServerError: 4000, // An error occured on the server's end
@@ -126,7 +126,7 @@ function createSubscribeMessage(type: string, condition: Record<string, string>)
   };
 }
 
-export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
+export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
   const client = new websocket.client();
 
   client.on('connectFailed', function (error: unknown) {
@@ -193,7 +193,7 @@ export function runSevenTVWebsocket(seventTVUser: SevenTVUser) {
 
               // Subscribe to events
               if (!isSubscribed) {
-                connection.sendUTF(JSON.stringify(createSubscribeMessage('emote_set.*', { object_id: seventTVUser.emote_sets[0].id })));
+                connection.sendUTF(JSON.stringify(createSubscribeMessage('emote_set.*', { object_id: seventTVTwitchUser.emote_set.id })));
               }
 
               // If there is no heartbeat, start one
