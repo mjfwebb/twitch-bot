@@ -13,6 +13,7 @@ export const help: BotCommand = {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const commandToGetDetailsAbout = parsedCommand.parsedMessage.command?.botCommandParams?.replace('!', '');
       if (!commandToGetDetailsAbout) {
+        sendChatMessage(connection, 'You need to specify a command to get details about, like !help !play');
         return;
       }
       const foundBotCommand = findBotCommand(commandToGetDetailsAbout);
