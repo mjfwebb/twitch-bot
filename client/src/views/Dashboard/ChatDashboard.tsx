@@ -26,6 +26,8 @@ export const ChatDashboard = () => {
   const animatedEntry = useChatSettingsStore((s) => s.animatedEntry);
   const dropShadowEnabled = useChatSettingsStore((s) => s.dropShadowEnabled);
   const dropShadowSettings = useChatSettingsStore((s) => s.dropShadowSettings);
+  const textStrokeEnabled = useChatSettingsStore((s) => s.textStrokeEnabled);
+  const textStrokeSettings = useChatSettingsStore((s) => s.textStrokeSettings);
 
   useEffect(() => {
     if (sendFakeMessagesPerSecond && numberOfFakeMessagesPerSecond > 0) {
@@ -73,6 +75,9 @@ export const ChatDashboard = () => {
   }
   if (dropShadowEnabled && dropShadowSettings !== DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings) {
     chatURL.searchParams.append(chatSearchParamsMap.dropShadowSettings, dropShadowSettings);
+  }
+  if (textStrokeEnabled && textStrokeSettings !== DEFAULT_CHAT_SETTINGS_VALUES.textStrokeSettings) {
+    chatURL.searchParams.append(chatSearchParamsMap.textStrokeSettings, textStrokeSettings);
   }
 
   const chatURLString = `${chatURL.protocol}${'//'}${chatURL.host}${chatURL.pathname}${chatURL.search}`;
@@ -166,6 +171,41 @@ export const ChatDashboard = () => {
               onClick={() => useChatSettingsStore.getState().setDropShadowSettings(DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings)}
             >
               reset to default (preset small)
+            </button>
+          </div>
+        )}
+        <div className="chat-modifiers-row">
+          <input
+            type="checkbox"
+            id="chat_has_text_stroke"
+            checked={textStrokeEnabled}
+            onChange={(event) => useChatSettingsStore.getState().setTextStrokeEnabled(event.target.checked)}
+          />
+          <label htmlFor="chat_has_text_stroke">Message content has text stroke</label>
+        </div>
+        {textStrokeEnabled && (
+          <div className="chat-modifiers-row">
+            <input
+              type="text"
+              id="chat_text_stroke"
+              value={textStrokeSettings}
+              onChange={(event) => useChatSettingsStore.getState().setTextStrokeSettings(event.target.value)}
+            />
+            <label htmlFor="chat_text_stroke">Text stroke settings</label>
+            <button onClick={() => useChatSettingsStore.getState().setTextStrokeSettings(PRESET_CHAT_SETTINGS_VALUES.textStrokeSettingsPresetThin)}>
+              preset thin
+            </button>
+            <button onClick={() => useChatSettingsStore.getState().setTextStrokeSettings(PRESET_CHAT_SETTINGS_VALUES.textStrokeSettingsPresetMedium)}>
+              preset medium
+            </button>
+            <button onClick={() => useChatSettingsStore.getState().setTextStrokeSettings(PRESET_CHAT_SETTINGS_VALUES.textStrokeSettingsPresetThick)}>
+              preset thick
+            </button>
+            <button
+              className="chat-dashboard-button_danger"
+              onClick={() => useChatSettingsStore.getState().setTextStrokeSettings(DEFAULT_CHAT_SETTINGS_VALUES.textStrokeSettings)}
+            >
+              reset to default (preset thin)
             </button>
           </div>
         )}

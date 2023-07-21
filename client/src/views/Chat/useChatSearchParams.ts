@@ -19,6 +19,8 @@ export const useChatSearchParams = () => {
   const showAvatars = searchParams.get(chatSearchParamsMap.showAvatars) === 'false' ? false : true;
   const showBorders = searchParams.get(chatSearchParamsMap.showBorders) === 'false' ? false : true;
   const showColonAfterDisplayName = searchParams.get(chatSearchParamsMap.showColonAfterDisplayName) === 'false' ? false : true;
+  const textStrokeEnabled = searchParams.get(chatSearchParamsMap.textStrokeEnabled) === 'true' ? true : false;
+  const textStrokeSettings = searchParams.get(chatSearchParamsMap.textStrokeSettings) || DEFAULT_CHAT_SETTINGS_VALUES.textStrokeSettings;
 
   return {
     animatedEntry,
@@ -33,5 +35,7 @@ export const useChatSearchParams = () => {
     showAvatars,
     showBorders,
     showColonAfterDisplayName,
+    textStrokeEnabled,
+    textStrokeSettings,
   };
 };

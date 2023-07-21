@@ -31,6 +31,9 @@ const Message = ({ chatMessage }: MessageProps) => {
     showBorders: chatSearchParams.showBorders,
     dropShadowEnabled: chatSearchParams.dropShadowEnabled,
     dropShadowSettings: chatSearchParams.dropShadowSettings,
+    showColonAfterDisplayName: chatSearchParams.showColonAfterDisplayName,
+    textStrokeEnabled: chatSearchParams.textStrokeEnabled,
+    textStrokeSettings: chatSearchParams.textStrokeSettings,
   };
 
   if (chatSearchParams.animatedEntry) {

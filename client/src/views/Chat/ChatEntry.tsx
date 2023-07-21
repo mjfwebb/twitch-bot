@@ -14,6 +14,8 @@ interface ChatEntryProps {
   showBorders: boolean;
   dropShadowEnabled: boolean;
   dropShadowSettings: string;
+  textStrokeEnabled: boolean;
+  textStrokeSettings: string;
   showColonAfterDisplayName: boolean;
 }
 
@@ -24,6 +26,8 @@ export const ChatEntry = ({
   showBorders,
   dropShadowEnabled,
   dropShadowSettings,
+  textStrokeEnabled,
+  textStrokeSettings,
   showColonAfterDisplayName,
 }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
@@ -52,13 +56,18 @@ export const ChatEntry = ({
           isSelected && 'chat-message-body-selected',
           showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
         )}
-        style={
-          dropShadowEnabled
+        style={{
+          ...(dropShadowEnabled
             ? {
                 textShadow: dropShadowSettings,
               }
-            : {}
-        }
+            : {}),
+          ...(textStrokeEnabled
+            ? {
+                ['-webkit-text-stroke']: textStrokeSettings,
+              }
+            : {}),
+        }}
       >
         <span>
           {showAvatars && user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}

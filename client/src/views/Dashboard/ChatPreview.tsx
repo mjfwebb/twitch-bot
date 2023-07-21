@@ -9,6 +9,8 @@ export const ChatPreview = () => {
   const dropShadowEnabled = useChatSettingsStore((s) => s.dropShadowEnabled);
   const dropShadowSettings = useChatSettingsStore((s) => s.dropShadowSettings);
   const showColonAfterDisplayName = useChatSettingsStore((s) => s.showColonAfterDisplayName);
+  const textStrokeEnabled = useChatSettingsStore((s) => s.textStrokeEnabled);
+  const textStrokeSettings = useChatSettingsStore((s) => s.textStrokeSettings);
 
   const chatMessageOne: ChatMessage = {
     id: '83d40613-4afc-46b5-9133-0367c89fa310',
@@ -67,6 +69,8 @@ export const ChatPreview = () => {
         dropShadowEnabled={dropShadowEnabled}
         dropShadowSettings={dropShadowSettings}
         showColonAfterDisplayName={showColonAfterDisplayName}
+        textStrokeEnabled={textStrokeEnabled}
+        textStrokeSettings={textStrokeSettings}
       />
       <ChatEntry
         chatMessage={{
@@ -106,6 +110,8 @@ export const ChatPreview = () => {
         dropShadowEnabled={dropShadowEnabled}
         dropShadowSettings={dropShadowSettings}
         showColonAfterDisplayName={showColonAfterDisplayName}
+        textStrokeEnabled={textStrokeEnabled}
+        textStrokeSettings={textStrokeSettings}
       />
     </>
   );

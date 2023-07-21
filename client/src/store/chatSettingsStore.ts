@@ -16,6 +16,8 @@ interface ChatPersistedSettings {
   showAvatars: boolean;
   showBorders: boolean;
   showColonAfterDisplayName: boolean;
+  textStrokeEnabled: boolean;
+  textStrokeSettings: string;
   setAnimatedEntry: (animatedEntry: boolean) => void;
   setBackgroundColor: (backgroundColor: string) => void;
   setHeight: (height: string) => void;
@@ -28,6 +30,8 @@ interface ChatPersistedSettings {
   setShowAvatars: (showAvatars: boolean) => void;
   setShowBorders: (showBorders: boolean) => void;
   setShowColonAfterDisplayName: (showColonAfterDisplayName: boolean) => void;
+  setTextStrokeEnabled: (textStrokeEnabled: boolean) => void;
+  setTextStrokeSettings: (textStrokeSettings: string) => void;
   resetState: () => void;
 }
 
@@ -43,6 +47,8 @@ export const useChatSettingsStore = create(
       dropShadowEnabled: false,
       dropShadowSettings: DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings,
       foregroundColor: DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor,
+      textStrokeEnabled: false,
+      textStrokeSettings: DEFAULT_CHAT_SETTINGS_VALUES.textStrokeSettings,
       showAvatars: true,
       showBorders: true,
       showColonAfterDisplayName: false,
@@ -81,6 +87,12 @@ export const useChatSettingsStore = create(
       },
       setShowColonAfterDisplayName: (showColonAfterDisplayName: boolean) => {
         set(() => ({ showColonAfterDisplayName }));
+      },
+      setTextStrokeEnabled: (textStrokeEnabled: boolean) => {
+        set(() => ({ textStrokeEnabled }));
+      },
+      setTextStrokeSettings: (textStrokeSettings: string) => {
+        set(() => ({ textStrokeSettings }));
       },
       resetState: () => undefined,
     }),
