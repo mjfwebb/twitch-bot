@@ -55,5 +55,5 @@ export function runSocketServer() {
     });
   });
   httpServer.listen(6969);
-  logger.info('Localhost socket server listening on port 6969');
+  logger.debug('Localhost socket server listening on port 6969');
 }

@@ -25,7 +25,7 @@ export function loadChatExclusionList() {
     chatExcludedUsers.filter((user) => user.length > 0).forEach((user) => chatExclusionList.add(user.toLowerCase()));
 
     if (chatExclusionList.size > 0) {
-      logger.info(`${pc.blue('Startup:')} Loaded ${chatExclusionList.size} users into chat exclusion list`);
+      logger.debug(`Loaded ${chatExclusionList.size} users into chat exclusion list`);
     }
   } else {
     logger.info(`${pc.blue('Startup:')} No chat exclusion list found, creating one`);
