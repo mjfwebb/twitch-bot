@@ -291,7 +291,7 @@ function readLogLevel(config: unknown): LogLevel {
     return defaultLogLevel;
   }
 
-  if (typeof logLevel !== 'string' || !logLevels.includes(logLevel)) {
+  if (typeof logLevel !== 'string' || (Array.isArray(logLevel) && !logLevels.includes(logLevel))) {
     logger.error(invalidPropertyErrorMessage('log_level', logLevels));
 
     return defaultLogLevel;
