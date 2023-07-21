@@ -27,6 +27,7 @@ export async function findOrCreateUserByName(displayName: string): Promise<User 
         avatarUrl: userInformation.profile_image_url,
         createdAt: isoString,
         updatedAt: isoString,
+        numberOfMessages: 0,
       };
     } else {
       user.displayName = userInformation.display_name;
@@ -66,6 +67,7 @@ export function findOrCreateUserById(
       avatarUrl: '',
       createdAt: isoString,
       updatedAt: isoString,
+      numberOfMessages: 0,
     };
   }
 

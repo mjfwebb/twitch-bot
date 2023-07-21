@@ -73,6 +73,7 @@ export const getFakeChatMessages = (amount: number) => {
       welcomeMessage: '',
       createdAt: sentTime,
       updatedAt: sentTime,
+      numberOfMessages: 0,
     };
 
     const parsedMessage: ParsedMessage = {

@@ -13,9 +13,20 @@ export interface User extends Timestamp {
   experience: number;
   lastSeen: string;
   avatarUrl: string;
+  numberOfMessages: number;
 }
 
-const userProperties = ['userId', 'nick', 'displayName', 'welcomeMessage', 'points', 'experience', 'lastSeen', 'avatarUrl'] as const;
+const userProperties = [
+  'userId',
+  'nick',
+  'displayName',
+  'welcomeMessage',
+  'points',
+  'experience',
+  'lastSeen',
+  'avatarUrl',
+  'numberOfMessages',
+] as const;
 
 type UserProperties = typeof userProperties[number];
 
@@ -28,6 +39,7 @@ const propertyTypes: Record<UserProperties, string> & typeof timestampPropertyTy
   experience: 'number',
   lastSeen: 'string',
   avatarUrl: 'string',
+  numberOfMessages: 'number',
   ...timestampPropertyTypes,
 };
 
