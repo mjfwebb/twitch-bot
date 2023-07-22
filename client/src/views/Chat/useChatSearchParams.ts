@@ -6,8 +6,9 @@ export const useChatSearchParams = () => {
 
   const animatedEntry = searchParams.get(chatSearchParamsMap.animatedEntry) === 'false' ? false : true;
   const backgroundColor = searchParams.get(chatSearchParamsMap.backgroundColor) || DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor;
-  const height = searchParams.get(chatSearchParamsMap.height) || DEFAULT_CHAT_SETTINGS_VALUES.height;
-  const width = searchParams.get(chatSearchParamsMap.width) || DEFAULT_CHAT_SETTINGS_VALUES.width;
+  const height =
+    searchParams.get(chatSearchParamsMap.height) || `${DEFAULT_CHAT_SETTINGS_VALUES.heightValue}${DEFAULT_CHAT_SETTINGS_VALUES.heightUnit}`;
+  const width = searchParams.get(chatSearchParamsMap.width) || `${DEFAULT_CHAT_SETTINGS_VALUES.widthValue}${DEFAULT_CHAT_SETTINGS_VALUES.widthUnit}`;
   const animatedExit = searchParams.get(chatSearchParamsMap.animatedExit) === 'true' ? true : false;
   const secondsBeforeExit =
     searchParams.get(chatSearchParamsMap.secondsBeforeExit) !== null
@@ -21,6 +22,9 @@ export const useChatSearchParams = () => {
   const showColonAfterDisplayName = searchParams.get(chatSearchParamsMap.showColonAfterDisplayName) === 'false' ? false : true;
   const textStrokeEnabled = searchParams.get(chatSearchParamsMap.textStrokeEnabled) === 'true' ? true : false;
   const textStrokeSettings = searchParams.get(chatSearchParamsMap.textStrokeSettings) || DEFAULT_CHAT_SETTINGS_VALUES.textStrokeSettings;
+  const fontSize =
+    searchParams.get(chatSearchParamsMap.fontSize) || `${DEFAULT_CHAT_SETTINGS_VALUES.fontSizeValue}${DEFAULT_CHAT_SETTINGS_VALUES.fontSizeUnit}`;
+  const fontFamily = searchParams.get(chatSearchParamsMap.fontFamily) || DEFAULT_CHAT_SETTINGS_VALUES.fontFamily;
 
   return {
     animatedEntry,
@@ -37,5 +41,7 @@ export const useChatSearchParams = () => {
     showColonAfterDisplayName,
     textStrokeEnabled,
     textStrokeSettings,
+    fontSize,
+    fontFamily,
   };
 };

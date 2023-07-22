@@ -5,6 +5,10 @@ export const PRESET_CHAT_SETTINGS_VALUES = {
   textStrokeSettingsPresetThin: '1px black',
   textStrokeSettingsPresetMedium: '2px black',
   textStrokeSettingsPresetThick: '3px black',
+  fontSizeValueSmall: 0.75,
+  fontSizeValueMedium: 1,
+  fontSizeValueLarge: 1.25,
+  fontSizeUnit: 'em',
 };
 
 export const DEFAULT_CHAT_SETTINGS_VALUES = {
@@ -17,4 +21,7 @@ export const DEFAULT_CHAT_SETTINGS_VALUES = {
   foregroundColor: '#ffffff',
   dropShadowSettings: PRESET_CHAT_SETTINGS_VALUES.dropShadowSettingsPresetSmall,
   textStrokeSettings: '1px black',
+  fontSizeValue: 1,
+  fontSizeUnit: 'em',
+  fontFamily: 'Sans-Serif',
 };

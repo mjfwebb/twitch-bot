@@ -14,6 +14,8 @@ export const Chat = () => {
         width: chatSearchParams.width,
         height: chatSearchParams.height,
         color: chatSearchParams.foregroundColor,
+        fontSize: chatSearchParams.fontSize,
+        fontFamily: chatSearchParams.fontFamily,
       }}
     >
       {chatSearchParams.animatedExit ? <DisappearingChat /> : <NonDisappearingChat />}

@@ -1,4 +1,36 @@
 .chat-dashboard {
+  .chat-modifiers {
+    margin: 2rem 0;
+    margin-left: 2rem;
+
+    &-row {
+      min-height: 3rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    &-label-above {
+      margin-top: 2rem;
+
+      label {
+        position: absolute;
+        top: -1.5rem;
+        font-weight: 500;
+      }
+
+      >*:not(label) {
+        margin-left: 0.5rem;
+      }
+
+      >input[type="color"] {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+
   .text-shadow-picker__input {
     font-size: small;
     padding: 0.3rem;

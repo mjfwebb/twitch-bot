@@ -13,4 +13,6 @@ export const chatSearchParamsMap = {
   showColonAfterDisplayName: 'show-colon-after-display-name',
   textStrokeEnabled: 'text-stroke-enabled',
   textStrokeSettings: 'text-stroke',
+  fontSize: 'font-size',
+  fontFamily: 'font-family',
 };

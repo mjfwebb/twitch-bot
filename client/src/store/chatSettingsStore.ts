@@ -20,6 +20,9 @@ interface ChatPersistedSettings {
   showColonAfterDisplayName: boolean;
   textStrokeEnabled: boolean;
   textStrokeSettings: string;
+  fontSizeValue: number;
+  fontSizeUnit: string;
+  fontFamily: string;
   setAnimatedEntry: (animatedEntry: boolean) => void;
   setBackgroundColor: (backgroundColor: string) => void;
   setHeightValue: (heightValue: number) => void;
@@ -36,6 +39,9 @@ interface ChatPersistedSettings {
   setShowColonAfterDisplayName: (showColonAfterDisplayName: boolean) => void;
   setTextStrokeEnabled: (textStrokeEnabled: boolean) => void;
   setTextStrokeSettings: (textStrokeSettings: string) => void;
+  setFontSizeValue: (fontSizeValue: number) => void;
+  setFontSizeUnit: (fontSizeUnit: string) => void;
+  setFontFamily: (fontFamily: string) => void;
   resetState: () => void;
 }
 
@@ -58,6 +64,9 @@ export const useChatSettingsStore = create(
       showAvatars: true,
       showBorders: true,
       showColonAfterDisplayName: false,
+      fontSizeUnit: DEFAULT_CHAT_SETTINGS_VALUES.fontSizeUnit,
+      fontSizeValue: DEFAULT_CHAT_SETTINGS_VALUES.fontSizeValue,
+      fontFamily: DEFAULT_CHAT_SETTINGS_VALUES.fontFamily,
       setAnimatedEntry: (animatedEntry: boolean) => {
         set(() => ({ animatedEntry }));
       },
@@ -105,6 +114,15 @@ export const useChatSettingsStore = create(
       },
       setTextStrokeSettings: (textStrokeSettings: string) => {
         set(() => ({ textStrokeSettings }));
+      },
+      setFontSizeValue: (fontSizeValue: number) => {
+        set(() => ({ fontSizeValue }));
+      },
+      setFontSizeUnit: (fontSizeUnit: string) => {
+        set(() => ({ fontSizeUnit }));
+      },
+      setFontFamily: (fontFamily: string) => {
+        set(() => ({ fontFamily }));
       },
       resetState: () => undefined,
     }),

@@ -5,6 +5,7 @@ import { useChatSettingsStore } from '../../store/chatSettingsStore';
 import useSocketContext from '../../hooks/useSocketContext';
 import { DEFAULT_CHAT_SETTINGS_VALUES, PRESET_CHAT_SETTINGS_VALUES } from '../../constants';
 import { TextShadowPicker } from '../../components/TextShadowPicker';
+import { FontPicker } from '../../components/FontPicker/FontPicker';
 import { CSSSizePicker } from '../../components/CSSSizePicker/CSSSizePicker';
 import { CopyButton } from '../../components/CopyButton/CopyButton';
 import './ChatDashboard.less';
@@ -31,6 +32,9 @@ export const ChatDashboard = () => {
   const dropShadowSettings = useChatSettingsStore((s) => s.dropShadowSettings);
   const textStrokeEnabled = useChatSettingsStore((s) => s.textStrokeEnabled);
   const textStrokeSettings = useChatSettingsStore((s) => s.textStrokeSettings);
+  const fontSizeValue = useChatSettingsStore((s) => s.fontSizeValue);
+  const fontSizeUnit = useChatSettingsStore((s) => s.fontSizeUnit);
+  const fontFamily = useChatSettingsStore((s) => s.fontFamily);
 
   useEffect(() => {
     if (sendFakeMessagesPerSecond && numberOfFakeMessagesPerSecond > 0) {
@@ -84,6 +88,13 @@ export const ChatDashboard = () => {
   if (textStrokeEnabled && textStrokeSettings !== DEFAULT_CHAT_SETTINGS_VALUES.textStrokeSettings) {
     chatURL.searchParams.append(chatSearchParamsMap.textStrokeSettings, textStrokeSettings);
   }
+  if (fontSizeValue !== DEFAULT_CHAT_SETTINGS_VALUES.fontSizeValue || fontSizeUnit !== DEFAULT_CHAT_SETTINGS_VALUES.fontSizeUnit) {
+    const fontSize = `${fontSizeValue}${fontSizeUnit}`;
+    chatURL.searchParams.append(chatSearchParamsMap.fontSize, fontSize);
+  }
+  if (fontFamily !== DEFAULT_CHAT_SETTINGS_VALUES.fontFamily) {
+    chatURL.searchParams.append(chatSearchParamsMap.fontFamily, fontFamily);
+  }
 
   const chatURLString = `${chatURL.protocol}${'//'}${chatURL.host}${chatURL.pathname}${chatURL.search}`;
 
@@ -112,6 +123,8 @@ export const ChatDashboard = () => {
           style={{
             background: backgroundColor,
             color: foregroundColor,
+            fontFamily,
+            fontSize: `${fontSizeValue}${fontSizeUnit}`,
           }}
         >
           <ChatPreview />
@@ -120,29 +133,105 @@ export const ChatDashboard = () => {
       <h3>Settings:</h3>
       <p>These settings will be saved on this same computer for the next time you visit this page.</p>
       <div className="chat-modifiers">
-        <div className="chat-modifiers-row">
+        <div className="chat-modifiers-row chat-modifiers-label-above">
+          <label htmlFor="chat_background">Background color (default is transparent)</label>
           <input
             type="color"
             id="chat_background"
             value={backgroundColor}
             onChange={(event) => useChatSettingsStore.getState().setBackgroundColor(event.target.value)}
           />
-          <label htmlFor="chat_background">Background color (default is transparent)</label>
-          <button onClick={() => useChatSettingsStore.getState().setBackgroundColor(DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor)}>
-            reset to default
-          </button>
+          <button onClick={() => useChatSettingsStore.getState().setBackgroundColor(DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor)}>reset</button>
         </div>
-        <div className="chat-modifiers-row">
+        <div className="chat-modifiers-row chat-modifiers-label-above">
+          <label htmlFor="chat_foreground">Foreground color</label>
           <input
             type="color"
             id="chat_foreground"
             value={foregroundColor}
             onChange={(event) => useChatSettingsStore.getState().setForegroundColor(event.target.value)}
           />
-          <label htmlFor="chat_foreground">Foreground color</label>
-          <button onClick={() => useChatSettingsStore.getState().setForegroundColor(DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor)}>
-            reset to default
+          <button onClick={() => useChatSettingsStore.getState().setForegroundColor(DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor)}>reset</button>
+        </div>
+        <div className="chat-modifiers-row chat-modifiers-label-above">
+          <label htmlFor="font_size">Font size</label>
+          <CSSSizePicker
+            id="font_size"
+            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.fontSizeValue}
+            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.fontSizeUnit}
+            value={fontSizeValue}
+            unit={fontSizeUnit}
+            onValueChange={(fontSizeValue) => {
+              useChatSettingsStore.getState().setFontSizeValue(fontSizeValue);
+            }}
+            onUnitChange={(fontSizeUnit) => {
+              useChatSettingsStore.getState().setFontSizeUnit(fontSizeUnit);
+            }}
+          />
+          <button
+            onClick={() => {
+              useChatSettingsStore.getState().setFontSizeValue(PRESET_CHAT_SETTINGS_VALUES.fontSizeValueSmall);
+              useChatSettingsStore.getState().setFontSizeUnit(PRESET_CHAT_SETTINGS_VALUES.fontSizeUnit);
+            }}
+          >
+            preset small
           </button>
+          <button
+            onClick={() => {
+              useChatSettingsStore.getState().setFontSizeValue(PRESET_CHAT_SETTINGS_VALUES.fontSizeValueMedium);
+              useChatSettingsStore.getState().setFontSizeUnit(PRESET_CHAT_SETTINGS_VALUES.fontSizeUnit);
+            }}
+          >
+            preset medium
+          </button>
+          <button
+            onClick={() => {
+              useChatSettingsStore.getState().setFontSizeValue(PRESET_CHAT_SETTINGS_VALUES.fontSizeValueLarge);
+              useChatSettingsStore.getState().setFontSizeUnit(PRESET_CHAT_SETTINGS_VALUES.fontSizeUnit);
+            }}
+          >
+            preset large
+          </button>
+        </div>
+        <div className="chat-modifiers-row chat-modifiers-label-above">
+          <label htmlFor="font_family">Font family</label>
+          <FontPicker id="font_family" value={fontFamily} onChange={(fontFamily) => useChatSettingsStore.getState().setFontFamily(fontFamily)} />
+
+          <button onClick={() => useChatSettingsStore.getState().setFontFamily(DEFAULT_CHAT_SETTINGS_VALUES.fontFamily)}>reset</button>
+        </div>
+        <div className="chat-modifiers-row chat-modifiers-label-above">
+          <label htmlFor="chat_width">Overlay Width</label>
+          <CSSSizePicker
+            id="chat_width"
+            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.widthValue}
+            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.widthUnit}
+            value={widthValue}
+            unit={widthUnit}
+            onValueChange={(widthValue) => {
+              useChatSettingsStore.getState().setWidthValue(widthValue);
+            }}
+            onUnitChange={(widthUnit) => {
+              useChatSettingsStore.getState().setWidthUnit(widthUnit);
+            }}
+            cssUnits={['px', 'vw', 'em']}
+          />
+        </div>
+        <div className="chat-modifiers-row chat-modifiers-label-above">
+          <label htmlFor="chat_height">Overlay Height</label>
+          <CSSSizePicker
+            id="chat_height"
+            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.heightValue}
+            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.heightUnit}
+            value={heightValue}
+            unit={heightUnit}
+            onValueChange={(heightValue) => {
+              useChatSettingsStore.getState().setHeightValue(heightValue);
+            }}
+            onUnitChange={(heightUnit) => {
+              useChatSettingsStore.getState().setHeightUnit(heightUnit);
+            }}
+            cssUnits={['px', 'vh', 'em']}
+          />
         </div>
         <div className="chat-modifiers-row">
           <input
@@ -151,17 +240,17 @@ export const ChatDashboard = () => {
             checked={dropShadowEnabled}
             onChange={(event) => useChatSettingsStore.getState().setDropShadowEnabled(event.target.checked)}
           />
-          <label htmlFor="chat_has_drop_shadow">Message content has drop shadow</label>
+          <label htmlFor="chat_has_drop_shadow">Text has drop shadow</label>
         </div>
         {dropShadowEnabled && (
-          <div className="chat-modifiers-row">
+          <div className="chat-modifiers-row chat-modifiers-label-above">
+            <label htmlFor="chat_drop_shadow">Drop shadow settings</label>
             <TextShadowPicker
               value={dropShadowSettings}
               onChange={(value) => {
                 useChatSettingsStore.getState().setDropShadowSettings(value);
               }}
             />
-            <label htmlFor="chat_drop_shadow">Drop shadow settings</label>
             <button onClick={() => useChatSettingsStore.getState().setDropShadowSettings(PRESET_CHAT_SETTINGS_VALUES.dropShadowSettingsPresetSmall)}>
               preset small
             </button>
@@ -186,7 +275,7 @@ export const ChatDashboard = () => {
             checked={textStrokeEnabled}
             onChange={(event) => useChatSettingsStore.getState().setTextStrokeEnabled(event.target.checked)}
           />
-          <label htmlFor="chat_has_text_stroke">Message content has text stroke</label>
+          <label htmlFor="chat_has_text_stroke">Text has stroke</label>
         </div>
         {textStrokeEnabled && (
           <div className="chat-modifiers-row">
@@ -214,40 +303,6 @@ export const ChatDashboard = () => {
             </button>
           </div>
         )}
-        <div className="chat-modifiers-row">
-          <CSSSizePicker
-            id="chat_width"
-            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.widthValue}
-            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.widthUnit}
-            value={widthValue}
-            unit={widthUnit}
-            onValueChange={(widthValue) => {
-              useChatSettingsStore.getState().setWidthValue(widthValue);
-            }}
-            onUnitChange={(widthUnit) => {
-              useChatSettingsStore.getState().setWidthUnit(widthUnit);
-            }}
-            cssUnits={['px', 'vw', 'em']}
-          />
-          <label htmlFor="chat_width">Width</label>
-        </div>
-        <div className="chat-modifiers-row">
-          <CSSSizePicker
-            id="chat_height"
-            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.heightValue}
-            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.heightUnit}
-            value={heightValue}
-            unit={heightUnit}
-            onValueChange={(heightValue) => {
-              useChatSettingsStore.getState().setHeightValue(heightValue);
-            }}
-            onUnitChange={(heightUnit) => {
-              useChatSettingsStore.getState().setHeightUnit(heightUnit);
-            }}
-            cssUnits={['px', 'vh', 'em']}
-          />
-          <label htmlFor="chat_height">Height</label>
-        </div>
         <div className="chat-modifiers-row">
           <input
             type="checkbox"
