@@ -5,6 +5,7 @@ import { useChatSettingsStore } from '../../store/chatSettingsStore';
 import useSocketContext from '../../hooks/useSocketContext';
 import { DEFAULT_CHAT_SETTINGS_VALUES, PRESET_CHAT_SETTINGS_VALUES } from '../../constants';
 import { TextShadowPicker } from '../../components/TextShadowPicker';
+import { CSSSizePicker } from '../../components/CSSSizePicker/CSSSizePicker';
 import { CopyButton } from '../../components/CopyButton/CopyButton';
 import './ChatDashboard.less';
 import { ChatPreview } from './ChatPreview';
@@ -19,8 +20,10 @@ export const ChatDashboard = () => {
   const showAvatars = useChatSettingsStore((s) => s.showAvatars);
   const showBorders = useChatSettingsStore((s) => s.showBorders);
   const showColonAfterDisplayName = useChatSettingsStore((s) => s.showColonAfterDisplayName);
-  const height = useChatSettingsStore((s) => s.height);
-  const width = useChatSettingsStore((s) => s.width);
+  const heightValue = useChatSettingsStore((s) => s.heightValue);
+  const heightUnit = useChatSettingsStore((s) => s.heightUnit);
+  const widthValue = useChatSettingsStore((s) => s.widthValue);
+  const widthUnit = useChatSettingsStore((s) => s.widthUnit);
   const animatedExit = useChatSettingsStore((s) => s.animatedExit);
   const secondsBeforeExit = useChatSettingsStore((s) => s.secondsBeforeExit);
   const animatedEntry = useChatSettingsStore((s) => s.animatedEntry);
@@ -55,10 +58,12 @@ export const ChatDashboard = () => {
   if (showColonAfterDisplayName === true) {
     chatURL.searchParams.append(chatSearchParamsMap.showColonAfterDisplayName, 'true');
   }
-  if (height !== DEFAULT_CHAT_SETTINGS_VALUES.height) {
+  if (heightValue !== DEFAULT_CHAT_SETTINGS_VALUES.heightValue || heightUnit !== DEFAULT_CHAT_SETTINGS_VALUES.heightUnit) {
+    const height = `${heightValue}${heightUnit}`;
     chatURL.searchParams.append(chatSearchParamsMap.height, height);
   }
-  if (width !== DEFAULT_CHAT_SETTINGS_VALUES.width) {
+  if (widthValue !== DEFAULT_CHAT_SETTINGS_VALUES.widthValue || widthUnit !== DEFAULT_CHAT_SETTINGS_VALUES.widthUnit) {
+    const width = `${widthValue}${widthUnit}`;
     chatURL.searchParams.append(chatSearchParamsMap.width, width);
   }
   if (animatedExit) {
@@ -210,14 +215,38 @@ export const ChatDashboard = () => {
           </div>
         )}
         <div className="chat-modifiers-row">
-          <input type="text" id="chat_width" value={width} onChange={(event) => useChatSettingsStore.getState().setWidth(event.target.value)} />
+          <CSSSizePicker
+            id="chat_width"
+            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.widthValue}
+            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.widthUnit}
+            value={widthValue}
+            unit={widthUnit}
+            onValueChange={(widthValue) => {
+              useChatSettingsStore.getState().setWidthValue(widthValue);
+            }}
+            onUnitChange={(widthUnit) => {
+              useChatSettingsStore.getState().setWidthUnit(widthUnit);
+            }}
+            cssUnits={['px', 'vw', 'em']}
+          />
           <label htmlFor="chat_width">Width</label>
-          <button onClick={() => useChatSettingsStore.getState().setWidth(DEFAULT_CHAT_SETTINGS_VALUES.width)}>reset</button>
         </div>
         <div className="chat-modifiers-row">
-          <input type="text" id="chat_height" value={height} onChange={(event) => useChatSettingsStore.getState().setHeight(event.target.value)} />
+          <CSSSizePicker
+            id="chat_height"
+            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.heightValue}
+            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.heightUnit}
+            value={heightValue}
+            unit={heightUnit}
+            onValueChange={(heightValue) => {
+              useChatSettingsStore.getState().setHeightValue(heightValue);
+            }}
+            onUnitChange={(heightUnit) => {
+              useChatSettingsStore.getState().setHeightUnit(heightUnit);
+            }}
+            cssUnits={['px', 'vh', 'em']}
+          />
           <label htmlFor="chat_height">Height</label>
-          <button onClick={() => useChatSettingsStore.getState().setHeight(DEFAULT_CHAT_SETTINGS_VALUES.height)}>reset</button>
         </div>
         <div className="chat-modifiers-row">
           <input

@@ -6,8 +6,10 @@ import { DEFAULT_CHAT_SETTINGS_VALUES } from '../constants';
 interface ChatPersistedSettings {
   animatedEntry: boolean;
   backgroundColor: string;
-  height: string;
-  width: string;
+  heightValue: number;
+  heightUnit: string;
+  widthValue: number;
+  widthUnit: string;
   animatedExit: boolean;
   secondsBeforeExit: number;
   dropShadowEnabled: boolean;
@@ -20,8 +22,10 @@ interface ChatPersistedSettings {
   textStrokeSettings: string;
   setAnimatedEntry: (animatedEntry: boolean) => void;
   setBackgroundColor: (backgroundColor: string) => void;
-  setHeight: (height: string) => void;
-  setWidth: (width: string) => void;
+  setHeightValue: (heightValue: number) => void;
+  setHeightUnit: (heightUnit: string) => void;
+  setWidthValue: (widthValue: number) => void;
+  setWidthUnit: (widthUnit: string) => void;
   setAnimatedExit: (disappears: boolean) => void;
   setSecondsBeforeExit: (secondsBeforeExit: number) => void;
   setDropShadowEnabled: (dropShadowEnabled: boolean) => void;
@@ -40,8 +44,10 @@ export const useChatSettingsStore = create(
     (set, get) => ({
       animatedEntry: true,
       backgroundColor: DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor,
-      height: DEFAULT_CHAT_SETTINGS_VALUES.height,
-      width: DEFAULT_CHAT_SETTINGS_VALUES.width,
+      heightValue: DEFAULT_CHAT_SETTINGS_VALUES.heightValue,
+      heightUnit: DEFAULT_CHAT_SETTINGS_VALUES.heightUnit,
+      widthValue: DEFAULT_CHAT_SETTINGS_VALUES.widthValue,
+      widthUnit: DEFAULT_CHAT_SETTINGS_VALUES.widthUnit,
       animatedExit: false,
       secondsBeforeExit: DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit,
       dropShadowEnabled: false,
@@ -58,11 +64,17 @@ export const useChatSettingsStore = create(
       setBackgroundColor: (backgroundColor: string) => {
         set(() => ({ backgroundColor }));
       },
-      setHeight: (height: string) => {
-        set(() => ({ height }));
+      setHeightValue: (heightValue: number) => {
+        set(() => ({ heightValue }));
       },
-      setWidth: (width: string) => {
-        set(() => ({ width }));
+      setHeightUnit: (heightUnit: string) => {
+        set(() => ({ heightUnit }));
+      },
+      setWidthValue: (widthValue: number) => {
+        set(() => ({ widthValue }));
+      },
+      setWidthUnit: (widthUnit: string) => {
+        set(() => ({ widthUnit }));
       },
       setAnimatedExit: (animatedExit: boolean) => {
         set(() => ({ animatedExit }));
