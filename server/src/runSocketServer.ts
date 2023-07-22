@@ -49,7 +49,6 @@ export function runSocketServer() {
     socket.on('getChatMessages', () => {
       getChatMessages();
     });
-
     socket.on('getFakeChatMessages', (amount: number) => {
       getFakeChatMessages(amount);
     });
