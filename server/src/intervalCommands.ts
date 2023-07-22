@@ -9,7 +9,7 @@ interface IntervalCommand {
   callback: ((connection: connection) => void) | ((connection: connection) => Promise<void>);
   tickInterval: number;
   currentTick: number;
-  tickOffset: number;
+  startDelay: number;
 }
 
 export const intervalCommands: IntervalCommand[] = [];
@@ -21,7 +21,7 @@ export const loadSpotifyIntervalCommands = () => {
     },
     tickInterval: 5,
     currentTick: 0,
-    tickOffset: 0,
+    startDelay: 0,
   });
 };
 
@@ -35,14 +35,14 @@ export const loadIntervalCommands = () => {
         ),
       tickInterval: 60 * 20,
       currentTick: 0,
-      tickOffset: 30,
+      startDelay: 30,
     },
     {
       callback: (connection) =>
         sendChatMessage(connection, 'This twitch bot is opensource and the source code can be found at https://github.com/mjfwebb/twitch-bot/'),
       tickInterval: 60 * 30,
       currentTick: 0,
-      tickOffset: 120,
+      startDelay: 120,
     },
   );
 };
@@ -60,10 +60,10 @@ export function runIntervalCommands() {
     }
 
     for (const intervalCommand of intervalCommands) {
-      if (intervalCommand.currentTick === intervalCommand.tickInterval + intervalCommand.tickOffset) {
+      if (intervalCommand.currentTick === intervalCommand.tickInterval + intervalCommand.startDelay) {
         await intervalCommand.callback(connection);
         intervalCommand.currentTick = 0;
-        intervalCommand.tickOffset = 0;
+        intervalCommand.startDelay = 0;
       } else {
         intervalCommand.currentTick += 1;
       }
