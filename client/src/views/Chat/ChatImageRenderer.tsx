@@ -5,6 +5,7 @@ import type { Emotes } from '../../twitchTypes';
 import useStore from '../../store/store';
 import { parseSevenTVModifierFlags } from './parseSevenTVModifierFlags';
 import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags';
+import { bttvModifierMap, bttvModifiers } from './bttvModifierFlags';
 
 // emote regex which separates strings based on whitespace
 const emoteRegex = /(\s+)/g;
@@ -52,7 +53,10 @@ export const ChatImageRenderer = ({
     emote: ChatEmote | undefined;
     cheer: ChatCheer | undefined;
     skip: boolean;
+    modifierFlags?: string[];
   }[] = [];
+
+  const nextMessageModifierFlags: string[] = [];
 
   message.split(emoteRegex).forEach((match) => {
     if (bits) {
@@ -86,20 +90,32 @@ export const ChatImageRenderer = ({
       }
     }
 
-    if (twitchEmoteMap[match]) {
+    if (bttvModifiers.includes(match)) {
+      messageParts.push({
+        match,
+        emote: undefined,
+        cheer: undefined,
+        skip: true,
+      });
+      nextMessageModifierFlags.push(bttvModifierMap[match]);
+    } else if (twitchEmoteMap[match]) {
       messageParts.push({
         match,
         emote: twitchEmoteMap[match],
         cheer: undefined,
         skip: false,
+        modifierFlags: [...nextMessageModifierFlags],
       });
+      nextMessageModifierFlags.length = 0;
     } else if (chatEmotes[match] && !chatEmotes[match].hidden) {
       messageParts.push({
         match,
         emote: chatEmotes[match],
         cheer: undefined,
         skip: false,
+        modifierFlags: [...nextMessageModifierFlags],
       });
+      nextMessageModifierFlags.length = 0;
     } else {
       messageParts.push({
         match,
@@ -112,7 +128,7 @@ export const ChatImageRenderer = ({
 
   return (
     <>
-      {messageParts.map(({ match, emote, cheer, skip }, index) => {
+      {messageParts.map(({ match, emote, cheer, skip, modifierFlags }, index) => {
         if (cheer) {
           // Get the cheer amount without the name:
           const cheerAmount = Number(match.replace(/\D/g, ''));
@@ -135,15 +151,15 @@ export const ChatImageRenderer = ({
           );
         }
 
-        if (!emote || !emote.src) {
-          return match;
-        }
-
         if (skip) {
           return null;
         }
 
-        const modifierClasses: string[] = [];
+        if (!emote || !emote.src) {
+          return match;
+        }
+
+        const modifierClasses: string[] = [...(modifierFlags || [])];
         const zeroWidthEmotes: ChatEmote[] = [];
         let nextIndex = index + 1;
 
@@ -200,21 +216,25 @@ export const ChatImageRenderer = ({
         }
 
         if (emote) {
+          const image = (
+            <img
+              className={classNames(
+                'chat-emote',
+                modifierClasses.map((flag) => `chat-emote--${flag}`)
+              )}
+              key={`${match}.${index}`}
+              src={emote.src}
+              srcSet={emote.srcSet}
+              alt={match}
+              title={match}
+              {...(modifierClasses.includes('growx') ? { width: (emote.width || 36 * 3) > 112 ? 112 : emote.width || 36 * 3 } : {})}
+            />
+          );
+
           if (zeroWidthEmotes.length > 0) {
             return (
               <div className="chat-emote--zero-width-wrapper" key={`${match}.${index}`}>
-                <img
-                  className={classNames(
-                    'chat-emote',
-                    modifierClasses.map((flag) => `chat-emote--${flag}`)
-                  )}
-                  key={`${match}.${index}`}
-                  src={emote.src}
-                  srcSet={emote.srcSet}
-                  alt={match}
-                  title={match}
-                  {...(modifierClasses.includes('growx') ? { width: emote.width || 36 * 2 } : {})}
-                />
+                {image}
                 {zeroWidthEmotes.map((zeroWidthEmote, index) => (
                   <span key={index} className="chat-emote--zero-width-span">
                     <img
@@ -229,20 +249,7 @@ export const ChatImageRenderer = ({
               </div>
             );
           } else {
-            return (
-              <img
-                className={classNames(
-                  'chat-emote',
-                  modifierClasses.map((flag) => `chat-emote--${flag}`)
-                )}
-                key={`${match}.${index}`}
-                src={emote.src}
-                srcSet={emote.srcSet}
-                alt={match}
-                title={match}
-                {...(modifierClasses.includes('growx') ? { width: emote.width || 36 * 2 } : {})}
-              />
-            );
+            return image;
           }
         }
       })}
