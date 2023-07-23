@@ -33,6 +33,7 @@ import { song } from './commands/song';
 import { songqueue } from './commands/songqueue';
 import { task } from './commands/task';
 import { tts } from './commands/tts';
+import { uptime } from './commands/uptime';
 import { viewers } from './commands/viewers';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
@@ -116,6 +117,7 @@ const complexBotCommands: BotCommand[] = [
   viewers,
   welcome,
   whoami,
+  uptime,
 ];
 
 const soundMatchRegex = /%sound:([a-zA-Z0-9-_.]+)%/g;
