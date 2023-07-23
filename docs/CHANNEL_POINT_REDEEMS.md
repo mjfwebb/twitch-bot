@@ -21,6 +21,7 @@ An example of a channel point reward redemption action is:
     }
   ]
 }
+```
 
 The `id` and `title` fields are the ID and title of the channel point reward. 
 
