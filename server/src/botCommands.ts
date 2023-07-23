@@ -12,6 +12,7 @@ import { help } from './commands/help';
 import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { issue } from './commands/issue';
+import { lastsong } from './commands/lastsong';
 import { lutf1sk } from './commands/lutf1sk';
 import { play } from './commands/play';
 import { queuesong } from './commands/queuesong';
@@ -96,6 +97,7 @@ const complexBotCommands: BotCommand[] = [
   forodor,
   help,
   issue,
+  lastsong,
   lutf1sk,
   play,
   quote,
