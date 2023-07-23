@@ -63,7 +63,7 @@ export const queuesong: BotCommand = {
         return;
       }
 
-      // // If the track is found, send a message to the chat and exit
+      // If the track is found, send a message to the chat and exit
       const trackArtists = track.artists.map((artist) => artist.name).join(', ');
       sendChatMessage(connection, `Song "${track.name} - ${trackArtists}" added to the queue athanoCool`);
     }
