@@ -157,7 +157,9 @@ export const ChatImageRenderer = ({
           },
           cheer: undefined,
           skip: false,
+          modifierFlags: [...nextMessageModifierFlags],
         });
+        nextMessageModifierFlags.length = 0;
       } else {
         messageParts.push({
           match,
