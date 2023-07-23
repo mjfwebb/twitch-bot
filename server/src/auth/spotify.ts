@@ -8,6 +8,7 @@ import { SPOTIFY_AUTH_URL } from '../constants';
 import { logger } from '../logger';
 import { errorMessage } from '../utils/errorMessage';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
+import { simplePluralise } from '../utils/simplePluralise';
 import { getTokenFromFile, setTokenInFile } from './tokenManager';
 
 export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_token');
@@ -24,7 +25,7 @@ export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_toke
  */
 export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
   if (attemptNumber > 1) {
-    throw new Error(`Failed to perform fetch ${attemptNumber} times to Spotify API`);
+    throw new Error(`Failed to perform fetch ${attemptNumber} ${simplePluralise('time', attemptNumber)} to Spotify API`);
   }
   const result = await fetch(url, init);
 

@@ -8,6 +8,7 @@ import { TWITCH_AUTH_URL } from '../constants';
 import { logger } from '../logger';
 import { errorMessage } from '../utils/errorMessage';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
+import { simplePluralise } from '../utils/simplePluralise';
 import { getTokenFromFile, setTokenInFile } from './tokenManager';
 
 /**
@@ -40,7 +41,7 @@ export const getCurrentAccessToken = () => getTokenFromFile('twitch_access_token
  */
 export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
   if (attemptNumber > 2) {
-    throw new Error(`Failed to perform fetch ${attemptNumber} times to Twitch API`);
+    throw new Error(`Failed to perform fetch ${attemptNumber} ${simplePluralise('time', attemptNumber)} to Twitch API`);
   }
   const result = await fetch(url, init);
 
