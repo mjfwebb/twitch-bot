@@ -5,26 +5,11 @@ import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamSta
 import { logger } from '../../../logger';
 import { ChannelPointRedeems } from '../../../storage-models/channel-point-redeem-model';
 import { setStreamStatus } from '../../../streamState';
-import type { Command, ParsedCommand, TwitchWebsocketMessage } from '../../../types';
+import type { Command, TwitchWebsocketMessage } from '../../../types';
 import type { EventFromSubscriptionType, EventSubResponse } from '../../../typings/twitchEvents';
+import { fakeParsedCommand } from '../../../utils/fakeParsedCommand';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { getConnection } from '../irc/twitchIRCWebsocket';
-
-const fakeParsedCommand = (command: Command): ParsedCommand => ({
-  commandName: '',
-  botCommand: {
-    command: '',
-    id: '',
-    description: '',
-    callback: () => false,
-  },
-  parsedMessage: {
-    command,
-    parameters: null,
-    source: null,
-    tags: null,
-  },
-});
 
 function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
   return (

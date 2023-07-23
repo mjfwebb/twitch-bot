@@ -5,6 +5,7 @@ import { addpushup } from './commands/addpushup';
 import { addsquat } from './commands/addsquat';
 import { commands } from './commands/commands';
 import { delvoid } from './commands/delvoid';
+import { fetchcurrentsong } from './commands/fetchcurrentsong';
 import { followage } from './commands/followage';
 import { forodor } from './commands/forodor';
 import { help } from './commands/help';
@@ -90,6 +91,7 @@ const complexBotCommands: BotCommand[] = [
   addsquat,
   commands,
   delvoid,
+  fetchcurrentsong,
   followage,
   forodor,
   help,

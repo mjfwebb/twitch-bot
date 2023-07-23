@@ -67,6 +67,12 @@ The bot can automatically handle channel point reward redemptions.
 
 You can find more information about these features in the [channel point rewards configuration guide](CHANNEL_POINT_REWARDS.md)
 
+## Interval commands
+
+Sometimes you want something to happen on a regular interval. You can set up interval commands to do this.
+
+You can find more information about these features in the [interval commands configuration guide](INTERVAL_COMMANDS.md)
+
 ## Add users to the chat exclusion list
 
 Open `chat-exclusion-list.txt` in the root directory of the project. Add the usernames of the users you want to exclude from chat commands. Each username should be on a new line.

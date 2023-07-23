@@ -1,24 +1,23 @@
-import type { connection } from 'websocket';
-import { sendChatMessage } from './commands/helpers/sendChatMessage';
+import { findBotCommand } from './commands/helpers/findBotCommand';
 import { SECOND_MS } from './constants';
-import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
 import { getConnection } from './handlers/twitch/irc/twitchIRCWebsocket';
+import type { IntervalCommand } from './storage-models/interval-command-model';
+import { IntervalCommands } from './storage-models/interval-command-model';
 import { getStreamStatus } from './streamState';
-
-interface IntervalCommand {
-  callback: ((connection: connection) => void) | ((connection: connection) => Promise<void>);
-  tickInterval: number;
-  currentTick: number;
-  startDelay: number;
-}
+import type { Command } from './types';
+import { fakeParsedCommand } from './utils/fakeParsedCommand';
 
 export const intervalCommands: IntervalCommand[] = [];
 
 export const loadSpotifyIntervalCommands = () => {
   intervalCommands.push({
-    callback: async () => {
-      await fetchCurrentlyPlaying();
-    },
+    actions: [
+      {
+        message: '',
+        command: 'fetchcurrentsong',
+        commandParams: '',
+      },
+    ],
     tickInterval: 5,
     currentTick: 0,
     startDelay: 0,
@@ -26,25 +25,7 @@ export const loadSpotifyIntervalCommands = () => {
 };
 
 export const loadIntervalCommands = () => {
-  intervalCommands.push(
-    {
-      callback: (connection) =>
-        sendChatMessage(
-          connection,
-          "Have you tried out Between Worlds? It's free to play in your browser right now, no sign up required! https://betweenworlds.net",
-        ),
-      tickInterval: 60 * 20,
-      currentTick: 0,
-      startDelay: 30,
-    },
-    {
-      callback: (connection) =>
-        sendChatMessage(connection, 'This twitch bot is opensource and the source code can be found at https://github.com/mjfwebb/twitch-bot/'),
-      tickInterval: 60 * 30,
-      currentTick: 0,
-      startDelay: 120,
-    },
-  );
+  intervalCommands.push(...IntervalCommands.data.map((intervalCommand) => ({ ...intervalCommand, currentTick: 0 })));
 };
 
 export function runIntervalCommands() {
@@ -61,7 +42,23 @@ export function runIntervalCommands() {
 
     for (const intervalCommand of intervalCommands) {
       if (intervalCommand.currentTick === intervalCommand.tickInterval + intervalCommand.startDelay) {
-        await intervalCommand.callback(connection);
+        for (const action of intervalCommand.actions) {
+          if (action.command) {
+            const foundCommand = findBotCommand(action.command);
+            if (foundCommand) {
+              const connection = getConnection();
+              if (connection) {
+                const command: Command = {
+                  command: action.command,
+                  botCommand: action.command,
+                  botCommandParams: action.commandParams,
+                };
+
+                await foundCommand.callback(connection, fakeParsedCommand(command));
+              }
+            }
+          }
+        }
         intervalCommand.currentTick = 0;
         intervalCommand.startDelay = 0;
       } else {
