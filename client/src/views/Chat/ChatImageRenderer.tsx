@@ -1,3 +1,4 @@
+import twemoji from 'twemoji';
 import classNames from 'classnames';
 
 import type { ChatCheer, ChatEmote } from '../../types';
@@ -9,12 +10,6 @@ import { bttvModifierMap, bttvModifiers } from './bttvModifierFlags';
 
 // emote regex which separates strings based on whitespace
 const emoteRegex = /(\s+)/g;
-
-function containsEmoji(str: string) {
-  // Regular expression to match emojis
-  const emojiRegex = /[\u{1F600}-\u{1F64F}|\u{1F300}-\u{1F5FF}|\u{1F680}-\u{1F6FF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}]/u;
-  return emojiRegex.test(str);
-}
 
 export const ChatImageRenderer = ({
   emotes,
@@ -122,29 +117,55 @@ export const ChatImageRenderer = ({
         modifierFlags: [...nextMessageModifierFlags],
       });
       nextMessageModifierFlags.length = 0;
-    } else if (containsEmoji(match)) {
-      messageParts.push({
-        match,
-        emote: {
-          origin: 'emoji',
-          src: match,
-          srcSet: '',
-          width: null,
-          height: null,
-          modifier: false,
-          hidden: false,
-          modifierFlags: 0,
-        },
-        cheer: undefined,
-        skip: false,
-      });
     } else {
-      messageParts.push({
-        match,
-        emote: undefined,
-        cheer: undefined,
-        skip: false,
+      let src = '';
+      twemoji.parse(match, {
+        callback: (icon, options) => {
+          const parseCallbackOptions = options as { base: string; size: 'svg'; ext: '.svg' };
+          if (icon.length === 0) {
+            return false;
+          }
+
+          // Taken from bttv
+          switch (icon) {
+            case 'a9': // ©
+            case 'ae': // ®
+            case '2122': // ™
+              return false;
+            default:
+              break;
+          }
+
+          src = `${parseCallbackOptions.base}${parseCallbackOptions.size}/${icon}${parseCallbackOptions.ext}`;
+
+          return false;
+        },
       });
+
+      if (src) {
+        messageParts.push({
+          match,
+          emote: {
+            origin: 'emoji',
+            src,
+            srcSet: '',
+            width: null,
+            height: null,
+            modifier: false,
+            hidden: false,
+            modifierFlags: 0,
+          },
+          cheer: undefined,
+          skip: false,
+        });
+      } else {
+        messageParts.push({
+          match,
+          emote: undefined,
+          cheer: undefined,
+          skip: false,
+        });
+      }
     }
   });
 
@@ -238,32 +259,21 @@ export const ChatImageRenderer = ({
         }
 
         if (emote) {
-          const image =
-            emote.origin === 'emoji' ? (
-              <span
-                key={`${match}.${index}`}
-                className={classNames(
-                  'chat-emote',
-                  modifierClasses.map((flag) => `chat-emote--${flag}`)
-                )}
-                {...(modifierClasses.includes('growx') ? { width: (emote.width || 36 * 3) > 112 ? 112 : emote.width || 36 * 3 } : {})}
-              >
-                {match}
-              </span>
-            ) : (
-              <img
-                className={classNames(
-                  'chat-emote',
-                  modifierClasses.map((flag) => `chat-emote--${flag}`)
-                )}
-                key={`${match}.${index}`}
-                src={emote.src}
-                srcSet={emote.srcSet}
-                alt={match}
-                title={match}
-                {...(modifierClasses.includes('growx') ? { width: (emote.width || 36 * 3) > 112 ? 112 : emote.width || 36 * 3 } : {})}
-              />
-            );
+          const image = (
+            <img
+              className={classNames(
+                'chat-emote',
+                emote.origin === 'emoji' && 'chat-emote--emoji',
+                modifierClasses.map((flag) => `chat-emote--${flag}`)
+              )}
+              key={`${match}.${index}`}
+              src={emote.src}
+              srcSet={emote.srcSet}
+              alt={match}
+              title={match}
+              {...(modifierClasses.includes('growx') ? { width: (emote.width || 36 * 3) > 112 ? 112 : emote.width || 36 * 3 } : {})}
+            />
+          );
 
           if (zeroWidthEmotes.length > 0) {
             return (
