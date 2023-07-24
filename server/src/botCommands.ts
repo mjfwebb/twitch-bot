@@ -15,6 +15,7 @@ import { issue } from './commands/issue';
 import { lastsong } from './commands/lastsong';
 import { lutf1sk } from './commands/lutf1sk';
 import { play } from './commands/play';
+import { point } from './commands/point';
 import { queuesong } from './commands/queuesong';
 import { quote } from './commands/quote';
 import { randomissue } from './commands/randomissue';
@@ -100,6 +101,7 @@ const complexBotCommands: BotCommand[] = [
   issue,
   lutf1sk,
   play,
+  point,
   quote,
   removecommand,
   roll,
@@ -113,10 +115,10 @@ const complexBotCommands: BotCommand[] = [
   skiptts,
   task,
   tts,
+  uptime,
   viewers,
   welcome,
   whoami,
-  uptime,
 ];
 
 const soundMatchRegex = /%sound:([a-zA-Z0-9-_.]+)%/g;
