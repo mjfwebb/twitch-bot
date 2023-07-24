@@ -9,7 +9,7 @@ Ensure you have [setup your environment and configuration file](SETUP.md) before
 
 The listed scopes are relevant for the existing commands in the repository. If you would like to add new features with more in-depth API interactions then you should adjust the scopes accordingly.
 
-### twitch
+### Twitch
 
 To get the auth_code construct your URL and enter it into the browser.  Here's an example:
 
@@ -19,7 +19,7 @@ Once you open this and authorize access, it will redirect you. Take the auth cod
 
 The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
 
-### spotify
+### Spotify
 
 Visit https://developer.spotify.com/documentation/web-api/tutorials/getting-started to create an app and obtain the `client_id` and `client_secret`
 
@@ -33,23 +33,27 @@ Once you open this and authorize access, it will redirect you. Take the auth cod
 
 The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`. 
 
-### github
+### GitHub
 
 Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
 
 Ensure that the personal access token includes the scope to access and modify issues.
 
-### sevenTV
+### SevenTV
 
-Enter your userId which you can get from the URL on your account page in 7tv.app.
+You only need to toggle the enabled flag to true. Internally the bot will use the Twitch account's ID to find your SevenTV ID.
 
-### betterTTV
+### BetterTTV
 
-You probably want to set provider as twitch and the ID is your twitch broadcaster ID (likely the same as set in twitch).
+You only need to toggle the enabled flag to true. Internally the bot will use the Twitch account's ID to find your BTTV ID.
 
-### frankerFaceZ
+### FrankerFaceZ
 
-Enter your broadcaster ID (likely the same as set in twitch).
+You only need to toggle the enabled flag to true. Internally the bot will use the Twitch account's ID to find your FFZ ID.
+
+### TikTok
+
+To get the `session_id` to use the TikTok voices in the !tts command you need to create a TikTok account and extract the session_id from your browser. This can be done by accessing the cookies in your browser and copying the value of the `session_id` cookie.
 
 ## Setting up your commands
 

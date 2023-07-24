@@ -17,6 +17,7 @@ import { runTwitchIRCWebsocket } from './handlers/twitch/irc/twitchIRCWebsocket'
 import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchViewerBots';
 import { intervalCommands, loadIntervalCommands, loadSpotifyIntervalCommands, runIntervalCommands } from './intervalCommands';
 import { logger } from './logger';
+import { removeOldTTSFiles } from './removeOldTTSFiles';
 import { runSocketServer } from './runSocketServer';
 import { setDisplayName, setStreamStatus } from './streamState';
 import { isError } from './utils/isError';
@@ -25,7 +26,7 @@ async function main() {
   try {
     assertConfigFileExists();
     assertTokenFileExists();
-
+    removeOldTTSFiles();
     loadBotCommands();
 
     if (Config.features.commands_handler) {

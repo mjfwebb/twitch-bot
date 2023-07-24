@@ -50,6 +50,11 @@ export type FrankerFaceZConfig = {
   enabled: boolean;
 };
 
+export type TikTokConfig = {
+  enabled: boolean;
+  session_id: string;
+};
+
 export type FeaturesConfig = {
   interval_commands: boolean;
   bit_handler: boolean;
@@ -69,6 +74,7 @@ interface IConfig {
   sevenTV: SevenTVConfig;
   betterTTV: BetterTTVConfig;
   frankerFaceZ: FrankerFaceZConfig;
+  tiktok: TikTokConfig;
   features: FeaturesConfig;
 }
 
@@ -218,6 +224,22 @@ function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   return parsedFrankerFaceZConfig;
 }
 
+function readTikTokConfig(config: unknown): TikTokConfig {
+  const defaultTikTokConfig: TikTokConfig = {
+    enabled: false,
+    session_id: '',
+  };
+
+  const parsedTikTokConfig = parseConfig<TikTokConfig>({
+    config,
+    defaultConfig: defaultTikTokConfig,
+    part: 'tiktok',
+    properties: ['enabled', 'session_id'],
+  });
+
+  return parsedTikTokConfig;
+}
+
 function readFeaturesConfig(config: unknown): FeaturesConfig {
   const defaultFeaturesConfig: FeaturesConfig = {
     interval_commands: true,
@@ -305,6 +327,7 @@ const Config: IConfig = {
   sevenTV: readSevenTVConfig(config),
   betterTTV: readBetterTTVConfig(config),
   frankerFaceZ: readFrankerFaceZConfig(config),
+  tiktok: readTikTokConfig(config),
   features: readFeaturesConfig(config),
 };
 
