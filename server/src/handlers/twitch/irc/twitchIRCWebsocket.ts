@@ -13,6 +13,7 @@ import { parseMessage } from './parsers/parseMessage';
 import { returningChatterHandler } from './returningChatterHandler';
 
 let connectionRef: websocket.connection | undefined;
+let reconnecting = false;
 
 export const getConnection = () => connectionRef;
 
@@ -26,6 +27,9 @@ export function runTwitchIRCWebsocket() {
 
   client.on('connect', function (connection) {
     logger.info('Twitch IRC WebSocket: Client Connected');
+
+    // Set reconnecting to false so that the reconnectClient function stops trying to reconnect.
+    reconnecting = false;
 
     // Store the connection ref so it can be exported
     connectionRef = connection;
@@ -100,6 +104,11 @@ export function runTwitchIRCWebsocket() {
                   connection.send(`PART ${channel}`);
                 }
                 break;
+              case 'RECONNECT':
+                // The connection will be closed by the server, so we should try to reconnect.
+                reconnecting = true;
+                reconnectClient(client);
+                break;
               default: // Ignore all other IRC messages.
             }
           }
@@ -108,4 +117,16 @@ export function runTwitchIRCWebsocket() {
     });
   });
   client.connect(TWITCH_CHAT_IRC_WS_URL);
+}
+
+function reconnectClient(client: websocket.client, connectionAttempts = 1) {
+  const timeout = Math.min(1000 * Math.max(connectionAttempts, 1), 5000);
+  setTimeout(() => {
+    if (reconnecting) {
+      logger.info(`Twitch IRC WebSocket: Reconnection attempt ${connectionAttempts}`);
+      client.connect(TWITCH_CHAT_IRC_WS_URL);
+      connectionAttempts++;
+      reconnectClient(client, connectionAttempts);
+    }
+  }, timeout);
 }
