@@ -49,10 +49,10 @@ export const tts: BotCommand = {
           const voiceLowerCase = voice.toLowerCase();
           for (const voice of VOICES) {
             if (voice.name.toLowerCase() === voiceLowerCase) {
-              foundVoice = true;
               if (currentMessage.length > 0) {
                 const result = await getVoiceBuffer(nextVoice, currentMessage);
                 if (result) {
+                  foundVoice = true;
                   buffer = Buffer.concat([buffer, result]);
                 }
               }
