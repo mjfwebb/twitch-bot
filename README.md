@@ -22,6 +22,24 @@ This bot assumes users have programming experience. Please keep in mind that thi
 
 We used Twitch's example at https://dev.twitch.tv/docs/irc/example-bot as a starting point. Thanks, Twitch!
 
+## Features
+
+- Twitch event handling
+- Twitch chat overlay
+  - Supports Twitch emotes and badges, 7TV emotes, BTTV emotes and modifiers, and FFZ emotes and modifiers
+  - Customisable formatting, colours, and animations
+- Custom commands
+- Text-to-speech with custom voices from streamelements and TikTok
+- Sound effects
+- Spotify integration with song requests
+- Spotify song overlay
+- Twitch rewards integration
+- Interval commands (e.g. periodic messages)
+- Twitch task overlay
+- GitHub integration
+- Discord webhook integration
+- Probably more!
+
 ## Setup
 [View SETUP instructions](./docs/SETUP.md)
 
