@@ -1,3 +1,4 @@
+import type { DataValidatorResponse } from '../fileManager';
 import { FileManager } from '../fileManager';
 import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -18,11 +19,17 @@ const intervalCommandActionProperties = ['message', 'command', 'commandParams'];
 
 const fileName = 'intervalCommands.json';
 
-const intervalCommandValidator = (data: unknown): data is IntervalCommand[] => {
+const intervalCommandValidator = (data: unknown): DataValidatorResponse => {
+  let response: DataValidatorResponse = 'valid';
+
   if (Array.isArray(data)) {
-    return data.every((intervalCommand: unknown) => {
+    if (data.length === 0) {
+      response = 'valid';
+    }
+
+    for (const intervalCommand of data as unknown[]) {
       if (typeof intervalCommand !== 'object') {
-        return false;
+        response = 'invalid';
       }
 
       for (const property of [...intervalCommandProperties]) {
@@ -31,53 +38,55 @@ const intervalCommandValidator = (data: unknown): data is IntervalCommand[] => {
             case 'tickInterval':
               if (typeof intervalCommand.tickInterval !== 'number') {
                 logger.error(`Invalid interval command format, property ${property} must be a number`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'startDelay':
               if (typeof intervalCommand.startDelay !== 'number') {
                 logger.error(`Invalid interval command format, property ${property} must be a number`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'actions':
               if (!Array.isArray(intervalCommand.actions)) {
                 logger.error(`Invalid interval command format, property ${property} must be an array`);
-                return false;
-              }
-              if (!intervalCommand.actions.every((action: unknown) => typeof action === 'object')) {
-                logger.error(`Invalid interval command format, property ${property} must be an array of objects`);
-                return false;
-              }
-              if (
-                !intervalCommand.actions.every((action: unknown) =>
-                  intervalCommandActionProperties.every((actionProperty) => hasOwnProperty(action, actionProperty)),
-                )
-              ) {
-                logger.error(`Invalid interval command format, property ${property} must be an array of objects`);
-                return false;
+                response = 'invalid';
+              } else {
+                if (!intervalCommand.actions.every((action: unknown) => typeof action === 'object')) {
+                  logger.error(`Invalid interval command format, property ${property} must be an array of objects`);
+                  response = 'invalid';
+                }
+                if (
+                  !intervalCommand.actions.every((action: unknown) =>
+                    intervalCommandActionProperties.every((actionProperty) => hasOwnProperty(action, actionProperty)),
+                  )
+                ) {
+                  logger.error(`Invalid interval command format, property ${property} must be an array of objects`);
+                  response = 'invalid';
+                }
               }
               break;
             default:
               logger.error(`Invalid interval command format, unknown property ${property}`);
-              return false;
+              response = 'invalid';
           }
         } else {
           logger.error(`Invalid channel point redeem format, missing property ${property}`);
-          return false;
+          response = 'invalid';
         }
       }
-
-      return true;
-    });
+    }
+  } else {
+    response = 'invalid';
   }
-  return false;
+
+  return response;
 };
 
 export class IntervalCommandModel {
   private static instance: IntervalCommandModel;
 
-  private fileManager: FileManager<IntervalCommand[]>;
+  private fileManager: FileManager<IntervalCommand>;
   private intervalCommands: IntervalCommand[] = [];
   constructor() {
     this.fileManager = new FileManager(fileName, intervalCommandValidator);

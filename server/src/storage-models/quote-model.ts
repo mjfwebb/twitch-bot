@@ -1,3 +1,4 @@
+import type { DataValidatorResponse } from '../fileManager';
 import { FileManager } from '../fileManager';
 import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -26,35 +27,42 @@ const propertyTypes: Record<QuoteProperties, string> & typeof timestampPropertyT
 
 const fileName = 'quotes.json';
 
-const quoteValidator = (data: unknown): data is Quote[] => {
+const quoteValidator = (data: unknown): DataValidatorResponse => {
+  let response: DataValidatorResponse = 'valid';
+
   if (Array.isArray(data)) {
-    return data.every((quote: unknown) => {
+    if (data.length === 0) {
+      response = 'valid';
+    }
+
+    for (const quote of data as unknown[]) {
       if (typeof quote !== 'object') {
-        return false;
+        response = 'invalid';
       }
 
       for (const property of [...quoteProperties, ...timestampProperties]) {
         if (hasOwnProperty(quote, property)) {
           if (typeof quote[property] !== propertyTypes[property]) {
             logger.error(`Invalid quote format, property ${property} is not of type ${propertyTypes[property]}`);
-            return false;
+            response = 'invalid';
           }
         } else {
           logger.error(`Invalid quote format, missing property ${property}`);
-          return false;
+          response = 'invalid';
         }
       }
-
-      return true;
-    });
+    }
+  } else {
+    response = 'invalid';
   }
-  return false;
+
+  return response;
 };
 
 export class QuoteModel {
   private static instance: QuoteModel;
 
-  private fileManager: FileManager<Quote[]>;
+  private fileManager: FileManager<Quote>;
   private quotes: Quote[] = [];
   constructor() {
     this.fileManager = new FileManager(fileName, quoteValidator);

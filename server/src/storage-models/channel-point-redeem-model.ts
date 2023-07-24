@@ -1,3 +1,4 @@
+import type { DataValidatorResponse } from '../fileManager';
 import { FileManager } from '../fileManager';
 import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -19,11 +20,16 @@ const channelPointRedeemActionProperties = ['message', 'command', 'commandParams
 
 const fileName = 'channelPointRedeems.json';
 
-const channelPointRedeemValidator = (data: unknown): data is ChannelPointRedeem[] => {
+const channelPointRedeemValidator = (data: unknown): DataValidatorResponse => {
+  let response: DataValidatorResponse = 'valid';
+
   if (Array.isArray(data)) {
-    return data.every((channelPointRedeem: unknown) => {
+    if (data.length === 0) {
+      response = 'valid';
+    }
+    for (const channelPointRedeem of data as unknown[]) {
       if (typeof channelPointRedeem !== 'object') {
-        return false;
+        response = 'invalid';
       }
 
       for (const property of [...channelPointRedeemProperties]) {
@@ -32,59 +38,61 @@ const channelPointRedeemValidator = (data: unknown): data is ChannelPointRedeem[
             case 'title':
               if (typeof channelPointRedeem.title !== 'string') {
                 logger.error(`Invalid channel point redeem format, property ${property} must be a string`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'id':
               if (typeof channelPointRedeem.id !== 'string') {
                 logger.error(`Invalid channel point redeem format, property ${property} must be a string`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'timesUsed':
               if (typeof channelPointRedeem.timesUsed !== 'number') {
                 logger.error(`Invalid channel point redeem format, property ${property} must be a number`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'actions':
               if (!Array.isArray(channelPointRedeem.actions)) {
                 logger.error(`Invalid channel point redeem format, property ${property} must be an array`);
-                return false;
-              }
-              if (!channelPointRedeem.actions.every((action: unknown) => typeof action === 'object')) {
-                logger.error(`Invalid channel point redeem format, property ${property} must be an array of objects`);
-                return false;
-              }
-              if (
-                !channelPointRedeem.actions.every((action: unknown) =>
-                  channelPointRedeemActionProperties.every((actionProperty) => hasOwnProperty(action, actionProperty)),
-                )
-              ) {
-                logger.error(`Invalid channel point redeem format, property ${property} must be an array of objects`);
-                return false;
+                response = 'invalid';
+              } else {
+                if (!channelPointRedeem.actions.every((action: unknown) => typeof action === 'object')) {
+                  logger.error(`Invalid channel point redeem format, property ${property} must be an array of objects`);
+                  response = 'invalid';
+                }
+                if (
+                  !channelPointRedeem.actions.every((action: unknown) =>
+                    channelPointRedeemActionProperties.every((actionProperty) => hasOwnProperty(action, actionProperty)),
+                  )
+                ) {
+                  logger.error(`Invalid channel point redeem format, property ${property} must be an array of objects`);
+                  response = 'invalid';
+                }
               }
               break;
             default:
               logger.error(`Invalid channel point redeem format, unknown property ${property}`);
-              return false;
+              response = 'invalid';
           }
         } else {
           logger.error(`Invalid channel point redeem format, missing property ${property}`);
-          return false;
+          response = 'invalid';
         }
       }
-
-      return true;
-    });
+    }
+  } else {
+    response = 'invalid';
   }
-  return false;
+
+  return response;
 };
 
 export class ChannelPointRedeemModel {
   private static instance: ChannelPointRedeemModel;
 
-  private fileManager: FileManager<ChannelPointRedeem[]>;
+  private fileManager: FileManager<ChannelPointRedeem>;
   private channelPointRedeems: ChannelPointRedeem[] = [];
   constructor() {
     this.fileManager = new FileManager(fileName, channelPointRedeemValidator);

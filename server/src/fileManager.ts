@@ -3,14 +3,13 @@ import pc from 'picocolors';
 import { logger } from './logger';
 import { isError } from './utils/isError';
 
-type DataValidator<T> = (data: unknown) => data is T;
+export type DataValidatorResponse = 'valid' | 'invalid' | 'missingData';
+type DataValidator = (data: unknown) => DataValidatorResponse;
 
 export class FileManager<T> {
-  private fileName: string;
-  private data?: T;
-  private validator: DataValidator<T>;
+  private data?: T[];
 
-  constructor(fileName: string, validator: DataValidator<T>) {
+  constructor(private fileName: string, private validator: DataValidator, private propertyDefaultValues?: Record<string, unknown>) {
     this.fileName = fileName;
     this.validator = validator;
     if (!existsSync(this.fileName)) {
@@ -19,7 +18,7 @@ export class FileManager<T> {
     }
   }
 
-  public loadData(): T {
+  public loadData(): T[] {
     const fileContent = readFileSync(this.fileName, 'utf8');
     let parsedFileContent: unknown;
     try {
@@ -28,21 +27,31 @@ export class FileManager<T> {
       if (isError(error)) {
         if (error.message.includes('Unexpected end of JSON input')) {
           logger.info(`${pc.magenta('Error handled gracefully:')} Empty JSON in file ${this.fileName}. Setting data to empty array.`);
-          this.data = [] as T;
+          this.data = [] as T[];
           return this.data;
         }
       }
       throw new Error(`Invalid JSON in file ${this.fileName}`);
     }
-    if (this.validator(parsedFileContent)) {
-      this.data = parsedFileContent;
+    const validatorResponse = this.validator(parsedFileContent);
+    if (validatorResponse === 'valid') {
+      this.data = parsedFileContent as T[];
+      return this.data;
+    } else if (validatorResponse === 'missingData') {
+      // Add default values to missing properties
+      this.data = (parsedFileContent as T[]).map((data) => {
+        const newData = { ...this.propertyDefaultValues, ...data };
+        return newData as T;
+      });
+      // Save data with default values
+      this.saveData(this.data);
       return this.data;
     } else {
       throw new Error(`Invalid data format in file ${this.fileName}`);
     }
   }
 
-  public saveData(data: T): void {
+  public saveData(data: T[]): void {
     writeFileSync(this.fileName, JSON.stringify(data, null, 2));
   }
 }

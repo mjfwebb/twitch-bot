@@ -1,4 +1,5 @@
 import { writeFileSync } from 'fs';
+import type { DataValidatorResponse } from '../fileManager';
 import { FileManager } from '../fileManager';
 import { logger } from '../logger';
 import type { ParsedMessageWithAllProps } from '../types';
@@ -20,35 +21,42 @@ const propertyTypes: Record<TaskProperties, string> & typeof timestampPropertyTy
 
 const fileName = 'tasks.json';
 
-const taskValidator = (data: unknown): data is Task[] => {
+const taskValidator = (data: unknown): DataValidatorResponse => {
+  let response: DataValidatorResponse = 'valid';
+
   if (Array.isArray(data)) {
-    return data.every((task: unknown) => {
+    if (data.length === 0) {
+      response = 'valid';
+    }
+
+    for (const task of data as unknown[]) {
       if (typeof task !== 'object') {
-        return false;
+        response = 'invalid';
       }
 
       for (const property of [...taskProperties, ...timestampProperties]) {
         if (hasOwnProperty(task, property)) {
           if (typeof task[property] !== propertyTypes[property]) {
             logger.error(`Invalid task format, property ${property} is not of type ${propertyTypes[property]}`);
-            return false;
+            response = 'invalid';
           }
         } else {
           logger.error(`Invalid task format, missing property ${property}`);
-          return false;
+          response = 'invalid';
         }
       }
-
-      return true;
-    });
+    }
+  } else {
+    response = 'invalid';
   }
-  return false;
+
+  return response;
 };
 
 export class TaskModel {
   private static instance: TaskModel;
 
-  private fileManager: FileManager<Task[]>;
+  private fileManager: FileManager<Task>;
   private tasks: Task[] = [];
   constructor() {
     this.fileManager = new FileManager(fileName, taskValidator);

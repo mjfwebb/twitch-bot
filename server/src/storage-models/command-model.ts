@@ -1,3 +1,4 @@
+import type { DataValidatorResponse } from '../fileManager';
 import { FileManager } from '../fileManager';
 import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -20,11 +21,17 @@ const optionalCommandProperties = ['hidden', 'privileged', 'mustBeUser'];
 
 const fileName = 'commands.json';
 
-const commandValidator = (data: unknown): data is Command[] => {
+const commandValidator = (data: unknown): DataValidatorResponse => {
+  let response: DataValidatorResponse = 'valid';
+
   if (Array.isArray(data)) {
-    return data.every((command: unknown) => {
+    if (data.length === 0) {
+      response = 'valid';
+    }
+
+    for (const command of data as unknown[]) {
       if (typeof command !== 'object') {
-        return false;
+        response = 'invalid';
       }
 
       for (const property of [...commandProperties, ...optionalCommandProperties, ...timestampProperties]) {
@@ -33,90 +40,95 @@ const commandValidator = (data: unknown): data is Command[] => {
             case 'command':
               if (!Array.isArray(command.command)) {
                 logger.error(`Invalid command format, property ${property} must be an array`);
-                return false;
-              }
-              if (!command.command.every((command) => typeof command === 'string')) {
-                logger.error(`Invalid command format, property ${property} must be an array of strings`);
-                return false;
+                response = 'invalid';
+              } else {
+                if (!command.command.every((command) => typeof command === 'string')) {
+                  logger.error(`Invalid command format, property ${property} must be an array of strings`);
+                  response = 'invalid';
+                }
               }
               break;
             case 'commandId':
               if (typeof command.commandId !== 'string') {
                 logger.error(`Invalid command format, property ${property} must be a string`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'cooldown':
               if (typeof command.cooldown !== 'number') {
                 logger.error(`Invalid command format, property ${property} must be a number`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'description':
               if (typeof command.description !== 'string') {
                 logger.error(`Invalid command format, property ${property} must be a string`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'message':
               if (typeof command.message !== 'string') {
                 logger.error(`Invalid command format, property ${property} must be a string`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'timesUsed':
               if (typeof command.timesUsed !== 'number') {
                 logger.error(`Invalid command format, property ${property} must be a number`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'createdAt':
             case 'updatedAt':
               if (typeof command[property] !== 'string') {
                 logger.error(`Invalid command format, property ${property} must be a string`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'hidden':
             case 'privileged':
               if (typeof command[property] !== 'boolean') {
                 logger.error(`Invalid command format, property ${property} must be a boolean`);
-                return false;
+                response = 'invalid';
               }
               break;
             case 'mustBeUser':
               if (!Array.isArray(command.mustBeUser)) {
                 logger.error(`Invalid command format, property ${property} must be an array`);
-                return false;
-              }
-              if (!command.mustBeUser.every((command) => typeof command === 'string')) {
-                logger.error(`Invalid command format, property ${property} must be an array of strings`);
-                return false;
+                response = 'invalid';
+              } else {
+                if (!command.mustBeUser.every((command) => typeof command === 'string')) {
+                  logger.error(`Invalid command format, property ${property} must be an array of strings`);
+                  response = 'invalid';
+                }
               }
               break;
             default:
               logger.error(`Invalid command format, unknown property ${JSON.stringify(property)}`);
-              return false;
+              response = 'invalid';
           }
         } else {
           if (optionalCommandProperties.includes(property)) {
             continue;
           }
           logger.error(`Invalid command format, missing property ${property}`);
-          return false;
+          response = 'invalid';
         }
       }
 
-      return true;
-    });
+      return 'valid';
+    }
+  } else {
+    response = 'invalid';
   }
-  return false;
+
+  return response;
 };
 
 export class CommandModel {
   private static instance: CommandModel;
 
-  private fileManager: FileManager<Command[]>;
+  private fileManager: FileManager<Command>;
   private commands: Command[] = [];
   constructor() {
     this.fileManager = new FileManager(fileName, commandValidator);

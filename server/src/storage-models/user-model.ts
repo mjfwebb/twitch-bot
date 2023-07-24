@@ -1,3 +1,4 @@
+import type { DataValidatorResponse } from '../fileManager';
 import { FileManager } from '../fileManager';
 import { logger } from '../logger';
 import { hasOwnProperty } from '../utils/hasOwnProperty';
@@ -30,6 +31,8 @@ const userProperties = [
 
 type UserProperties = typeof userProperties[number];
 
+const requiredProperties = ['userId', 'nick', 'displayName'] as const;
+
 const propertyTypes: Record<UserProperties, string> & typeof timestampPropertyTypes = {
   userId: 'string',
   nick: 'string',
@@ -43,40 +46,70 @@ const propertyTypes: Record<UserProperties, string> & typeof timestampPropertyTy
   ...timestampPropertyTypes,
 };
 
+const propertyDefaultValues: Record<UserProperties, string | number> = {
+  userId: '',
+  nick: '',
+  displayName: '',
+  welcomeMessage: '',
+  points: 0,
+  experience: 0,
+  lastSeen: '0',
+  avatarUrl: '',
+  numberOfMessages: 0,
+};
+
 const fileName = 'users.json';
 
-const userValidator = (data: unknown): data is User[] => {
+const userValidator = (data: unknown): DataValidatorResponse => {
+  let response: DataValidatorResponse = 'valid';
+
   if (Array.isArray(data)) {
-    return data.every((user: unknown) => {
+    if (data.length === 0) {
+      response = 'valid';
+    }
+
+    for (const user of data as unknown[]) {
       if (typeof user !== 'object') {
-        return false;
+        response = 'invalid';
+      }
+
+      if (!user) {
+        response = 'invalid';
+      }
+
+      for (const requiredProperty of requiredProperties) {
+        if (!hasOwnProperty(user, requiredProperty)) {
+          logger.error(`Invalid user format, missing property ${requiredProperty}`);
+          response = 'invalid';
+        }
       }
 
       for (const property of [...userProperties, ...timestampProperties]) {
         if (hasOwnProperty(user, property)) {
           if (typeof user[property] !== propertyTypes[property]) {
             logger.error(`Invalid user format, property ${property} is not of type ${propertyTypes[property]}`);
-            return false;
+            response = 'invalid';
           }
         } else {
-          logger.error(`Invalid user format, missing property ${property}`);
-          return false;
+          logger.warn(`Invalid user format, missing property ${property}. Default value will be set.`);
+          response = 'missingData';
         }
       }
-
-      return true;
-    });
+    }
+  } else {
+    response = 'invalid';
   }
-  return false;
+
+  return response;
 };
 
 export class UserModel {
   private static instance: UserModel;
 
-  private fileManager: FileManager<User[]>;
+  private fileManager: FileManager<User>;
   private users: User[] = [];
   constructor() {
-    this.fileManager = new FileManager(fileName, userValidator);
+    this.fileManager = new FileManager(fileName, userValidator, propertyDefaultValues);
     this.users = this.fileManager.loadData();
   }
 
