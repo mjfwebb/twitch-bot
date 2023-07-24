@@ -205,6 +205,8 @@ export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
                   if (missedHeartbeats > 3) {
                     logger.error('SevenTV WebSocket: Too many missed heartbeats, closing connection.');
                     connection.close(closeCodes.Timeout);
+                    missedHeartbeats = 0;
+                    isConnected = false;
                     return;
                   }
                 }, heartbeatInterval);
