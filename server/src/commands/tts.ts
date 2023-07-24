@@ -43,10 +43,10 @@ export const tts: BotCommand = {
       let buffer: Buffer = Buffer.from('');
 
       for (const word of words) {
+        let foundVoice = false;
         if (word.endsWith(':')) {
           const voice = word.slice(0, -1);
           const voiceLowerCase = voice.toLowerCase();
-          let foundVoice = false;
           for (const voice of VOICES) {
             if (voice.name.toLowerCase() === voiceLowerCase) {
               foundVoice = true;
@@ -61,10 +61,8 @@ export const tts: BotCommand = {
               break;
             }
           }
-          if (!foundVoice) {
-            currentMessage += `${word} `;
-          }
-        } else {
+        }
+        if (!foundVoice) {
           currentMessage += `${word} `;
         }
       }
