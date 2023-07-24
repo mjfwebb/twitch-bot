@@ -57,44 +57,50 @@ function getFakeChatMessage(): string {
   return fakeMessage;
 }
 
+export const generateFakeChatMessage = (index = 0) => {
+  const username = randomString();
+  const message = getFakeChatMessage();
+  const sentTime = new Date().toISOString();
+  const user: ChatMessage['user'] = {
+    userId: 'fake-user-id',
+    nick: 'fake-nick',
+    displayName: username,
+    points: 0,
+    experience: 0,
+    lastSeen: sentTime,
+    avatarUrl: `https://picsum.photos/100/100?random=${index + 1}`,
+    welcomeMessage: '',
+    createdAt: sentTime,
+    updatedAt: sentTime,
+    numberOfMessages: 0,
+  };
+
+  const parsedMessage: ParsedMessage = {
+    tags: {
+      'display-name': username,
+      'user-id': 'fake-user-id',
+      'tmi-sent-ts': sentTime,
+    },
+    source: null,
+    command: {
+      command: 'PRIVMSG',
+      botCommandParams: message,
+    },
+    parameters: message,
+  };
+
+  const fakeChatMessage: ChatMessage = {
+    id: `fake-chat-message-id-${fakeChatMessageCount++}`,
+    user,
+    parsedMessage,
+  };
+
+  return fakeChatMessage;
+};
+
 export const getFakeChatMessages = (amount: number) => {
   for (let index = 0; index < amount; index++) {
-    const username = randomString();
-    const message = getFakeChatMessage();
-    const sentTime = new Date().toISOString();
-    const user: ChatMessage['user'] = {
-      userId: 'fake-user-id',
-      nick: 'fake-nick',
-      displayName: username,
-      points: 0,
-      experience: 0,
-      lastSeen: sentTime,
-      avatarUrl: `https://picsum.photos/100/100?random=${index + 1}`,
-      welcomeMessage: '',
-      createdAt: sentTime,
-      updatedAt: sentTime,
-      numberOfMessages: 0,
-    };
-
-    const parsedMessage: ParsedMessage = {
-      tags: {
-        'display-name': username,
-        'user-id': 'fake-user-id',
-        'tmi-sent-ts': sentTime,
-      },
-      source: null,
-      command: {
-        command: 'PRIVMSG',
-        botCommandParams: message,
-      },
-      parameters: message,
-    };
-
-    const fakeChatMessage: ChatMessage = {
-      id: `fake-chat-message-id-${fakeChatMessageCount++}`,
-      user,
-      parsedMessage,
-    };
+    const fakeChatMessage = generateFakeChatMessage(index);
 
     getIO().emit('chatMessage', fakeChatMessage);
   }

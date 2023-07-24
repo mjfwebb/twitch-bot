@@ -11,6 +11,7 @@ export const BETTER_TTV_WEBSOCKET_URL = 'wss://sockets.betterttv.net/ws';
 export const SECOND_MS = 1000;
 export const MINUTE_MS = 60000;
 export const MAX_TWITCH_MESSAGE_LENGTH = 500;
+export const CHAT_MESSAGES_TO_RETAIN = 20;
 
 export const SOUNDS = ['success', 'fail', 'party', 'ominous_bell', 'redeem', 'oh_great_heavens'] as const;
 
