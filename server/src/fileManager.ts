@@ -53,5 +53,6 @@ export class FileManager<T> {
 
   public saveData(data: T[]): void {
     writeFileSync(this.fileName, JSON.stringify(data, null, 2));
+    this.data = data;
   }
 }
