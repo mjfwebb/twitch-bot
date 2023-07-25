@@ -40,7 +40,7 @@ export const tts: BotCommand = {
         api: 'streamelements',
       };
       let currentMessage = '';
-      let buffer: Buffer = Buffer.from('');
+      let buffer: Buffer = Buffer.from([]);
 
       for (const word of words) {
         let skip = false;
