@@ -4,6 +4,22 @@ import type { User } from '../../storage-models/user-model';
 import { Users } from '../../storage-models/user-model';
 import type { UserInformation } from '../../types';
 
+// To be used when we want to find a user by their display name or nick
+// Which is useful when we want to find a user by command parameters
+export function findUserByTargetName(targetName: string): User | null {
+  const userFromDisplayName = Users.findOneByDisplayName(targetName);
+  if (userFromDisplayName) {
+    return userFromDisplayName;
+  }
+
+  const userFromNick = Users.findOneByNick(targetName);
+  if (userFromNick) {
+    return userFromNick;
+  }
+
+  return null;
+}
+
 // Unlike findOrCreateUserById, this function uses the data returned from the Twitch API to create a new user.
 export async function findOrCreateUserByName(displayName: string): Promise<User | null> {
   if (getTwitchViewerBotNames().includes(displayName)) {
