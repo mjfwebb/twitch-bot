@@ -107,7 +107,7 @@ export class ChannelPointRedeemModel {
   }
 
   get data(): ChannelPointRedeem[] {
-    return this.channelPointRedeems;
+    return [...this.channelPointRedeems];
   }
 
   public findOneById(id: string): ChannelPointRedeem | null {

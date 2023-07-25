@@ -71,7 +71,7 @@ export class TaskModel {
   }
 
   get data(): Task[] {
-    return this.tasks;
+    return [...this.tasks];
   }
 
   set data(tasks: Task[]) {

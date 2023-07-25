@@ -101,7 +101,7 @@ export class IntervalCommandModel {
   }
 
   get data(): IntervalCommand[] {
-    return this.intervalCommands;
+    return [...this.intervalCommands];
   }
 }
 

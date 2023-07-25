@@ -121,7 +121,8 @@ export class UserModel {
   }
 
   get data(): User[] {
-    return this.users;
+    // Return a copy of the data
+    return [...this.users];
   }
 
   public findOneByUserId(userId: string): User | null {

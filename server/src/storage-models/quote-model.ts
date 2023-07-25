@@ -77,7 +77,7 @@ export class QuoteModel {
   }
 
   get data(): Quote[] {
-    return this.quotes;
+    return [...this.quotes];
   }
 
   public findOneByQuoteId(quoteId: string): Quote | null {

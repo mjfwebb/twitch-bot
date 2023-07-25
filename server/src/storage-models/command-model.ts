@@ -143,7 +143,7 @@ export class CommandModel {
   }
 
   get data(): Command[] {
-    return this.commands;
+    return [...this.commands];
   }
 
   public findOneByCommandId(commandId: string): Command | null {
