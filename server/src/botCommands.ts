@@ -16,6 +16,7 @@ import { lastsong } from './commands/lastsong';
 import { lutf1sk } from './commands/lutf1sk';
 import { play } from './commands/play';
 import { point } from './commands/point';
+import { pointladder } from './commands/pointladder';
 import { queuesong } from './commands/queuesong';
 import { quote } from './commands/quote';
 import { randomissue } from './commands/randomissue';
@@ -103,6 +104,7 @@ const complexBotCommands: BotCommand[] = [
   lutf1sk,
   play,
   point,
+  pointladder,
   quote,
   removecommand,
   roll,
