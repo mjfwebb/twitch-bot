@@ -36,6 +36,7 @@ import { task } from './commands/task';
 import { tts } from './commands/tts';
 import { uptime } from './commands/uptime';
 import { viewers } from './commands/viewers';
+import { voices } from './commands/voices';
 import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
 import Config from './config';
@@ -117,6 +118,7 @@ const complexBotCommands: BotCommand[] = [
   tts,
   uptime,
   viewers,
+  voices,
   welcome,
   whoami,
 ];
