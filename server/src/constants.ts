@@ -496,4 +496,19 @@ export const VOICES = [
     id: 'en_us_rocket',
     api: 'tiktok',
   },
+  {
+    name: 'Betty',
+    id: 'en_female_betty',
+    api: 'tiktok',
+  },
+  {
+    name: 'ukneighbor',
+    id: 'en_male_ukneighbor',
+    api: 'tiktok',
+  },
+  {
+    name: 'ukbutler',
+    id: 'en_male_ukbutler',
+    api: 'tiktok',
+  },
 ];
