@@ -1,0 +1,15 @@
+export const songSearchParamsMap = {
+  primaryColor: 'primary-color',
+  secondaryColor: 'secondary-color',
+  height: 'height',
+  width: 'width',
+  dropShadowEnabled: 'drop-shadow',
+  dropShadowSettings: 'drop-shadow-settings',
+  textStrokeEnabled: 'text-stroke-enabled',
+  textStrokeSettings: 'text-stroke',
+  titleFontSize: 'title-font-size',
+  titleFontFamily: 'title-font-family',
+  artistsFontSize: 'artists-font-size',
+  artistsFontFamily: 'artists-font-family',
+  showAlbumArt: 'show-album-art',
+};

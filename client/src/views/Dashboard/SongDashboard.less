@@ -1,0 +1,88 @@
+.song-dashboard {
+
+  input:not([type='range']),
+  select {
+    min-width: 1.7rem;
+    min-height: 1.7rem;
+    font-size: 1.1rem;
+  }
+
+  input[type='number'],
+  input[type='text'] {
+    width: 5rem;
+  }
+
+  input[type='checkbox'] {
+    padding: 0;
+    margin: 0;
+  }
+
+  input[type='color'] {
+    height: 3rem;
+    width: 4rem;
+  }
+
+  .song-modifiers {
+    margin: 2rem 0;
+    margin-left: 2rem;
+
+    &-row {
+      min-height: 3rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    &-label-above {
+      margin-top: 2rem;
+
+      label {
+        position: absolute;
+        top: -1.5rem;
+        font-weight: 500;
+      }
+
+      >*:not(label) {
+        margin-left: 0.5rem;
+      }
+
+      >input[type="color"] {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+
+  .text-shadow-picker__input {
+    font-size: small;
+    padding: 0.3rem;
+  }
+
+  &-note {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ff4c4c;
+    background: linear-gradient(90deg, #ff4c4c 0%, #ff00f2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+  }
+
+  &-preview {}
+}
+
+@keyframes PreviewWrapperAnimation {
+  0% {
+    background-position: 10% 0%
+  }
+
+  50% {
+    background-position: 91% 100%
+  }
+
+  100% {
+    background-position: 10% 0%
+  }
+}

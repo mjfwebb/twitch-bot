@@ -8,8 +8,9 @@ import { TextShadowPicker } from '../../components/TextShadowPicker';
 import { FontPicker } from '../../components/FontPicker/FontPicker';
 import { CSSSizePicker } from '../../components/CSSSizePicker/CSSSizePicker';
 import { CopyButton } from '../../components/CopyButton/CopyButton';
-import './ChatDashboard.less';
 import { ChatPreview } from './ChatPreview';
+
+import './ChatDashboard.less';
 
 export const ChatDashboard = () => {
   const socket = useSocketContext();
