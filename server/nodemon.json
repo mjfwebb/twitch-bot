@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.spec.ts", "node_modules"],
+  "exec": "ts-node --transpiler sucrase/ts-node-plugin ./src/index.ts"
+}
