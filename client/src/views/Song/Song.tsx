@@ -71,6 +71,7 @@ export const SongDisplay = ({
                 fontSize: titleFontSize,
                 backgroundImage: `linear-gradient(45deg, ${secondaryColor} 20%, ${primaryColor} 30%, ${primaryColor} 70%, ${secondaryColor} 80%)`,
                 WebkitTextFillColor: 'transparent',
+                backgroundSize: '200% auto',
               }}
             >
               {currentSong.item.name}
