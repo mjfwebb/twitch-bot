@@ -18,7 +18,8 @@ An example of an interval command is:
       "command": "test",
       "commandParams": "This is a test command!",
     }
-  ]
+  ],
+  "mustBeStreaming": true,
 }
 ```
 
@@ -31,3 +32,5 @@ The `message` field is the message that will be sent to chat when the command is
 The `command` field is the command that will be run when the command is run. If the command is an empty string, no command will be run.
 
 The `commandParams` field is the parameters that will be passed to the command when it is run. If the commandParams is an empty string, no parameters will be passed to the command.
+
+The `mustBeStreaming` field is a boolean that determines whether or not the command will be run if the bot is not streaming. If this is set to `true`, the command will only be run if the bot is streaming. If this is set to `false`, the command will be run regardless of whether or not the bot is streaming.

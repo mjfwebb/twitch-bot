@@ -21,6 +21,7 @@ export const loadSpotifyIntervalCommands = () => {
     tickInterval: 5,
     currentTick: 0,
     startDelay: 0,
+    mustBeStreaming: false,
   });
 };
 
@@ -35,13 +36,15 @@ export function runIntervalCommands() {
       return;
     }
 
-    const streamState = getStreamStatus();
-    if (streamState === 'offline') {
-      return;
-    }
-
     for (const intervalCommand of intervalCommands) {
       if (intervalCommand.currentTick === intervalCommand.tickInterval + intervalCommand.startDelay) {
+        if (intervalCommand.mustBeStreaming) {
+          const streamStatus = getStreamStatus();
+          if (streamStatus !== 'online') {
+            continue;
+          }
+        }
+
         for (const action of intervalCommand.actions) {
           if (action.command) {
             const foundCommand = findBotCommand(action.command);

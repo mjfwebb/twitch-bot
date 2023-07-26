@@ -12,9 +12,10 @@ export interface IntervalCommand {
     command: string; // command to run when the redeem is used
     commandParams: string; // command to run when the redeem is used,
   }[];
+  mustBeStreaming: boolean; // whether the command can only be run when the stream is live
 }
 
-const intervalCommandProperties = ['tickInterval', 'startDelay', 'actions'];
+const intervalCommandProperties = ['tickInterval', 'startDelay', 'actions', 'mustBeStreaming'];
 const intervalCommandActionProperties = ['message', 'command', 'commandParams'];
 
 const fileName = 'intervalCommands.json';
@@ -44,6 +45,12 @@ const intervalCommandValidator = (data: unknown): DataValidatorResponse => {
             case 'startDelay':
               if (typeof intervalCommand.startDelay !== 'number') {
                 logger.error(`Invalid interval command format, property ${property} must be a number`);
+                response = 'invalid';
+              }
+              break;
+            case 'mustBeStreaming':
+              if (typeof intervalCommand.mustBeStreaming !== 'boolean') {
+                logger.error(`Invalid interval command format, property ${property} must be a boolean`);
                 response = 'invalid';
               }
               break;
