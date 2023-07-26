@@ -13,6 +13,8 @@ import { getTokenFromFile, setTokenInFile } from './tokenManager';
 
 export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_token');
 
+let rateLimitReached = false;
+
 /**
  * Performs a fetch request to the specified URL with optional request initialization parameters, with retry logic.
  * @param url - The URL to fetch from.
@@ -24,6 +26,10 @@ export const getCurrentAccessToken = () => getTokenFromFile('spotify_access_toke
  * This seems reasonable since all interactions with the API always want the JSON data anyway.
  */
 export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
+  if (rateLimitReached) {
+    throw new Error('Spotify API rate limit reached. Waiting for rate limit to be lifted.');
+  }
+
   if (attemptNumber > 1) {
     throw new Error(`Failed to perform fetch ${attemptNumber} ${simplePluralise('time', attemptNumber)} to Spotify API`);
   }
@@ -33,7 +39,28 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
     return;
   }
 
-  const data: unknown = await result.json();
+  if (result.status === StatusCodes.TOO_MANY_REQUESTS) {
+    rateLimitReached = true;
+    const retryAfter = result.headers.get('Retry-After');
+    if (retryAfter) {
+      const retryAfterSeconds = parseInt(retryAfter, 10);
+      if (retryAfterSeconds) {
+        logger.info(`Spotify API rate limit reached. Waiting ${retryAfterSeconds} seconds before allowing another request.`);
+        setTimeout(() => {
+          rateLimitReached = false;
+        }, retryAfterSeconds);
+      }
+    }
+  }
+
+  let data: unknown;
+  try {
+    data = await result.json();
+  } catch (error) {
+    logger.error(`Unable to parse JSON response from Spotify API. Error: ${errorMessage(error)}. Response: ${JSON.stringify(result)}`);
+
+    throw error;
+  }
   const shouldRetry = checkResponseForErrors(data);
   if (shouldRetry) {
     return fetchWithRetry(url, init, attemptNumber + 1);
