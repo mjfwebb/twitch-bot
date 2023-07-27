@@ -17,10 +17,14 @@ export const SongDisplay = ({
   titleFontSize,
   artistsFontFamily,
   artistsFontSize,
-  dropShadowEnabled,
-  dropShadowSettings,
-  textStrokeEnabled,
-  textStrokeSettings,
+  titleDropShadowEnabled,
+  titleDropShadowSettings,
+  titleTextStrokeEnabled,
+  titleTextStrokeSettings,
+  artistsDropShadowEnabled,
+  artistsDropShadowSettings,
+  artistsTextStrokeEnabled,
+  artistsTextStrokeSettings,
   currentSong,
   albumImage,
   showAlbumArt,
@@ -33,10 +37,14 @@ export const SongDisplay = ({
   titleFontSize: string;
   artistsFontFamily: string;
   artistsFontSize: string;
-  dropShadowEnabled: boolean;
-  dropShadowSettings: string;
-  textStrokeEnabled: boolean;
-  textStrokeSettings: string;
+  titleDropShadowEnabled: boolean;
+  titleDropShadowSettings: string;
+  titleTextStrokeEnabled: boolean;
+  titleTextStrokeSettings: string;
+  artistsDropShadowEnabled: boolean;
+  artistsDropShadowSettings: string;
+  artistsTextStrokeEnabled: boolean;
+  artistsTextStrokeSettings: string;
   currentSong: SpotifySong;
   albumImage: string;
   showAlbumArt: boolean;
@@ -64,16 +72,6 @@ export const SongDisplay = ({
       style={{
         width: width,
         height: height,
-        ...(dropShadowEnabled
-          ? {
-              textShadow: dropShadowSettings,
-            }
-          : {}),
-        ...(textStrokeEnabled
-          ? {
-              ['-webkit-text-stroke']: textStrokeSettings,
-            }
-          : {}),
       }}
     >
       {showAlbumArt && <img src={albumImage} height={128} alt="" />}
@@ -116,6 +114,16 @@ export const SongDisplay = ({
               backgroundImage: `linear-gradient(45deg, ${secondaryColor} 20%, ${primaryColor} 30%, ${primaryColor} 70%, ${secondaryColor} 80%)`,
               WebkitTextFillColor: 'transparent',
               backgroundSize: '200% auto',
+              ...(titleDropShadowEnabled
+                ? {
+                    textShadow: titleDropShadowSettings,
+                  }
+                : {}),
+              ...(titleTextStrokeEnabled
+                ? {
+                    ['-webkit-text-stroke']: titleTextStrokeSettings,
+                  }
+                : {}),
             }}
           >
             {currentSong.item.name}
@@ -156,7 +164,16 @@ export const SongDisplay = ({
               color: primaryColor,
               fontFamily: artistsFontFamily,
               fontSize: `${artistsFontSize}px`,
-              textShadow: dropShadowEnabled ? dropShadowSettings : 'none',
+              ...(artistsDropShadowEnabled
+                ? {
+                    textShadow: artistsDropShadowSettings,
+                  }
+                : {}),
+              ...(artistsTextStrokeEnabled
+                ? {
+                    ['-webkit-text-stroke']: artistsTextStrokeSettings,
+                  }
+                : {}),
             }}
           >
             {currentSong.item.artists.map((artist) => artist.name).join(', ')}
@@ -187,10 +204,14 @@ export const Song = () => {
       titleFontSize={songSearchParams.titleFontSize}
       artistsFontFamily={songSearchParams.artistsFontFamily}
       artistsFontSize={songSearchParams.artistsFontSize}
-      dropShadowEnabled={songSearchParams.dropShadowEnabled}
-      dropShadowSettings={songSearchParams.dropShadowSettings}
-      textStrokeEnabled={songSearchParams.textStrokeEnabled}
-      textStrokeSettings={songSearchParams.textStrokeSettings}
+      titleDropShadowEnabled={songSearchParams.titleDropShadowEnabled}
+      titleDropShadowSettings={songSearchParams.titleDropShadowSettings}
+      titleTextStrokeEnabled={songSearchParams.titleTextStrokeEnabled}
+      titleTextStrokeSettings={songSearchParams.titleTextStrokeSettings}
+      artistsDropShadowEnabled={songSearchParams.artistsDropShadowEnabled}
+      artistsDropShadowSettings={songSearchParams.artistsDropShadowSettings}
+      artistsTextStrokeEnabled={songSearchParams.artistsTextStrokeEnabled}
+      artistsTextStrokeSettings={songSearchParams.artistsTextStrokeSettings}
       currentSong={currentSong}
       albumImage={albumImage}
       showAlbumArt={songSearchParams.showAlbumArt}

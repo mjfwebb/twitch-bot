@@ -9,10 +9,16 @@ export const useSongSearchParams = () => {
   const height =
     searchParams.get(songSearchParamsMap.height) || `${DEFAULT_SONG_SETTINGS_VALUES.heightValue}${DEFAULT_SONG_SETTINGS_VALUES.heightUnit}`;
   const width = searchParams.get(songSearchParamsMap.width) || `${DEFAULT_SONG_SETTINGS_VALUES.widthValue}${DEFAULT_SONG_SETTINGS_VALUES.widthUnit}`;
-  const dropShadowEnabled = searchParams.get(songSearchParamsMap.dropShadowEnabled) === 'true' ? true : false;
-  const dropShadowSettings = searchParams.get(songSearchParamsMap.dropShadowSettings) || DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings;
-  const textStrokeEnabled = searchParams.get(songSearchParamsMap.textStrokeEnabled) === 'true' ? true : false;
-  const textStrokeSettings = searchParams.get(songSearchParamsMap.textStrokeSettings) || DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings;
+  const titleDropShadowEnabled = searchParams.get(songSearchParamsMap.titleDropShadowEnabled) === 'true' ? true : false;
+  const titleDropShadowSettings = searchParams.get(songSearchParamsMap.titleDropShadowSettings) || DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings;
+  const titleTextStrokeEnabled = searchParams.get(songSearchParamsMap.titleTextStrokeEnabled) === 'true' ? true : false;
+  const titleTextStrokeSettings = searchParams.get(songSearchParamsMap.titleTextStrokeSettings) || DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings;
+  const artistsDropShadowEnabled = searchParams.get(songSearchParamsMap.artistsDropShadowEnabled) === 'true' ? true : false;
+  const artistsDropShadowSettings =
+    searchParams.get(songSearchParamsMap.artistsDropShadowSettings) || DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings;
+  const artistsTextStrokeEnabled = searchParams.get(songSearchParamsMap.artistsTextStrokeEnabled) === 'true' ? true : false;
+  const artistsTextStrokeSettings =
+    searchParams.get(songSearchParamsMap.artistsTextStrokeSettings) || DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings;
   const titleFontSize = String(searchParams.get(songSearchParamsMap.titleFontSize) || DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue);
   const titleFontFamily = searchParams.get(songSearchParamsMap.titleFontFamily) || DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily;
   const artistsFontSize = String(searchParams.get(songSearchParamsMap.artistsFontSize) || DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue);
@@ -24,10 +30,14 @@ export const useSongSearchParams = () => {
     secondaryColor,
     height,
     width,
-    dropShadowEnabled,
-    dropShadowSettings,
-    textStrokeEnabled,
-    textStrokeSettings,
+    titleDropShadowEnabled,
+    titleDropShadowSettings,
+    titleTextStrokeEnabled,
+    titleTextStrokeSettings,
+    artistsDropShadowEnabled,
+    artistsDropShadowSettings,
+    artistsTextStrokeEnabled,
+    artistsTextStrokeSettings,
     titleFontSize,
     titleFontFamily,
     artistsFontSize,

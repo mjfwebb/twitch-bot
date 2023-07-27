@@ -18,10 +18,14 @@ export const SongDashboard = () => {
   const heightUnit = useSongSettingsStore((s) => s.heightUnit);
   const widthValue = useSongSettingsStore((s) => s.widthValue);
   const widthUnit = useSongSettingsStore((s) => s.widthUnit);
-  const dropShadowEnabled = useSongSettingsStore((s) => s.dropShadowEnabled);
-  const dropShadowSettings = useSongSettingsStore((s) => s.dropShadowSettings);
-  const textStrokeEnabled = useSongSettingsStore((s) => s.textStrokeEnabled);
-  const textStrokeSettings = useSongSettingsStore((s) => s.textStrokeSettings);
+  const titleDropShadowEnabled = useSongSettingsStore((s) => s.titleDropShadowEnabled);
+  const titleDropShadowSettings = useSongSettingsStore((s) => s.titleDropShadowSettings);
+  const titleTextStrokeEnabled = useSongSettingsStore((s) => s.titleTextStrokeEnabled);
+  const titleTextStrokeSettings = useSongSettingsStore((s) => s.titleTextStrokeSettings);
+  const artistsDropShadowEnabled = useSongSettingsStore((s) => s.artistsDropShadowEnabled);
+  const artistsDropShadowSettings = useSongSettingsStore((s) => s.artistsDropShadowSettings);
+  const artistsTextStrokeEnabled = useSongSettingsStore((s) => s.artistsTextStrokeEnabled);
+  const artistsTextStrokeSettings = useSongSettingsStore((s) => s.artistsTextStrokeSettings);
   const titleFontSizeValue = useSongSettingsStore((s) => s.titleFontSizeValue);
   const titleFontFamily = useSongSettingsStore((s) => s.titleFontFamily);
   const artistsFontSizeValue = useSongSettingsStore((s) => s.artistsFontSizeValue);
@@ -44,14 +48,29 @@ export const SongDashboard = () => {
     const width = `${widthValue}${widthUnit}`;
     songURL.searchParams.append(songSearchParamsMap.width, width);
   }
-  if (dropShadowEnabled) {
-    songURL.searchParams.append(songSearchParamsMap.dropShadowEnabled, 'true');
+  if (titleDropShadowEnabled) {
+    songURL.searchParams.append(songSearchParamsMap.titleDropShadowEnabled, 'true');
   }
-  if (dropShadowEnabled && dropShadowSettings !== DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings) {
-    songURL.searchParams.append(songSearchParamsMap.dropShadowSettings, dropShadowSettings);
+  if (titleDropShadowEnabled && titleDropShadowSettings !== DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings) {
+    songURL.searchParams.append(songSearchParamsMap.titleDropShadowSettings, titleDropShadowSettings);
   }
-  if (textStrokeEnabled && textStrokeSettings !== DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings) {
-    songURL.searchParams.append(songSearchParamsMap.textStrokeSettings, textStrokeSettings);
+  if (titleTextStrokeEnabled) {
+    songURL.searchParams.append(songSearchParamsMap.titleTextStrokeEnabled, 'true');
+  }
+  if (artistsTextStrokeEnabled && artistsTextStrokeSettings !== DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings) {
+    songURL.searchParams.append(songSearchParamsMap.artistsTextStrokeSettings, artistsTextStrokeSettings);
+  }
+  if (artistsDropShadowEnabled) {
+    songURL.searchParams.append(songSearchParamsMap.artistsDropShadowEnabled, 'true');
+  }
+  if (artistsDropShadowEnabled && artistsDropShadowSettings !== DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings) {
+    songURL.searchParams.append(songSearchParamsMap.artistsDropShadowSettings, artistsDropShadowSettings);
+  }
+  if (artistsTextStrokeEnabled) {
+    songURL.searchParams.append(songSearchParamsMap.artistsTextStrokeEnabled, 'true');
+  }
+  if (titleTextStrokeEnabled && titleTextStrokeSettings !== DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings) {
+    songURL.searchParams.append(songSearchParamsMap.titleTextStrokeSettings, titleTextStrokeSettings);
   }
   if (titleFontSizeValue !== DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue) {
     songURL.searchParams.append(songSearchParamsMap.titleFontSize, String(titleFontSizeValue));
@@ -100,10 +119,14 @@ export const SongDashboard = () => {
             titleFontSize={`${titleFontSizeValue}`}
             artistsFontFamily={artistsFontFamily}
             artistsFontSize={`${artistsFontSizeValue}`}
-            dropShadowEnabled={dropShadowEnabled}
-            dropShadowSettings={dropShadowSettings}
-            textStrokeEnabled={textStrokeEnabled}
-            textStrokeSettings={textStrokeSettings}
+            titleDropShadowEnabled={titleDropShadowEnabled}
+            titleDropShadowSettings={titleDropShadowSettings}
+            titleTextStrokeEnabled={titleTextStrokeEnabled}
+            titleTextStrokeSettings={titleTextStrokeSettings}
+            artistsDropShadowEnabled={artistsDropShadowEnabled}
+            artistsDropShadowSettings={artistsDropShadowSettings}
+            artistsTextStrokeEnabled={artistsTextStrokeEnabled}
+            artistsTextStrokeSettings={artistsTextStrokeSettings}
             currentSong={currentSong}
             albumImage={currentSong.item.album.images[0].url}
             showAlbumArt={showAlbumArt}
@@ -253,33 +276,39 @@ export const SongDashboard = () => {
         <div className="song-modifiers-row">
           <input
             type="checkbox"
-            id="song_has_drop_shadow"
-            checked={dropShadowEnabled}
-            onChange={(event) => useSongSettingsStore.getState().setDropShadowEnabled(event.target.checked)}
+            id="song_title_has_drop_shadow"
+            checked={titleDropShadowEnabled}
+            onChange={(event) => useSongSettingsStore.getState().setTitleDropShadowEnabled(event.target.checked)}
           />
-          <label htmlFor="song_has_drop_shadow">Text has drop shadow</label>
+          <label htmlFor="song_title_has_drop_shadow">Title text has drop shadow</label>
         </div>
-        {dropShadowEnabled && (
+        {titleDropShadowEnabled && (
           <div className="song-modifiers-row song-modifiers-label-above">
-            <label htmlFor="song_drop_shadow">Drop shadow settings</label>
+            <label htmlFor="song_title_drop_shadow">Title text drop shadow settings</label>
             <TextShadowPicker
-              value={dropShadowSettings}
+              value={titleDropShadowSettings}
               onChange={(value) => {
-                useSongSettingsStore.getState().setDropShadowSettings(value);
+                useSongSettingsStore.getState().setTitleDropShadowSettings(value);
               }}
             />
-            <button onClick={() => useSongSettingsStore.getState().setDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetSmall)}>
+            <button
+              onClick={() => useSongSettingsStore.getState().setTitleDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetSmall)}
+            >
               preset small
             </button>
-            <button onClick={() => useSongSettingsStore.getState().setDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetMedium)}>
+            <button
+              onClick={() => useSongSettingsStore.getState().setTitleDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetMedium)}
+            >
               preset medium
             </button>
-            <button onClick={() => useSongSettingsStore.getState().setDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetLarge)}>
+            <button
+              onClick={() => useSongSettingsStore.getState().setTitleDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetLarge)}
+            >
               preset large
             </button>
             <button
               className="song-dashboard-button_danger"
-              onClick={() => useSongSettingsStore.getState().setDropShadowSettings(DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings)}
+              onClick={() => useSongSettingsStore.getState().setTitleDropShadowSettings(DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings)}
             >
               reset to default (preset small)
             </button>
@@ -288,33 +317,121 @@ export const SongDashboard = () => {
         <div className="song-modifiers-row">
           <input
             type="checkbox"
-            id="song_has_text_stroke"
-            checked={textStrokeEnabled}
-            onChange={(event) => useSongSettingsStore.getState().setTextStrokeEnabled(event.target.checked)}
+            id="song_title_has_text_stroke"
+            checked={titleTextStrokeEnabled}
+            onChange={(event) => useSongSettingsStore.getState().setTitleTextStrokeEnabled(event.target.checked)}
           />
-          <label htmlFor="song_has_text_stroke">Text has stroke</label>
+          <label htmlFor="song_title_has_text_stroke">Title text has stroke</label>
         </div>
-        {textStrokeEnabled && (
+        {titleTextStrokeEnabled && (
           <div className="song-modifiers-row">
             <input
               type="text"
-              id="song_text_stroke"
-              value={textStrokeSettings}
-              onChange={(event) => useSongSettingsStore.getState().setTextStrokeSettings(event.target.value)}
+              id="song_title_text_stroke"
+              value={titleTextStrokeSettings}
+              onChange={(event) => useSongSettingsStore.getState().setTitleTextStrokeSettings(event.target.value)}
             />
-            <label htmlFor="song_text_stroke">Text stroke settings</label>
-            <button onClick={() => useSongSettingsStore.getState().setTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetThin)}>
+            <label htmlFor="song_title_text_stroke">Text stroke settings</label>
+            <button
+              onClick={() => useSongSettingsStore.getState().setTitleTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetThin)}
+            >
               preset thin
             </button>
-            <button onClick={() => useSongSettingsStore.getState().setTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetMedium)}>
+            <button
+              onClick={() => useSongSettingsStore.getState().setTitleTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetMedium)}
+            >
               preset medium
             </button>
-            <button onClick={() => useSongSettingsStore.getState().setTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetThick)}>
+            <button
+              onClick={() => useSongSettingsStore.getState().setTitleTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetThick)}
+            >
               preset thick
             </button>
             <button
               className="song-dashboard-button_danger"
-              onClick={() => useSongSettingsStore.getState().setTextStrokeSettings(DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings)}
+              onClick={() => useSongSettingsStore.getState().setTitleTextStrokeSettings(DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings)}
+            >
+              reset to default (preset thin)
+            </button>
+          </div>
+        )}
+        <div className="song-modifiers-row">
+          <input
+            type="checkbox"
+            id="song_artists_has_drop_shadow"
+            checked={artistsDropShadowEnabled}
+            onChange={(event) => useSongSettingsStore.getState().setArtistsDropShadowEnabled(event.target.checked)}
+          />
+          <label htmlFor="song_artists_has_drop_shadow">Artists text has drop shadow</label>
+        </div>
+        {artistsDropShadowEnabled && (
+          <div className="song-modifiers-row song-modifiers-label-above">
+            <label htmlFor="song_artists_drop_shadow">Artists text drop shadow settings</label>
+            <TextShadowPicker
+              value={artistsDropShadowSettings}
+              onChange={(value) => {
+                useSongSettingsStore.getState().setArtistsDropShadowSettings(value);
+              }}
+            />
+            <button
+              onClick={() => useSongSettingsStore.getState().setArtistsDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetSmall)}
+            >
+              preset small
+            </button>
+            <button
+              onClick={() => useSongSettingsStore.getState().setArtistsDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetMedium)}
+            >
+              preset medium
+            </button>
+            <button
+              onClick={() => useSongSettingsStore.getState().setArtistsDropShadowSettings(PRESET_SONG_SETTINGS_VALUES.dropShadowSettingsPresetLarge)}
+            >
+              preset large
+            </button>
+            <button
+              className="song-dashboard-button_danger"
+              onClick={() => useSongSettingsStore.getState().setArtistsDropShadowSettings(DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings)}
+            >
+              reset to default (preset small)
+            </button>
+          </div>
+        )}
+        <div className="song-modifiers-row">
+          <input
+            type="checkbox"
+            id="song_artists_has_text_stroke"
+            checked={artistsTextStrokeEnabled}
+            onChange={(event) => useSongSettingsStore.getState().setArtistsTextStrokeEnabled(event.target.checked)}
+          />
+          <label htmlFor="song_artists_has_text_stroke">Artists text has stroke</label>
+        </div>
+        {artistsTextStrokeEnabled && (
+          <div className="song-modifiers-row">
+            <input
+              type="text"
+              id="song_artists_text_stroke"
+              value={artistsTextStrokeSettings}
+              onChange={(event) => useSongSettingsStore.getState().setArtistsTextStrokeSettings(event.target.value)}
+            />
+            <label htmlFor="song_artists_text_stroke">Text stroke settings</label>
+            <button
+              onClick={() => useSongSettingsStore.getState().setArtistsTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetThin)}
+            >
+              preset thin
+            </button>
+            <button
+              onClick={() => useSongSettingsStore.getState().setArtistsTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetMedium)}
+            >
+              preset medium
+            </button>
+            <button
+              onClick={() => useSongSettingsStore.getState().setArtistsTextStrokeSettings(PRESET_SONG_SETTINGS_VALUES.textStrokeSettingsPresetThick)}
+            >
+              preset thick
+            </button>
+            <button
+              className="song-dashboard-button_danger"
+              onClick={() => useSongSettingsStore.getState().setArtistsTextStrokeSettings(DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings)}
             >
               reset to default (preset thin)
             </button>

@@ -19,10 +19,14 @@ interface SongPersistedSettings {
   heightUnit: string;
   widthValue: number;
   widthUnit: string;
-  dropShadowEnabled: boolean;
-  dropShadowSettings: string;
-  textStrokeEnabled: boolean;
-  textStrokeSettings: string;
+  titleDropShadowEnabled: boolean;
+  titleDropShadowSettings: string;
+  titleTextStrokeEnabled: boolean;
+  titleTextStrokeSettings: string;
+  artistsDropShadowEnabled: boolean;
+  artistsDropShadowSettings: string;
+  artistsTextStrokeEnabled: boolean;
+  artistsTextStrokeSettings: string;
   titleFontSizeValue: number;
   titleFontFamily: string;
   artistsFontSizeValue: number;
@@ -34,11 +38,15 @@ interface SongPersistedSettings {
   setHeightUnit: (heightUnit: string) => void;
   setWidthValue: (widthValue: number) => void;
   setWidthUnit: (widthUnit: string) => void;
-  setDropShadowEnabled: (dropShadowEnabled: boolean) => void;
-  setDropShadowSettings: (dropShadowSettings: string) => void;
-  setTextStrokeEnabled: (textStrokeEnabled: boolean) => void;
-  setTextStrokeSettings: (textStrokeSettings: string) => void;
+  setTitleDropShadowEnabled: (dropShadowEnabled: boolean) => void;
+  setTitleDropShadowSettings: (dropShadowSettings: string) => void;
+  setTitleTextStrokeEnabled: (textStrokeEnabled: boolean) => void;
+  setTitleTextStrokeSettings: (textStrokeSettings: string) => void;
   setTitleFontSizeValue: (titleFontSizeValue: number) => void;
+  setArtistsDropShadowEnabled: (dropShadowEnabled: boolean) => void;
+  setArtistsDropShadowSettings: (dropShadowSettings: string) => void;
+  setArtistsTextStrokeEnabled: (textStrokeEnabled: boolean) => void;
+  setArtistsTextStrokeSettings: (textStrokeSettings: string) => void;
   setTitleFontFamily: (fontFamily: string) => void;
   setArtistsFontSizeValue: (artistsFontSizeValue: number) => void;
   setArtistsFontFamily: (fontFamily: string) => void;
@@ -55,10 +63,14 @@ export const useSongSettingsStore = create(
       heightUnit: DEFAULT_SONG_SETTINGS_VALUES.heightUnit,
       widthValue: DEFAULT_SONG_SETTINGS_VALUES.widthValue,
       widthUnit: DEFAULT_SONG_SETTINGS_VALUES.widthUnit,
-      dropShadowEnabled: false,
-      dropShadowSettings: DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings,
-      textStrokeEnabled: false,
-      textStrokeSettings: DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings,
+      titleDropShadowEnabled: false,
+      titleDropShadowSettings: DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings,
+      titleTextStrokeEnabled: false,
+      titleTextStrokeSettings: DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings,
+      artistsDropShadowEnabled: false,
+      artistsDropShadowSettings: DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings,
+      artistsTextStrokeEnabled: false,
+      artistsTextStrokeSettings: DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings,
       titleFontSizeValue: DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue,
       titleFontFamily: DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily,
       artistsFontSizeValue: DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue,
@@ -82,17 +94,29 @@ export const useSongSettingsStore = create(
       setWidthUnit: (widthUnit: string) => {
         set(() => ({ widthUnit }));
       },
-      setDropShadowEnabled: (dropShadowEnabled: boolean) => {
-        set(() => ({ dropShadowEnabled }));
+      setTitleDropShadowEnabled: (titleDropShadowEnabled: boolean) => {
+        set(() => ({ titleDropShadowEnabled }));
       },
-      setDropShadowSettings: (dropShadowSettings: string) => {
-        set(() => ({ dropShadowSettings }));
+      setTitleDropShadowSettings: (titleDropShadowSettings: string) => {
+        set(() => ({ titleDropShadowSettings }));
       },
-      setTextStrokeEnabled: (textStrokeEnabled: boolean) => {
-        set(() => ({ textStrokeEnabled }));
+      setTitleTextStrokeEnabled: (titleTextStrokeEnabled: boolean) => {
+        set(() => ({ titleTextStrokeEnabled }));
       },
-      setTextStrokeSettings: (textStrokeSettings: string) => {
-        set(() => ({ textStrokeSettings }));
+      setTitleTextStrokeSettings: (titleTextStrokeSettings: string) => {
+        set(() => ({ titleTextStrokeSettings }));
+      },
+      setArtistsDropShadowEnabled: (artistsDropShadowEnabled: boolean) => {
+        set(() => ({ artistsDropShadowEnabled }));
+      },
+      setArtistsDropShadowSettings: (artistsDropShadowSettings: string) => {
+        set(() => ({ artistsDropShadowSettings }));
+      },
+      setArtistsTextStrokeEnabled: (artistsTextStrokeEnabled: boolean) => {
+        set(() => ({ artistsTextStrokeEnabled }));
+      },
+      setArtistsTextStrokeSettings: (artistsTextStrokeSettings: string) => {
+        set(() => ({ artistsTextStrokeSettings }));
       },
       setTitleFontSizeValue: (titleFontSizeValue: number) => {
         set(() => ({ titleFontSizeValue }));
