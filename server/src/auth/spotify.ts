@@ -48,7 +48,7 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
         logger.info(`Spotify API rate limit reached. Waiting ${retryAfterSeconds} seconds before allowing another request.`);
         setTimeout(() => {
           rateLimitReached = false;
-        }, retryAfterSeconds);
+        }, retryAfterSeconds * 1000);
       }
     }
   }
