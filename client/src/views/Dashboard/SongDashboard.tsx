@@ -62,9 +62,11 @@ export const SongDashboard = () => {
   if (artistsFontSizeValue !== DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue) {
     songURL.searchParams.append(songSearchParamsMap.artistsFontSize, String(artistsFontSizeValue));
   }
-
   if (artistsFontFamily !== DEFAULT_SONG_SETTINGS_VALUES.artistsFontFamily) {
     songURL.searchParams.append(songSearchParamsMap.artistsFontFamily, artistsFontFamily);
+  }
+  if (!showAlbumArt) {
+    songURL.searchParams.append(songSearchParamsMap.showAlbumArt, 'false');
   }
 
   const songURLString = `${songURL.protocol}${'//'}${songURL.host}${songURL.pathname}${songURL.search}`;

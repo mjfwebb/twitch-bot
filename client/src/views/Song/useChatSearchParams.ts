@@ -17,7 +17,7 @@ export const useSongSearchParams = () => {
   const titleFontFamily = searchParams.get(songSearchParamsMap.titleFontFamily) || DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily;
   const artistsFontSize = String(searchParams.get(songSearchParamsMap.artistsFontSize) || DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue);
   const artistsFontFamily = searchParams.get(songSearchParamsMap.artistsFontFamily) || DEFAULT_SONG_SETTINGS_VALUES.artistsFontFamily;
-  const showAlbumArt = searchParams.get(songSearchParamsMap.showAlbumArt) === 'true' ? true : false;
+  const showAlbumArt = searchParams.get(songSearchParamsMap.showAlbumArt) === 'false' ? false : true;
 
   return {
     primaryColor,
