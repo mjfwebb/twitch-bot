@@ -2,40 +2,56 @@
   font-weight: bold;
   color: white;
   font-size: 1.4rem;
-  padding: 1rem;
   display: flex;
   align-items: stretch;
   width: 100%;
-
-  &-wrapper {
-    width: 500px;
-    text-align: left;
-    overflow: hidden;
-  }
+  overflow: hidden;
 
   &-info {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 1rem;
-    flex-shrink: 0;
-    width: 22rem;
+    overflow: hidden;
+    padding: 16px;
   }
 
   &-title {
-    font-size: 2rem;
-    line-height: 3rem;
+    &-wrapper {
+      width: fit-content;
+      white-space: nowrap;
+    }
+
     -webkit-background-clip: text;
     background-clip: text;
     animation: text-shine 20s linear infinite;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
 
   &-artists {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    &-wrapper {
+      width: fit-content;
+      white-space: nowrap;
+    }
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: text-shine 20s linear infinite;
   }
 }
+
+// @keyframes marquee {
+//   0% {
+//     -moz-transform: translateX(0);
+//     -webkit-transform: translateX(0);
+//     transform: translateX(0);
+//   }
+//   30% {
+//     -moz-transform: translateX(0);
+//     -webkit-transform: translateX(0);
+//     transform: translateX(0);
+//   }
+//   100% {
+//     -moz-transform: translateX(-100%);
+//     -webkit-transform: translateX(-100%);
+//     transform: translateX(-100%);
+//   }
+// }

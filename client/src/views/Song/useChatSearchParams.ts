@@ -13,13 +13,9 @@ export const useSongSearchParams = () => {
   const dropShadowSettings = searchParams.get(songSearchParamsMap.dropShadowSettings) || DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings;
   const textStrokeEnabled = searchParams.get(songSearchParamsMap.textStrokeEnabled) === 'true' ? true : false;
   const textStrokeSettings = searchParams.get(songSearchParamsMap.textStrokeSettings) || DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings;
-  const titleFontSize =
-    searchParams.get(songSearchParamsMap.titleFontSize) ||
-    `${DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue}${DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeUnit}`;
+  const titleFontSize = String(searchParams.get(songSearchParamsMap.titleFontSize) || DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue);
   const titleFontFamily = searchParams.get(songSearchParamsMap.titleFontFamily) || DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily;
-  const artistsFontSize =
-    searchParams.get(songSearchParamsMap.artistsFontSize) ||
-    `${DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue}${DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeUnit}`;
+  const artistsFontSize = String(searchParams.get(songSearchParamsMap.artistsFontSize) || DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue);
   const artistsFontFamily = searchParams.get(songSearchParamsMap.artistsFontFamily) || DEFAULT_SONG_SETTINGS_VALUES.artistsFontFamily;
   const showAlbumArt = searchParams.get(songSearchParamsMap.showAlbumArt) === 'true' ? true : false;
 

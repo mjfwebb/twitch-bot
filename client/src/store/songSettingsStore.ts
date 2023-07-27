@@ -24,10 +24,8 @@ interface SongPersistedSettings {
   textStrokeEnabled: boolean;
   textStrokeSettings: string;
   titleFontSizeValue: number;
-  titleFontSizeUnit: string;
   titleFontFamily: string;
   artistsFontSizeValue: number;
-  artistsFontSizeUnit: string;
   artistsFontFamily: string;
   showAlbumArt: boolean;
   setPrimaryColor: (primaryColor: string) => void;
@@ -41,10 +39,8 @@ interface SongPersistedSettings {
   setTextStrokeEnabled: (textStrokeEnabled: boolean) => void;
   setTextStrokeSettings: (textStrokeSettings: string) => void;
   setTitleFontSizeValue: (titleFontSizeValue: number) => void;
-  setTitleFontSizeUnit: (titleFontSizeUnit: string) => void;
   setTitleFontFamily: (fontFamily: string) => void;
   setArtistsFontSizeValue: (artistsFontSizeValue: number) => void;
-  setArtistsFontSizeUnit: (artistsFontSizeUnit: string) => void;
   setArtistsFontFamily: (fontFamily: string) => void;
   setShowAlbumArt: (showAlbumArt: boolean) => void;
   resetState: () => void;
@@ -63,10 +59,8 @@ export const useSongSettingsStore = create(
       dropShadowSettings: DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings,
       textStrokeEnabled: false,
       textStrokeSettings: DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings,
-      titleFontSizeUnit: DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeUnit,
       titleFontSizeValue: DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue,
       titleFontFamily: DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily,
-      artistsFontSizeUnit: DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeUnit,
       artistsFontSizeValue: DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue,
       artistsFontFamily: DEFAULT_SONG_SETTINGS_VALUES.artistsFontFamily,
       showAlbumArt: DEFAULT_SONG_SETTINGS_VALUES.showAlbumArt,
@@ -103,17 +97,11 @@ export const useSongSettingsStore = create(
       setTitleFontSizeValue: (titleFontSizeValue: number) => {
         set(() => ({ titleFontSizeValue }));
       },
-      setTitleFontSizeUnit: (titleFontSizeUnit: string) => {
-        set(() => ({ titleFontSizeUnit }));
-      },
       setTitleFontFamily: (titleFontFamily: string) => {
         set(() => ({ titleFontFamily }));
       },
       setArtistsFontSizeValue: (artistsFontSizeValue: number) => {
         set(() => ({ artistsFontSizeValue }));
-      },
-      setArtistsFontSizeUnit: (artistsFontSizeUnit: string) => {
-        set(() => ({ artistsFontSizeUnit }));
       },
       setArtistsFontFamily: (artistsFontFamily: string) => {
         set(() => ({ artistsFontFamily }));

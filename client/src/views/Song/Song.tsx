@@ -1,3 +1,7 @@
+import { useRef } from 'react';
+
+import { motion } from 'framer-motion';
+
 import type { SpotifySong } from '../../types';
 import useStore from '../../store/store';
 import { useSongSearchParams } from './useChatSearchParams';
@@ -37,60 +41,127 @@ export const SongDisplay = ({
   albumImage: string;
   showAlbumArt: boolean;
 }) => {
+  const songInfoRef = useRef<HTMLDivElement>(null);
+  const songTitleRef = useRef<HTMLDivElement>(null);
+  const songArtistsRef = useRef<HTMLDivElement>(null);
+  const songInfoWidth = songInfoRef.current?.clientWidth || 0;
+  const titleWidth = songTitleRef.current?.offsetWidth || 0;
+  const artistsWidth = songArtistsRef.current?.offsetWidth || 0;
+  const titleTooWide = titleWidth > songInfoWidth;
+  const artistsTooWide = artistsWidth > songInfoWidth;
+
+  // Add 32px for padding
+  const titleOverflowWidth = titleWidth + 32 - songInfoWidth;
+  const artistsOverflowWidth = artistsWidth + 32 - songInfoWidth;
+
+  // Animation duration should be based on the overflow width and the font size
+  const titleAnimationDuration = Math.ceil((Math.ceil(titleOverflowWidth / +titleFontSize) * 2000) / 1000);
+  const artistsAnimationDuration = Math.ceil((Math.ceil(artistsOverflowWidth / +artistsFontSize) * 2000) / 1000);
+
   return (
     <div
-      className="song-wrapper"
+      className="song"
       style={{
         width: width,
         height: height,
+        ...(dropShadowEnabled
+          ? {
+              textShadow: dropShadowSettings,
+            }
+          : {}),
+        ...(textStrokeEnabled
+          ? {
+              ['-webkit-text-stroke']: textStrokeSettings,
+            }
+          : {}),
       }}
     >
-      <div className="song">
-        {showAlbumArt && <img src={albumImage} height={128} alt="" />}
-        <div
-          className="song-info"
-          style={{
-            ...(dropShadowEnabled
+      {showAlbumArt && <img src={albumImage} height={128} alt="" />}
+      <div ref={songInfoRef} className="song-info">
+        <motion.div
+          className="song-title-wrapper"
+          ref={songTitleRef}
+          animate={{
+            ...(titleTooWide
               ? {
-                  textShadow: dropShadowSettings,
+                  x: [0, -titleOverflowWidth],
                 }
               : {}),
-            ...(textStrokeEnabled
+          }}
+          style={{
+            ...(titleTooWide
               ? {
-                  ['-webkit-text-stroke']: textStrokeSettings,
+                  transform: `translateX(0px)`,
+                }
+              : {}),
+          }}
+          transition={{
+            ...(titleTooWide
+              ? {
+                  ease: 'linear',
+                  duration: titleAnimationDuration,
+                  repeatDelay: 2,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
                 }
               : {}),
           }}
         >
-          <div className="song-title-wrapper">
-            <div
-              className="song-title"
-              style={{
-                color: primaryColor,
-                fontFamily: titleFontFamily,
-                fontSize: titleFontSize,
-                backgroundImage: `linear-gradient(45deg, ${secondaryColor} 20%, ${primaryColor} 30%, ${primaryColor} 70%, ${secondaryColor} 80%)`,
-                WebkitTextFillColor: 'transparent',
-                backgroundSize: '200% auto',
-              }}
-            >
-              {currentSong.item.name}
-            </div>
+          <div
+            className="song-title"
+            style={{
+              color: primaryColor,
+              fontFamily: titleFontFamily,
+              fontSize: `${titleFontSize}px`,
+              backgroundImage: `linear-gradient(45deg, ${secondaryColor} 20%, ${primaryColor} 30%, ${primaryColor} 70%, ${secondaryColor} 80%)`,
+              WebkitTextFillColor: 'transparent',
+              backgroundSize: '200% auto',
+            }}
+          >
+            {currentSong.item.name}
           </div>
-          <div className="song-artists-wrapper">
-            <div
-              className="song-artists"
-              style={{
-                color: primaryColor,
-                fontFamily: artistsFontFamily,
-                fontSize: artistsFontSize,
-                textShadow: dropShadowEnabled ? dropShadowSettings : 'none',
-              }}
-            >
-              {currentSong.item.artists.map((artist) => artist.name).join(', ')}
-            </div>
+        </motion.div>
+        <motion.div
+          className="song-artists-wrapper"
+          ref={songArtistsRef}
+          animate={{
+            ...(artistsTooWide
+              ? {
+                  x: [0, -artistsOverflowWidth],
+                }
+              : {}),
+          }}
+          style={{
+            ...(artistsTooWide
+              ? {
+                  transform: `translateX(0px)`,
+                }
+              : {}),
+          }}
+          transition={{
+            ...(artistsTooWide
+              ? {
+                  ease: 'linear',
+                  duration: artistsAnimationDuration,
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                  repeatType: 'reverse',
+                }
+              : {}),
+          }}
+        >
+          <div
+            className="song-artists"
+            style={{
+              color: primaryColor,
+              fontFamily: artistsFontFamily,
+              fontSize: `${artistsFontSize}px`,
+              textShadow: dropShadowEnabled ? dropShadowSettings : 'none',
+            }}
+          >
+            {currentSong.item.artists.map((artist) => artist.name).join(', ')}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

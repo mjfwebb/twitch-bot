@@ -2,7 +2,6 @@ import { songSearchParamsMap } from '../Song/songSearchParamsMap';
 import { SongDisplay } from '../Song/Song';
 import useStore from '../../store/store';
 import { useSongSettingsStore } from '../../store/songSettingsStore';
-import useSocketContext from '../../hooks/useSocketContext';
 import { DEFAULT_SONG_SETTINGS_VALUES, PRESET_SONG_SETTINGS_VALUES } from '../../constants';
 import { TextShadowPicker } from '../../components/TextShadowPicker';
 import { FontPicker } from '../../components/FontPicker/FontPicker';
@@ -12,8 +11,6 @@ import { CopyButton } from '../../components/CopyButton/CopyButton';
 import './SongDashboard.less';
 
 export const SongDashboard = () => {
-  const socket = useSocketContext();
-  socket.sendToServer('getSong');
   const currentSong = useStore((s) => s.currentSong);
   const primaryColor = useSongSettingsStore((s) => s.primaryColor);
   const secondaryColor = useSongSettingsStore((s) => s.secondaryColor);
@@ -26,10 +23,8 @@ export const SongDashboard = () => {
   const textStrokeEnabled = useSongSettingsStore((s) => s.textStrokeEnabled);
   const textStrokeSettings = useSongSettingsStore((s) => s.textStrokeSettings);
   const titleFontSizeValue = useSongSettingsStore((s) => s.titleFontSizeValue);
-  const titleFontSizeUnit = useSongSettingsStore((s) => s.titleFontSizeUnit);
   const titleFontFamily = useSongSettingsStore((s) => s.titleFontFamily);
   const artistsFontSizeValue = useSongSettingsStore((s) => s.artistsFontSizeValue);
-  const artistsFontSizeUnit = useSongSettingsStore((s) => s.artistsFontSizeUnit);
   const artistsFontFamily = useSongSettingsStore((s) => s.artistsFontFamily);
   const showAlbumArt = useSongSettingsStore((s) => s.showAlbumArt);
 
@@ -58,23 +53,16 @@ export const SongDashboard = () => {
   if (textStrokeEnabled && textStrokeSettings !== DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings) {
     songURL.searchParams.append(songSearchParamsMap.textStrokeSettings, textStrokeSettings);
   }
-  if (
-    titleFontSizeValue !== DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue ||
-    titleFontSizeUnit !== DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeUnit
-  ) {
-    const titleFontSize = `${titleFontSizeValue}${titleFontSizeUnit}`;
-    songURL.searchParams.append(songSearchParamsMap.titleFontSize, titleFontSize);
+  if (titleFontSizeValue !== DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue) {
+    songURL.searchParams.append(songSearchParamsMap.titleFontSize, String(titleFontSizeValue));
   }
   if (titleFontFamily !== DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily) {
     songURL.searchParams.append(songSearchParamsMap.titleFontFamily, titleFontFamily);
   }
-  if (
-    artistsFontSizeValue !== DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue ||
-    artistsFontSizeUnit !== DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeUnit
-  ) {
-    const artistsFontSize = `${artistsFontSizeValue}${artistsFontSizeUnit}`;
-    songURL.searchParams.append(songSearchParamsMap.artistsFontSize, artistsFontSize);
+  if (artistsFontSizeValue !== DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue) {
+    songURL.searchParams.append(songSearchParamsMap.artistsFontSize, String(artistsFontSizeValue));
   }
+
   if (artistsFontFamily !== DEFAULT_SONG_SETTINGS_VALUES.artistsFontFamily) {
     songURL.searchParams.append(songSearchParamsMap.artistsFontFamily, artistsFontFamily);
   }
@@ -107,9 +95,9 @@ export const SongDashboard = () => {
             width={`${widthValue}${widthUnit}`}
             height={`${heightValue}${heightUnit}`}
             titleFontFamily={titleFontFamily}
-            titleFontSize={`${titleFontSizeValue}${titleFontSizeUnit}`}
+            titleFontSize={`${titleFontSizeValue}`}
             artistsFontFamily={artistsFontFamily}
-            artistsFontSize={`${artistsFontSizeValue}${artistsFontSizeUnit}`}
+            artistsFontSize={`${artistsFontSizeValue}`}
             dropShadowEnabled={dropShadowEnabled}
             dropShadowSettings={dropShadowSettings}
             textStrokeEnabled={textStrokeEnabled}
@@ -139,32 +127,16 @@ export const SongDashboard = () => {
             type="color"
             id="song_secondary_color"
             value={secondaryColor}
-            onChange={(event) => {
-              console.log(event.target.value);
-              useSongSettingsStore.getState().setSecondaryColor(event.target.value);
-            }}
+            onChange={(event) => useSongSettingsStore.getState().setSecondaryColor(event.target.value)}
           />
           <button onClick={() => useSongSettingsStore.getState().setSecondaryColor(DEFAULT_SONG_SETTINGS_VALUES.secondaryColor)}>reset</button>
         </div>
         <div className="song-modifiers-row song-modifiers-label-above">
-          <label htmlFor="font_size">Title font size</label>
-          <CSSSizePicker
-            id="font_size"
-            defaultValue={DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue}
-            defaultUnit={DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeUnit}
-            value={titleFontSizeValue}
-            unit={titleFontSizeUnit}
-            onValueChange={(TitleFontSizeValue) => {
-              useSongSettingsStore.getState().setTitleFontSizeValue(TitleFontSizeValue);
-            }}
-            onUnitChange={(TitleFontSizeUnit) => {
-              useSongSettingsStore.getState().setTitleFontSizeUnit(TitleFontSizeUnit);
-            }}
-          />
+          <label htmlFor="font_size">Title font size (only in pixels)</label>
+          <input value={titleFontSizeValue} type="number" onChange={(e) => useSongSettingsStore.getState().setTitleFontSizeValue(+e.target.value)} />
           <button
             onClick={() => {
               useSongSettingsStore.getState().setTitleFontSizeValue(PRESET_SONG_SETTINGS_VALUES.titleFontSizeValueSmall);
-              useSongSettingsStore.getState().setTitleFontSizeUnit(PRESET_SONG_SETTINGS_VALUES.titleFontSizeUnit);
             }}
           >
             preset small
@@ -172,7 +144,6 @@ export const SongDashboard = () => {
           <button
             onClick={() => {
               useSongSettingsStore.getState().setTitleFontSizeValue(PRESET_SONG_SETTINGS_VALUES.titleFontSizeValueMedium);
-              useSongSettingsStore.getState().setTitleFontSizeUnit(PRESET_SONG_SETTINGS_VALUES.titleFontSizeUnit);
             }}
           >
             preset medium
@@ -180,7 +151,6 @@ export const SongDashboard = () => {
           <button
             onClick={() => {
               useSongSettingsStore.getState().setTitleFontSizeValue(PRESET_SONG_SETTINGS_VALUES.titleFontSizeValueLarge);
-              useSongSettingsStore.getState().setTitleFontSizeUnit(PRESET_SONG_SETTINGS_VALUES.titleFontSizeUnit);
             }}
           >
             preset large
@@ -197,24 +167,15 @@ export const SongDashboard = () => {
           <button onClick={() => useSongSettingsStore.getState().setTitleFontFamily(DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily)}>reset</button>
         </div>
         <div className="song-modifiers-row song-modifiers-label-above">
-          <label htmlFor="font_size">Artists font size</label>
-          <CSSSizePicker
-            id="font_size"
-            defaultValue={DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue}
-            defaultUnit={DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeUnit}
+          <label htmlFor="font_size">Artists font size (only in pixels)</label>
+          <input
             value={artistsFontSizeValue}
-            unit={artistsFontSizeUnit}
-            onValueChange={(ArtistsFontSizeValue) => {
-              useSongSettingsStore.getState().setArtistsFontSizeValue(ArtistsFontSizeValue);
-            }}
-            onUnitChange={(ArtistsFontSizeUnit) => {
-              useSongSettingsStore.getState().setArtistsFontSizeUnit(ArtistsFontSizeUnit);
-            }}
+            type="number"
+            onChange={(e) => useSongSettingsStore.getState().setArtistsFontSizeValue(+e.target.value)}
           />
           <button
             onClick={() => {
               useSongSettingsStore.getState().setArtistsFontSizeValue(PRESET_SONG_SETTINGS_VALUES.artistsFontSizeValueSmall);
-              useSongSettingsStore.getState().setArtistsFontSizeUnit(PRESET_SONG_SETTINGS_VALUES.artistsFontSizeUnit);
             }}
           >
             preset small
@@ -222,7 +183,6 @@ export const SongDashboard = () => {
           <button
             onClick={() => {
               useSongSettingsStore.getState().setArtistsFontSizeValue(PRESET_SONG_SETTINGS_VALUES.artistsFontSizeValueMedium);
-              useSongSettingsStore.getState().setArtistsFontSizeUnit(PRESET_SONG_SETTINGS_VALUES.artistsFontSizeUnit);
             }}
           >
             preset medium
@@ -230,7 +190,6 @@ export const SongDashboard = () => {
           <button
             onClick={() => {
               useSongSettingsStore.getState().setArtistsFontSizeValue(PRESET_SONG_SETTINGS_VALUES.artistsFontSizeValueLarge);
-              useSongSettingsStore.getState().setArtistsFontSizeUnit(PRESET_SONG_SETTINGS_VALUES.artistsFontSizeUnit);
             }}
           >
             preset large
