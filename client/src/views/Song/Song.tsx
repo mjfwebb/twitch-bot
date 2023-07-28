@@ -55,8 +55,8 @@ export const SongDisplay = ({
   const songInfoWidth = songInfoRef.current?.clientWidth || 0;
   const titleWidth = songTitleRef.current?.offsetWidth || 0;
   const artistsWidth = songArtistsRef.current?.offsetWidth || 0;
-  const titleTooWide = titleWidth > songInfoWidth;
-  const artistsTooWide = artistsWidth > songInfoWidth;
+  const titleTooWide = titleWidth + 32 > songInfoWidth;
+  const artistsTooWide = artistsWidth + 32 > songInfoWidth;
 
   // Add 32px for padding
   const titleOverflowWidth = titleWidth + 32 - songInfoWidth;
