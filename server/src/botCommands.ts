@@ -85,7 +85,7 @@ export function loadGitHubCommands(): BotCommand[] {
   return [];
 }
 
-const spotifyCommands: BotCommand[] = [skipsong, song, songqueue, queuesong, lastsong];
+const spotifyCommands: BotCommand[] = [skipsong, song, songqueue, queuesong, lastsong, fetchcurrentsong];
 
 const githubCommands: BotCommand[] = [addissue, randomissue];
 
@@ -96,7 +96,6 @@ const complexBotCommands: BotCommand[] = [
   addsquat,
   commands,
   delvoid,
-  fetchcurrentsong,
   followage,
   forodor,
   help,
