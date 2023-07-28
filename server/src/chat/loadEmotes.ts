@@ -5,9 +5,11 @@ import type { BttvEmote } from '../handlers/bttv/types';
 import { fetchFrankerFaceZGlobalEmotes } from '../handlers/frankerfacez/fetchFrankerFaceZGlobalEmotes';
 import { fetchFrankerFaceZRoomEmotes } from '../handlers/frankerfacez/fetchFrankerFaceZRoomEmotes';
 import type { FrankerFaceZEmote } from '../handlers/frankerfacez/types';
+import { fetchSevenTVEmote } from '../handlers/sevenTV/fetchSevenTVEmote';
 import { fetchSevenTVEmoteSet } from '../handlers/sevenTV/fetchSevenTVEmoteSets';
 import { getSevenTVUser } from '../handlers/sevenTV/sevenTVUser';
 import type { SevenTVEmote } from '../handlers/sevenTV/types';
+import { logger } from '../logger';
 import { getIO } from '../runSocketServer';
 
 export type ChatEmote = {
@@ -93,10 +95,25 @@ export const removeSevenTVEmote = (emoteId: string) => {
   delete sevenTVEmotesForClient[foundEmote.name];
 };
 
-export const addSevenTVEmote = (emote: SevenTVEmote) => {
+export const addSevenTVEmote = async (emote: SevenTVEmote) => {
   const name = emote.name;
+  const id = emote.id;
   // Use the second in the array of files as it will be the smallest WebP
   const file = emote.data.host.files[2];
+
+  if (!file) {
+    const emoteData = await fetchSevenTVEmote(id);
+    if (!emoteData) {
+      logger.error(`Failed to fetch SevenTV emote ${id}`);
+      return;
+    }
+    await addSevenTVEmote({
+      ...emote,
+      data: emoteData,
+    });
+    return;
+  }
+
   const imageUrl = `${emote.data.host.url}/${file.name}`;
 
   sevenTVEmotesForClient[name] = {
@@ -120,7 +137,9 @@ const loadSevenTVEmotes = async () => {
       for (const emoteSet of emoteSets) {
         const sevenTVEmoteSet = await fetchSevenTVEmoteSet(emoteSet);
         if (sevenTVEmoteSet) {
-          sevenTVEmoteSet.emotes.forEach((emote) => addSevenTVEmote(emote));
+          for (const emote of sevenTVEmoteSet.emotes) {
+            await addSevenTVEmote(emote);
+          }
         }
       }
     }

@@ -1,38 +1,40 @@
+export type SevenTVEmoteData = {
+  id: string;
+  name: string;
+  flags: number;
+  lifecycle: number;
+  state: ('PERSONAL' | 'LISTED')[];
+  listed: boolean;
+  animated: boolean;
+  owner: {
+    id: string;
+    username: string;
+    display_name: string;
+    avatar_url: string;
+    style: unknown;
+    roles: string[];
+  };
+  host: {
+    url: string;
+    files: {
+      name: string;
+      static_name: string;
+      width: number;
+      height: number;
+      frame_count: number;
+      size: number;
+      format: 'AVIF' | 'WEBP';
+    }[];
+  };
+};
+
 export type SevenTVEmote = {
   id: string;
   name: string;
   flags: number;
   timestamp: number;
   actor_id: string;
-  data: {
-    id: string;
-    name: string;
-    flags: number;
-    lifecycle: number;
-    state: ('PERSONAL' | 'LISTED')[];
-    listed: boolean;
-    animated: boolean;
-    owner: {
-      id: string;
-      username: string;
-      display_name: string;
-      avatar_url: string;
-      style: unknown;
-      roles: string[];
-    };
-    host: {
-      url: string;
-      files: {
-        name: string;
-        static_name: string;
-        width: number;
-        height: number;
-        frame_count: number;
-        size: number;
-        format: 'AVIF' | 'WEBP';
-      }[];
-    };
-  };
+  data: SevenTVEmoteData;
 };
 
 export type SevenTVEmoteSet = {
