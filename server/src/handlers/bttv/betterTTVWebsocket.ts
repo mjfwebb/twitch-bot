@@ -1,5 +1,5 @@
 import websocket from 'websocket';
-import { addBetterTTVEmote, removeBetterTTVEmote, sendEmotes } from '../../chat/loadEmotes';
+import { addBetterTTVEmote, removeBetterTTVEmote } from '../../chat/loadEmotes';
 import Config from '../../config';
 import { BETTER_TTV_WEBSOCKET_URL } from '../../constants';
 import { logger } from '../../logger';
@@ -39,7 +39,6 @@ export function runBetterTTVWebsocket() {
             if (hasOwnProperty(data.data, 'emoteId') && typeof data.data.emoteId === 'string') {
               logger.info(`BetterTTV WebSocket: Removing emote ${data.data.emoteId}`);
               removeBetterTTVEmote(data.data.emoteId);
-              sendEmotes();
             }
             break;
           case 'emote_create':
@@ -47,7 +46,6 @@ export function runBetterTTVWebsocket() {
               const emote = data.data.emote as BttvEmote;
               logger.info(`BetterTTV WebSocket: Adding emote ${emote.code}`);
               addBetterTTVEmote(emote);
-              sendEmotes();
             }
             break;
           default:

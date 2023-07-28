@@ -93,40 +93,54 @@ export const removeSevenTVEmote = (emoteId: string) => {
   if (!foundEmote) return;
 
   delete sevenTVEmotesForClient[foundEmote.name];
+
+  sendEmotes();
 };
 
 export const addSevenTVEmote = async (emote: SevenTVEmote) => {
   const name = emote.name;
-  const id = emote.id;
   // Use the second in the array of files as it will be the smallest WebP
   const file = emote.data.host.files[2];
 
-  if (!file) {
+  if (file) {
+    const imageUrl = `${emote.data.host.url}/${file.name}`;
+
+    sevenTVEmotesForClient[name] = {
+      origin: 'sevenTV',
+      src: imageUrl,
+      width: file.width,
+      height: file.height,
+      modifier: false,
+      hidden: false,
+      modifierFlags: emote.data.flags,
+      id: emote.id,
+      name,
+    };
+  } else {
+    const id = emote.id;
+
     const emoteData = await fetchSevenTVEmote(id);
     if (!emoteData) {
       logger.error(`Failed to fetch SevenTV emote ${id}`);
       return;
     }
-    await addSevenTVEmote({
-      ...emote,
-      data: emoteData,
-    });
-    return;
+    const file = emoteData.host.files[2];
+    const imageUrl = `${emoteData.host.url}/${file.name}`;
+
+    sevenTVEmotesForClient[emoteData.name] = {
+      origin: 'sevenTV',
+      src: imageUrl,
+      width: file.width,
+      height: file.height,
+      modifier: false,
+      hidden: false,
+      modifierFlags: emoteData.flags,
+      id: emoteData.id,
+      name,
+    };
   }
 
-  const imageUrl = `${emote.data.host.url}/${file.name}`;
-
-  sevenTVEmotesForClient[name] = {
-    origin: 'sevenTV',
-    src: imageUrl,
-    width: file.width,
-    height: file.height,
-    modifier: false,
-    hidden: false,
-    modifierFlags: emote.data.flags,
-    id: emote.id,
-    name,
-  };
+  sendEmotes();
 };
 
 const loadSevenTVEmotes = async () => {
@@ -151,6 +165,8 @@ export const removeBetterTTVEmote = (emoteId: string) => {
   if (!foundEmote) return;
 
   delete betterTTVEmotesForClient[foundEmote.name];
+
+  sendEmotes();
 };
 
 export const addBetterTTVEmote = (emote: Pick<BttvEmote, 'code' | 'id' | 'imageType'>) => {
@@ -165,6 +181,8 @@ export const addBetterTTVEmote = (emote: Pick<BttvEmote, 'code' | 'id' | 'imageT
     id: emote.id,
     name: emote.code,
   };
+
+  sendEmotes();
 };
 
 const loadBetterTTVUserEmotes = async () => {

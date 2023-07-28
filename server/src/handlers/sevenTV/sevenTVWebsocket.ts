@@ -1,5 +1,5 @@
 import websocket from 'websocket';
-import { addSevenTVEmote, removeSevenTVEmote, sendEmotes } from '../../chat/loadEmotes';
+import { addSevenTVEmote, removeSevenTVEmote } from '../../chat/loadEmotes';
 import { SEVEN_TV_WEBSOCKET_URL } from '../../constants';
 import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
@@ -160,8 +160,7 @@ export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
                   if (entry.key === 'emotes') {
                     const emote = entry.value as SevenTVEmote;
                     logger.info(`SevenTV WebSocket: Emote added: "${emote.name}" with ID: ${emote.id}`);
-                    addSevenTVEmote(emote);
-                    sendEmotes();
+                    addSevenTVEmote(emote).catch((error: unknown) => logger.error(`SevenTV WebSocket: Error adding emote: ${JSON.stringify(error)}`));
                   }
                 }
               }
@@ -175,7 +174,6 @@ export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
                     const emote = entry.old_value as SevenTVEmote;
                     logger.info(`SevenTV WebSocket: Emote removed: "${emote.name}" with ID: ${emote.id}`);
                     removeSevenTVEmote(emote.id);
-                    sendEmotes();
                   }
                 }
               }

@@ -11,8 +11,6 @@ export const fetchSevenTVEmote = async (emoteId: string): Promise<SevenTVEmoteDa
     const response = await fetch(url, { method: 'GET' });
     const data: unknown = await response.json();
 
-    console.log(data);
-
     if (hasOwnProperty(data, 'id') && hasOwnProperty(data, 'name') && hasOwnProperty(data, 'flags') && hasOwnProperty(data, 'host')) {
       return data as SevenTVEmoteData;
     }
