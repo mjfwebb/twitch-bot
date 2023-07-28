@@ -1,5 +1,5 @@
-import type { Badges } from '../../twitchTypes';
 import useStore from '../../store/store';
+import type { Badges } from '../../twitchTypes';
 
 interface BadgesProps {
   badges?: Badges;

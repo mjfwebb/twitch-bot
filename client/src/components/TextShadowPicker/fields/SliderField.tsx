@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 
-import { Label } from '../inputs/Label';
-import Input from '../inputs/Input';
 import { useUnitValue } from '../common';
+import Input from '../inputs/Input';
+import { Label } from '../inputs/Label';
 
 const Wrapper = styled.div`
   flex: 1;

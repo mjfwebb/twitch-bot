@@ -1,12 +1,12 @@
-import { songSearchParamsMap } from '../Song/songSearchParamsMap';
-import { SongDisplay } from '../Song/Song';
-import useStore from '../../store/store';
-import { useSongSettingsStore } from '../../store/songSettingsStore';
-import { DEFAULT_SONG_SETTINGS_VALUES, PRESET_SONG_SETTINGS_VALUES } from '../../constants';
-import { TextShadowPicker } from '../../components/TextShadowPicker';
-import { FontPicker } from '../../components/FontPicker/FontPicker';
-import { CSSSizePicker } from '../../components/CSSSizePicker/CSSSizePicker';
 import { CopyButton } from '../../components/CopyButton/CopyButton';
+import { CSSSizePicker } from '../../components/CSSSizePicker/CSSSizePicker';
+import { FontPicker } from '../../components/FontPicker/FontPicker';
+import { TextShadowPicker } from '../../components/TextShadowPicker';
+import { DEFAULT_SONG_SETTINGS_VALUES, PRESET_SONG_SETTINGS_VALUES } from '../../constants';
+import { useSongSettingsStore } from '../../store/songSettingsStore';
+import useStore from '../../store/store';
+import { SongDisplay } from '../Song/Song';
+import { songSearchParamsMap } from '../Song/songSearchParamsMap';
 
 import './SongDashboard.less';
 

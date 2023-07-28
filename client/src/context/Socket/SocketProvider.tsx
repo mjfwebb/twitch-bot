@@ -4,8 +4,8 @@ import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 
 import useStore from '../../store/store';
-import socketEventHandler from './socketEventHandler';
 import SocketContext from './socketContext';
+import socketEventHandler from './socketEventHandler';
 
 interface SocketProviderProps {
   children: React.ReactNode;

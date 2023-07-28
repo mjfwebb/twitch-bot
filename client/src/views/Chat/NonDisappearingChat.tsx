@@ -1,12 +1,12 @@
 import { memo, useRef } from 'react';
 
+import { motion } from 'framer-motion';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
-import { motion } from 'framer-motion';
 
 import useStore from '../../store/store';
-import { useChatSearchParams } from './useChatSearchParams';
 import { ChatEntry } from './ChatEntry';
+import { useChatSearchParams } from './useChatSearchParams';
 
 export const NonDisappearingChat = () => {
   const chatSearchParams = useChatSearchParams();

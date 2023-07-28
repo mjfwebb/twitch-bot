@@ -1,6 +1,6 @@
-import { ChatEntry } from '../Chat/ChatEntry';
-import type { ChatMessage } from '../../types';
 import { useChatSettingsStore } from '../../store/chatSettingsStore';
+import type { ChatMessage } from '../../types';
+import { ChatEntry } from '../Chat/ChatEntry';
 
 export const ChatPreview = () => {
   const backgroundColor = useChatSettingsStore((s) => s.backgroundColor);

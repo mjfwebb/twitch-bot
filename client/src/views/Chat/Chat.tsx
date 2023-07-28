@@ -1,7 +1,8 @@
-import './Chat.less';
-import { useChatSearchParams } from './useChatSearchParams';
-import { NonDisappearingChat } from './NonDisappearingChat';
 import { DisappearingChat } from './DisappearingChat';
+import { NonDisappearingChat } from './NonDisappearingChat';
+import { useChatSearchParams } from './useChatSearchParams';
+
+import './Chat.less';
 
 export const Chat = () => {
   const chatSearchParams = useChatSearchParams();

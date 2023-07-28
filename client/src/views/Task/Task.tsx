@@ -1,5 +1,5 @@
-import { ChatImageRenderer } from '../Chat/ChatImageRenderer';
 import useStore from '../../store/store';
+import { ChatImageRenderer } from '../Chat/ChatImageRenderer';
 
 import './Task.less';
 

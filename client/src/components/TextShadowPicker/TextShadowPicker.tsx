@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import { styled } from 'styled-components';
 
-import type { ShadowOffset, TextShadowPickerParams } from './types';
-import SliderField from './fields/SliderField';
-import OffsetField from './fields/OffsetField';
-import ColorField from './fields/ColorField';
 import { buildShadowString, parseShadowString } from './common';
+import ColorField from './fields/ColorField';
+import OffsetField from './fields/OffsetField';
+import SliderField from './fields/SliderField';
+import type { ShadowOffset, TextShadowPickerParams } from './types';
 
 const Wrapper = styled.div`
   padding: 8px;

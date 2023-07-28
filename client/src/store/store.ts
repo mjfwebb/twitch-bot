@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
-import type { ChatBadge, ChatCheer, ChatEmote, ChatMessage, SpotifySong } from '../types';
 import type { TaskMessage } from '../twitchTypes';
+import type { ChatBadge, ChatCheer, ChatEmote, ChatMessage, SpotifySong } from '../types';
 
 interface Store {
   reconnectAttempt: number;

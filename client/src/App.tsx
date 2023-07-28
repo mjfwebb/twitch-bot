@@ -1,9 +1,9 @@
 import { Route } from 'wouter';
 
-import { Task } from './views/Task/Task';
-import { Song } from './views/Song/Song';
-import { Dashboard } from './views/Dashboard/Dashboard';
 import { Chat } from './views/Chat/Chat';
+import { Dashboard } from './views/Dashboard/Dashboard';
+import { Song } from './views/Song/Song';
+import { Task } from './views/Task/Task';
 
 import './App.less';
 

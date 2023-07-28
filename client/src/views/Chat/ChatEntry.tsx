@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 
-import type { ChatMessage } from '../../types';
-import useStore from '../../store/store';
 import useSocketContext from '../../hooks/useSocketContext';
-import { UserBadges } from './UserBadges';
-import { contrastCorrected } from './contrastCorrected';
+import useStore from '../../store/store';
+import type { ChatMessage } from '../../types';
 import { ChatImageRenderer } from './ChatImageRenderer';
+import { contrastCorrected } from './contrastCorrected';
+import { UserBadges } from './UserBadges';
 
 interface ChatEntryProps {
   chatMessage: ChatMessage;

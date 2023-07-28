@@ -1,10 +1,10 @@
 import { styled } from 'styled-components';
 
-import OffsetGrid from '../inputs/OffsetGrid';
-import { Label } from '../inputs/Label';
-import Input from '../inputs/Input';
-import type { TextShadowPickerParams } from '../index';
 import { useUnitValue } from '../common';
+import type { TextShadowPickerParams } from '../index';
+import Input from '../inputs/Input';
+import { Label } from '../inputs/Label';
+import OffsetGrid from '../inputs/OffsetGrid';
 
 const Wrapper = styled.div`
   flex: 3;

@@ -1,5 +1,5 @@
-import { createJSONStorage, persist } from 'zustand/middleware';
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { DEFAULT_CHAT_SETTINGS_VALUES } from '../constants';
 

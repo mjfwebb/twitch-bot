@@ -2,8 +2,8 @@ import { useRef } from 'react';
 
 import { motion } from 'framer-motion';
 
-import type { SpotifySong } from '../../types';
 import useStore from '../../store/store';
+import type { SpotifySong } from '../../types';
 import { useSongSearchParams } from './useChatSearchParams';
 
 import './Song.less';

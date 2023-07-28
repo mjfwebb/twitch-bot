@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-import type { ChatMessage } from '../../types';
 import useStore from '../../store/store';
-import { useChatSearchParams } from './useChatSearchParams';
+import type { ChatMessage } from '../../types';
 import { ChatEntry } from './ChatEntry';
+import { useChatSearchParams } from './useChatSearchParams';
 
 type MessageProps = {
   chatMessage: ChatMessage;

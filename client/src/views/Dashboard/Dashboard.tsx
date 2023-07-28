@@ -1,8 +1,8 @@
 import * as Tabs from '@radix-ui/react-tabs';
 
-import { TaskDashboard } from './TaskDashboard';
-import { SongDashboard } from './SongDashboard';
 import { ChatDashboard } from './ChatDashboard';
+import { SongDashboard } from './SongDashboard';
+import { TaskDashboard } from './TaskDashboard';
 
 import './Dashboard.less';
 

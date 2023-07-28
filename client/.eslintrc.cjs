@@ -11,7 +11,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier',
   ],
-  plugins: ['react', 'prettier', 'import', 'jsx-a11y'],
+  plugins: ['react', 'prettier', 'import', 'jsx-a11y', 'simple-import-sort'],
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: './tsconfig.json',
@@ -57,33 +57,24 @@ module.exports = {
     'max-len': ['warn', { code: 150, ignoreUrls: true, ignoreStrings: true }],
     'prefer-promise-reject-errors': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
-      },
-    ],
-    'import/order': [
+    'simple-import-sort/imports': [
       'error',
       {
-        groups: ['builtin', 'external', 'internal'],
-        pathGroups: [
-          {
-            pattern: 'react',
-            group: 'external',
-            position: 'before',
-          },
+        groups: [
+          // Matches any import statement that ends with 'react'
+          ['react$'],
+
+          // Matches any import statement that starts with '@' followed by any word character
+          ['^@?\\w'],
+
+          ['^@components?\\w', '^@constants?\\w', '^@util?\\w', '^@hooks?\\w', '^@validators?\\w', '^@store?\\w'],
+
+          // Matches any import statement that starts with a dot, but not when it is followed by a forward slash (i.e., not a relative import), and not when it is followed by nothing (i.e., not an absolute import). Also matches import statements that start with two dots, followed by either nothing or a forward slash (i.e., a relative parent import).
+          ['^\\.(?!/?$)', '^\\.\\./?$'],
+
+          // Side effect imports.
+          ['^\\u0000'],
         ],
-        pathGroupsExcludedImportTypes: ['react'],
-        'newlines-between': 'always',
-        alphabetize: {
-          order: 'desc',
-          caseInsensitive: true,
-        },
       },
     ],
     'spaced-comment': ['error', 'always', { markers: ['/'] }],

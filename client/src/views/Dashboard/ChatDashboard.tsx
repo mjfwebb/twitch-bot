@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { chatSearchParamsMap } from '../Chat/chatSearchParamsMap';
-import { useChatSettingsStore } from '../../store/chatSettingsStore';
-import useSocketContext from '../../hooks/useSocketContext';
-import { DEFAULT_CHAT_SETTINGS_VALUES, PRESET_CHAT_SETTINGS_VALUES } from '../../constants';
-import { TextShadowPicker } from '../../components/TextShadowPicker';
-import { FontPicker } from '../../components/FontPicker/FontPicker';
-import { CSSSizePicker } from '../../components/CSSSizePicker/CSSSizePicker';
 import { CopyButton } from '../../components/CopyButton/CopyButton';
+import { CSSSizePicker } from '../../components/CSSSizePicker/CSSSizePicker';
+import { FontPicker } from '../../components/FontPicker/FontPicker';
+import { TextShadowPicker } from '../../components/TextShadowPicker';
+import { DEFAULT_CHAT_SETTINGS_VALUES, PRESET_CHAT_SETTINGS_VALUES } from '../../constants';
+import useSocketContext from '../../hooks/useSocketContext';
+import { useChatSettingsStore } from '../../store/chatSettingsStore';
+import { chatSearchParamsMap } from '../Chat/chatSearchParamsMap';
 import { ChatPreview } from './ChatPreview';
 
 import './ChatDashboard.less';

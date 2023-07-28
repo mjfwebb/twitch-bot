@@ -1,9 +1,9 @@
-import type { Socket } from 'socket.io-client';
 import JSConfetti from 'js-confetti';
+import type { Socket } from 'socket.io-client';
 
-import type { ChatBadge, ChatCheer, ChatEmote, ChatMessage, SpotifySong } from '../../types';
-import type { TaskMessage } from '../../twitchTypes';
 import useStore from '../../store/store';
+import type { TaskMessage } from '../../twitchTypes';
+import type { ChatBadge, ChatCheer, ChatEmote, ChatMessage, SpotifySong } from '../../types';
 
 function socketEventHandler(socket: Socket) {
   socket.on('task', (data: unknown) => {

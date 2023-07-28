@@ -1,12 +1,12 @@
-import twemoji from 'twemoji';
 import classNames from 'classnames';
+import twemoji from 'twemoji';
 
-import type { ChatCheer, ChatEmote } from '../../types';
-import type { Emotes } from '../../twitchTypes';
 import useStore from '../../store/store';
-import { parseSevenTVModifierFlags } from './parseSevenTVModifierFlags';
-import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags';
+import type { Emotes } from '../../twitchTypes';
+import type { ChatCheer, ChatEmote } from '../../types';
 import { bttvModifierMap, bttvModifiers } from './bttvModifierFlags';
+import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags';
+import { parseSevenTVModifierFlags } from './parseSevenTVModifierFlags';
 
 // emote regex which separates strings based on whitespace
 const emoteRegex = /(\s+)/g;
