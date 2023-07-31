@@ -8,8 +8,6 @@ import { subscribeToRaids } from './subscribers/subscribeToRaids';
 import { subscribeToRedeems } from './subscribers/subscribeToRedeems';
 import { subscribeToStreamOfflineNotifications } from './subscribers/subscribeToStreamOfflineNotifications';
 import { subscribeToStreamOnlineNotifications } from './subscribers/subscribeToStreamOnlineNotifications';
-import { subscribeToSubscriptionGifts } from './subscribers/subscribeToSubscriptionGifts';
-import { subscribeToSubscriptions } from './subscribers/subscribeToSubscriptions';
 import { twitchEventSubHandler } from './twitchEventSubHandler';
 
 export function runTwitchEventSubWebsocket() {
@@ -42,8 +40,6 @@ export function runTwitchEventSubWebsocket() {
                 subscribeToRedeems(sessionId).catch((e) => logger.error(e));
                 subscribeToFollows(sessionId).catch((e) => logger.error(e));
                 subscribeToRaids(sessionId).catch((e) => logger.error(e));
-                subscribeToSubscriptions(sessionId).catch((e) => logger.error(e));
-                subscribeToSubscriptionGifts(sessionId).catch((e) => logger.error(e));
                 subscribeToStreamOnlineNotifications(sessionId).catch((e) => logger.error(e));
                 subscribeToStreamOfflineNotifications(sessionId).catch((e) => logger.error(e));
               }

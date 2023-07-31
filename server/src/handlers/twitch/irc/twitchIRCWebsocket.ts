@@ -11,6 +11,7 @@ import { firstMessageOfStreamHandler } from './firstMessageOfStreamHandler';
 import { messageHandler } from './messageHandler';
 import { parseMessage } from './parsers/parseMessage';
 import { returningChatterHandler } from './returningChatterHandler';
+import { subHandler } from './subHandler';
 
 let connectionRef: websocket.connection | undefined;
 let reconnecting = false;
@@ -69,6 +70,7 @@ export function runTwitchIRCWebsocket() {
             switch (parsedMessage.command.command) {
               case 'PRIVMSG':
                 botCommandHandler(connection, parsedMessage).catch((e) => logger.error(e));
+                subHandler(connection, parsedMessage).catch((e) => logger.error(e));
                 bitHandler(connection, parsedMessage).catch((e) => logger.error(e));
                 firstMessageHandler(connection, parsedMessage);
                 firstMessageOfStreamHandler(connection, parsedMessage);

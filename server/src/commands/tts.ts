@@ -26,6 +26,54 @@ async function getVoiceBuffer(voice: Voice, text: string): Promise<Buffer | null
   }
 }
 
+export const runTTS = async (message: string) => {
+  const words = message.split(' ');
+  let nextVoice: Voice = {
+    name: 'Brian',
+    id: 'Brian',
+    api: 'streamelements',
+  };
+  let currentMessage = '';
+  let buffer: Buffer = Buffer.from([]);
+
+  for (const word of words) {
+    let skip = false;
+    if (word.endsWith(':')) {
+      const voice = word.slice(0, -1);
+      const voiceLowerCase = voice.toLowerCase();
+      for (const voice of VOICES) {
+        if (voice.name.toLowerCase() === voiceLowerCase) {
+          if (currentMessage.length > 0) {
+            const result = await getVoiceBuffer(nextVoice, currentMessage);
+            if (result) {
+              buffer = Buffer.concat([buffer, result]);
+            }
+          }
+          skip = true;
+          nextVoice = voice;
+          currentMessage = '';
+          break;
+        }
+      }
+    }
+    if (!skip) {
+      currentMessage += `${word} `;
+    }
+  }
+
+  if (currentMessage.length > 0) {
+    const result = await getVoiceBuffer(nextVoice, currentMessage);
+    if (result) {
+      buffer = Buffer.concat([buffer, result]);
+    }
+  }
+
+  const id = Math.random().toString(36).substring(2, 15);
+  writeFileSync(`../tts/${id}.mp3`, buffer);
+
+  await playSound(`../tts/${id}.mp3`);
+};
+
 export const tts: BotCommand = {
   command: 'tts',
   id: 'tts',
@@ -33,51 +81,7 @@ export const tts: BotCommand = {
   callback: async (_, parsedCommand) => {
     const params = parsedCommand.parsedMessage.command?.botCommandParams;
     if (params) {
-      const words = params.split(' ');
-      let nextVoice: Voice = {
-        name: 'Brian',
-        id: 'Brian',
-        api: 'streamelements',
-      };
-      let currentMessage = '';
-      let buffer: Buffer = Buffer.from([]);
-
-      for (const word of words) {
-        let skip = false;
-        if (word.endsWith(':')) {
-          const voice = word.slice(0, -1);
-          const voiceLowerCase = voice.toLowerCase();
-          for (const voice of VOICES) {
-            if (voice.name.toLowerCase() === voiceLowerCase) {
-              if (currentMessage.length > 0) {
-                const result = await getVoiceBuffer(nextVoice, currentMessage);
-                if (result) {
-                  buffer = Buffer.concat([buffer, result]);
-                }
-              }
-              skip = true;
-              nextVoice = voice;
-              currentMessage = '';
-              break;
-            }
-          }
-        }
-        if (!skip) {
-          currentMessage += `${word} `;
-        }
-      }
-
-      if (currentMessage.length > 0) {
-        const result = await getVoiceBuffer(nextVoice, currentMessage);
-        if (result) {
-          buffer = Buffer.concat([buffer, result]);
-        }
-      }
-
-      const id = Math.random().toString(36).substring(2, 15);
-      writeFileSync(`../tts/${id}.mp3`, buffer);
-
-      await playSound(`../tts/${id}.mp3`);
+      await runTTS(params);
     }
   },
 };

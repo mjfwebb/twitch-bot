@@ -58,6 +58,7 @@ export type TikTokConfig = {
 export type FeaturesConfig = {
   interval_commands: boolean;
   bit_handler: boolean;
+  sub_handler: boolean;
   first_message_handler: boolean;
   first_message_of_stream_handler: boolean;
   returning_chatter_handler: boolean;
@@ -244,6 +245,7 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
   const defaultFeaturesConfig: FeaturesConfig = {
     interval_commands: true,
     bit_handler: true,
+    sub_handler: true,
     first_message_handler: true,
     first_message_of_stream_handler: true,
     returning_chatter_handler: true,
