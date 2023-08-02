@@ -13,7 +13,7 @@ export const help: BotCommand = {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {
       const commandToGetDetailsAbout = parsedCommand.parsedMessage.command?.botCommandParams?.replace('!', '');
       if (!commandToGetDetailsAbout) {
-        sendChatMessage(connection, 'You need to specify a command to get details about, like !help !play');
+        sendChatMessage(connection, 'You need to specify a command to get details about, like !help play');
         return;
       }
       const foundBotCommand = findBotCommand(commandToGetDetailsAbout);
@@ -24,6 +24,8 @@ export const help: BotCommand = {
       const command = Commands.findOneByCommandId(foundBotCommand.id);
       const message = generateCommandMessage(commandToGetDetailsAbout, foundBotCommand, command?.timesUsed || 0);
       sendChatMessage(connection, message);
+    } else {
+      sendChatMessage(connection, 'You need to specify a command to get details about, like !help play');
     }
   },
   cooldown: 5000,
