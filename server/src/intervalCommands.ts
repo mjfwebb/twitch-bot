@@ -1,4 +1,5 @@
 import { findBotCommand } from './commands/helpers/findBotCommand';
+import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { SECOND_MS } from './constants';
 import { getConnection } from './handlers/twitch/irc/twitchIRCWebsocket';
 import type { IntervalCommand } from './storage-models/interval-command-model';
@@ -46,6 +47,13 @@ export function runIntervalCommands() {
         }
 
         for (const action of intervalCommand.actions) {
+          if (action.message) {
+            const connection = getConnection();
+            if (connection) {
+              sendChatMessage(connection, action.message.replace('%now%', new Date().toTimeString()));
+            }
+          }
+
           if (action.command) {
             const foundCommand = findBotCommand(action.command);
             if (foundCommand) {
