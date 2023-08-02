@@ -11,7 +11,7 @@ export function sendChatMessage(connection: websocket.connection, message: strin
     const messageWords = message.split(' ');
     let newMessage = '';
     messageWords.forEach((word) => {
-      if (newMessage.length + word.length > MAX_TWITCH_MESSAGE_LENGTH) {
+      if (newMessage.length + word.length > MAX_TWITCH_MESSAGE_LENGTH - 1) {
         sendMessage(newMessage);
         newMessage = word;
       } else {
