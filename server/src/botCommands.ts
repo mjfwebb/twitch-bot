@@ -26,6 +26,7 @@ import { setalias } from './commands/setalias';
 import { setcategory } from './commands/setcategory';
 import { setcooldown } from './commands/setcooldown';
 import { setdescription } from './commands/setdescription';
+import { setmessage } from './commands/setmessage';
 import { settags } from './commands/settags';
 import { settask } from './commands/settask';
 import { settitle } from './commands/settitle';
@@ -111,6 +112,7 @@ const complexBotCommands: BotCommand[] = [
   setcategory,
   setcooldown,
   setdescription,
+  setmessage,
   settags,
   settask,
   settitle,
