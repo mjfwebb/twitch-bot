@@ -6,7 +6,7 @@ import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
 
 export const queuesong: BotCommand = {
-  command: ['queuesong', 'qs'],
+  command: ['queuesong', 'qs', 'sr', 'songrequest'],
   id: 'queuesong',
   cooldown: 10 * SECOND_MS,
   privileged: false,
