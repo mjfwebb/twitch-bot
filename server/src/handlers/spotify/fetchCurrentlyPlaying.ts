@@ -6,12 +6,21 @@ import { getIO } from '../../runSocketServer';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 import type { SpotifySong } from './types';
 
-let currentSong: SpotifySong | null = null;
-let lastSong: SpotifySong | null = null;
+const playedSongs: SpotifySong[] = [];
 
-export const getCurrentSpotifySong = () => currentSong;
+export const getCurrentSpotifySong = (): SpotifySong | null => {
+  if (playedSongs.length === 0) {
+    return null;
+  }
+  return playedSongs[playedSongs.length - 1];
+};
 
-export const getLastSpotifySong = () => lastSong;
+export const getLastSpotifySong = (): SpotifySong | null => {
+  if (playedSongs.length < 2) {
+    return null;
+  }
+  return playedSongs[playedSongs.length - 2];
+};
 
 export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
   if (Config.spotify.enabled) {
@@ -41,10 +50,10 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
         typeof result.item.external_urls.spotify === 'string'
       ) {
         getIO().emit('currentSong', result);
-        if (currentSong !== null) {
-          lastSong = currentSong;
+        const resultSong = result as SpotifySong;
+        if (resultSong.item.id && getCurrentSpotifySong()?.item.id !== resultSong.item.id) {
+          playedSongs.push(result as SpotifySong);
         }
-        currentSong = result as SpotifySong;
       }
     } catch (error) {
       logger.error(error);

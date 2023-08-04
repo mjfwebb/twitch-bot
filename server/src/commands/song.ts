@@ -11,6 +11,10 @@ export const song: BotCommand = {
   description: 'Gets the currently playing song (on Spotify)',
   callback: (connection) => {
     const currentlyPlayingSong = getCurrentSpotifySong();
+    if (!currentlyPlayingSong) {
+      sendChatMessage(connection, 'No song is currently playing');
+      return;
+    }
     const currentlyPlaying = currentlyPlayingSong ? `Current song is ${songDetails(currentlyPlayingSong.item)}` : 'No Spotify connection found';
     sendChatMessage(connection, currentlyPlaying);
   },

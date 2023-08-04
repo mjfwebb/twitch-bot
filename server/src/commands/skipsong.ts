@@ -13,6 +13,10 @@ export const skipsong: BotCommand = {
   description: 'Skips the currently playing song (on Spotify)',
   callback: async (connection) => {
     const currentlyPlayingSong = getCurrentSpotifySong();
+    if (!currentlyPlayingSong) {
+      sendChatMessage(connection, 'No song is currently playing');
+      return;
+    }
     await skipCurrentSong();
     sendChatMessage(connection, `Skipping ${currentlyPlayingSong ? songDetails(currentlyPlayingSong.item, false) : 'song'}`);
   },

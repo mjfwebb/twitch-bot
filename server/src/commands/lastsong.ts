@@ -11,6 +11,10 @@ export const lastsong: BotCommand = {
   description: 'Gets the previously played song (on Spotify)',
   callback: (connection) => {
     const lastSong = getLastSpotifySong();
+    if (!lastSong) {
+      sendChatMessage(connection, 'No song was previously played');
+      return;
+    }
     const last = lastSong ? `Last song was ${songDetails(lastSong.item)}` : 'No Spotify connection found';
     sendChatMessage(connection, last);
   },
