@@ -12,8 +12,7 @@
     "start-test": "cross-env NODE_ENV=test npm run build:live",
     "build:live": "nodemon",
     "lint": "eslint -c .eslintrc.js --ext .ts src/",
-    "test": "vitest",
-    "setup": "node ./setup.mjs"
+    "test": "vitest"
   },
   "engines": {
     "node": ">=18.16.0"
