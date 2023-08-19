@@ -516,4 +516,9 @@ export const VOICES = [
     id: 'jp_005',
     api: 'tiktok',
   },
+  {
+    name: 'us1',
+    id: 'en_us_001',
+    api: 'tiktok',
+  },
 ];
