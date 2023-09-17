@@ -20,6 +20,7 @@ import { pointladder } from './commands/pointladder';
 import { queuesong } from './commands/queuesong';
 import { quote } from './commands/quote';
 import { randomissue } from './commands/randomissue';
+import { removealias } from './commands/removealias';
 import { removecommand } from './commands/removecommand';
 import { roll } from './commands/roll';
 import { setalias } from './commands/setalias';
@@ -119,6 +120,7 @@ const complexBotCommands: BotCommand[] = [
   point,
   pointladder,
   quote,
+  removealias,
   removecommand,
   roll,
   setalias,
