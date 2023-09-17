@@ -2,6 +2,7 @@ import websocket from 'websocket';
 import { TWITCH_WEBSOCKET_EVENTSUB_URL } from '../../../constants';
 import { logger } from '../../../logger';
 import type { TwitchWebsocketMessage } from '../../../types';
+import type { EventSubResponse, EventsubEvent } from '../../../typings/twitchEvents';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { subscribeToFollows } from './subscribers/subscribeToFollows';
 import { subscribeToRaids } from './subscribers/subscribeToRaids';
@@ -48,10 +49,16 @@ export function runTwitchEventSubWebsocket() {
             break;
 
           case 'notification':
-            twitchEventSubHandler(data).catch((e) => logger.error(e));
+            if (isSubscriptionEvent(data.payload)) {
+              // Transform the data first so that we can have a discriminated union type
+              const transformedData = {
+                ...data.payload.event,
+                eventType: data.payload.subscription.type,
+              } as EventsubEvent;
 
+              twitchEventSubHandler(transformedData).catch((e) => logger.error(e));
+            }
             break;
-
           default:
             // console.info({ messageType: data.metadata.message_type, payload: data.payload });
             break;
@@ -60,4 +67,14 @@ export function runTwitchEventSubWebsocket() {
     });
   });
   client.connect(TWITCH_WEBSOCKET_EVENTSUB_URL);
+}
+
+function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
+  return (
+    hasOwnProperty(payload, 'event') &&
+    typeof payload.event === 'object' &&
+    hasOwnProperty(payload, 'subscription') &&
+    hasOwnProperty(payload.subscription, 'type') &&
+    typeof payload.subscription.type === 'string'
+  );
 }
