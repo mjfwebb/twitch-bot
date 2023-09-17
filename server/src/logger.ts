@@ -13,27 +13,36 @@ const logLevelsMap: Record<LogLevel, number> = {
   debug: 3,
 } as const;
 
+const formattedDate = () => {
+  const date = new Date();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const millis = String(date.getMilliseconds()).padStart(3, '0');
+  return `[${hours}:${minutes}:${seconds}.${millis}] `;
+};
+
 export const logger = {
   error: (error: unknown) => {
     if (isError(error)) {
-      console.error(`${pc.red('Error:')} ${error.message}`);
+      console.error(`${formattedDate()} ${pc.red('Error:')} ${error.message}`);
     } else if (typeof error === 'string') {
-      console.error(`${pc.red('Error:')} ${error}`);
+      console.error(`${formattedDate()} ${pc.red('Error:')} ${error}`);
     }
   },
   warn: (message: string) => {
     if (logLevelsMap[Config.logLevel] >= logLevelsMap['warn']) {
-      console.warn(`${pc.yellow('Warn:')} ${message}`);
+      console.warn(`${formattedDate()} ${pc.yellow('Warn:')} ${message}`);
     }
   },
   info: (message: string) => {
     if (logLevelsMap[Config.logLevel] >= logLevelsMap['info']) {
-      console.info(`${pc.cyan('Info:')} ${message}`);
+      console.info(`${formattedDate()} ${pc.cyan('Info:')} ${message}`);
     }
   },
   debug: (message: string) => {
     if (logLevelsMap[Config.logLevel] >= logLevelsMap['debug']) {
-      console.debug(`${pc.magenta('Debug:')} ${message}`);
+      console.debug(`${formattedDate()} ${pc.magenta('Debug:')} ${message}`);
     }
   },
 };
