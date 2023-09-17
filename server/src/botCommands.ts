@@ -63,7 +63,20 @@ export function loadBotCommands() {
 export function loadCustomCommands(): BotCommand[] {
   if (Config.features.commands_handler) {
     const messageCommands = loadMessageCommands();
-    return [...complexBotCommands, ...messageCommands];
+
+    // Need to merge the commands from the database with the message commands
+    // as the messageCommands can contain aliases for the complex commands
+    const loadedCommands = [...complexBotCommands];
+    for (const messageCommand of messageCommands) {
+      const foundIndex = loadedCommands.findIndex((c) => c.id === messageCommand.id);
+      if (foundIndex === -1) {
+        loadedCommands.push(messageCommand);
+      } else {
+        loadedCommands[foundIndex].command = messageCommand.command;
+      }
+    }
+
+    return loadedCommands;
   }
   return [];
 }
