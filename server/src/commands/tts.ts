@@ -28,6 +28,7 @@ async function getVoiceBuffer(voice: Voice, text: string): Promise<Buffer | null
 
 export const runTTS = async (message: string) => {
   const words = message.split(' ');
+  // Set the default voice to Brian from StreamElements
   let nextVoice: Voice = {
     name: 'Brian',
     id: 'Brian',
@@ -38,14 +39,19 @@ export const runTTS = async (message: string) => {
 
   for (const word of words) {
     let skip = false;
+
+    // If the word ends with a colon, it's a voice change
     if (word.endsWith(':')) {
       const voice = word.slice(0, -1);
       const voiceLowerCase = voice.toLowerCase();
+
+      // Find the voice
       for (const voice of VOICES) {
         if (voice.name.toLowerCase() === voiceLowerCase) {
+          // If there's a current message, get the buffer and concat it
           if (currentMessage.length > 0) {
             const result = await getVoiceBuffer(nextVoice, currentMessage);
-            if (result) {
+            if (result && result.byteLength > 0) {
               buffer = Buffer.concat([buffer, result]);
             }
           }
@@ -61,6 +67,8 @@ export const runTTS = async (message: string) => {
     }
   }
 
+  // If there's a current message, get the buffer and concat it,
+  // this is for the last voice and the remaining message
   if (currentMessage.length > 0) {
     const result = await getVoiceBuffer(nextVoice, currentMessage);
     if (result) {
@@ -68,9 +76,17 @@ export const runTTS = async (message: string) => {
     }
   }
 
-  const id = Math.random().toString(36).substring(2, 15);
-  writeFileSync(`../tts/${id}.mp3`, buffer);
+  // For some reason (probably an API error), the buffer was empty,
+  // so we don't need to write it to a file
+  if (buffer.byteLength === 0) {
+    return;
+  }
 
+  // Generate a random id for the file name
+  const id = Math.random().toString(36).substring(2, 15);
+  // Write the buffer to a file
+  writeFileSync(`../tts/${id}.mp3`, buffer);
+  // Play the file
   await playSound(`../tts/${id}.mp3`);
 };
 
