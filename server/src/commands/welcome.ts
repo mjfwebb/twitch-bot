@@ -22,6 +22,8 @@ export const welcome: BotCommand = {
       } else {
         sendChatMessage(connection, `There was a problem updating your welcome message 😭`);
       }
+    } else {
+      sendChatMessage(connection, `You need to provide a welcome message! Like this: !welcome Hello %nick%!`);
     }
   },
 };
