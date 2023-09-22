@@ -27,7 +27,7 @@
     "socket.io-client": "^4.5.4",
     "styled-components": "^6.0.0-rc.6",
     "twemoji": "^14.0.2",
-    "vitest": "^0.32.2",
+    "vitest": "^0.34.0",
     "wouter": "^2.11.0",
     "zustand": "^4.3.2"
   },
