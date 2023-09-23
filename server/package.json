@@ -37,7 +37,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
-    "@types/node": "^13.13.45",
+    "@types/node": "^18.0.0",
     "@types/node-fetch": "^2.6.2",
     "@types/play-sound": "^1.1.0",
     "@types/websocket": "^1.0.5",
