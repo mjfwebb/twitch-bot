@@ -28,7 +28,7 @@
     "ffmpeg-static": "^5.1.0",
     "http-status-codes": "^2.2.0",
     "node-fetch": "^3.0.0",
-    "octokit": "^2.0.14",
+    "octokit": "^3.0.0",
     "open": "^9.0.0",
     "picocolors": "^1.0.0",
     "play-sound": "^1.1.6",
