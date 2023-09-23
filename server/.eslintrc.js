@@ -38,9 +38,8 @@ module.exports = {
             "ignoreTemplateLiterals": true
           }
         ],
-        "@typescript-eslint/comma-dangle": [
-          "off"
-        ],
+        "@typescript-eslint/comma-dangle": "off",
+        "@typescript-eslint/no-unsafe-enum-comparison": "off",
         "@typescript-eslint/naming-convention": [
           "error",
           {
