@@ -30,7 +30,7 @@
     "http-status-codes": "^2.2.0",
     "node-fetch": "^2.6.7",
     "octokit": "^2.0.14",
-    "open": "^8.4.0",
+    "open": "^9.0.0",
     "picocolors": "^1.0.0",
     "play-sound": "^1.1.6",
     "socket.io": "^4.7.0",
