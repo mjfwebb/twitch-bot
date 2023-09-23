@@ -14,7 +14,7 @@ export interface Quote extends Timestamp {
 
 const quoteProperties = ['quoteText', 'quoteId', 'category', 'deleted', 'author'] as const;
 
-type QuoteProperties = typeof quoteProperties[number];
+type QuoteProperties = (typeof quoteProperties)[number];
 
 const propertyTypes: Record<QuoteProperties, string> & typeof timestampPropertyTypes = {
   quoteText: 'string',

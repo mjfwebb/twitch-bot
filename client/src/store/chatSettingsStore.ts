@@ -47,7 +47,7 @@ interface ChatPersistedSettings {
 
 export const useChatSettingsStore = create(
   persist<ChatPersistedSettings>(
-    (set, get) => ({
+    (set) => ({
       animatedEntry: true,
       backgroundColor: DEFAULT_CHAT_SETTINGS_VALUES.backgroundColor,
       heightValue: DEFAULT_CHAT_SETTINGS_VALUES.heightValue,
@@ -129,6 +129,6 @@ export const useChatSettingsStore = create(
     {
       name: 'chat-settings',
       storage: createJSONStorage(() => sessionStorage),
-    }
-  )
+    },
+  ),
 );

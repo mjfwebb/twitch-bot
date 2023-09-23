@@ -4,7 +4,7 @@ import { isError } from './utils/isError';
 
 export const logLevels = ['error', 'warn', 'info', 'debug'];
 
-export type LogLevel = typeof logLevels[number];
+export type LogLevel = (typeof logLevels)[number];
 
 const logLevelsMap: Record<LogLevel, number> = {
   error: 0,

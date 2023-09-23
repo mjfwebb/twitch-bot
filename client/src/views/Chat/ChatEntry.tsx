@@ -54,7 +54,7 @@ export const ChatEntry = ({
         className={classNames(
           'chat-message-body',
           isSelected && 'chat-message-body-selected',
-          showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber'
+          showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber',
         )}
         style={{
           ...(dropShadowEnabled
