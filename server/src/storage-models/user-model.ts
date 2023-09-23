@@ -29,7 +29,7 @@ const userProperties = [
   'numberOfMessages',
 ] as const;
 
-type UserProperties = typeof userProperties[number];
+type UserProperties = (typeof userProperties)[number];
 
 const requiredProperties = ['userId', 'nick', 'displayName'] as const;
 

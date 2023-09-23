@@ -56,7 +56,7 @@ interface SongPersistedSettings {
 
 export const useSongSettingsStore = create(
   persist<SongPersistedSettings>(
-    (set, get) => ({
+    (set) => ({
       primaryColor: DEFAULT_SONG_SETTINGS_VALUES.primaryColor,
       secondaryColor: DEFAULT_SONG_SETTINGS_VALUES.secondaryColor,
       heightValue: DEFAULT_SONG_SETTINGS_VALUES.heightValue,
@@ -138,6 +138,6 @@ export const useSongSettingsStore = create(
     {
       name: 'song-settings',
       storage: createJSONStorage(() => sessionStorage),
-    }
-  )
+    },
+  ),
 );

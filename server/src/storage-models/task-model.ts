@@ -12,7 +12,7 @@ export interface Task extends Timestamp {
 
 const taskProperties = ['content'] as const;
 
-type TaskProperties = typeof taskProperties[number];
+type TaskProperties = (typeof taskProperties)[number];
 
 const propertyTypes: Record<TaskProperties, string> & typeof timestampPropertyTypes = {
   content: 'object',

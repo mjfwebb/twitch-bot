@@ -5,7 +5,7 @@ import player from 'play-sound';
 import type { SOUNDS } from './constants';
 import { skipCurrentCommand } from './handlers/botCommandHandler';
 
-type SoundEffect = typeof SOUNDS[number];
+type SoundEffect = (typeof SOUNDS)[number];
 
 type SoundFileType = 'wav' | 'mp3';
 

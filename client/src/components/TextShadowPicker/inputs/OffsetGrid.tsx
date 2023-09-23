@@ -58,7 +58,7 @@ export default ({ offset: { x, y }, max = 20, onChange }: Props) => {
 
       onChange(offset);
     },
-    [max, onChange]
+    [max, onChange],
   );
 
   useEffect(() => {

@@ -9,7 +9,11 @@ type DataValidator = (data: unknown) => DataValidatorResponse;
 export class FileManager<T> {
   private data?: T[];
 
-  constructor(private fileName: string, private validator: DataValidator, private propertyDefaultValues?: Record<string, unknown>) {
+  constructor(
+    private fileName: string,
+    private validator: DataValidator,
+    private propertyDefaultValues?: Record<string, unknown>,
+  ) {
     this.fileName = fileName;
     this.validator = validator;
     if (!existsSync(this.fileName)) {

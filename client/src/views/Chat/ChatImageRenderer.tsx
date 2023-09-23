@@ -266,7 +266,7 @@ export const ChatImageRenderer = ({
               className={classNames(
                 'chat-emote',
                 emote.origin === 'emoji' && 'chat-emote--emoji',
-                modifierClasses.map((flag) => `chat-emote--${flag}`)
+                modifierClasses.map((flag) => `chat-emote--${flag}`),
               )}
               key={`${match}.${index}`}
               src={emote.src}

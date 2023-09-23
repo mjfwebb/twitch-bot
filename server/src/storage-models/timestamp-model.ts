@@ -10,4 +10,4 @@ export const timestampPropertyTypes: Record<TimestampProperties, string> = {
 
 export const timestampProperties = ['createdAt', 'updatedAt'] as const;
 
-export type TimestampProperties = typeof timestampProperties[number];
+export type TimestampProperties = (typeof timestampProperties)[number];
