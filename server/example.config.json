@@ -8,7 +8,15 @@
     "account": "your_account_name",
     "channel": "target_channel_name",
     "auth_code": "your_auth_code",
-    "redirect_uri": "redirect_uri"
+    "redirect_uri": "redirect_uri",
+    "scopes": [
+      "chat:read",
+      "chat:edit",
+      "channel:manage:redemptions",
+      "channel:read:redemptions",
+      "moderator:manage:banned_users",
+      "channel:manage:broadcast"
+    ]
   },
   "spotify": {
     "enabled": false,
@@ -17,7 +25,12 @@
     "grant_type": "authorization_code",
     "auth_code": "your_auth_code",
     "redirect_uri": "redirect_uri",
-    "country_code": "US"
+    "country_code": "US",
+    "scopes": [
+      "user-read-currently-playing",
+      "user-read-playback-state",
+      "user-modify-playback-state"
+    ]
   },
   "github": {
     "enabled": false,
