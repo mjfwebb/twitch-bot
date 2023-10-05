@@ -19,6 +19,7 @@ export interface TwitchConfig {
   channel: string;
   auth_code: string;
   redirect_uri: string;
+  scopes: string[];
 }
 
 export type SpotifyConfig = {
@@ -29,6 +30,7 @@ export type SpotifyConfig = {
   auth_code: string;
   redirect_uri: string;
   country_code: string;
+  scopes: string[];
 };
 
 export type GitHubConfig = {
@@ -129,13 +131,14 @@ function readTwitchConfig(config: unknown): TwitchConfig {
     channel: '',
     auth_code: '',
     redirect_uri: '',
+    scopes: [],
   };
 
   const parsedTwitchConfig = parseConfig<TwitchConfig>({
     config,
     defaultConfig: defaultTwitchConfig,
     part: 'twitch',
-    properties: ['broadcaster_id', 'client_id', 'client_secret', 'grant_type', 'account', 'channel', 'auth_code', 'redirect_uri'],
+    properties: ['broadcaster_id', 'client_id', 'client_secret', 'grant_type', 'account', 'channel', 'auth_code', 'redirect_uri', 'scopes'],
   });
 
   return parsedTwitchConfig;
@@ -150,13 +153,14 @@ function readSpotifyConfig(config: unknown): SpotifyConfig {
     auth_code: '',
     redirect_uri: '',
     country_code: '',
+    scopes: [],
   };
 
   const parsedSpotifyConfig = parseConfig<SpotifyConfig>({
     config,
     defaultConfig: defaultSpotifyConfig,
     part: 'spotify',
-    properties: ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri', 'country_code'],
+    properties: ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri', 'country_code', 'scopes'],
   });
 
   return parsedSpotifyConfig;
