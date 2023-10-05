@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { logLevels, logger, type LogLevel } from './logger';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
@@ -68,7 +68,7 @@ export type FeaturesConfig = {
   events_handler: boolean;
 };
 
-interface IConfig {
+interface Config {
   logLevel: LogLevel;
   twitch: TwitchConfig;
   webhooks: Record<string, WebhookConfig>;
@@ -320,21 +320,29 @@ function readLogLevel(config: unknown): LogLevel {
   return logLevel;
 }
 
-const config: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
+export function updateConfigPart<T>({ part, property, value }: { part: string; property: string; value: T }): void {
+  const currentData = JSON.parse(readFileSync(configFileName, 'utf8'));
 
-const Config: IConfig = {
-  logLevel: readLogLevel(config),
-  twitch: readTwitchConfig(config),
+  currentData[part][property] = value;
+
+  writeFileSync(configFileName, JSON.stringify(currentData, null, 2));
+}
+
+const loadedConfig: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
+
+const Config: Config = {
+  logLevel: readLogLevel(loadedConfig),
+  twitch: readTwitchConfig(loadedConfig),
   webhooks: {
-    discordChatHook: readDiscordWebhookConfig(config),
+    discordChatHook: readDiscordWebhookConfig(loadedConfig),
   },
-  spotify: readSpotifyConfig(config),
-  github: readGitHubConfig(config),
-  sevenTV: readSevenTVConfig(config),
-  betterTTV: readBetterTTVConfig(config),
-  frankerFaceZ: readFrankerFaceZConfig(config),
-  tiktok: readTikTokConfig(config),
-  features: readFeaturesConfig(config),
+  spotify: readSpotifyConfig(loadedConfig),
+  github: readGitHubConfig(loadedConfig),
+  sevenTV: readSevenTVConfig(loadedConfig),
+  betterTTV: readBetterTTVConfig(loadedConfig),
+  frankerFaceZ: readFrankerFaceZConfig(loadedConfig),
+  tiktok: readTikTokConfig(loadedConfig),
+  features: readFeaturesConfig(loadedConfig),
 };
 
 export default Config;

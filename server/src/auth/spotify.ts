@@ -1,9 +1,12 @@
 import assert from 'assert';
+import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import type { RequestInit } from 'node-fetch';
 import fetch from 'node-fetch';
+import open from 'open';
+import pc from 'picocolors';
 import type { SpotifyConfig } from '../config';
-import Config from '../config';
+import Config, { updateConfigPart } from '../config';
 import { SPOTIFY_AUTH_URL } from '../constants';
 import { logger } from '../logger';
 import { errorMessage } from '../utils/errorMessage';
@@ -136,7 +139,7 @@ const refreshAccessToken = async (spotifyConfig: SpotifyConfig): Promise<string>
       throw new Error('Spotify configuration is missing.');
     }
     const refreshToken = getTokenFromFile('spotify_refresh_token');
-    const url = `${SPOTIFY_AUTH_URL}token?client_id=${spotifyConfig.client_id}&client_secret=${
+    const url = `${SPOTIFY_AUTH_URL}api/token?client_id=${spotifyConfig.client_id}&client_secret=${
       spotifyConfig.client_secret
     }&grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`;
     const result = await fetch(url, {
@@ -165,7 +168,7 @@ const getNewAccessToken = async (spotifyConfig: SpotifyConfig): Promise<string> 
     if (spotifyConfig === null) {
       throw new Error('Spotify configuration is missing.');
     }
-    const url = `${SPOTIFY_AUTH_URL}token?code=${spotifyConfig.auth_code}&grant_type=${spotifyConfig.grant_type}&redirect_uri=${spotifyConfig.redirect_uri}`;
+    const url = `${SPOTIFY_AUTH_URL}api/token?code=${spotifyConfig.auth_code}&grant_type=${spotifyConfig.grant_type}&redirect_uri=${spotifyConfig.redirect_uri}`;
     const result = await fetch(url, {
       method: 'post',
       headers: {
@@ -203,3 +206,31 @@ export const getSpotifyAccessToken = async (): Promise<string> => {
     throw new Error(`Unable to get Spotify Access Token. Error: ${errorMessage(error)}`);
   }
 };
+
+export const spotifyAuthCodeRouter = async () => {
+  if (Config.spotify.client_id && !Config.spotify.auth_code) {
+    express().get('/', (req, res) => {
+      if (req.query.code) {
+        updateConfigPart({ part: 'spotify', property: 'auth_code', value: req.query.code })
+
+        res.send('Hello from twitch-bot! Spotify auth code received and your configuration has been updated. You may close this window. Please restart the bot.');
+      } else {
+        res.send('Hello from twitch-bot! No Spotify auth code received. You may close this window.');
+      }
+    }).listen(3000);
+
+    logger.info(`Getting Spotify auth code with scopes ${pc.green(`${Config.twitch.scopes.join(', ')}`)}`);
+    await getSpotifyAuthCode();
+  }
+}
+
+
+const getSpotifyAuthCode = async (): Promise<void> => {
+  try {
+    const scopes = Config.spotify.scopes.map(scope => encodeURIComponent(scope)).join('+');
+    const url = `${SPOTIFY_AUTH_URL}authorize?client_id=${Config.spotify.client_id}&response_type=code&redirect_uri=${Config.spotify.redirect_uri}&scope=${scopes}`;
+    open(url)
+  } catch (error) {
+    
+  }
+}
