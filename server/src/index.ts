@@ -1,7 +1,7 @@
 import pc from 'picocolors';
-import { getSpotifyAccessToken } from './auth/spotify';
+import { getSpotifyAccessToken, spotifyAuthCodeRouter } from './auth/spotify';
 import { assertTokenFileExists } from './auth/tokenManager';
-import { getTwitchAccessToken } from './auth/twitch';
+import { getTwitchAccessToken, twitchAuthCodeRouter } from './auth/twitch';
 import { loadBotCommands } from './botCommands';
 import { loadChatExclusionList } from './chat/chatExclusionList';
 import Config, { assertConfigFileExists } from './config';
@@ -26,6 +26,10 @@ async function main() {
   try {
     assertConfigFileExists();
     assertTokenFileExists();
+    
+    twitchAuthCodeRouter();
+    spotifyAuthCodeRouter();
+
     removeOldTTSFiles();
     loadBotCommands();
 
