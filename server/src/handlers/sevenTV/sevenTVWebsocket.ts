@@ -141,6 +141,7 @@ export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
     });
 
     connection.on('close', function () {
+      isConnected = false;
       logger.info('SevenTV WebSocket: Connection Closed');
     });
 
