@@ -21,7 +21,7 @@ function npmStart(prefix, directory) {
 }
 
 function tsNodeStart(prefix, directory) {
-    const process = spawn('npx ts-node', ['--transpiler', 'sucrase/ts-node-plugin', 'src/index.ts'], { cwd: directory, shell: true });
+    const process = spawn('npx tsx src/index.ts', { cwd: directory, shell: true });
 
     process.stdout.on('data', data => {
         console.log(`${prefix}: ${data}`);
