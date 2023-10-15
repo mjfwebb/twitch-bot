@@ -1,6 +1,6 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
-import type { Socket } from 'socket.io-client';
+import type { Socket } from "socket.io-client";
 
 const SocketContext = createContext<
   | {

@@ -1,12 +1,12 @@
-import classNames from 'classnames';
-import twemoji from 'twemoji';
+import classNames from "classnames";
+import twemoji from "twemoji";
 
-import useStore from '../../store/store';
-import type { Emotes } from '../../twitchTypes';
-import type { ChatCheer, ChatEmote } from '../../types';
-import { bttvModifierMap, bttvModifiers } from './bttvModifierFlags';
-import { parseFrankerFaceZModifierFlags } from './parseFrankerFaceZModifierFlags';
-import { parseSevenTVModifierFlags } from './parseSevenTVModifierFlags';
+import useStore from "../../store/store";
+import type { Emotes } from "../../twitchTypes";
+import type { ChatCheer, ChatEmote } from "../../types";
+import { bttvModifierMap, bttvModifiers } from "./bttvModifierFlags";
+import { parseFrankerFaceZModifierFlags } from "./parseFrankerFaceZModifierFlags";
+import { parseSevenTVModifierFlags } from "./parseSevenTVModifierFlags";
 
 // emote regex which separates strings based on whitespace
 const emoteRegex = /(\s+)/g;
@@ -14,7 +14,7 @@ const emoteRegex = /(\s+)/g;
 export const ChatImageRenderer = ({
   emotes,
   bits,
-  message = '',
+  message = "",
   offset = 0,
 }: {
   emotes?: Emotes;
@@ -35,9 +35,12 @@ export const ChatImageRenderer = ({
 
   if (emotes) {
     Object.entries(emotes).forEach(([emoteUrlPart, positioning]) => {
-      const emoteName = message.slice(Number(positioning[0].startPosition - offset), Number(positioning[0].endPosition - offset) + 1);
+      const emoteName = message.slice(
+        Number(positioning[0].startPosition - offset),
+        Number(positioning[0].endPosition - offset) + 1,
+      );
       twitchEmoteMap[emoteName] = {
-        origin: 'twitch',
+        origin: "twitch",
         src: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0`,
         srcSet: `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/1.0 1x, https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v2/${emoteUrlPart}/default/dark/3.0 4x`,
         width: null,
@@ -63,7 +66,7 @@ export const ChatImageRenderer = ({
     if (bits) {
       let closestCheer: ChatCheer | undefined = undefined;
       // A match might look like VoHiYo199, but the cheer name is VoHiYo, so we need to remove the bits
-      const cheerName = match.replace(/\d+$/, '');
+      const cheerName = match.replace(/\d+$/, "");
       for (const cheer of Object.values(chatCheers)) {
         // Check if the cheer name matches the message part
         if (!cheer.name.startsWith(cheerName)) {
@@ -118,19 +121,23 @@ export const ChatImageRenderer = ({
       });
       nextMessageModifierFlags.length = 0;
     } else {
-      let src = '';
+      let src = "";
       twemoji.parse(match, {
         callback: (icon, options) => {
-          const parseCallbackOptions = options as { base: string; size: 'svg'; ext: '.svg' };
+          const parseCallbackOptions = options as {
+            base: string;
+            size: "svg";
+            ext: ".svg";
+          };
           if (icon.length === 0) {
             return false;
           }
 
           // Taken from bttv
           switch (icon) {
-            case 'a9': // ©
-            case 'ae': // ®
-            case '2122': // ™
+            case "a9": // ©
+            case "ae": // ®
+            case "2122": // ™
               return false;
             default:
               break;
@@ -146,9 +153,9 @@ export const ChatImageRenderer = ({
         messageParts.push({
           match,
           emote: {
-            origin: 'emoji',
+            origin: "emoji",
             src,
-            srcSet: '',
+            srcSet: "",
             width: null,
             height: null,
             modifier: false,
@@ -173,132 +180,162 @@ export const ChatImageRenderer = ({
 
   return (
     <>
-      {messageParts.map(({ match, emote, cheer, skip, modifierFlags }, index) => {
-        if (cheer) {
-          // Get the cheer amount without the name:
-          const cheerAmount = Number(match.replace(/\D/g, ''));
+      {messageParts.map(
+        ({ match, emote, cheer, skip, modifierFlags }, index) => {
+          if (cheer) {
+            // Get the cheer amount without the name:
+            const cheerAmount = Number(match.replace(/\D/g, ""));
 
-          return (
-            <>
-              <img
-                className={classNames('chat-cheer')}
-                key={`${match}.${index}`}
-                src={cheer.url}
-                // srcSet={emote.srcSet}
-                alt={match}
-                title={match}
-                width={28}
-              />
-              <span className={classNames('chat-cheer-amount')} style={{ color: cheer.color }}>
-                {cheerAmount}
-              </span>
-            </>
-          );
-        }
-
-        if (skip) {
-          return null;
-        }
-
-        if (!emote || !emote.src) {
-          return match;
-        }
-
-        const modifierClasses: string[] = [...(modifierFlags || [])];
-        const zeroWidthEmotes: ChatEmote[] = [];
-        let nextIndex = index + 1;
-
-        while (nextIndex > -1) {
-          const nextMessagePart = messageParts[nextIndex];
-
-          // No next message part
-          if (!nextMessagePart) {
-            nextIndex = -1;
-            continue;
+            return (
+              <>
+                <img
+                  className={classNames("chat-cheer")}
+                  key={`${match}.${index}`}
+                  src={cheer.url}
+                  // srcSet={emote.srcSet}
+                  alt={match}
+                  title={match}
+                  width={28}
+                />
+                <span
+                  className={classNames("chat-cheer-amount")}
+                  style={{ color: cheer.color }}
+                >
+                  {cheerAmount}
+                </span>
+              </>
+            );
           }
 
-          // Next message part is a space
-          if (nextMessagePart.match === ' ') {
-            nextIndex++;
-            continue;
+          if (skip) {
+            return null;
           }
 
-          // Next message part is not an emote
-          if (!nextMessagePart.emote) {
-            nextIndex = -1;
-            continue;
+          if (!emote || !emote.src) {
+            return match;
           }
 
-          // Next message part is a modifier
-          if (nextMessagePart.emote && nextMessagePart.emote.modifierFlags > 0) {
-            let nextMessageParsedFlags: string[] = [];
-            if (nextMessagePart.emote.origin === 'sevenTV') {
-              nextMessageParsedFlags = parseSevenTVModifierFlags(nextMessagePart.emote.modifierFlags);
-            } else if (nextMessagePart.emote.origin === 'frankerFaceZ') {
-              nextMessageParsedFlags = parseFrankerFaceZModifierFlags(nextMessagePart.emote.modifierFlags);
+          const modifierClasses: string[] = [...(modifierFlags || [])];
+          const zeroWidthEmotes: ChatEmote[] = [];
+          let nextIndex = index + 1;
+
+          while (nextIndex > -1) {
+            const nextMessagePart = messageParts[nextIndex];
+
+            // No next message part
+            if (!nextMessagePart) {
+              nextIndex = -1;
+              continue;
             }
 
-            // Next message part is a modifier that applies to this emote
-            if (nextMessageParsedFlags.length > 0) {
-              if (nextMessagePart.emote.origin === 'sevenTV' && nextMessageParsedFlags.includes('zerowidth')) {
-                zeroWidthEmotes.push(nextMessagePart.emote);
-              }
-              // Hide the next message part
-              messageParts[nextIndex].skip = true;
-
-              // Add the modifier flags to this emote
-              const filteredFlags = nextMessageParsedFlags.filter((flag) => flag !== 'hidden');
-              modifierClasses.push(...filteredFlags);
-
-              // Continue to the next message part
+            // Next message part is a space
+            if (nextMessagePart.match === " ") {
               nextIndex++;
               continue;
             }
+
+            // Next message part is not an emote
+            if (!nextMessagePart.emote) {
+              nextIndex = -1;
+              continue;
+            }
+
+            // Next message part is a modifier
+            if (
+              nextMessagePart.emote &&
+              nextMessagePart.emote.modifierFlags > 0
+            ) {
+              let nextMessageParsedFlags: string[] = [];
+              if (nextMessagePart.emote.origin === "sevenTV") {
+                nextMessageParsedFlags = parseSevenTVModifierFlags(
+                  nextMessagePart.emote.modifierFlags,
+                );
+              } else if (nextMessagePart.emote.origin === "frankerFaceZ") {
+                nextMessageParsedFlags = parseFrankerFaceZModifierFlags(
+                  nextMessagePart.emote.modifierFlags,
+                );
+              }
+
+              // Next message part is a modifier that applies to this emote
+              if (nextMessageParsedFlags.length > 0) {
+                if (
+                  nextMessagePart.emote.origin === "sevenTV" &&
+                  nextMessageParsedFlags.includes("zerowidth")
+                ) {
+                  zeroWidthEmotes.push(nextMessagePart.emote);
+                }
+                // Hide the next message part
+                messageParts[nextIndex].skip = true;
+
+                // Add the modifier flags to this emote
+                const filteredFlags = nextMessageParsedFlags.filter(
+                  (flag) => flag !== "hidden",
+                );
+                modifierClasses.push(...filteredFlags);
+
+                // Continue to the next message part
+                nextIndex++;
+                continue;
+              }
+            }
+
+            // Next message part is not a modifier that applies to this emote
+            nextIndex = -1;
           }
 
-          // Next message part is not a modifier that applies to this emote
-          nextIndex = -1;
-        }
-
-        if (emote) {
-          const image = (
-            <img
-              className={classNames(
-                'chat-emote',
-                emote.origin === 'emoji' && 'chat-emote--emoji',
-                modifierClasses.map((flag) => `chat-emote--${flag}`),
-              )}
-              key={`${match}.${index}`}
-              src={emote.src}
-              srcSet={emote.srcSet}
-              alt={match}
-              title={match}
-              {...(modifierClasses.includes('growx') ? { width: (emote.width || 36 * 3) > 112 ? 112 : emote.width || 36 * 3 } : {})}
-            />
-          );
-
-          if (zeroWidthEmotes.length > 0) {
-            return (
-              <div className="chat-emote--zero-width-wrapper" key={`${match}.${index}`}>
-                {image}
-                {zeroWidthEmotes.map((zeroWidthEmote, index) => (
-                  <span key={index} className="chat-emote--zero-width-span">
-                    <img
-                      className={classNames('chat-emote', 'chat-emote--zero-width-img')}
-                      src={zeroWidthEmote.src}
-                      srcSet={zeroWidthEmote.srcSet}
-                      alt={''}
-                      title={''}
-                    />
-                  </span>
-                ))}
-              </div>
+          if (emote) {
+            const image = (
+              <img
+                className={classNames(
+                  "chat-emote",
+                  emote.origin === "emoji" && "chat-emote--emoji",
+                  modifierClasses.map((flag) => `chat-emote--${flag}`),
+                )}
+                key={`${match}.${index}`}
+                src={emote.src}
+                srcSet={emote.srcSet}
+                alt={match}
+                title={match}
+                {...(modifierClasses.includes("growx")
+                  ? {
+                      width:
+                        (emote.width || 36 * 3) > 112
+                          ? 112
+                          : emote.width || 36 * 3,
+                    }
+                  : {})}
+              />
             );
-          } else {
-            return image;
+
+            if (zeroWidthEmotes.length > 0) {
+              return (
+                <div
+                  className="chat-emote--zero-width-wrapper"
+                  key={`${match}.${index}`}
+                >
+                  {image}
+                  {zeroWidthEmotes.map((zeroWidthEmote, index) => (
+                    <span key={index} className="chat-emote--zero-width-span">
+                      <img
+                        className={classNames(
+                          "chat-emote",
+                          "chat-emote--zero-width-img",
+                        )}
+                        src={zeroWidthEmote.src}
+                        srcSet={zeroWidthEmote.srcSet}
+                        alt={""}
+                        title={""}
+                      />
+                    </span>
+                  ))}
+                </div>
+              );
+            } else {
+              return image;
+            }
           }
-        }
-      })}
+        },
+      )}
     </>
   );
 };

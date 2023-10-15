@@ -1,13 +1,13 @@
-import { fetchGameByName } from '../handlers/twitch/helix/fetchGameByName';
-import { setStreamGame } from '../handlers/twitch/helix/setStreamGame';
-import type { BotCommand } from '../types';
-import { hasBotCommandParams } from './helpers/hasBotCommandParams';
-import { sendChatMessage } from './helpers/sendChatMessage';
+import { fetchGameByName } from "../handlers/twitch/helix/fetchGameByName";
+import { setStreamGame } from "../handlers/twitch/helix/setStreamGame";
+import type { BotCommand } from "../types";
+import { hasBotCommandParams } from "./helpers/hasBotCommandParams";
+import { sendChatMessage } from "./helpers/sendChatMessage";
 
 export const setcategory: BotCommand = {
-  command: ['setcategory', 'category'],
-  id: 'setcategory',
-  mustBeUser: ['athano'],
+  command: ["setcategory", "category"],
+  id: "setcategory",
+  mustBeUser: ["athano"],
   privileged: true,
   hidden: true,
   callback: async (connection, parsedCommand) => {

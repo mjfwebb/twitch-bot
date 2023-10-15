@@ -1,7 +1,13 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-import type { TaskMessage } from '../twitchTypes';
-import type { ChatBadge, ChatCheer, ChatEmote, ChatMessage, SpotifySong } from '../types';
+import type { TaskMessage } from "../twitchTypes";
+import type {
+  ChatBadge,
+  ChatCheer,
+  ChatEmote,
+  ChatMessage,
+  SpotifySong,
+} from "../types";
 
 interface Store {
   reconnectAttempt: number;
@@ -28,7 +34,7 @@ const useStore = create<Store>((set, get) => ({
   reconnectAttempt: 0,
   task: null,
   currentSong: null,
-  selectedDisplayName: '',
+  selectedDisplayName: "",
   chatEmotes: {},
   chatBadges: {},
   chatCheers: {},
@@ -41,7 +47,8 @@ const useStore = create<Store>((set, get) => ({
     set(() => ({ currentSong: song }));
   },
   setSelectedDisplayName: (displayName: string) => {
-    const newDisplayName = displayName === get().selectedDisplayName ? '' : displayName;
+    const newDisplayName =
+      displayName === get().selectedDisplayName ? "" : displayName;
 
     set((state) => ({
       ...state,
@@ -69,7 +76,9 @@ const useStore = create<Store>((set, get) => ({
   removeChatMessage: (chatMessage: ChatMessage) => {
     set((state) => ({
       ...state,
-      chatMessages: state.chatMessages.filter((message) => message.id !== chatMessage.id),
+      chatMessages: state.chatMessages.filter(
+        (message) => message.id !== chatMessage.id,
+      ),
     }));
   },
   addChatMessage: (chatMessage: ChatMessage) => {

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 
-import { parseHexColor } from '../common';
-import Input from '../inputs/Input';
-import { Label } from '../inputs/Label';
+import { parseHexColor } from "../common";
+import Input from "../inputs/Input";
+import { Label } from "../inputs/Label";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -38,7 +38,7 @@ interface Props {
 
 const useHex = (value: string) => {
   const [alpha, setAlpha] = useState(0);
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     const values = parseHexColor(value);
@@ -55,7 +55,7 @@ export default ({ value, onChange }: Props) => {
   const { color, alpha } = useHex(value);
 
   const updated: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    onChange(e.target.value + alpha.toString(16).padStart(2, '0'));
+    onChange(e.target.value + alpha.toString(16).padStart(2, "0"));
   };
 
   const updatedInput: (value: string) => void = (e) => {
@@ -63,7 +63,7 @@ export default ({ value, onChange }: Props) => {
   };
 
   const updatedAlpha: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const hex = parseInt(e.target.value).toString(16).padStart(2, '0');
+    const hex = parseInt(e.target.value).toString(16).padStart(2, "0");
     onChange(color + hex);
   };
 
@@ -71,8 +71,14 @@ export default ({ value, onChange }: Props) => {
     <Wrapper>
       <Label>Color</Label>
       <Input value={value} onChange={updatedInput} />
-      <input value={color} onChange={updated} type={'color'} />
-      <Slider className={'text-shadow-picker__slider'} type={'range'} value={alpha} onChange={updatedAlpha} max={255} />
+      <input value={color} onChange={updated} type={"color"} />
+      <Slider
+        className={"text-shadow-picker__slider"}
+        type={"range"}
+        value={alpha}
+        onChange={updatedAlpha}
+        max={255}
+      />
     </Wrapper>
   );
 };

@@ -23,7 +23,9 @@ export function parseFrankerFaceZModifierFlags(flags: number): string[] {
   if (flags === 0) {
     return [];
   }
-  for (const [key, value] of Object.entries(FrankerFaceZModifierFlag).reverse()) {
+  for (const [key, value] of Object.entries(
+    FrankerFaceZModifierFlag,
+  ).reverse()) {
     if (remainingFlags >= value) {
       remainingFlags = remainingFlags - value;
       parsedFlags.push(key);

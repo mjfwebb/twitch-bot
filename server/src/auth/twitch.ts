@@ -1,18 +1,18 @@
-import assert from 'assert';
-import express from 'express';
-import { StatusCodes } from 'http-status-codes';
-import type { RequestInit } from 'node-fetch';
-import fetch from 'node-fetch';
-import open from 'open';
-import pc from 'picocolors';
-import type { TwitchConfig } from '../config';
-import Config, { updateConfigPart } from '../config';
-import { TWITCH_AUTH_URL } from '../constants';
-import { logger } from '../logger';
-import { errorMessage } from '../utils/errorMessage';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
-import { simplePluralise } from '../utils/simplePluralise';
-import { getTokenFromFile, setTokenInFile } from './tokenManager';
+import assert from "assert";
+import express from "express";
+import { StatusCodes } from "http-status-codes";
+import type { RequestInit } from "node-fetch";
+import fetch from "node-fetch";
+import open from "open";
+import pc from "picocolors";
+import type { TwitchConfig } from "../config";
+import Config, { updateConfigPart } from "../config";
+import { TWITCH_AUTH_URL } from "../constants";
+import { logger } from "../logger";
+import { errorMessage } from "../utils/errorMessage";
+import { hasOwnProperty } from "../utils/hasOwnProperty";
+import { simplePluralise } from "../utils/simplePluralise";
+import { getTokenFromFile, setTokenInFile } from "./tokenManager";
 
 /**
  * Validates the access token by making a request to the Twitch authentication API.
@@ -22,7 +22,7 @@ import { getTokenFromFile, setTokenInFile } from './tokenManager';
 const validateAccessToken = async (accessToken: string) => {
   const url = `${TWITCH_AUTH_URL}validate`;
   const result = await fetch(url, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `OAuth ${accessToken}`,
     },
@@ -30,7 +30,8 @@ const validateAccessToken = async (accessToken: string) => {
   return result.status === StatusCodes.OK;
 };
 
-export const getCurrentAccessToken = () => getTokenFromFile('twitch_access_token');
+export const getCurrentAccessToken = () =>
+  getTokenFromFile("twitch_access_token");
 
 /**
  * Performs a fetch request to the specified URL with optional request initialization parameters, with retry logic.
@@ -42,9 +43,18 @@ export const getCurrentAccessToken = () => getTokenFromFile('twitch_access_token
  * @remarks To support checking the response (which requires using result.json()) we pass back the parsed data response, instead of the whole Reponse.
  * This seems reasonable since all interactions with the API always want the JSON data anyway.
  */
-export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
+export const fetchWithRetry = async (
+  url: string,
+  init?: RequestInit | undefined,
+  attemptNumber = 0,
+): Promise<unknown> => {
   if (attemptNumber > 2) {
-    throw new Error(`Failed to perform fetch ${attemptNumber} ${simplePluralise('time', attemptNumber)} to Twitch API`);
+    throw new Error(
+      `Failed to perform fetch ${attemptNumber} ${simplePluralise(
+        "time",
+        attemptNumber,
+      )} to Twitch API`,
+    );
   }
   const result = await fetch(url, init);
 
@@ -69,11 +79,20 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
  * @returns A boolean indicating whether an error was encountered
  */
 export const checkResponseForErrors = (data: unknown): boolean => {
-  if (hasOwnProperty(data, 'status')) {
-    assert(typeof data.status === 'number', 'status in data response is not a number');
+  if (hasOwnProperty(data, "status")) {
+    assert(
+      typeof data.status === "number",
+      "status in data response is not a number",
+    );
     if (data.status === StatusCodes.BAD_REQUEST) {
-      assert(hasOwnProperty(data, 'message'), 'message not found in data response');
-      assert(typeof data.message === 'string', 'message in data response is not a number');
+      assert(
+        hasOwnProperty(data, "message"),
+        "message not found in data response",
+      );
+      assert(
+        typeof data.message === "string",
+        "message in data response is not a number",
+      );
       throw new Error(`Bad request: ${data.message}`);
     }
 
@@ -87,12 +106,24 @@ export const checkResponseForErrors = (data: unknown): boolean => {
 };
 
 const parseNewTokens = (data: unknown): string => {
-  assert(hasOwnProperty(data, 'access_token'), 'access_token not found in data response');
-  assert(hasOwnProperty(data, 'refresh_token'), 'refresh_token not found in data response');
-  assert(typeof data.access_token === 'string', 'access_token in data response is not a string');
-  assert(typeof data.refresh_token === 'string', 'refresh_token in data response is not a string');
-  setTokenInFile('twitch_access_token', data.access_token);
-  setTokenInFile('twitch_refresh_token', data.refresh_token);
+  assert(
+    hasOwnProperty(data, "access_token"),
+    "access_token not found in data response",
+  );
+  assert(
+    hasOwnProperty(data, "refresh_token"),
+    "refresh_token not found in data response",
+  );
+  assert(
+    typeof data.access_token === "string",
+    "access_token in data response is not a string",
+  );
+  assert(
+    typeof data.refresh_token === "string",
+    "refresh_token in data response is not a string",
+  );
+  setTokenInFile("twitch_access_token", data.access_token);
+  setTokenInFile("twitch_refresh_token", data.refresh_token);
   return data.access_token;
 };
 
@@ -102,23 +133,33 @@ const parseNewTokens = (data: unknown): string => {
  * @returns A promise that resolves to the new Access Token
  * @throws Error if unable to use the Refresh Token to obtain the new Access Token
  */
-const refreshAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
+const refreshAccessToken = async (
+  twitchConfig: TwitchConfig,
+): Promise<string> => {
   try {
-    const refreshToken = getTokenFromFile('twitch_refresh_token');
-    const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${
+    const refreshToken = getTokenFromFile("twitch_refresh_token");
+    const url = `${TWITCH_AUTH_URL}token?client_id=${
+      twitchConfig.client_id
+    }&client_secret=${
       twitchConfig.client_secret
-    }&grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`;
+    }&grant_type=refresh_token&refresh_token=${encodeURIComponent(
+      refreshToken,
+    )}`;
     const result = await fetch(url, {
-      method: 'post',
+      method: "post",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
     const data: unknown = await result.json();
     checkResponseForErrors(data);
     return parseNewTokens(data);
   } catch (error) {
-    throw new Error(`Unable to use Refresh Token to obtain new Access Token from Twitch. Error: ${errorMessage(error)}`);
+    throw new Error(
+      `Unable to use Refresh Token to obtain new Access Token from Twitch. Error: ${errorMessage(
+        error,
+      )}`,
+    );
   }
 };
 
@@ -128,13 +169,15 @@ const refreshAccessToken = async (twitchConfig: TwitchConfig): Promise<string> =
  * @returns A promise that resolves to the new Access Token
  * @throws Error if unable to obtain the new Access Token
  */
-const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
+const getNewAccessToken = async (
+  twitchConfig: TwitchConfig,
+): Promise<string> => {
   try {
     const url = `${TWITCH_AUTH_URL}token?client_id=${twitchConfig.client_id}&client_secret=${twitchConfig.client_secret}&code=${twitchConfig.auth_code}&grant_type=${twitchConfig.grant_type}&redirect_uri=${twitchConfig.redirect_uri}`;
     const result = await fetch(url, {
-      method: 'post',
+      method: "post",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
 
@@ -142,7 +185,11 @@ const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> =>
     checkResponseForErrors(data);
     return parseNewTokens(data);
   } catch (error) {
-    throw new Error(`Unable to obtain new Access Token from Twitch. Error: ${errorMessage(error)}`);
+    throw new Error(
+      `Unable to obtain new Access Token from Twitch. Error: ${errorMessage(
+        error,
+      )}`,
+    );
   }
 };
 
@@ -153,11 +200,13 @@ const getNewAccessToken = async (twitchConfig: TwitchConfig): Promise<string> =>
  * @returns A promise that resolves to the Twitch Access Token
  * @throws Error if unable to get the Twitch Access Token
  */
-export const getTwitchAccessToken = async (twitchConfig: TwitchConfig): Promise<string> => {
-  const accessToken = getTokenFromFile('twitch_access_token');
+export const getTwitchAccessToken = async (
+  twitchConfig: TwitchConfig,
+): Promise<string> => {
+  const accessToken = getTokenFromFile("twitch_access_token");
   try {
     if (!(await validateAccessToken(accessToken))) {
-      const refreshToken = getTokenFromFile('twitch_refresh_token');
+      const refreshToken = getTokenFromFile("twitch_refresh_token");
       if (refreshToken) {
         return await refreshAccessToken(twitchConfig);
       } else {
@@ -167,33 +216,53 @@ export const getTwitchAccessToken = async (twitchConfig: TwitchConfig): Promise<
       return accessToken;
     }
   } catch (error) {
-    throw new Error(`Unable to get Twitch Access Token. Error: ${errorMessage(error)}`);
+    throw new Error(
+      `Unable to get Twitch Access Token. Error: ${errorMessage(error)}`,
+    );
   }
 };
 
 export const twitchAuthCodeRouter = async () => {
   if (Config.twitch.client_id && !Config.twitch.auth_code) {
-    express().get('/', (req, res) => {
-      if (req.query.code) {
-        updateConfigPart({ part: 'twitch', property: 'auth_code', value: req.query.code })
+    express()
+      .get("/", (req, res) => {
+        if (req.query.code) {
+          updateConfigPart({
+            part: "twitch",
+            property: "auth_code",
+            value: req.query.code,
+          });
 
-        res.send('Hello from twitch-bot! Twitch auth code received and your configuration has been updated. You may close this window. Please restart the bot.');
-      } else {
-        res.send('Hello from twitch-bot! No Twitch auth code received. You may close this window.');
-      }
-    }).listen(3000);
+          res.send(
+            "Hello from twitch-bot! Twitch auth code received and your configuration has been updated. You may close this window. Please restart the bot.",
+          );
+        } else {
+          res.send(
+            "Hello from twitch-bot! No Twitch auth code received. You may close this window.",
+          );
+        }
+      })
+      .listen(3000);
 
-    logger.info(`Getting Twitch auth code with scopes ${pc.green(`${Config.twitch.scopes.join(', ')}`)}`);
+    logger.info(
+      `Getting Twitch auth code with scopes ${pc.green(
+        `${Config.twitch.scopes.join(", ")}`,
+      )}`,
+    );
     await getTwitchAuthCode();
   }
-}
+};
 
 const getTwitchAuthCode = async (): Promise<void> => {
   try {
-    const scopes = Config.twitch.scopes.map(scope => encodeURIComponent(scope)).join('+');
+    const scopes = Config.twitch.scopes
+      .map((scope) => encodeURIComponent(scope))
+      .join("+");
     const url = `${TWITCH_AUTH_URL}authorize?response_type=code&client_id=${Config.twitch.client_id}&redirect_uri=${Config.twitch.redirect_uri}&scope=${scopes}`;
-    open(url)
+    open(url);
   } catch (error) {
-    throw new Error(`Unable to get Twitch Auth Code. Error: ${errorMessage(error)}`);
+    throw new Error(
+      `Unable to get Twitch Auth Code. Error: ${errorMessage(error)}`,
+    );
   }
-}
+};

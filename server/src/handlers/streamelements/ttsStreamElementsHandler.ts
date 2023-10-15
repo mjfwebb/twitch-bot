@@ -3,11 +3,11 @@ import { logger } from "../../logger";
 
 export const ttsStreamElementsHandler = async (
   voice: string,
-  text: string
+  text: string,
 ): Promise<ArrayBuffer | null> => {
   try {
     const url = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURI(
-      text
+      text,
     )}`;
     const result = await fetch(url, {
       method: "GET",

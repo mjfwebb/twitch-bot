@@ -1,68 +1,80 @@
-import { messageWithoutTags, runMessageTags } from '../../../botCommands';
-import { findBotCommand } from '../../../commands/helpers/findBotCommand';
-import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
-import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
-import { logger } from '../../../logger';
-import { ChannelPointRedeems } from '../../../storage-models/channel-point-redeem-model';
-import { setStreamStatus } from '../../../streamState';
-import type { Command } from '../../../types';
-import type { EventsubEvent } from '../../../typings/twitchEvents';
-import { fakeParsedCommand } from '../../../utils/fakeParsedCommand';
-import { getConnection } from '../irc/twitchIRCWebsocket';
+import { messageWithoutTags, runMessageTags } from "../../../botCommands";
+import { findBotCommand } from "../../../commands/helpers/findBotCommand";
+import { sendChatMessage } from "../../../commands/helpers/sendChatMessage";
+import { updateStreamStartedAt } from "../../../commands/helpers/updateStreamStartedAt";
+import { logger } from "../../../logger";
+import { ChannelPointRedeems } from "../../../storage-models/channel-point-redeem-model";
+import { setStreamStatus } from "../../../streamState";
+import type { Command } from "../../../types";
+import type { EventsubEvent } from "../../../typings/twitchEvents";
+import { fakeParsedCommand } from "../../../utils/fakeParsedCommand";
+import { getConnection } from "../irc/twitchIRCWebsocket";
 
 export async function twitchEventSubHandler(data: EventsubEvent) {
   switch (data.eventType) {
-    case 'stream.online': {
+    case "stream.online": {
       if (data.started_at) {
         updateStreamStartedAt(data.started_at);
       }
-      setStreamStatus('online');
+      setStreamStatus("online");
       break;
     }
 
-    case 'stream.offline': {
-      setStreamStatus('offline');
+    case "stream.offline": {
+      setStreamStatus("offline");
       break;
     }
 
-    case 'channel.subscription.gift': {
+    case "channel.subscription.gift": {
       const connection = getConnection();
       if (connection) {
-        sendChatMessage(connection, `Thank you for gifting a sub ${data.user_login}, you're so generous, you're like a generous god.`);
+        sendChatMessage(
+          connection,
+          `Thank you for gifting a sub ${data.user_login}, you're so generous, you're like a generous god.`,
+        );
       }
       break;
     }
 
-    case 'channel.subscribe': {
+    case "channel.subscribe": {
       const connection = getConnection();
       if (connection) {
         if (!data.is_gift) {
-          sendChatMessage(connection, `Thank you for subscribing ${data.user_name}, you sure do know a good time when you find one.`);
+          sendChatMessage(
+            connection,
+            `Thank you for subscribing ${data.user_name}, you sure do know a good time when you find one.`,
+          );
         }
       }
       break;
     }
 
-    case 'channel.raid': {
+    case "channel.raid": {
       const connection = getConnection();
       if (connection) {
-        sendChatMessage(connection, `Thank you for the raid ${data.from_broadcaster_user_name}, I think you are very sexy.`);
+        sendChatMessage(
+          connection,
+          `Thank you for the raid ${data.from_broadcaster_user_name}, I think you are very sexy.`,
+        );
       }
       break;
     }
 
-    case 'channel.follow': {
+    case "channel.follow": {
       const connection = getConnection();
       if (connection) {
-        sendChatMessage(connection, `Thank you for following ${data.user_name}, I love you`);
+        sendChatMessage(
+          connection,
+          `Thank you for following ${data.user_name}, I love you`,
+        );
       }
       break;
     }
 
-    case 'channel.channel_points_custom_reward_redemption.update':
-    case 'channel.channel_points_custom_reward_redemption.add': {
+    case "channel.channel_points_custom_reward_redemption.update":
+    case "channel.channel_points_custom_reward_redemption.add": {
       // If the event status is canceled or unknown, we don't want to run it.
-      if (data.status === 'canceled' || data.status === 'unknown') {
+      if (data.status === "canceled" || data.status === "unknown") {
         return;
       }
 
@@ -83,9 +95,9 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
               sendChatMessage(
                 connection,
                 message
-                  .replace('%user%', data.user_name)
-                  .replace('%now%', new Date().toTimeString())
-                  .replace('%count%', String(reward.timesUsed + 1)),
+                  .replace("%user%", data.user_name)
+                  .replace("%now%", new Date().toTimeString())
+                  .replace("%count%", String(reward.timesUsed + 1)),
               );
             }
           }
@@ -98,17 +110,25 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
                 const command: Command = {
                   command: action.command,
                   botCommand: action.command,
-                  botCommandParams: action.commandParams.replace('%input%', data.user_input),
+                  botCommandParams: action.commandParams.replace(
+                    "%input%",
+                    data.user_input,
+                  ),
                 };
 
-                await foundCommand.callback(connection, fakeParsedCommand(command));
+                await foundCommand.callback(
+                  connection,
+                  fakeParsedCommand(command),
+                );
               }
             }
           }
           await runMessageTags(action.message);
         }
       } else {
-        logger.error(`Could not find redeem for redeem with id ${data.reward.id}`);
+        logger.error(
+          `Could not find redeem for redeem with id ${data.reward.id}`,
+        );
       }
       break;
     }

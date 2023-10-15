@@ -1,12 +1,12 @@
-import { memo, useRef } from 'react';
+import { memo, useRef } from "react";
 
-import { motion } from 'framer-motion';
-import type { VirtuosoHandle } from 'react-virtuoso';
-import { Virtuoso } from 'react-virtuoso';
+import { motion } from "framer-motion";
+import type { VirtuosoHandle } from "react-virtuoso";
+import { Virtuoso } from "react-virtuoso";
 
-import useStore from '../../store/store';
-import { ChatEntry } from './ChatEntry';
-import { useChatSearchParams } from './useChatSearchParams';
+import useStore from "../../store/store";
+import { ChatEntry } from "./ChatEntry";
+import { useChatSearchParams } from "./useChatSearchParams";
 
 export const NonDisappearingChat = () => {
   const chatSearchParams = useChatSearchParams();
@@ -33,7 +33,12 @@ export const NonDisappearingChat = () => {
   const itemContent = (index: number) => {
     if (chatSearchParams.animatedEntry) {
       return (
-        <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} className="message">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          className="message"
+        >
           <InnerItem index={index} />
         </motion.div>
       );
@@ -46,7 +51,7 @@ export const NonDisappearingChat = () => {
     <Virtuoso
       ref={virtuoso}
       alignToBottom={true}
-      followOutput={'auto'}
+      followOutput={"auto"}
       itemContent={itemContent}
       totalCount={chatMessages.length}
       initialTopMostItemIndex={chatMessages.length - 1}

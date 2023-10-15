@@ -1,7 +1,7 @@
-import { Octokit } from 'octokit';
-import Config from '../../config';
-import { logger } from '../../logger';
-import { getRandomNumberInRange } from '../../utils/getRandomNumberInRange';
+import { Octokit } from "octokit";
+import Config from "../../config";
+import { logger } from "../../logger";
+import { getRandomNumberInRange } from "../../utils/getRandomNumberInRange";
 
 export const fetchRandomIssue = async () => {
   if (Config.github.enabled) {

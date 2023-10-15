@@ -1,53 +1,60 @@
-import { writeFileSync } from 'fs';
-import type { DataValidatorResponse } from '../fileManager';
-import { FileManager } from '../fileManager';
-import { logger } from '../logger';
-import type { ParsedMessageWithAllProps } from '../types';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
-import { timestampProperties, timestampPropertyTypes, type Timestamp } from './timestamp-model';
+import { writeFileSync } from "fs";
+import type { DataValidatorResponse } from "../fileManager";
+import { FileManager } from "../fileManager";
+import { logger } from "../logger";
+import type { ParsedMessageWithAllProps } from "../types";
+import { hasOwnProperty } from "../utils/hasOwnProperty";
+import {
+  timestampProperties,
+  timestampPropertyTypes,
+  type Timestamp,
+} from "./timestamp-model";
 
 export interface Task extends Timestamp {
   content: ParsedMessageWithAllProps;
 }
 
-const taskProperties = ['content'] as const;
+const taskProperties = ["content"] as const;
 
 type TaskProperties = (typeof taskProperties)[number];
 
-const propertyTypes: Record<TaskProperties, string> & typeof timestampPropertyTypes = {
-  content: 'object',
+const propertyTypes: Record<TaskProperties, string> &
+  typeof timestampPropertyTypes = {
+  content: "object",
   ...timestampPropertyTypes,
 };
 
-const fileName = 'tasks.json';
+const fileName = "tasks.json";
 
 const taskValidator = (data: unknown): DataValidatorResponse => {
-  let response: DataValidatorResponse = 'valid';
+  let response: DataValidatorResponse = "valid";
 
   if (Array.isArray(data)) {
     if (data.length === 0) {
-      response = 'valid';
+      response = "valid";
     }
 
     for (const task of data as unknown[]) {
-      if (typeof task !== 'object') {
-        response = 'invalid';
+      if (typeof task !== "object") {
+        response = "invalid";
       }
 
       for (const property of [...taskProperties, ...timestampProperties]) {
         if (hasOwnProperty(task, property)) {
           if (typeof task[property] !== propertyTypes[property]) {
-            logger.error(`Invalid task format, property ${property} is not of type ${propertyTypes[property]}`);
-            response = 'invalid';
+            logger.error(
+              `Invalid task format, property ${property} is not of type ${propertyTypes[property]}`,
+            );
+            response = "invalid";
           }
         } else {
           logger.error(`Invalid task format, missing property ${property}`);
-          response = 'invalid';
+          response = "invalid";
         }
       }
     }
   } else {
-    response = 'invalid';
+    response = "invalid";
   }
 
   return response;

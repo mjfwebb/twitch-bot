@@ -38,7 +38,7 @@ function repeatMessageHandler(chatMessage: string) {
       const foundVoice = VOICES.find(
         (voice) =>
           voice.name.toLowerCase() ===
-          Config.repeatMessageHandler.voice.toLowerCase()
+          Config.repeatMessageHandler.voice.toLowerCase(),
       );
       runTTS(chatMessage, foundVoice);
     }
@@ -51,7 +51,7 @@ function repeatMessageHandler(chatMessage: string) {
 }
 
 export async function messageHandler(
-  parsedMessage: ParsedMessage
+  parsedMessage: ParsedMessage,
 ): Promise<void> {
   const userId = parsedMessage.tags?.["user-id"];
   const nick = parsedMessage.source?.nick;

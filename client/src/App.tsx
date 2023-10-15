@@ -1,11 +1,11 @@
-import { Route } from 'wouter';
+import { Route } from "wouter";
 
-import { Chat } from './views/Chat/Chat';
-import { Dashboard } from './views/Dashboard/Dashboard';
-import { Song } from './views/Song/Song';
-import { Task } from './views/Task/Task';
+import { Chat } from "./views/Chat/Chat";
+import { Dashboard } from "./views/Dashboard/Dashboard";
+import { Song } from "./views/Song/Song";
+import { Task } from "./views/Task/Task";
 
-import './App.less';
+import "./App.less";
 
 function App() {
   return (

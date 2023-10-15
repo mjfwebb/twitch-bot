@@ -1,15 +1,19 @@
-import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
-import Config from '../../config';
-import { SPOTIFY_API_URL } from '../../constants';
-import { logger } from '../../logger';
+import { fetchWithRetry, getCurrentAccessToken } from "../../auth/spotify";
+import Config from "../../config";
+import { SPOTIFY_API_URL } from "../../constants";
+import { logger } from "../../logger";
 
-export const addSongToPlaybackQueue = async (trackURI: string): Promise<boolean> => {
+export const addSongToPlaybackQueue = async (
+  trackURI: string,
+): Promise<boolean> => {
   if (Config.spotify.enabled) {
     try {
-      const url = `${SPOTIFY_API_URL}me/player/queue?uri=${encodeURIComponent(trackURI)}`;
+      const url = `${SPOTIFY_API_URL}me/player/queue?uri=${encodeURIComponent(
+        trackURI,
+      )}`;
 
       await fetchWithRetry(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },

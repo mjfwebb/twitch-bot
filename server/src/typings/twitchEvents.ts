@@ -24,13 +24,13 @@ export type EventsubEventBase<EventType extends EventsubSubscriptionType> = {
 
 export type EventsubSubscriptionType =
   // | 'channel.update'
-  | 'channel.follow'
-  | 'channel.subscribe'
+  | "channel.follow"
+  | "channel.subscribe"
   // | 'channel.subscription.end'
-  | 'channel.subscription.gift'
+  | "channel.subscription.gift"
   // | 'channel.subscription.message'
   // | 'channel.cheer'
-  | 'channel.raid'
+  | "channel.raid"
   // | 'channel.ban'
   // | 'channel.unban'
   // | 'channel.moderator.add'
@@ -38,8 +38,8 @@ export type EventsubSubscriptionType =
   // | 'channel.channel_points_custom_reward.add'
   // | 'channel.channel_points_custom_reward.update'
   // | 'channel.channel_points_custom_reward.remove'
-  | 'channel.channel_points_custom_reward_redemption.add'
-  | 'channel.channel_points_custom_reward_redemption.update'
+  | "channel.channel_points_custom_reward_redemption.add"
+  | "channel.channel_points_custom_reward_redemption.update"
   // | 'channel.poll.begin'
   // | 'channel.poll.progress'
   // | 'channel.poll.end'
@@ -61,13 +61,13 @@ export type EventsubSubscriptionType =
   // | 'channel.hype_train.end'
   // | 'channel.shield_mode.begin'
   // | 'channel.shield_mode.end'
-  | 'stream.online'
-  | 'stream.offline';
+  | "stream.online"
+  | "stream.offline";
 // | 'user.authorization.grant'
 // | 'user.authorization.revoke'
 // | 'user.update';
 
-interface ChannelSubscribeEvent extends EventsubEventBase<'channel.subscribe'> {
+interface ChannelSubscribeEvent extends EventsubEventBase<"channel.subscribe"> {
   user_id: string; // The user ID for the user who subscribed to the specified channel.
   user_login: string; // The user login for the user who subscribed to the specified channel.
   user_name: string; // The user display name for the user who subscribed to the specified channel.
@@ -78,7 +78,7 @@ interface ChannelSubscribeEvent extends EventsubEventBase<'channel.subscribe'> {
   is_gift: boolean; // Whether the subscription is a gift.
 }
 
-interface StreamOnlineEvent extends EventsubEventBase<'stream.online'> {
+interface StreamOnlineEvent extends EventsubEventBase<"stream.online"> {
   id: string; // The id of the stream.
   broadcaster_user_id: string; // The broadcaster’s user id.
   broadcaster_user_login: string; // The broadcaster’s user login.
@@ -87,13 +87,14 @@ interface StreamOnlineEvent extends EventsubEventBase<'stream.online'> {
   started_at: string; // The timestamp at which the stream went online at.
 }
 
-interface StreamOfflineEvent extends EventsubEventBase<'stream.offline'> {
+interface StreamOfflineEvent extends EventsubEventBase<"stream.offline"> {
   broadcaster_user_id: string; // The broadcaster’s user id.
   broadcaster_user_login: string; // The broadcaster’s user login.
   broadcaster_user_name: string; // The broadcaster’s user display name.
 }
 
-interface ChannelSubscriptionGiftEvent extends EventsubEventBase<'channel.subscription.gift'> {
+interface ChannelSubscriptionGiftEvent
+  extends EventsubEventBase<"channel.subscription.gift"> {
   user_id: string; /// The user ID of the user who sent the subscription gift. Set to null if it was an anonymous subscription gift.
   user_login: string; /// The user login of the user who sent the gift. Set to null if it was an anonymous subscription gift.
   user_name: string; /// The user display name of the user who sent the gift. Set to null if it was an anonymous subscription gift.
@@ -106,7 +107,7 @@ interface ChannelSubscriptionGiftEvent extends EventsubEventBase<'channel.subscr
   is_anonymous: boolean; /// Whether the subscription gift was anonymous.
 }
 
-interface ChannelRaidEvent extends EventsubEventBase<'channel.raid'> {
+interface ChannelRaidEvent extends EventsubEventBase<"channel.raid"> {
   from_broadcaster_user_id: string; // The broadcaster ID that created the raid.
   from_broadcaster_user_login: string; // The broadcaster login that created the raid.
   from_broadcaster_user_name: string; // The broadcaster display name that created the raid.
@@ -116,7 +117,7 @@ interface ChannelRaidEvent extends EventsubEventBase<'channel.raid'> {
   viewers: number; //The number of viewers in the raid.
 }
 
-interface ChannelFollowEvent extends EventsubEventBase<'channel.follow'> {
+interface ChannelFollowEvent extends EventsubEventBase<"channel.follow"> {
   user_id: string; // The user ID for the user now following the specified channel.
   user_login: string; // The user login for the user now following the specified channel.
   user_name: string; // The user display name for the user now following the specified channel.
@@ -127,12 +128,15 @@ interface ChannelFollowEvent extends EventsubEventBase<'channel.follow'> {
 }
 
 interface ChannelPointsCustomRewardRedemptionEvent
-  extends EventsubEventBase<'channel.channel_points_custom_reward_redemption.add' | 'channel.channel_points_custom_reward_redemption.update'> {
+  extends EventsubEventBase<
+    | "channel.channel_points_custom_reward_redemption.add"
+    | "channel.channel_points_custom_reward_redemption.update"
+  > {
   user_id: string; // User ID of the user that redeemed the reward.
   user_login: string; // Login of the user that redeemed the reward.
   user_name: string; // Display name of the user that redeemed the reward.
   user_input: string; // The user input provided. Empty string if not provided.
-  status: 'unknown' | 'unfulfilled' | 'fulfilled' | 'canceled'; // Defaults to unfulfilled. Possible values are unknown, unfulfilled, fulfilled, and canceled.
+  status: "unknown" | "unfulfilled" | "fulfilled" | "canceled"; // Defaults to unfulfilled. Possible values are unknown, unfulfilled, fulfilled, and canceled.
   reward: ChannelPointsCustomReward; // Basic information about the reward that was redeemed, at the time it was redeemed.
   redeemed_at: string; // RFC3339 timestamp of when the reward was redeemed.
 }

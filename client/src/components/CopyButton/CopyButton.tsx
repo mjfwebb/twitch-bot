@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import { useCopyToClipboard } from 'react-use';
+import { useCopyToClipboard } from "react-use";
 
-import './CopyButton.less';
+import "./CopyButton.less";
 
 export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
   const [copyState, copyToClipboard] = useCopyToClipboard();
@@ -32,7 +32,13 @@ export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
         copy
       </button>
       {showCopied && (
-        <span className="copy-button-text">{copyState.error ? 'Something went wrong!' : copyState.value ? 'Link copied to clipboard' : ''}</span>
+        <span className="copy-button-text">
+          {copyState.error
+            ? "Something went wrong!"
+            : copyState.value
+            ? "Link copied to clipboard"
+            : ""}
+        </span>
       )}
     </div>
   );

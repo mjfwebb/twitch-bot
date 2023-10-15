@@ -6,7 +6,7 @@
  * @returns The text with a full stop at the end.
  */
 export function endWithFullStop(text: string) {
-  const punctuationMarks = ['.', ':', '?', '!'];
+  const punctuationMarks = [".", ":", "?", "!"];
   if (punctuationMarks.some((mark) => text.endsWith(mark))) {
     return text;
   }

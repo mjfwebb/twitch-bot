@@ -1,6 +1,6 @@
-import { fetchChannelCheers } from '../handlers/twitch/helix/fetchChannelCheers';
-import { fetchGlobalCheers } from '../handlers/twitch/helix/fetchGlobalCheers';
-import { getIO } from '../runSocketServer';
+import { fetchChannelCheers } from "../handlers/twitch/helix/fetchChannelCheers";
+import { fetchGlobalCheers } from "../handlers/twitch/helix/fetchGlobalCheers";
+import { getIO } from "../runSocketServer";
 
 type ChatCheer = {
   name: string;
@@ -17,7 +17,10 @@ export const loadCheers = async () => {
   await loadChannelCheers();
 
   // Change the order of this destructuring for your preferered cheer prioritisation
-  getIO().emit('cheers', { ...globalCheersForClient, ...channelCheersForClient });
+  getIO().emit("cheers", {
+    ...globalCheersForClient,
+    ...channelCheersForClient,
+  });
 };
 
 export const loadGlobalCheers = async () => {
@@ -29,7 +32,7 @@ export const loadGlobalCheers = async () => {
         globalCheersForClient[name] = {
           name,
           color: tier.color,
-          url: tier.images.dark.animated['4'],
+          url: tier.images.dark.animated["4"],
           minBits: tier.min_bits,
         };
       });
@@ -47,7 +50,7 @@ export const loadChannelCheers = async () => {
         channelCheersForClient[name] = {
           name,
           color: tier.color,
-          url: tier.images.dark.animated['4'],
+          url: tier.images.dark.animated["4"],
           minBits: tier.min_bits,
         };
       });

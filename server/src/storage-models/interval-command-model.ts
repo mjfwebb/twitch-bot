@@ -1,7 +1,7 @@
-import type { DataValidatorResponse } from '../fileManager';
-import { FileManager } from '../fileManager';
-import { logger } from '../logger';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import type { DataValidatorResponse } from "../fileManager";
+import { FileManager } from "../fileManager";
+import { logger } from "../logger";
+import { hasOwnProperty } from "../utils/hasOwnProperty";
 
 export interface IntervalCommand {
   tickInterval: number; // number of ticks between each time the command is run
@@ -15,76 +15,103 @@ export interface IntervalCommand {
   mustBeStreaming: boolean; // whether the command can only be run when the stream is live
 }
 
-const intervalCommandProperties = ['tickInterval', 'startDelay', 'actions', 'mustBeStreaming'];
-const intervalCommandActionProperties = ['message', 'command', 'commandParams'];
+const intervalCommandProperties = [
+  "tickInterval",
+  "startDelay",
+  "actions",
+  "mustBeStreaming",
+];
+const intervalCommandActionProperties = ["message", "command", "commandParams"];
 
-const fileName = 'intervalCommands.json';
+const fileName = "intervalCommands.json";
 
 const intervalCommandValidator = (data: unknown): DataValidatorResponse => {
-  let response: DataValidatorResponse = 'valid';
+  let response: DataValidatorResponse = "valid";
 
   if (Array.isArray(data)) {
     if (data.length === 0) {
-      response = 'valid';
+      response = "valid";
     }
 
     for (const intervalCommand of data as unknown[]) {
-      if (typeof intervalCommand !== 'object') {
-        response = 'invalid';
+      if (typeof intervalCommand !== "object") {
+        response = "invalid";
       }
 
       for (const property of [...intervalCommandProperties]) {
         if (hasOwnProperty(intervalCommand, property)) {
           switch (property) {
-            case 'tickInterval':
-              if (typeof intervalCommand.tickInterval !== 'number') {
-                logger.error(`Invalid interval command format, property ${property} must be a number`);
-                response = 'invalid';
+            case "tickInterval":
+              if (typeof intervalCommand.tickInterval !== "number") {
+                logger.error(
+                  `Invalid interval command format, property ${property} must be a number`,
+                );
+                response = "invalid";
               }
               break;
-            case 'startDelay':
-              if (typeof intervalCommand.startDelay !== 'number') {
-                logger.error(`Invalid interval command format, property ${property} must be a number`);
-                response = 'invalid';
+            case "startDelay":
+              if (typeof intervalCommand.startDelay !== "number") {
+                logger.error(
+                  `Invalid interval command format, property ${property} must be a number`,
+                );
+                response = "invalid";
               }
               break;
-            case 'mustBeStreaming':
-              if (typeof intervalCommand.mustBeStreaming !== 'boolean') {
-                logger.error(`Invalid interval command format, property ${property} must be a boolean`);
-                response = 'invalid';
+            case "mustBeStreaming":
+              if (typeof intervalCommand.mustBeStreaming !== "boolean") {
+                logger.error(
+                  `Invalid interval command format, property ${property} must be a boolean`,
+                );
+                response = "invalid";
               }
               break;
-            case 'actions':
+            case "actions":
               if (!Array.isArray(intervalCommand.actions)) {
-                logger.error(`Invalid interval command format, property ${property} must be an array`);
-                response = 'invalid';
+                logger.error(
+                  `Invalid interval command format, property ${property} must be an array`,
+                );
+                response = "invalid";
               } else {
-                if (!intervalCommand.actions.every((action: unknown) => typeof action === 'object')) {
-                  logger.error(`Invalid interval command format, property ${property} must be an array of objects`);
-                  response = 'invalid';
+                if (
+                  !intervalCommand.actions.every(
+                    (action: unknown) => typeof action === "object",
+                  )
+                ) {
+                  logger.error(
+                    `Invalid interval command format, property ${property} must be an array of objects`,
+                  );
+                  response = "invalid";
                 }
                 if (
                   !intervalCommand.actions.every((action: unknown) =>
-                    intervalCommandActionProperties.every((actionProperty) => hasOwnProperty(action, actionProperty)),
+                    intervalCommandActionProperties.every((actionProperty) =>
+                      hasOwnProperty(action, actionProperty),
+                    ),
                   )
                 ) {
-                  logger.error(`Invalid interval command format, property ${property} must be an array of objects`);
-                  response = 'invalid';
+                  logger.error(
+                    `Invalid interval command format, property ${property} must be an array of objects`,
+                  );
+                  response = "invalid";
                 }
               }
               break;
             default:
-              logger.error(`Invalid interval command format, unknown property ${property}`);
-              response = 'invalid';
+              logger.error(
+                `Invalid interval command format, unknown property ${property}`,
+              );
+              response = "invalid";
           }
         } else {
-          logger.error(`Invalid channel point redeem format, missing property ${property}`);
-          response = 'invalid';
+          logger.error(
+            `Invalid channel point redeem format, missing property ${property}`,
+          );
+          response = "invalid";
         }
       }
     }
   } else {
-    response = 'invalid';
+    response = "invalid";
   }
 
   return response;

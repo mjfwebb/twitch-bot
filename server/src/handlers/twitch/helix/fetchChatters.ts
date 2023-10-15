@@ -1,10 +1,10 @@
-import fetch from 'node-fetch';
-import { getCurrentAccessToken } from '../../../auth/twitch';
-import Config from '../../../config';
-import { TWITCH_HELIX_URL } from '../../../constants';
-import { logger } from '../../../logger';
-import { assertArray } from '../../../utils/assertArray';
-import { hasOwnProperty } from '../../../utils/hasOwnProperty';
+import fetch from "node-fetch";
+import { getCurrentAccessToken } from "../../../auth/twitch";
+import Config from "../../../config";
+import { TWITCH_HELIX_URL } from "../../../constants";
+import { logger } from "../../../logger";
+import { assertArray } from "../../../utils/assertArray";
+import { hasOwnProperty } from "../../../utils/hasOwnProperty";
 
 type Chatter = {
   user_id: string;
@@ -18,14 +18,14 @@ export const fetchChatters = async (): Promise<Chatter[]> => {
     const accessToken = getCurrentAccessToken();
 
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Client-Id': Config.twitch.client_id,
+        "Client-Id": Config.twitch.client_id,
         Authorization: `Bearer ${accessToken}`,
       },
     });
     const result: unknown = await response.json();
-    if (hasOwnProperty(result, 'data')) {
+    if (hasOwnProperty(result, "data")) {
       const onlineChatters: unknown = result.data;
       assertArray(onlineChatters);
       return onlineChatters as Chatter[];

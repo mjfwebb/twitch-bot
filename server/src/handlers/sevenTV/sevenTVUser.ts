@@ -1,4 +1,4 @@
-import type { SevenTVTwitchUser } from './types';
+import type { SevenTVTwitchUser } from "./types";
 
 let sevenTVUser: SevenTVTwitchUser | null = null;
 

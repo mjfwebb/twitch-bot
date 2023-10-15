@@ -1,13 +1,13 @@
-import type { ExecException } from 'child_process';
-import { execFile } from 'child_process';
-import ffmpegPath from 'ffmpeg-static';
-import player from 'play-sound';
-import type { SOUNDS } from './constants';
-import { skipCurrentCommand } from './handlers/botCommandHandler';
+import type { ExecException } from "child_process";
+import { execFile } from "child_process";
+import ffmpegPath from "ffmpeg-static";
+import player from "play-sound";
+import type { SOUNDS } from "./constants";
+import { skipCurrentCommand } from "./handlers/botCommandHandler";
 
 type SoundEffect = (typeof SOUNDS)[number];
 
-type SoundFileType = 'wav' | 'mp3';
+type SoundFileType = "wav" | "mp3";
 
 type Sound = {
   file: string;
@@ -27,7 +27,7 @@ export const clearCurrentSound = () => {
   if (timeOutResolve && playSoundTimeout) {
     clearTimeout(playSoundTimeout);
     timeOutResolve(null);
-    player().play('../sounds/silence.mp3');
+    player().play("../sounds/silence.mp3");
   }
 };
 
@@ -37,11 +37,15 @@ export const clearCurrentSound = () => {
  * @returns The duration in milliseconds, or 0 if the duration cannot be extracted.
  */
 function getDurationMilliseconds(stderr: string): number {
-  const durationInSeconds = /Duration: (\d{2}:\d{2}:\d{2}\.\d{2})/g.exec(stderr);
+  const durationInSeconds = /Duration: (\d{2}:\d{2}:\d{2}\.\d{2})/g.exec(
+    stderr,
+  );
   if (Array.isArray(durationInSeconds) && durationInSeconds.length > 1) {
     const durationString = durationInSeconds[1];
-    const durationParts = durationString.split(':').map(Number);
-    const durationInMilliseconds = (durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2]) * 1000;
+    const durationParts = durationString.split(":").map(Number);
+    const durationInMilliseconds =
+      (durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2]) *
+      1000;
     return durationInMilliseconds;
   }
 
@@ -55,18 +59,22 @@ function getDurationMilliseconds(stderr: string): number {
  * @throws Error if FFmpeg is not found or an error occurs during the execution.
  */
 export async function getDuration(soundFile: string): Promise<number> {
-  const args = ['-i', soundFile, '-f', 'null', '-'];
+  const args = ["-i", soundFile, "-f", "null", "-"];
 
   return await new Promise((resolve, reject) => {
     if (!ffmpegPath) {
-      return reject('ffmpeg not found');
+      return reject("ffmpeg not found");
     }
-    execFile(ffmpegPath, args, (error: ExecException | null, _stdout: string, stderr: string): void => {
-      if (error) {
-        return reject(error);
-      }
-      resolve(getDurationMilliseconds(stderr));
-    });
+    execFile(
+      ffmpegPath,
+      args,
+      (error: ExecException | null, _stdout: string, stderr: string): void => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(getDurationMilliseconds(stderr));
+      },
+    );
   });
 }
 
@@ -110,11 +118,14 @@ async function workQueue() {
  * @returns A Promise that resolves once the sound has finished playing.
  * @remarks Supports both predefined sound effects and custom sound files.
  */
-export async function playSound<T extends SoundEffect | string>(sound: T, fileType?: SoundFileType): Promise<void> {
-  const fileExtension: string = fileType || 'wav';
+export async function playSound<T extends SoundEffect | string>(
+  sound: T,
+  fileType?: SoundFileType,
+): Promise<void> {
+  const fileExtension: string = fileType || "wav";
 
   let file: string = sound;
-  if (!sound.startsWith('..')) {
+  if (!sound.startsWith("..")) {
     file = `../sounds/${sound}.${fileExtension}`;
   }
   const duration = await getDuration(file);

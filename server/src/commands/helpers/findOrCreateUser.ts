@@ -1,8 +1,8 @@
-import { fetchUserInformationByName } from '../../handlers/twitch/helix/fetchUserInformation';
-import { getTwitchViewerBotNames } from '../../handlers/twitchinsights/twitchViewerBots';
-import type { User } from '../../storage-models/user-model';
-import { Users } from '../../storage-models/user-model';
-import type { UserInformation } from '../../types';
+import { fetchUserInformationByName } from "../../handlers/twitch/helix/fetchUserInformation";
+import { getTwitchViewerBotNames } from "../../handlers/twitchinsights/twitchViewerBots";
+import type { User } from "../../storage-models/user-model";
+import { Users } from "../../storage-models/user-model";
+import type { UserInformation } from "../../types";
 
 // To be used when we want to find a user by their display name or nick
 // Which is useful when we want to find a user by command parameters
@@ -21,7 +21,9 @@ export function findUserByTargetName(targetName: string): User | null {
 }
 
 // Unlike findOrCreateUserById, this function uses the data returned from the Twitch API to create a new user.
-export async function findOrCreateUserByName(displayName: string): Promise<User | null> {
+export async function findOrCreateUserByName(
+  displayName: string,
+): Promise<User | null> {
   if (getTwitchViewerBotNames().includes(displayName)) {
     return null;
   }
@@ -36,10 +38,10 @@ export async function findOrCreateUserByName(displayName: string): Promise<User 
         userId: userInformation.id,
         nick: displayName,
         displayName: userInformation.display_name,
-        welcomeMessage: '',
+        welcomeMessage: "",
         points: 0,
         experience: 0,
-        lastSeen: '0',
+        lastSeen: "0",
         avatarUrl: userInformation.profile_image_url,
         createdAt: isoString,
         updatedAt: isoString,
@@ -55,10 +57,19 @@ export async function findOrCreateUserByName(displayName: string): Promise<User 
   return user;
 }
 
-export async function getChatUser(userId: string, userNick: string, userDisplayName: string): Promise<User> {
+export async function getChatUser(
+  userId: string,
+  userNick: string,
+  userDisplayName: string,
+): Promise<User> {
   const userInformation = await fetchUserInformationByName(userNick);
 
-  return findOrCreateUserById(userId, userNick, userDisplayName, userInformation);
+  return findOrCreateUserById(
+    userId,
+    userNick,
+    userDisplayName,
+    userInformation,
+  );
 }
 
 export function findOrCreateUserById(
@@ -76,11 +87,11 @@ export function findOrCreateUserById(
       userId,
       nick: userNick,
       displayName: userDisplayName,
-      welcomeMessage: '',
+      welcomeMessage: "",
       points: 0,
       experience: 0,
-      lastSeen: '0',
-      avatarUrl: '',
+      lastSeen: "0",
+      avatarUrl: "",
       createdAt: isoString,
       updatedAt: isoString,
       numberOfMessages: 0,

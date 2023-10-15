@@ -23,7 +23,7 @@
     "src/**/*.tsx",
     "typings",
     "vite.config.ts",
-    ".eslintrc.cjs",
+    ".eslintrc.cjs"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

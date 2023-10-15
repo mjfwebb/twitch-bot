@@ -1,4 +1,4 @@
-import { getBotCommands } from '../../botCommands';
+import { getBotCommands } from "../../botCommands";
 
 export const findBotCommand = (commandName: string) => {
   return getBotCommands().find((command) => {

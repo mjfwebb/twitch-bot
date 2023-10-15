@@ -1,7 +1,7 @@
-import useStore from '../../store/store';
-import { ChatImageRenderer } from '../Chat/ChatImageRenderer';
+import useStore from "../../store/store";
+import { ChatImageRenderer } from "../Chat/ChatImageRenderer";
 
-import './Task.less';
+import "./Task.less";
 
 export const Task = () => {
   const task = useStore((s) => s.task);

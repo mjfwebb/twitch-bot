@@ -1,3 +1,4 @@
-import { isError } from './isError';
+import { isError } from "./isError";
 
-export const errorMessage = (error: unknown): string => (isError(error) ? error.message : 'Unknown Error');
+export const errorMessage = (error: unknown): string =>
+  isError(error) ? error.message : "Unknown Error";

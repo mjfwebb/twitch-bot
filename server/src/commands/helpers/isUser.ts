@@ -1,6 +1,9 @@
-import type { ParsedMessage } from '../../types';
+import type { ParsedMessage } from "../../types";
 
-export function isUser(message: ParsedMessage, allowedUsers: string[]): boolean {
+export function isUser(
+  message: ParsedMessage,
+  allowedUsers: string[],
+): boolean {
   const username = message.source?.nick;
 
   if (!username) {

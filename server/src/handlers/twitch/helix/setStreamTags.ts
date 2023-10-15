@@ -1,9 +1,9 @@
-import { StatusCodes } from 'http-status-codes';
-import fetch from 'node-fetch';
-import { getCurrentAccessToken } from '../../../auth/twitch';
-import Config from '../../../config';
-import { TWITCH_HELIX_URL } from '../../../constants';
-import { logger } from '../../../logger';
+import { StatusCodes } from "http-status-codes";
+import fetch from "node-fetch";
+import { getCurrentAccessToken } from "../../../auth/twitch";
+import Config from "../../../config";
+import { TWITCH_HELIX_URL } from "../../../constants";
+import { logger } from "../../../logger";
 
 export const setStreamTags = async (tags: string[]): Promise<void> => {
   try {
@@ -11,11 +11,11 @@ export const setStreamTags = async (tags: string[]): Promise<void> => {
     const accessToken = getCurrentAccessToken();
 
     const response = await fetch(url, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Client-Id': Config.twitch.client_id,
+        "Client-Id": Config.twitch.client_id,
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         tags,
@@ -25,7 +25,9 @@ export const setStreamTags = async (tags: string[]): Promise<void> => {
     if (response.status === StatusCodes.NO_CONTENT) {
       return;
     } else {
-      throw new Error(`setStreamTags: ${response.status} - ${response.statusText}`);
+      throw new Error(
+        `setStreamTags: ${response.status} - ${response.statusText}`,
+      );
     }
   } catch (error) {
     logger.error(error);

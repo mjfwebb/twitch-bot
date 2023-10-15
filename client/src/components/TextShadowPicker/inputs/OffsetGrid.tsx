@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 
 const Wrapper = styled.svg<{ dragging: boolean }>`
   width: 100px;
   height: 100px;
   border: 1px solid #5a5a5a;
-  cursor: ${(p) => (p.dragging ? 'grabbing' : 'grab')};
+  cursor: ${(p) => (p.dragging ? "grabbing" : "grab")};
 `;
 
 const Handle = styled.circle`
@@ -69,14 +69,16 @@ export default ({ offset: { x, y }, max = 20, onChange }: Props) => {
 
       const target = e.currentTarget as HTMLElement;
 
-      if (target.getAttribute('data-touch')) {
+      if (target.getAttribute("data-touch")) {
         e.preventDefault();
         e.touches && updatePos(e.touches[0]);
       }
     };
 
-    window.addEventListener<'touchmove'>('touchmove', listener, { passive: false });
-    return () => window.removeEventListener('touchmove', listener);
+    window.addEventListener<"touchmove">("touchmove", listener, {
+      passive: false,
+    });
+    return () => window.removeEventListener("touchmove", listener);
   }, [updatePos]);
 
   const posX = (50 / max) * x + 50;
@@ -90,13 +92,45 @@ export default ({ offset: { x, y }, max = 20, onChange }: Props) => {
       onMouseUp={() => setDragging(false)}
       dragging={dragging}
       data-touch={true}
-      className={'shadow-picker__grid'}
-      viewBox={'0 0 100 100'}
+      className={"shadow-picker__grid"}
+      viewBox={"0 0 100 100"}
     >
-      <Line x1={50} y1={0} x2={50} y2={100} strokeWidth={2} strokeDasharray={'2,1'} stroke={'currentColor'} className={'shadow-picker__grid-line'} />
-      <Line x1={0} y1={50} x2={100} y2={50} strokeDasharray={'2,1'} strokeWidth={2} stroke={'currentColor'} className={'shadow-picker__grid-line'} />
-      <Line x1={50} y1={50} x2={posX} y2={posY} strokeWidth={2} stroke={'currentColor'} className={'shadow-picker__grid-line'} />
-      <Handle className={'shadow-picker__grid-handle'} cx={posX} cy={posY} r={5} fill={'currentColor'} />
+      <Line
+        x1={50}
+        y1={0}
+        x2={50}
+        y2={100}
+        strokeWidth={2}
+        strokeDasharray={"2,1"}
+        stroke={"currentColor"}
+        className={"shadow-picker__grid-line"}
+      />
+      <Line
+        x1={0}
+        y1={50}
+        x2={100}
+        y2={50}
+        strokeDasharray={"2,1"}
+        strokeWidth={2}
+        stroke={"currentColor"}
+        className={"shadow-picker__grid-line"}
+      />
+      <Line
+        x1={50}
+        y1={50}
+        x2={posX}
+        y2={posY}
+        strokeWidth={2}
+        stroke={"currentColor"}
+        className={"shadow-picker__grid-line"}
+      />
+      <Handle
+        className={"shadow-picker__grid-handle"}
+        cx={posX}
+        cy={posY}
+        r={5}
+        fill={"currentColor"}
+      />
     </Wrapper>
   );
 };

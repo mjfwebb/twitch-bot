@@ -1,8 +1,8 @@
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 
-import { useUnitValue } from '../common';
-import Input from '../inputs/Input';
-import { Label } from '../inputs/Label';
+import { useUnitValue } from "../common";
+import Input from "../inputs/Input";
+import { Label } from "../inputs/Label";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -50,7 +50,13 @@ export default ({ title, value, onChange }: Props) => {
     <Wrapper>
       <Label>{title}</Label>
       <Input value={value} onChange={onChange} />
-      <Slider className={'text-shadow-picker__slider'} type="range" value={amount} onChange={changeHandler} max={100} />
+      <Slider
+        className={"text-shadow-picker__slider"}
+        type="range"
+        value={amount}
+        onChange={changeHandler}
+        max={100}
+      />
     </Wrapper>
   );
 };

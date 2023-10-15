@@ -1,10 +1,10 @@
-import { existsSync, readdir, unlink } from 'fs';
-import path from 'path';
-import pc from 'picocolors';
-import { logger } from './logger';
+import { existsSync, readdir, unlink } from "fs";
+import path from "path";
+import pc from "picocolors";
+import { logger } from "./logger";
 
 export function removeOldTTSFiles() {
-  const ttsFolder = '../tts';
+  const ttsFolder = "../tts";
 
   // Check if the folder exists
   if (!existsSync(ttsFolder)) {
@@ -21,7 +21,11 @@ export function removeOldTTSFiles() {
       throw err;
     }
 
-    logger.info(`Deleting ${pc.green(`${files.length}`)} sound files in ${pc.green(`${ttsFolder}`)}`);
+    logger.info(
+      `Deleting ${pc.green(`${files.length}`)} sound files in ${pc.green(
+        `${ttsFolder}`,
+      )}`,
+    );
     // loop through all the files and delete them
     for (const file of files) {
       unlink(path.join(ttsFolder, file), (err) => {

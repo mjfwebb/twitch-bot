@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-import { DEFAULT_SONG_SETTINGS_VALUES } from '../constants';
+import { DEFAULT_SONG_SETTINGS_VALUES } from "../constants";
 
 // Overlay height
 // Overlay width
@@ -68,9 +68,11 @@ export const useSongSettingsStore = create(
       titleTextStrokeEnabled: false,
       titleTextStrokeSettings: DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings,
       artistsDropShadowEnabled: false,
-      artistsDropShadowSettings: DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings,
+      artistsDropShadowSettings:
+        DEFAULT_SONG_SETTINGS_VALUES.dropShadowSettings,
       artistsTextStrokeEnabled: false,
-      artistsTextStrokeSettings: DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings,
+      artistsTextStrokeSettings:
+        DEFAULT_SONG_SETTINGS_VALUES.textStrokeSettings,
       titleFontSizeValue: DEFAULT_SONG_SETTINGS_VALUES.titleFontSizeValue,
       titleFontFamily: DEFAULT_SONG_SETTINGS_VALUES.titleFontFamily,
       artistsFontSizeValue: DEFAULT_SONG_SETTINGS_VALUES.artistsFontSizeValue,
@@ -136,7 +138,7 @@ export const useSongSettingsStore = create(
       resetState: () => undefined,
     }),
     {
-      name: 'song-settings',
+      name: "song-settings",
       storage: createJSONStorage(() => sessionStorage),
     },
   ),

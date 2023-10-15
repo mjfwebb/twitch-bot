@@ -61,7 +61,7 @@ export type SpotifyTrack = {
         href: string;
         id: string;
         name: string;
-        type: 'artist';
+        type: "artist";
         uri: string;
       },
     ];

@@ -1,14 +1,18 @@
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import pc from 'picocolors';
-import { logger } from '../logger';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import { existsSync, readFileSync, writeFileSync } from "fs";
+import pc from "picocolors";
+import { logger } from "../logger";
+import { hasOwnProperty } from "../utils/hasOwnProperty";
 
-const tokensfileName = 'tokens.json';
+const tokensfileName = "tokens.json";
 
 export const assertTokenFileExists = () => {
   if (!existsSync(tokensfileName)) {
     if (existsSync(`example.${tokensfileName}`)) {
-      logger.info(`${pc.blue('Startup:')} ${tokensfileName} does not exist. Creating it now.`);
+      logger.info(
+        `${pc.blue(
+          "Startup:",
+        )} ${tokensfileName} does not exist. Creating it now.`,
+      );
       const exampleFileContents = readFileSync(`example.${tokensfileName}`);
       writeFileSync(tokensfileName, exampleFileContents);
     }
@@ -24,7 +28,7 @@ export const setTokenInFile = (tokenName: string, tokenValue: string) => {
   const file = readFileSync(tokensfileName);
   const currentTokenData: unknown = JSON.parse(file.toString());
 
-  if (typeof currentTokenData === 'object') {
+  if (typeof currentTokenData === "object") {
     const updatedData = {
       ...currentTokenData,
       [tokenName]: tokenValue,
@@ -42,7 +46,7 @@ export const setTokenInFile = (tokenName: string, tokenValue: string) => {
 export const getTokenFromFile = (tokenName: string): string => {
   const file = readFileSync(tokensfileName);
   const json: unknown = JSON.parse(file.toString());
-  if (typeof json === 'object' && hasOwnProperty(json, tokenName)) {
+  if (typeof json === "object" && hasOwnProperty(json, tokenName)) {
     return json[tokenName] as string;
   } else {
     throw new Error(`Unable to load token ${tokenName}`);

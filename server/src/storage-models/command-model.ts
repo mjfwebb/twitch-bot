@@ -1,8 +1,8 @@
-import type { DataValidatorResponse } from '../fileManager';
-import { FileManager } from '../fileManager';
-import { logger } from '../logger';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
-import { timestampProperties, type Timestamp } from './timestamp-model';
+import type { DataValidatorResponse } from "../fileManager";
+import { FileManager } from "../fileManager";
+import { logger } from "../logger";
+import { hasOwnProperty } from "../utils/hasOwnProperty";
+import { timestampProperties, type Timestamp } from "./timestamp-model";
 
 export interface Command extends Timestamp {
   command: string[];
@@ -16,110 +16,155 @@ export interface Command extends Timestamp {
   mustBeUser?: string[];
 }
 
-const commandProperties = ['command', 'commandId', 'cooldown', 'description', 'message', 'timesUsed'];
-const optionalCommandProperties = ['hidden', 'privileged', 'mustBeUser'];
+const commandProperties = [
+  "command",
+  "commandId",
+  "cooldown",
+  "description",
+  "message",
+  "timesUsed",
+];
+const optionalCommandProperties = ["hidden", "privileged", "mustBeUser"];
 
-const fileName = 'commands.json';
+const fileName = "commands.json";
 
 const commandValidator = (data: unknown): DataValidatorResponse => {
-  let response: DataValidatorResponse = 'valid';
+  let response: DataValidatorResponse = "valid";
 
   if (Array.isArray(data)) {
     if (data.length === 0) {
-      response = 'valid';
+      response = "valid";
     }
 
     for (const command of data as unknown[]) {
-      if (typeof command !== 'object') {
-        response = 'invalid';
+      if (typeof command !== "object") {
+        response = "invalid";
       }
 
-      for (const property of [...commandProperties, ...optionalCommandProperties, ...timestampProperties]) {
+      for (const property of [
+        ...commandProperties,
+        ...optionalCommandProperties,
+        ...timestampProperties,
+      ]) {
         if (hasOwnProperty(command, property)) {
           switch (property) {
-            case 'command':
+            case "command":
               if (!Array.isArray(command.command)) {
-                logger.error(`Invalid command format, property ${property} must be an array`);
-                response = 'invalid';
+                logger.error(
+                  `Invalid command format, property ${property} must be an array`,
+                );
+                response = "invalid";
               } else {
-                if (!command.command.every((command) => typeof command === 'string')) {
-                  logger.error(`Invalid command format, property ${property} must be an array of strings`);
-                  response = 'invalid';
+                if (
+                  !command.command.every(
+                    (command) => typeof command === "string",
+                  )
+                ) {
+                  logger.error(
+                    `Invalid command format, property ${property} must be an array of strings`,
+                  );
+                  response = "invalid";
                 }
               }
               break;
-            case 'commandId':
-              if (typeof command.commandId !== 'string') {
-                logger.error(`Invalid command format, property ${property} must be a string`);
-                response = 'invalid';
+            case "commandId":
+              if (typeof command.commandId !== "string") {
+                logger.error(
+                  `Invalid command format, property ${property} must be a string`,
+                );
+                response = "invalid";
               }
               break;
-            case 'cooldown':
-              if (typeof command.cooldown !== 'number') {
-                logger.error(`Invalid command format, property ${property} must be a number`);
-                response = 'invalid';
+            case "cooldown":
+              if (typeof command.cooldown !== "number") {
+                logger.error(
+                  `Invalid command format, property ${property} must be a number`,
+                );
+                response = "invalid";
               }
               break;
-            case 'description':
-              if (typeof command.description !== 'string') {
-                logger.error(`Invalid command format, property ${property} must be a string`);
-                response = 'invalid';
+            case "description":
+              if (typeof command.description !== "string") {
+                logger.error(
+                  `Invalid command format, property ${property} must be a string`,
+                );
+                response = "invalid";
               }
               break;
-            case 'message':
-              if (typeof command.message !== 'string') {
-                logger.error(`Invalid command format, property ${property} must be a string`);
-                response = 'invalid';
+            case "message":
+              if (typeof command.message !== "string") {
+                logger.error(
+                  `Invalid command format, property ${property} must be a string`,
+                );
+                response = "invalid";
               }
               break;
-            case 'timesUsed':
-              if (typeof command.timesUsed !== 'number') {
-                logger.error(`Invalid command format, property ${property} must be a number`);
-                response = 'invalid';
+            case "timesUsed":
+              if (typeof command.timesUsed !== "number") {
+                logger.error(
+                  `Invalid command format, property ${property} must be a number`,
+                );
+                response = "invalid";
               }
               break;
-            case 'createdAt':
-            case 'updatedAt':
-              if (typeof command[property] !== 'string') {
-                logger.error(`Invalid command format, property ${property} must be a string`);
-                response = 'invalid';
+            case "createdAt":
+            case "updatedAt":
+              if (typeof command[property] !== "string") {
+                logger.error(
+                  `Invalid command format, property ${property} must be a string`,
+                );
+                response = "invalid";
               }
               break;
-            case 'hidden':
-            case 'privileged':
-              if (typeof command[property] !== 'boolean') {
-                logger.error(`Invalid command format, property ${property} must be a boolean`);
-                response = 'invalid';
+            case "hidden":
+            case "privileged":
+              if (typeof command[property] !== "boolean") {
+                logger.error(
+                  `Invalid command format, property ${property} must be a boolean`,
+                );
+                response = "invalid";
               }
               break;
-            case 'mustBeUser':
+            case "mustBeUser":
               if (!Array.isArray(command.mustBeUser)) {
-                logger.error(`Invalid command format, property ${property} must be an array`);
-                response = 'invalid';
+                logger.error(
+                  `Invalid command format, property ${property} must be an array`,
+                );
+                response = "invalid";
               } else {
-                if (!command.mustBeUser.every((command) => typeof command === 'string')) {
-                  logger.error(`Invalid command format, property ${property} must be an array of strings`);
-                  response = 'invalid';
+                if (
+                  !command.mustBeUser.every(
+                    (command) => typeof command === "string",
+                  )
+                ) {
+                  logger.error(
+                    `Invalid command format, property ${property} must be an array of strings`,
+                  );
+                  response = "invalid";
                 }
               }
               break;
             default:
-              logger.error(`Invalid command format, unknown property ${JSON.stringify(property)}`);
-              response = 'invalid';
+              logger.error(
+                `Invalid command format, unknown property ${JSON.stringify(
+                  property,
+                )}`,
+              );
+              response = "invalid";
           }
         } else {
           if (optionalCommandProperties.includes(property)) {
             continue;
           }
           logger.error(`Invalid command format, missing property ${property}`);
-          response = 'invalid';
+          response = "invalid";
         }
       }
 
-      return 'valid';
+      return "valid";
     }
   } else {
-    response = 'invalid';
+    response = "invalid";
   }
 
   return response;
@@ -147,7 +192,9 @@ export class CommandModel {
   }
 
   public findOneByCommandId(commandId: string): Command | null {
-    const command = this.commands.find((command) => command.commandId === commandId);
+    const command = this.commands.find(
+      (command) => command.commandId === commandId,
+    );
     if (!command) {
       return null;
     }
@@ -155,7 +202,9 @@ export class CommandModel {
   }
 
   public findOneByCommandAlias(commandAlias: string): Command | null {
-    const commandFound = this.commands.find((command) => command.command.includes(commandAlias));
+    const commandFound = this.commands.find((command) =>
+      command.command.includes(commandAlias),
+    );
     if (!commandFound) {
       return null;
     }
@@ -163,7 +212,9 @@ export class CommandModel {
   }
 
   public saveOne(command: Command): void {
-    const index = this.commands.findIndex((u) => u.commandId === command.commandId);
+    const index = this.commands.findIndex(
+      (u) => u.commandId === command.commandId,
+    );
     if (index === -1) {
       this.commands.push(command);
     } else {
@@ -173,7 +224,9 @@ export class CommandModel {
   }
 
   public deleteOne(command: Command): void {
-    const index = this.commands.findIndex((u) => u.commandId === command.commandId);
+    const index = this.commands.findIndex(
+      (u) => u.commandId === command.commandId,
+    );
     if (index !== -1) {
       this.commands.splice(index, 1);
       this.fileManager.saveData(this.commands);
@@ -183,12 +236,16 @@ export class CommandModel {
   }
 
   public increaseTimesUsed(command: Command): void {
-    const index = this.commands.findIndex((u) => u.commandId === command.commandId);
+    const index = this.commands.findIndex(
+      (u) => u.commandId === command.commandId,
+    );
     if (index !== -1) {
       this.commands[index].timesUsed++;
       this.fileManager.saveData(this.commands);
     } else {
-      logger.error(`Unable to increase times used: command ${command.commandId} not found`);
+      logger.error(
+        `Unable to increase times used: command ${command.commandId} not found`,
+      );
     }
   }
 }

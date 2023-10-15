@@ -1,11 +1,13 @@
-import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
-import Config from '../../config';
-import { SPOTIFY_API_URL } from '../../constants';
-import { logger } from '../../logger';
-import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SpotifyTrack } from './types';
+import { fetchWithRetry, getCurrentAccessToken } from "../../auth/spotify";
+import Config from "../../config";
+import { SPOTIFY_API_URL } from "../../constants";
+import { logger } from "../../logger";
+import { hasOwnProperty } from "../../utils/hasOwnProperty";
+import type { SpotifyTrack } from "./types";
 
-export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> => {
+export const getTrack = async (
+  trackId: string,
+): Promise<SpotifyTrack | null> => {
   if (Config.spotify.enabled) {
     try {
       let url = `${SPOTIFY_API_URL}tracks/${trackId}`;
@@ -14,13 +16,17 @@ export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> =>
       }
 
       const result = await fetchWithRetry(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
-      if (hasOwnProperty(result, 'album') && hasOwnProperty(result, 'name') && typeof result.name === 'string') {
+      if (
+        hasOwnProperty(result, "album") &&
+        hasOwnProperty(result, "name") &&
+        typeof result.name === "string"
+      ) {
         return result as SpotifyTrack;
       }
     } catch (error) {

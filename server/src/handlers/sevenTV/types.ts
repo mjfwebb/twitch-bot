@@ -3,7 +3,7 @@ export type SevenTVEmoteData = {
   name: string;
   flags: number;
   lifecycle: number;
-  state: ('PERSONAL' | 'LISTED')[];
+  state: ("PERSONAL" | "LISTED")[];
   listed: boolean;
   animated: boolean;
   owner: {
@@ -23,7 +23,7 @@ export type SevenTVEmoteData = {
       height: number;
       frame_count: number;
       size: number;
-      format: 'AVIF' | 'WEBP';
+      format: "AVIF" | "WEBP";
     }[];
   };
 };

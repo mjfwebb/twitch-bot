@@ -11,7 +11,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/typescript",
-        "prettier"
+        "prettier",
       ],
       parser: "@typescript-eslint/parser",
       parserOptions: {
@@ -24,51 +24,45 @@ module.exports = {
         "prettier/prettier": [
           "error",
           {
-            "singleQuote": true,
-            "printWidth": 150,
-            "endOfLine": "auto",
-            "trailingComma": "all"
-          }
+            singleQuote: true,
+            printWidth: 150,
+            endOfLine: "auto",
+            trailingComma: "all",
+          },
         ],
         "max-len": [
           "error",
           {
-            "code": 150,
-            "ignoreUrls": true,
-            "ignoreTemplateLiterals": true
-          }
+            code: 150,
+            ignoreUrls: true,
+            ignoreTemplateLiterals: true,
+          },
         ],
         "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/no-unsafe-enum-comparison": "off",
         "@typescript-eslint/naming-convention": [
           "error",
           {
-            "selector": "variable",
-            "format": [
-              "camelCase",
-              "UPPER_CASE",
-              "PascalCase"
-            ],
-            "leadingUnderscore": "allow"
+            selector: "variable",
+            format: ["camelCase", "UPPER_CASE", "PascalCase"],
+            leadingUnderscore: "allow",
           },
           {
-            "selector": "typeLike",
-            "format": [
-              "PascalCase"
-            ]
-          }
+            selector: "typeLike",
+            format: ["PascalCase"],
+          },
         ],
         "@typescript-eslint/require-await": "error",
         "@typescript-eslint/consistent-type-imports": [
           "error",
           {
-            "prefer": "type-imports"
-          }
-        ]
-      }
+            prefer: "type-imports",
+          },
+        ],
+      },
     },
   ],
-  "rules": {
+  rules: {
     "linebreak-style": 0,
     "no-underscore-dangle": "off",
     "no-console": "off",
@@ -79,5 +73,5 @@ module.exports = {
     "comma-dangle": "off",
     "import/prefer-default-export": "off",
     "require-await": "off",
-  }
+  },
 };

@@ -95,10 +95,10 @@ const missingPropertyErrorMessage = (missingProperty: string) =>
   `Missing configuration in ${configFileName}: ${missingProperty}`;
 const invalidPropertyErrorMessage = (
   invalidProperty: string,
-  validProperties: string[]
+  validProperties: string[],
 ) =>
   `Invalid configuration in ${configFileName}: ${invalidProperty}. It should be one of: ${validProperties.join(
-    ", "
+    ", ",
   )}`;
 
 export function assertConfigFileExists(): void {
@@ -290,7 +290,7 @@ function readTikTokConfig(config: unknown): TikTokConfig {
 }
 
 function readRepeatMessageHandlerConfig(
-  config: unknown
+  config: unknown,
 ): RepeatMessageHandlerConfig {
   const defaultRepeatMessageHandlerConfig: RepeatMessageHandlerConfig = {
     enabled: false,

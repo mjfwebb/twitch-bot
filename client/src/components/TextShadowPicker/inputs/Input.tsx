@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 
 const Input = styled.input`
   background: transparent;
@@ -43,5 +43,13 @@ export default ({ value, onChange }: Props) => {
     setActive(true);
   };
 
-  return <Input className={'text-shadow-picker__input'} value={tmp} onFocus={focusHandler} onBlur={blurHandler} onChange={changeHandler} />;
+  return (
+    <Input
+      className={"text-shadow-picker__input"}
+      value={tmp}
+      onFocus={focusHandler}
+      onBlur={blurHandler}
+      onChange={changeHandler}
+    />
+  );
 };

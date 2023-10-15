@@ -1,4 +1,4 @@
-import type { ParsedMessage } from './twitchTypes';
+import type { ParsedMessage } from "./twitchTypes";
 
 export type SpotifySong = {
   timestamp: number;
@@ -97,7 +97,7 @@ export type ChatMessage = {
 };
 
 export type ChatEmote = {
-  origin: 'sevenTV' | 'betterTTV' | 'frankerFaceZ' | 'twitch' | 'emoji';
+  origin: "sevenTV" | "betterTTV" | "frankerFaceZ" | "twitch" | "emoji";
   src: string;
   srcSet?: string;
   width: number | null;

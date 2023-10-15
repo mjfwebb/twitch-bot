@@ -13,7 +13,7 @@ type Voice = {
 
 async function getVoiceBuffer(
   voice: Voice,
-  text: string
+  text: string,
 ): Promise<ArrayBuffer | null> {
   switch (voice.api) {
     case "streamelements": {
@@ -35,7 +35,7 @@ export const runTTS = async (
     name: "Brian",
     id: "Brian",
     api: "streamelements",
-  }
+  },
 ) => {
   const words = message.split(" ");
   // Set the default voice to Brian from StreamElements

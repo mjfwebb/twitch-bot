@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-import { DEFAULT_CHAT_SETTINGS_VALUES } from '../constants';
+import { DEFAULT_CHAT_SETTINGS_VALUES } from "../constants";
 
 interface ChatPersistedSettings {
   animatedEntry: boolean;
@@ -127,7 +127,7 @@ export const useChatSettingsStore = create(
       resetState: () => undefined,
     }),
     {
-      name: 'chat-settings',
+      name: "chat-settings",
       storage: createJSONStorage(() => sessionStorage),
     },
   ),

@@ -1,4 +1,4 @@
-import { CopyButton } from '../../components/CopyButton/CopyButton';
+import { CopyButton } from "../../components/CopyButton/CopyButton";
 
 export const TaskDashboard = () => {
   const songURLString = `${document.location.href}task`;

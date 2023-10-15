@@ -1,12 +1,12 @@
-import { findBotCommand } from './commands/helpers/findBotCommand';
-import { sendChatMessage } from './commands/helpers/sendChatMessage';
-import { SECOND_MS } from './constants';
-import { getConnection } from './handlers/twitch/irc/twitchIRCWebsocket';
-import type { IntervalCommand } from './storage-models/interval-command-model';
-import { IntervalCommands } from './storage-models/interval-command-model';
-import { getStreamStatus } from './streamState';
-import type { Command } from './types';
-import { fakeParsedCommand } from './utils/fakeParsedCommand';
+import { findBotCommand } from "./commands/helpers/findBotCommand";
+import { sendChatMessage } from "./commands/helpers/sendChatMessage";
+import { SECOND_MS } from "./constants";
+import { getConnection } from "./handlers/twitch/irc/twitchIRCWebsocket";
+import type { IntervalCommand } from "./storage-models/interval-command-model";
+import { IntervalCommands } from "./storage-models/interval-command-model";
+import { getStreamStatus } from "./streamState";
+import type { Command } from "./types";
+import { fakeParsedCommand } from "./utils/fakeParsedCommand";
 
 export const intervalCommands: IntervalCommand[] = [];
 
@@ -14,9 +14,9 @@ export const loadSpotifyIntervalCommands = () => {
   intervalCommands.push({
     actions: [
       {
-        message: '',
-        command: 'fetchcurrentsong',
-        commandParams: '',
+        message: "",
+        command: "fetchcurrentsong",
+        commandParams: "",
       },
     ],
     tickInterval: 5,
@@ -27,7 +27,12 @@ export const loadSpotifyIntervalCommands = () => {
 };
 
 export const loadIntervalCommands = () => {
-  intervalCommands.push(...IntervalCommands.data.map((intervalCommand) => ({ ...intervalCommand, currentTick: 0 })));
+  intervalCommands.push(
+    ...IntervalCommands.data.map((intervalCommand) => ({
+      ...intervalCommand,
+      currentTick: 0,
+    })),
+  );
 };
 
 export function runIntervalCommands() {
@@ -38,10 +43,13 @@ export function runIntervalCommands() {
     }
 
     for (const intervalCommand of intervalCommands) {
-      if (intervalCommand.currentTick === intervalCommand.tickInterval + intervalCommand.startDelay) {
+      if (
+        intervalCommand.currentTick ===
+        intervalCommand.tickInterval + intervalCommand.startDelay
+      ) {
         if (intervalCommand.mustBeStreaming) {
           const streamStatus = getStreamStatus();
-          if (streamStatus !== 'online') {
+          if (streamStatus !== "online") {
             continue;
           }
         }
@@ -50,7 +58,10 @@ export function runIntervalCommands() {
           if (action.message) {
             const connection = getConnection();
             if (connection) {
-              sendChatMessage(connection, action.message.replace('%now%', new Date().toTimeString()));
+              sendChatMessage(
+                connection,
+                action.message.replace("%now%", new Date().toTimeString()),
+              );
             }
           }
 
@@ -65,7 +76,10 @@ export function runIntervalCommands() {
                   botCommandParams: action.commandParams,
                 };
 
-                await foundCommand.callback(connection, fakeParsedCommand(command));
+                await foundCommand.callback(
+                  connection,
+                  fakeParsedCommand(command),
+                );
               }
             }
           }

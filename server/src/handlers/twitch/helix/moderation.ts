@@ -1,9 +1,9 @@
 // https://api.twitch.tv/helix/moderation/
 
-import { fetchWithRetry, getCurrentAccessToken } from '../../../auth/twitch';
-import Config from '../../../config';
-import { TWITCH_HELIX_URL } from '../../../constants';
-import { logger } from '../../../logger';
+import { fetchWithRetry, getCurrentAccessToken } from "../../../auth/twitch";
+import Config from "../../../config";
+import { TWITCH_HELIX_URL } from "../../../constants";
+import { logger } from "../../../logger";
 
 export const banUser = async (userId: string) => {
   try {
@@ -17,11 +17,11 @@ export const banUser = async (userId: string) => {
     });
 
     await fetchWithRetry(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Client-Id': Config.twitch.client_id,
+        "Client-Id": Config.twitch.client_id,
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body,
     });
@@ -36,11 +36,11 @@ export const unbanUser = async (userId: string) => {
     const accessToken = getCurrentAccessToken();
 
     await fetchWithRetry(url, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Client-Id': Config.twitch.client_id,
+        "Client-Id": Config.twitch.client_id,
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
   } catch (error) {

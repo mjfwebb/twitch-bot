@@ -1,11 +1,11 @@
-import type { Command, ParsedCommand } from '../types';
+import type { Command, ParsedCommand } from "../types";
 
 export const fakeParsedCommand = (command: Command): ParsedCommand => ({
-  commandName: '',
+  commandName: "",
   botCommand: {
-    command: '',
-    id: '',
-    description: '',
+    command: "",
+    id: "",
+    description: "",
     callback: () => false,
   },
   parsedMessage: {

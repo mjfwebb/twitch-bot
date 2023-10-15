@@ -1,55 +1,55 @@
-import { addburpee } from './commands/addburpee';
-import { addcommand } from './commands/addcommand';
-import { addissue } from './commands/addissue';
-import { addpushup } from './commands/addpushup';
-import { addsquat } from './commands/addsquat';
-import { commands } from './commands/commands';
-import { delvoid } from './commands/delvoid';
-import { fetchcurrentsong } from './commands/fetchcurrentsong';
-import { followage } from './commands/followage';
-import { forodor } from './commands/forodor';
-import { help } from './commands/help';
-import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
-import { sendChatMessage } from './commands/helpers/sendChatMessage';
-import { issue } from './commands/issue';
-import { lastsong } from './commands/lastsong';
-import { lutf1sk } from './commands/lutf1sk';
-import { play } from './commands/play';
-import { point } from './commands/point';
-import { pointladder } from './commands/pointladder';
-import { queuesong } from './commands/queuesong';
-import { quote } from './commands/quote';
-import { randomissue } from './commands/randomissue';
-import { removealias } from './commands/removealias';
-import { removecommand } from './commands/removecommand';
-import { roll } from './commands/roll';
-import { setalias } from './commands/setalias';
-import { setcategory } from './commands/setcategory';
-import { setcooldown } from './commands/setcooldown';
-import { setdescription } from './commands/setdescription';
-import { setmessage } from './commands/setmessage';
-import { settags } from './commands/settags';
-import { settask } from './commands/settask';
-import { settitle } from './commands/settitle';
-import { skipsong } from './commands/skipsong';
-import { skiptts } from './commands/skiptts';
-import { song } from './commands/song';
-import { songqueue } from './commands/songqueue';
-import { task } from './commands/task';
-import { tts } from './commands/tts';
-import { uptime } from './commands/uptime';
-import { viewers } from './commands/viewers';
-import { voices } from './commands/voices';
-import { welcome } from './commands/welcome';
-import { whoami } from './commands/whoami';
-import Config from './config';
-import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
-import { playSound } from './playSound';
-import { getIO } from './runSocketServer';
-import type { Command } from './storage-models/command-model';
-import { Commands } from './storage-models/command-model';
-import type { BotCommand, BotCommandCallback } from './types';
-import { mention } from './utils/mention';
+import { addburpee } from "./commands/addburpee";
+import { addcommand } from "./commands/addcommand";
+import { addissue } from "./commands/addissue";
+import { addpushup } from "./commands/addpushup";
+import { addsquat } from "./commands/addsquat";
+import { commands } from "./commands/commands";
+import { delvoid } from "./commands/delvoid";
+import { fetchcurrentsong } from "./commands/fetchcurrentsong";
+import { followage } from "./commands/followage";
+import { forodor } from "./commands/forodor";
+import { help } from "./commands/help";
+import { hasBotCommandParams } from "./commands/helpers/hasBotCommandParams";
+import { sendChatMessage } from "./commands/helpers/sendChatMessage";
+import { issue } from "./commands/issue";
+import { lastsong } from "./commands/lastsong";
+import { lutf1sk } from "./commands/lutf1sk";
+import { play } from "./commands/play";
+import { point } from "./commands/point";
+import { pointladder } from "./commands/pointladder";
+import { queuesong } from "./commands/queuesong";
+import { quote } from "./commands/quote";
+import { randomissue } from "./commands/randomissue";
+import { removealias } from "./commands/removealias";
+import { removecommand } from "./commands/removecommand";
+import { roll } from "./commands/roll";
+import { setalias } from "./commands/setalias";
+import { setcategory } from "./commands/setcategory";
+import { setcooldown } from "./commands/setcooldown";
+import { setdescription } from "./commands/setdescription";
+import { setmessage } from "./commands/setmessage";
+import { settags } from "./commands/settags";
+import { settask } from "./commands/settask";
+import { settitle } from "./commands/settitle";
+import { skipsong } from "./commands/skipsong";
+import { skiptts } from "./commands/skiptts";
+import { song } from "./commands/song";
+import { songqueue } from "./commands/songqueue";
+import { task } from "./commands/task";
+import { tts } from "./commands/tts";
+import { uptime } from "./commands/uptime";
+import { viewers } from "./commands/viewers";
+import { voices } from "./commands/voices";
+import { welcome } from "./commands/welcome";
+import { whoami } from "./commands/whoami";
+import Config from "./config";
+import { fetchChatters } from "./handlers/twitch/helix/fetchChatters";
+import { playSound } from "./playSound";
+import { getIO } from "./runSocketServer";
+import type { Command } from "./storage-models/command-model";
+import { Commands } from "./storage-models/command-model";
+import type { BotCommand, BotCommandCallback } from "./types";
+import { mention } from "./utils/mention";
 
 const botCommands: BotCommand[] = [];
 
@@ -69,7 +69,9 @@ export function loadCustomCommands(): BotCommand[] {
     // as the messageCommands can contain aliases for the complex commands
     const loadedCommands = [...complexBotCommands];
     for (const messageCommand of messageCommands) {
-      const foundIndex = loadedCommands.findIndex((c) => c.id === messageCommand.id);
+      const foundIndex = loadedCommands.findIndex(
+        (c) => c.id === messageCommand.id,
+      );
       if (foundIndex === -1) {
         loadedCommands.push(messageCommand);
       } else {
@@ -100,7 +102,14 @@ export function loadGitHubCommands(): BotCommand[] {
   return [];
 }
 
-const spotifyCommands: BotCommand[] = [skipsong, song, songqueue, queuesong, lastsong, fetchcurrentsong];
+const spotifyCommands: BotCommand[] = [
+  skipsong,
+  song,
+  songqueue,
+  queuesong,
+  lastsong,
+  fetchcurrentsong,
+];
 
 const githubCommands: BotCommand[] = [addissue, randomissue];
 
@@ -146,12 +155,12 @@ const messageMatchRegex = /%emit:([a-zA-Z0-9-_.]+)%/g;
 
 export const messageWithoutTags = (message: string): string => {
   // Remove all instances of %sound:[something]% and %emit:[something]% from the message
-  return message.replace(soundMatchRegex, '').replace(messageMatchRegex, '');
+  return message.replace(soundMatchRegex, "").replace(messageMatchRegex, "");
 };
 
 export const runMessageTags = async (message: string) => {
   const soundsToPlay: string[] = [];
-  if (message.includes('%sound')) {
+  if (message.includes("%sound")) {
     let match;
 
     while ((match = soundMatchRegex.exec(message)) !== null) {
@@ -160,7 +169,7 @@ export const runMessageTags = async (message: string) => {
   }
 
   const messagesToEmit: string[] = [];
-  if (message.includes('%emit')) {
+  if (message.includes("%emit")) {
     let match;
 
     while ((match = messageMatchRegex.exec(message)) !== null) {
@@ -178,13 +187,13 @@ export const runMessageTags = async (message: string) => {
   // Play all sounds in sequence
   if (soundsToPlay.length > 0) {
     for (const sound of soundsToPlay) {
-      if (sound.includes('.')) {
-        const [soundName, soundExtension] = sound.split('.');
-        if (soundExtension !== 'mp3') {
+      if (sound.includes(".")) {
+        const [soundName, soundExtension] = sound.split(".");
+        if (soundExtension !== "mp3") {
           // TODO: Support other sound formats
           continue;
         }
-        await playSound(soundName, 'mp3');
+        await playSound(soundName, "mp3");
       } else {
         // Default to wav
         await playSound(sound);
@@ -205,28 +214,42 @@ export const commandCallbackGenerator =
 
     // If there was a message other than just sounds, send it
     if (message) {
-      let target = '';
-      if (message.includes('%target%') && hasBotCommandParams(parsedCommand.parsedMessage)) {
+      let target = "";
+      if (
+        message.includes("%target%") &&
+        hasBotCommandParams(parsedCommand.parsedMessage)
+      ) {
         const chatters = await fetchChatters();
 
-        const botCommandParam = parsedCommand.parsedMessage.command.botCommandParams.split(' ')[0];
-        if (chatters.findIndex((chatter) => chatter.user_login === botCommandParam || chatter.user_name === botCommandParam) > -1) {
+        const botCommandParam =
+          parsedCommand.parsedMessage.command.botCommandParams.split(" ")[0];
+        if (
+          chatters.findIndex(
+            (chatter) =>
+              chatter.user_login === botCommandParam ||
+              chatter.user_name === botCommandParam,
+          ) > -1
+        ) {
           target = mention(botCommandParam);
         }
       }
 
-      let user = 'unknown';
-      if (message.includes('%user%') && parsedCommand.parsedMessage.tags && parsedCommand.parsedMessage.tags['display-name']) {
-        user = parsedCommand.parsedMessage.tags['display-name'];
+      let user = "unknown";
+      if (
+        message.includes("%user%") &&
+        parsedCommand.parsedMessage.tags &&
+        parsedCommand.parsedMessage.tags["display-name"]
+      ) {
+        user = parsedCommand.parsedMessage.tags["display-name"];
       }
 
       sendChatMessage(
         connection,
         message
-          .replace('%user%', user)
-          .replace('%target%', target)
-          .replace('%now%', new Date().toTimeString())
-          .replace('%count%', String(command.timesUsed + 1)),
+          .replace("%user%", user)
+          .replace("%target%", target)
+          .replace("%now%", new Date().toTimeString())
+          .replace("%count%", String(command.timesUsed + 1)),
       );
     }
 
@@ -239,9 +262,10 @@ function loadMessageCommands(): BotCommand[] {
   const botCommands: BotCommand[] = commands.map((c) => ({
     command: c.command,
     id: c.commandId,
-    description: c.description || '',
+    description: c.description || "",
     cooldown: c.cooldown || 0,
-    callback: async (connection, parsedCommand) => commandCallbackGenerator(c)(connection, parsedCommand),
+    callback: async (connection, parsedCommand) =>
+      commandCallbackGenerator(c)(connection, parsedCommand),
   }));
 
   return botCommands;

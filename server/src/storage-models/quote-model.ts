@@ -1,8 +1,12 @@
-import type { DataValidatorResponse } from '../fileManager';
-import { FileManager } from '../fileManager';
-import { logger } from '../logger';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
-import { timestampProperties, timestampPropertyTypes, type Timestamp } from './timestamp-model';
+import type { DataValidatorResponse } from "../fileManager";
+import { FileManager } from "../fileManager";
+import { logger } from "../logger";
+import { hasOwnProperty } from "../utils/hasOwnProperty";
+import {
+  timestampProperties,
+  timestampPropertyTypes,
+  type Timestamp,
+} from "./timestamp-model";
 
 export interface Quote extends Timestamp {
   quoteText: string;
@@ -12,48 +16,57 @@ export interface Quote extends Timestamp {
   author: string;
 }
 
-const quoteProperties = ['quoteText', 'quoteId', 'category', 'deleted', 'author'] as const;
+const quoteProperties = [
+  "quoteText",
+  "quoteId",
+  "category",
+  "deleted",
+  "author",
+] as const;
 
 type QuoteProperties = (typeof quoteProperties)[number];
 
-const propertyTypes: Record<QuoteProperties, string> & typeof timestampPropertyTypes = {
-  quoteText: 'string',
-  quoteId: 'string',
-  category: 'string',
-  deleted: 'boolean',
-  author: 'string',
+const propertyTypes: Record<QuoteProperties, string> &
+  typeof timestampPropertyTypes = {
+  quoteText: "string",
+  quoteId: "string",
+  category: "string",
+  deleted: "boolean",
+  author: "string",
   ...timestampPropertyTypes,
 };
 
-const fileName = 'quotes.json';
+const fileName = "quotes.json";
 
 const quoteValidator = (data: unknown): DataValidatorResponse => {
-  let response: DataValidatorResponse = 'valid';
+  let response: DataValidatorResponse = "valid";
 
   if (Array.isArray(data)) {
     if (data.length === 0) {
-      response = 'valid';
+      response = "valid";
     }
 
     for (const quote of data as unknown[]) {
-      if (typeof quote !== 'object') {
-        response = 'invalid';
+      if (typeof quote !== "object") {
+        response = "invalid";
       }
 
       for (const property of [...quoteProperties, ...timestampProperties]) {
         if (hasOwnProperty(quote, property)) {
           if (typeof quote[property] !== propertyTypes[property]) {
-            logger.error(`Invalid quote format, property ${property} is not of type ${propertyTypes[property]}`);
-            response = 'invalid';
+            logger.error(
+              `Invalid quote format, property ${property} is not of type ${propertyTypes[property]}`,
+            );
+            response = "invalid";
           }
         } else {
           logger.error(`Invalid quote format, missing property ${property}`);
-          response = 'invalid';
+          response = "invalid";
         }
       }
     }
   } else {
-    response = 'invalid';
+    response = "invalid";
   }
 
   return response;

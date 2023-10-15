@@ -37,13 +37,20 @@
       display: flex;
       flex-direction: row;
       background-size: 100% 3px;
-      background-position: 0 0, 0 100%;
+      background-position:
+        0 0,
+        0 100%;
       background-repeat: no-repeat;
 
       &-subscriber {
         border-left: 3px solid rgb(114, 90, 30);
         border-right: 3px solid rgb(255, 249, 171);
-        background-image: linear-gradient(90deg, rgb(114, 90, 30), rgb(255, 249, 171)), linear-gradient(90deg, rgb(114, 90, 30), rgb(255, 249, 171));
+        background-image: linear-gradient(
+            90deg,
+            rgb(114, 90, 30),
+            rgb(255, 249, 171)
+          ),
+          linear-gradient(90deg, rgb(114, 90, 30), rgb(255, 249, 171));
         padding: 6px 4px;
       }
 
@@ -55,7 +62,11 @@
         &:hover {
           border-left: 3px solid rgb(230, 56, 56);
           border-right: 3px solid rgb(57, 11, 208);
-          background: linear-gradient(90deg, rgb(230, 56, 56), rgb(57, 11, 208));
+          background: linear-gradient(
+            90deg,
+            rgb(230, 56, 56),
+            rgb(57, 11, 208)
+          );
         }
       }
     }

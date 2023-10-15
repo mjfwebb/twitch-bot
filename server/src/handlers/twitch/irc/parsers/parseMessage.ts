@@ -7,11 +7,11 @@
 // Expects the caller to pass a single message. (Remember, the Twitch
 // IRC server may send one or more IRC messages in a single message.)
 
-import type { ParsedMessage } from '../../../../types';
-import { parseCommand } from './parseCommand';
-import { parseParameters } from './parseParameters';
-import { parseSource } from './parseSource';
-import { parseTags } from './parseTags';
+import type { ParsedMessage } from "../../../../types";
+import { parseCommand } from "./parseCommand";
+import { parseParameters } from "./parseParameters";
+import { parseSource } from "./parseSource";
+import { parseTags } from "./parseTags";
 
 export function parseMessage(message: string) {
   const parsedMessage: ParsedMessage = {
@@ -32,24 +32,24 @@ export function parseMessage(message: string) {
   let rawParametersComponent: string | null = null;
 
   // If the message includes tags, get the tags component of the IRC message.
-  if (message[index] === '@') {
+  if (message[index] === "@") {
     // The message includes tags.
-    const endIndex = message.indexOf(' ');
+    const endIndex = message.indexOf(" ");
     rawTagsComponent = message.slice(1, endIndex);
     index = endIndex + 1; // Should now point to source colon (:).
   }
 
   // Get the source component (nick and host) of the IRC message.
   // The index should point to the source part; otherwise, it's a PING command.
-  if (message[index] === ':') {
+  if (message[index] === ":") {
     index += 1;
-    const endIndex = message.indexOf(' ', index);
+    const endIndex = message.indexOf(" ", index);
     rawSourceComponent = message.slice(index, endIndex);
     index = endIndex + 1; // Should point to the command part of the message.
   }
 
   // Get the command component of the IRC message.
-  let endIndex = message.indexOf(':', index); // Looking for the parameters part of the message.
+  let endIndex = message.indexOf(":", index); // Looking for the parameters part of the message.
   if (endIndex === -1) {
     // But not all messages include the parameters part.
     endIndex = message.length;
@@ -81,15 +81,20 @@ export function parseMessage(message: string) {
     parsedMessage.source = parseSource(rawSourceComponent);
 
     parsedMessage.parameters = rawParametersComponent;
-    if (rawParametersComponent && rawParametersComponent[0] === '!') {
+    if (rawParametersComponent && rawParametersComponent[0] === "!") {
       // The user entered a bot command in the chat window.
-      parsedMessage.command = parseParameters(rawParametersComponent, parsedMessage.command);
+      parsedMessage.command = parseParameters(
+        rawParametersComponent,
+        parsedMessage.command,
+      );
     }
 
-    if (rawParametersComponent && rawParametersComponent[0] === '\x01') {
+    if (rawParametersComponent && rawParametersComponent[0] === "\x01") {
       // This is an ACTION message.
-      parsedMessage.command.botCommand = 'ACTION';
-      parsedMessage.command.botCommandParams = rawParametersComponent.slice(7, -1).trim();
+      parsedMessage.command.botCommand = "ACTION";
+      parsedMessage.command.botCommandParams = rawParametersComponent
+        .slice(7, -1)
+        .trim();
     }
   }
 

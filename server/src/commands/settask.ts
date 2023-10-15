@@ -1,16 +1,16 @@
-import { SECOND_MS } from '../constants';
-import { getIO } from '../runSocketServer';
-import type { Task } from '../storage-models/task-model';
-import { Tasks } from '../storage-models/task-model';
-import type { BotCommand } from '../types';
-import { parsedMessageHasAllProps } from './helpers/parsedMessageHasAllProps';
-import { sendChatMessage } from './helpers/sendChatMessage';
+import { SECOND_MS } from "../constants";
+import { getIO } from "../runSocketServer";
+import type { Task } from "../storage-models/task-model";
+import { Tasks } from "../storage-models/task-model";
+import type { BotCommand } from "../types";
+import { parsedMessageHasAllProps } from "./helpers/parsedMessageHasAllProps";
+import { sendChatMessage } from "./helpers/sendChatMessage";
 
 export const settask: BotCommand = {
-  command: 'settask',
-  id: 'settask',
-  mustBeUser: ['athano', 'jumpylionnn'],
-  description: 'Sets the current task',
+  command: "settask",
+  id: "settask",
+  mustBeUser: ["athano", "jumpylionnn"],
+  description: "Sets the current task",
   cooldown: 5 * SECOND_MS,
   callback: (connection, parsedCommand) => {
     if (parsedMessageHasAllProps(parsedCommand.parsedMessage)) {
@@ -23,7 +23,7 @@ export const settask: BotCommand = {
       Tasks.data = [...Tasks.data, task];
       Tasks.save();
       sendChatMessage(connection, `Task successfully updated 🎉`);
-      getIO().emit('task', parsedCommand.parsedMessage);
+      getIO().emit("task", parsedCommand.parsedMessage);
     }
   },
 };

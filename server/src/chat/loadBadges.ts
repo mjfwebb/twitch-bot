@@ -1,6 +1,6 @@
-import { fetchChannelBadges } from '../handlers/twitch/helix/fetchChannelBadges';
-import { fetchGlobalBadges } from '../handlers/twitch/helix/fetchGlobalBadges';
-import { getIO } from '../runSocketServer';
+import { fetchChannelBadges } from "../handlers/twitch/helix/fetchChannelBadges";
+import { fetchGlobalBadges } from "../handlers/twitch/helix/fetchGlobalBadges";
+import { getIO } from "../runSocketServer";
 
 type ChatBadge = {
   name: string;
@@ -15,7 +15,10 @@ export const loadBadges = async () => {
   await loadChannelBadges();
 
   // Change the order of this destructuring for your preferered badge prioritisation
-  getIO().emit('badges', { ...globalBadgesForClient, ...channelBadgesForClient });
+  getIO().emit("badges", {
+    ...globalBadgesForClient,
+    ...channelBadgesForClient,
+  });
 };
 
 export const loadGlobalBadges = async () => {

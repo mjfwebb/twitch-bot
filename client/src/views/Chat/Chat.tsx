@@ -1,8 +1,8 @@
-import { DisappearingChat } from './DisappearingChat';
-import { NonDisappearingChat } from './NonDisappearingChat';
-import { useChatSearchParams } from './useChatSearchParams';
+import { DisappearingChat } from "./DisappearingChat";
+import { NonDisappearingChat } from "./NonDisappearingChat";
+import { useChatSearchParams } from "./useChatSearchParams";
 
-import './Chat.less';
+import "./Chat.less";
 
 export const Chat = () => {
   const chatSearchParams = useChatSearchParams();
@@ -19,7 +19,11 @@ export const Chat = () => {
         fontFamily: chatSearchParams.fontFamily,
       }}
     >
-      {chatSearchParams.animatedExit ? <DisappearingChat /> : <NonDisappearingChat />}
+      {chatSearchParams.animatedExit ? (
+        <DisappearingChat />
+      ) : (
+        <NonDisappearingChat />
+      )}
     </div>
   );
 };

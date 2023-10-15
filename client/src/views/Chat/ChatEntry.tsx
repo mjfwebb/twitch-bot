@@ -1,11 +1,11 @@
-import classNames from 'classnames';
+import classNames from "classnames";
 
-import useSocketContext from '../../hooks/useSocketContext';
-import useStore from '../../store/store';
-import type { ChatMessage } from '../../types';
-import { ChatImageRenderer } from './ChatImageRenderer';
-import { contrastCorrected } from './contrastCorrected';
-import { UserBadges } from './UserBadges';
+import useSocketContext from "../../hooks/useSocketContext";
+import useStore from "../../store/store";
+import type { ChatMessage } from "../../types";
+import { ChatImageRenderer } from "./ChatImageRenderer";
+import { contrastCorrected } from "./contrastCorrected";
+import { UserBadges } from "./UserBadges";
 
 interface ChatEntryProps {
   chatMessage: ChatMessage;
@@ -32,29 +32,38 @@ export const ChatEntry = ({
 }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
-  const actionMessage = chatMessage.parsedMessage.command.botCommand === 'ACTION';
+  const actionMessage =
+    chatMessage.parsedMessage.command.botCommand === "ACTION";
   const message =
-    chatMessage.parsedMessage.command.botCommand === 'ACTION'
-      ? chatMessage.parsedMessage.command.botCommandParams || chatMessage.parsedMessage.parameters
+    chatMessage.parsedMessage.command.botCommand === "ACTION"
+      ? chatMessage.parsedMessage.command.botCommandParams ||
+        chatMessage.parsedMessage.parameters
       : chatMessage.parsedMessage.parameters;
 
   const { socket } = useSocketContext();
 
   // Set default user if no user
   const user = chatMessage.user ?? {
-    displayName: chatMessage.parsedMessage.tags['display-name'] || 'unknown',
-    avatarUrl: '',
+    displayName: chatMessage.parsedMessage.tags["display-name"] || "unknown",
+    avatarUrl: "",
   };
 
   const isSelected = selectedDisplayName === user.displayName;
 
   return (
-    <button className={classNames('chat-message')} onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}>
+    <button
+      className={classNames("chat-message")}
+      onClick={() =>
+        socket.current?.emit("setSelectedDisplayName", user.displayName)
+      }
+    >
       <div
         className={classNames(
-          'chat-message-body',
-          isSelected && 'chat-message-body-selected',
-          showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber',
+          "chat-message-body",
+          isSelected && "chat-message-body-selected",
+          showBorders &&
+            chatMessage.parsedMessage.tags.subscriber === "1" &&
+            "chat-message-body-subscriber",
         )}
         style={{
           ...(dropShadowEnabled
@@ -64,22 +73,41 @@ export const ChatEntry = ({
             : {}),
           ...(textStrokeEnabled
             ? {
-                ['-webkit-text-stroke']: textStrokeSettings,
+                ["-webkit-text-stroke"]: textStrokeSettings,
               }
             : {}),
         }}
       >
         <span>
-          {showAvatars && user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
+          {showAvatars && user.avatarUrl && (
+            <img
+              className="chat-message-avatar-image"
+              src={user.avatarUrl}
+              alt="avatar"
+              height={34}
+            />
+          )}
           <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
-          <span className="chat-message-nick" style={{ color: isSelected ? 'white' : contrastCorrected(color || '#fff', backgroundColor) }}>
+          <span
+            className="chat-message-nick"
+            style={{
+              color: isSelected
+                ? "white"
+                : contrastCorrected(color || "#fff", backgroundColor),
+            }}
+          >
             {user.displayName}
           </span>
-          {showColonAfterDisplayName && !actionMessage && ': '}
-          <span className={classNames('chat-message-text', actionMessage && 'chat-message-text-action')}>
+          {showColonAfterDisplayName && !actionMessage && ": "}
+          <span
+            className={classNames(
+              "chat-message-text",
+              actionMessage && "chat-message-text-action",
+            )}
+          >
             <ChatImageRenderer
               emotes={chatMessage.parsedMessage.tags.emotes}
-              bits={Number(chatMessage.parsedMessage.tags.bits || '')}
+              bits={Number(chatMessage.parsedMessage.tags.bits || "")}
               message={message}
             />
           </span>

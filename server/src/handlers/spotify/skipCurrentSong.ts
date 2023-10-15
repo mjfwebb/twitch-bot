@@ -1,7 +1,7 @@
-import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
-import Config from '../../config';
-import { SPOTIFY_API_URL } from '../../constants';
-import { logger } from '../../logger';
+import { fetchWithRetry, getCurrentAccessToken } from "../../auth/spotify";
+import Config from "../../config";
+import { SPOTIFY_API_URL } from "../../constants";
+import { logger } from "../../logger";
 
 export const skipCurrentSong = async (): Promise<void> => {
   if (Config.spotify.enabled) {
@@ -9,7 +9,7 @@ export const skipCurrentSong = async (): Promise<void> => {
       const url = `${SPOTIFY_API_URL}me/player/next`;
 
       await fetchWithRetry(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },

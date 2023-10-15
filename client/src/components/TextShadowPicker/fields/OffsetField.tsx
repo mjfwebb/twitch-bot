@@ -1,10 +1,10 @@
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 
-import { useUnitValue } from '../common';
-import type { TextShadowPickerParams } from '../index';
-import Input from '../inputs/Input';
-import { Label } from '../inputs/Label';
-import OffsetGrid from '../inputs/OffsetGrid';
+import { useUnitValue } from "../common";
+import type { TextShadowPickerParams } from "../index";
+import Input from "../inputs/Input";
+import { Label } from "../inputs/Label";
+import OffsetGrid from "../inputs/OffsetGrid";
 
 const Wrapper = styled.div`
   flex: 3;
@@ -28,8 +28,8 @@ const Grid = styled.div`
 `;
 
 interface Props {
-  value: TextShadowPickerParams['offset'];
-  onChange: (value: TextShadowPickerParams['offset']) => void;
+  value: TextShadowPickerParams["offset"];
+  onChange: (value: TextShadowPickerParams["offset"]) => void;
 }
 
 export default ({ value, onChange }: Props) => {
@@ -40,7 +40,7 @@ export default ({ value, onChange }: Props) => {
     onChange({ x: ~~x + xUnit, y: ~~y + yUnit });
   };
 
-  const inputChangeHandler = (axis: 'x' | 'y') => (val: string) => {
+  const inputChangeHandler = (axis: "x" | "y") => (val: string) => {
     onChange({ ...value, [axis]: val });
   };
 
@@ -49,16 +49,19 @@ export default ({ value, onChange }: Props) => {
       <Inputs>
         <Row>
           <Label>X Offset</Label>
-          <Input value={value.x} onChange={inputChangeHandler('x')} />
+          <Input value={value.x} onChange={inputChangeHandler("x")} />
         </Row>
         <Row>
           <Label>Y Offset</Label>
-          <Input value={value.y} onChange={inputChangeHandler('y')} />
+          <Input value={value.y} onChange={inputChangeHandler("y")} />
         </Row>
       </Inputs>
 
       <Grid>
-        <OffsetGrid offset={{ x: xAmount, y: yAmount }} onChange={gridChangeHandler} />
+        <OffsetGrid
+          offset={{ x: xAmount, y: yAmount }}
+          onChange={gridChangeHandler}
+        />
       </Grid>
     </Wrapper>
   );

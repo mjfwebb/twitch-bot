@@ -1,7 +1,23 @@
-import './CSSSizePicker.less';
+import "./CSSSizePicker.less";
 
 // Optional additional units could be:
-const cssUnitTypes = ['px', 'em', 'rem', '%', 'vw', 'vh', 'vmin', 'vmax', 'ex', 'ch', 'cm', 'mm', 'in', 'pt', 'pc'] as const;
+const cssUnitTypes = [
+  "px",
+  "em",
+  "rem",
+  "%",
+  "vw",
+  "vh",
+  "vmin",
+  "vmax",
+  "ex",
+  "ch",
+  "cm",
+  "mm",
+  "in",
+  "pt",
+  "pc",
+] as const;
 type CSSUnit = (typeof cssUnitTypes)[number];
 
 export const CSSSizePicker = ({
@@ -12,7 +28,7 @@ export const CSSSizePicker = ({
   unit,
   onValueChange,
   onUnitChange,
-  cssUnits = ['px', 'em'],
+  cssUnits = ["px", "em"],
 }: {
   id: string;
   defaultValue: number;
@@ -25,7 +41,11 @@ export const CSSSizePicker = ({
 }) => {
   return (
     <div className="css-size-picker" id={id}>
-      <input value={value} type="number" onChange={(e) => onValueChange(+e.target.value)} />
+      <input
+        value={value}
+        type="number"
+        onChange={(e) => onValueChange(+e.target.value)}
+      />
       <select value={unit} onChange={(e) => onUnitChange(e.target.value)}>
         {cssUnits.map((cssUnit) => (
           <option key={cssUnit} value={cssUnit}>

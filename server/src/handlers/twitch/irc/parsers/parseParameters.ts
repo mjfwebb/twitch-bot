@@ -1,11 +1,14 @@
 // Parsing the IRC parameters component if it contains a command (e.g., !dice).
 
-import type { Command } from '../../../../types';
+import type { Command } from "../../../../types";
 
-export function parseParameters(rawParametersComponent: string, command: Command) {
+export function parseParameters(
+  rawParametersComponent: string,
+  command: Command,
+) {
   const index = 0;
   const commandParts: string = rawParametersComponent.slice(index + 1).trim();
-  const paramsIndex = commandParts.indexOf(' ');
+  const paramsIndex = commandParts.indexOf(" ");
 
   if (paramsIndex === -1) {
     // no parameters

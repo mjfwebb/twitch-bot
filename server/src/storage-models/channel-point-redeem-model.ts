@@ -1,7 +1,7 @@
-import type { DataValidatorResponse } from '../fileManager';
-import { FileManager } from '../fileManager';
-import { logger } from '../logger';
-import { hasOwnProperty } from '../utils/hasOwnProperty';
+import type { DataValidatorResponse } from "../fileManager";
+import { FileManager } from "../fileManager";
+import { logger } from "../logger";
+import { hasOwnProperty } from "../utils/hasOwnProperty";
 
 export interface ChannelPointRedeem {
   title: string; // title of the redeem, should be unique and exactly match the title of the reward in twitch
@@ -11,79 +11,106 @@ export interface ChannelPointRedeem {
     message: string; // message to send to chat when the redeem is used, can include all the same variables as command message
     command: string; // command to run when the redeem is used
     commandParams: string; // command to run when the redeem is used,
-    onStatus: 'fulfilled' | 'unfulfilled'; // Only run the channel point redeem if the event that triggered it was a fullfillment
+    onStatus: "fulfilled" | "unfulfilled"; // Only run the channel point redeem if the event that triggered it was a fullfillment
   }[];
 }
 
-const channelPointRedeemProperties = ['title', 'id', 'timesUsed', 'actions'];
-const channelPointRedeemActionProperties = ['message', 'command', 'commandParams', 'onStatus'];
+const channelPointRedeemProperties = ["title", "id", "timesUsed", "actions"];
+const channelPointRedeemActionProperties = [
+  "message",
+  "command",
+  "commandParams",
+  "onStatus",
+];
 
-const fileName = 'channelPointRedeems.json';
+const fileName = "channelPointRedeems.json";
 
 const channelPointRedeemValidator = (data: unknown): DataValidatorResponse => {
-  let response: DataValidatorResponse = 'valid';
+  let response: DataValidatorResponse = "valid";
 
   if (Array.isArray(data)) {
     if (data.length === 0) {
-      response = 'valid';
+      response = "valid";
     }
     for (const channelPointRedeem of data as unknown[]) {
-      if (typeof channelPointRedeem !== 'object') {
-        response = 'invalid';
+      if (typeof channelPointRedeem !== "object") {
+        response = "invalid";
       }
 
       for (const property of [...channelPointRedeemProperties]) {
         if (hasOwnProperty(channelPointRedeem, property)) {
           switch (property) {
-            case 'title':
-              if (typeof channelPointRedeem.title !== 'string') {
-                logger.error(`Invalid channel point redeem format, property ${property} must be a string`);
-                response = 'invalid';
+            case "title":
+              if (typeof channelPointRedeem.title !== "string") {
+                logger.error(
+                  `Invalid channel point redeem format, property ${property} must be a string`,
+                );
+                response = "invalid";
               }
               break;
-            case 'id':
-              if (typeof channelPointRedeem.id !== 'string') {
-                logger.error(`Invalid channel point redeem format, property ${property} must be a string`);
-                response = 'invalid';
+            case "id":
+              if (typeof channelPointRedeem.id !== "string") {
+                logger.error(
+                  `Invalid channel point redeem format, property ${property} must be a string`,
+                );
+                response = "invalid";
               }
               break;
-            case 'timesUsed':
-              if (typeof channelPointRedeem.timesUsed !== 'number') {
-                logger.error(`Invalid channel point redeem format, property ${property} must be a number`);
-                response = 'invalid';
+            case "timesUsed":
+              if (typeof channelPointRedeem.timesUsed !== "number") {
+                logger.error(
+                  `Invalid channel point redeem format, property ${property} must be a number`,
+                );
+                response = "invalid";
               }
               break;
-            case 'actions':
+            case "actions":
               if (!Array.isArray(channelPointRedeem.actions)) {
-                logger.error(`Invalid channel point redeem format, property ${property} must be an array`);
-                response = 'invalid';
+                logger.error(
+                  `Invalid channel point redeem format, property ${property} must be an array`,
+                );
+                response = "invalid";
               } else {
-                if (!channelPointRedeem.actions.every((action: unknown) => typeof action === 'object')) {
-                  logger.error(`Invalid channel point redeem format, property ${property} must be an array of objects`);
-                  response = 'invalid';
+                if (
+                  !channelPointRedeem.actions.every(
+                    (action: unknown) => typeof action === "object",
+                  )
+                ) {
+                  logger.error(
+                    `Invalid channel point redeem format, property ${property} must be an array of objects`,
+                  );
+                  response = "invalid";
                 }
                 if (
                   !channelPointRedeem.actions.every((action: unknown) =>
-                    channelPointRedeemActionProperties.every((actionProperty) => hasOwnProperty(action, actionProperty)),
+                    channelPointRedeemActionProperties.every((actionProperty) =>
+                      hasOwnProperty(action, actionProperty),
+                    ),
                   )
                 ) {
-                  logger.error(`Invalid channel point redeem format, property ${property} must be an array of objects`);
-                  response = 'invalid';
+                  logger.error(
+                    `Invalid channel point redeem format, property ${property} must be an array of objects`,
+                  );
+                  response = "invalid";
                 }
               }
               break;
             default:
-              logger.error(`Invalid channel point redeem format, unknown property ${property}`);
-              response = 'invalid';
+              logger.error(
+                `Invalid channel point redeem format, unknown property ${property}`,
+              );
+              response = "invalid";
           }
         } else {
-          logger.error(`Invalid channel point redeem format, missing property ${property}`);
-          response = 'invalid';
+          logger.error(
+            `Invalid channel point redeem format, missing property ${property}`,
+          );
+          response = "invalid";
         }
       }
     }
   } else {
-    response = 'invalid';
+    response = "invalid";
   }
 
   return response;
@@ -111,23 +138,32 @@ export class ChannelPointRedeemModel {
   }
 
   public findOneById(id: string): ChannelPointRedeem | null {
-    const channelPointRedeem = this.channelPointRedeems.find((channelPointRedeem) => channelPointRedeem.id === id);
+    const channelPointRedeem = this.channelPointRedeems.find(
+      (channelPointRedeem) => channelPointRedeem.id === id,
+    );
     if (!channelPointRedeem) {
       return null;
     }
     return channelPointRedeem;
   }
 
-  public findOneByTitle(title: string, regexMatch?: RegExp): ChannelPointRedeem | null {
+  public findOneByTitle(
+    title: string,
+    regexMatch?: RegExp,
+  ): ChannelPointRedeem | null {
     if (regexMatch) {
-      const channelPointRedeemsFound = this.channelPointRedeems.filter((channelPointRedeem) => channelPointRedeem.title.match(regexMatch));
+      const channelPointRedeemsFound = this.channelPointRedeems.filter(
+        (channelPointRedeem) => channelPointRedeem.title.match(regexMatch),
+      );
       if (channelPointRedeemsFound.length === 0) {
         return null;
       }
       return channelPointRedeemsFound[0];
     }
 
-    const channelPointRedeemsFound = this.channelPointRedeems.find((channelPointRedeem) => channelPointRedeem.title === title);
+    const channelPointRedeemsFound = this.channelPointRedeems.find(
+      (channelPointRedeem) => channelPointRedeem.title === title,
+    );
     if (!channelPointRedeemsFound) {
       return null;
     }
@@ -135,12 +171,16 @@ export class ChannelPointRedeemModel {
   }
 
   public increaseTimesUsed(channelPointRedeem: ChannelPointRedeem): void {
-    const index = this.channelPointRedeems.findIndex((u) => u.id === channelPointRedeem.id);
+    const index = this.channelPointRedeems.findIndex(
+      (u) => u.id === channelPointRedeem.id,
+    );
     if (index !== -1) {
       this.channelPointRedeems[index].timesUsed++;
       this.fileManager.saveData(this.channelPointRedeems);
     } else {
-      logger.error(`Unable to increase times used: channel point redeem "${channelPointRedeem.title}" not found`);
+      logger.error(
+        `Unable to increase times used: channel point redeem "${channelPointRedeem.title}" not found`,
+      );
     }
   }
 }

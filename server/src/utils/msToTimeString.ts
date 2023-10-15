@@ -1,4 +1,4 @@
-import { MINUTE_MS } from '../constants';
+import { MINUTE_MS } from "../constants";
 
 /**
  * Converts milliseconds to a human-readable time string representation.

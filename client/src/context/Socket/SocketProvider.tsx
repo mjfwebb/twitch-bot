@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from "react";
 
-import type { Socket } from 'socket.io-client';
-import { io } from 'socket.io-client';
+import type { Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 
-import useStore from '../../store/store';
-import SocketContext from './socketContext';
-import socketEventHandler from './socketEventHandler';
+import useStore from "../../store/store";
+import SocketContext from "./socketContext";
+import socketEventHandler from "./socketEventHandler";
 
 interface SocketProviderProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ const SocketProvider = (props: SocketProviderProps) => {
 
   const { resetState } = useStore.getState();
 
-  window.addEventListener('beforeunload', () => {
+  window.addEventListener("beforeunload", () => {
     if (socket.current) {
       socket.current.close();
       socket.current = undefined;
@@ -46,22 +46,22 @@ const SocketProvider = (props: SocketProviderProps) => {
       });
       if (!socket.current.connected) {
         socket.current.open();
-        socket.current.io.on('reconnect_attempt', (attemptNumber: number) => {
+        socket.current.io.on("reconnect_attempt", (attemptNumber: number) => {
           useStore.setState({ reconnectAttempt: attemptNumber });
         });
       }
 
       if (socket) {
         if (socket.current) {
-          socket.current.on('connect_error', onConnectError);
-          socket.current.on('disconnect', onDisconnect);
-          socket.current.on('connect', () => {
-            sendToServer('getTask');
-            sendToServer('getSong');
-            sendToServer('getEmotes');
-            sendToServer('getBadges');
-            sendToServer('getCheers');
-            sendToServer('getChatMessages');
+          socket.current.on("connect_error", onConnectError);
+          socket.current.on("disconnect", onDisconnect);
+          socket.current.on("connect", () => {
+            sendToServer("getTask");
+            sendToServer("getSong");
+            sendToServer("getEmotes");
+            sendToServer("getBadges");
+            sendToServer("getCheers");
+            sendToServer("getChatMessages");
           });
         }
 

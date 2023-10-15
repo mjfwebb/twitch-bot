@@ -1,11 +1,15 @@
-import type websocket from 'websocket';
+import type websocket from "websocket";
 
-import { findBotCommand } from '../commands/helpers/findBotCommand';
-import { isPrivileged } from '../commands/helpers/isPrivileged';
-import { isUser } from '../commands/helpers/isUser';
-import { sendChatMessage } from '../commands/helpers/sendChatMessage';
-import { Commands } from '../storage-models/command-model';
-import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
+import { findBotCommand } from "../commands/helpers/findBotCommand";
+import { isPrivileged } from "../commands/helpers/isPrivileged";
+import { isUser } from "../commands/helpers/isUser";
+import { sendChatMessage } from "../commands/helpers/sendChatMessage";
+import { Commands } from "../storage-models/command-model";
+import type {
+  BotCommandCooldown,
+  ParsedCommand,
+  ParsedMessage,
+} from "../types";
 
 const cooldowns: BotCommandCooldown[] = [];
 const commandQueue: ParsedCommand[] = [];
@@ -16,10 +20,19 @@ export const skipCurrentCommand = () => {
   workingQueue = false;
 };
 
-async function handleCommand(connection: websocket.connection, queuedCommand: ParsedCommand) {
-  const result = await queuedCommand.botCommand.callback(connection, queuedCommand);
-  if (typeof result === 'boolean' && result === false) {
-    sendChatMessage(connection, `That's not right. Use !help ${queuedCommand.commandName} to get more information`);
+async function handleCommand(
+  connection: websocket.connection,
+  queuedCommand: ParsedCommand,
+) {
+  const result = await queuedCommand.botCommand.callback(
+    connection,
+    queuedCommand,
+  );
+  if (typeof result === "boolean" && result === false) {
+    sendChatMessage(
+      connection,
+      `That's not right. Use !help ${queuedCommand.commandName} to get more information`,
+    );
   } else {
     const command = Commands.findOneByCommandId(queuedCommand.botCommand.id);
     if (command) {
@@ -31,10 +44,10 @@ async function handleCommand(connection: websocket.connection, queuedCommand: Pa
       Commands.saveOne({
         command: [queuedCommand.commandName],
         commandId: queuedCommand.botCommand.id,
-        message: '',
+        message: "",
         timesUsed: 1,
         cooldown: queuedCommand.botCommand.cooldown || 0,
-        description: queuedCommand.botCommand.description || '',
+        description: queuedCommand.botCommand.description || "",
         createdAt: isoString,
         updatedAt: isoString,
       });
@@ -53,7 +66,9 @@ async function workQueue(connection: websocket.connection) {
 }
 
 function addCooldown(commandId: string, cooldownLength = 0) {
-  const cooldownIndex = cooldowns.findIndex((cooldown) => cooldown.commandId === commandId);
+  const cooldownIndex = cooldowns.findIndex(
+    (cooldown) => cooldown.commandId === commandId,
+  );
 
   if (cooldownIndex > -1) {
     cooldowns[cooldownIndex] = {
@@ -65,7 +80,10 @@ function addCooldown(commandId: string, cooldownLength = 0) {
   }
 }
 
-export async function botCommandHandler(connection: websocket.connection, parsedMessage: ParsedMessage): Promise<void> {
+export async function botCommandHandler(
+  connection: websocket.connection,
+  parsedMessage: ParsedMessage,
+): Promise<void> {
   const commandName = parsedMessage.command?.botCommand;
   if (!commandName) {
     return;
@@ -76,7 +94,9 @@ export async function botCommandHandler(connection: websocket.connection, parsed
     return;
   }
 
-  const cooldown = cooldowns.find((cooldown) => cooldown.commandId === botCommand.id);
+  const cooldown = cooldowns.find(
+    (cooldown) => cooldown.commandId === botCommand.id,
+  );
   if (cooldown && cooldown.unusableUntil > Date.now()) {
     return;
   }

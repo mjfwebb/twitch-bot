@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
 // https://api.twitch.tv/helix/channel_points/custom_rewards
 
-import { fetchWithRetry, getCurrentAccessToken } from '../../../auth/twitch';
-import Config from '../../../config';
-import { TWITCH_HELIX_URL } from '../../../constants';
-import { logger } from '../../../logger';
-import { assertArray } from '../../../utils/assertArray';
-import { hasOwnProperty } from '../../../utils/hasOwnProperty';
+import { fetchWithRetry, getCurrentAccessToken } from "../../../auth/twitch";
+import Config from "../../../config";
+import { TWITCH_HELIX_URL } from "../../../constants";
+import { logger } from "../../../logger";
+import { assertArray } from "../../../utils/assertArray";
+import { hasOwnProperty } from "../../../utils/hasOwnProperty";
 
 interface CustomReward {
   broadcaster_name: string;
@@ -47,17 +47,19 @@ let customRewards: CustomReward[];
 
 export const getCustomRewards = () => customRewards;
 
-export const createCustomReward = async (newReward: NewCustomReward): Promise<void> => {
+export const createCustomReward = async (
+  newReward: NewCustomReward,
+): Promise<void> => {
   try {
     const url = `${TWITCH_HELIX_URL}channel_points/custom_rewards?broadcaster_id=${Config.twitch.broadcaster_id}`;
     const accessToken = getCurrentAccessToken();
 
     await fetchWithRetry(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Client-Id': Config.twitch.client_id,
+        "Client-Id": Config.twitch.client_id,
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newReward),
     });
@@ -66,11 +68,16 @@ export const createCustomReward = async (newReward: NewCustomReward): Promise<vo
   }
 };
 
-export const editCustomReward = async (customRewardId: string, reward: NewCustomReward) => {
-  const customReward = customRewards.find((customReward) => customReward.id === customRewardId);
+export const editCustomReward = async (
+  customRewardId: string,
+  reward: NewCustomReward,
+) => {
+  const customReward = customRewards.find(
+    (customReward) => customReward.id === customRewardId,
+  );
 
   if (!customReward) {
-    throw new Error('Cannot find custom reward');
+    throw new Error("Cannot find custom reward");
   }
 
   try {
@@ -78,15 +85,15 @@ export const editCustomReward = async (customRewardId: string, reward: NewCustom
     const accessToken = getCurrentAccessToken();
 
     const result = await fetchWithRetry(url, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Client-Id': Config.twitch.client_id,
+        "Client-Id": Config.twitch.client_id,
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(reward),
     });
-    if (hasOwnProperty(result, 'data')) {
+    if (hasOwnProperty(result, "data")) {
       const customRewardsData: unknown = result.data;
       assertArray(customRewardsData);
       await fetchCustomRewards();
@@ -102,13 +109,13 @@ export const fetchCustomRewards = async (): Promise<void> => {
     const accessToken = getCurrentAccessToken();
 
     const result = await fetchWithRetry(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Client-Id': Config.twitch.client_id,
+        "Client-Id": Config.twitch.client_id,
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    if (hasOwnProperty(result, 'data')) {
+    if (hasOwnProperty(result, "data")) {
       const customRewardsData: unknown = result.data;
       assertArray(customRewardsData);
       customRewards = customRewardsData as CustomReward[];

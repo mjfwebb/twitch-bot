@@ -1,12 +1,12 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-import useStore from '../../store/store';
-import type { SpotifySong } from '../../types';
-import { useSongSearchParams } from './useChatSearchParams';
+import useStore from "../../store/store";
+import type { SpotifySong } from "../../types";
+import { useSongSearchParams } from "./useChatSearchParams";
 
-import './Song.less';
+import "./Song.less";
 
 export const SongDisplay = ({
   primaryColor,
@@ -63,8 +63,12 @@ export const SongDisplay = ({
   const artistsOverflowWidth = artistsWidth + 32 - songInfoWidth;
 
   // Animation duration should be based on the overflow width and the font size
-  const titleAnimationDuration = Math.ceil((Math.ceil(titleOverflowWidth / +titleFontSize) * 2000) / 1000);
-  const artistsAnimationDuration = Math.ceil((Math.ceil(artistsOverflowWidth / +artistsFontSize) * 2000) / 1000);
+  const titleAnimationDuration = Math.ceil(
+    (Math.ceil(titleOverflowWidth / +titleFontSize) * 2000) / 1000,
+  );
+  const artistsAnimationDuration = Math.ceil(
+    (Math.ceil(artistsOverflowWidth / +artistsFontSize) * 2000) / 1000,
+  );
 
   return (
     <div
@@ -96,11 +100,11 @@ export const SongDisplay = ({
           transition={{
             ...(titleTooWide
               ? {
-                  ease: 'linear',
+                  ease: "linear",
                   duration: titleAnimationDuration,
                   repeatDelay: 2,
                   repeat: Infinity,
-                  repeatType: 'reverse',
+                  repeatType: "reverse",
                 }
               : {}),
           }}
@@ -112,8 +116,8 @@ export const SongDisplay = ({
               fontFamily: titleFontFamily,
               fontSize: `${titleFontSize}px`,
               backgroundImage: `linear-gradient(45deg, ${secondaryColor} 20%, ${primaryColor} 30%, ${primaryColor} 70%, ${secondaryColor} 80%)`,
-              WebkitTextFillColor: 'transparent',
-              backgroundSize: '200% auto',
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% auto",
               ...(titleDropShadowEnabled
                 ? {
                     textShadow: titleDropShadowSettings,
@@ -121,7 +125,7 @@ export const SongDisplay = ({
                 : {}),
               ...(titleTextStrokeEnabled
                 ? {
-                    ['-webkit-text-stroke']: titleTextStrokeSettings,
+                    ["-webkit-text-stroke"]: titleTextStrokeSettings,
                   }
                 : {}),
             }}
@@ -149,11 +153,11 @@ export const SongDisplay = ({
           transition={{
             ...(artistsTooWide
               ? {
-                  ease: 'linear',
+                  ease: "linear",
                   duration: artistsAnimationDuration,
                   repeat: Infinity,
                   repeatDelay: 2,
-                  repeatType: 'reverse',
+                  repeatType: "reverse",
                 }
               : {}),
           }}
@@ -171,12 +175,12 @@ export const SongDisplay = ({
                 : {}),
               ...(artistsTextStrokeEnabled
                 ? {
-                    ['-webkit-text-stroke']: artistsTextStrokeSettings,
+                    ["-webkit-text-stroke"]: artistsTextStrokeSettings,
                   }
                 : {}),
             }}
           >
-            {currentSong.item.artists.map((artist) => artist.name).join(', ')}
+            {currentSong.item.artists.map((artist) => artist.name).join(", ")}
           </div>
         </motion.div>
       </div>

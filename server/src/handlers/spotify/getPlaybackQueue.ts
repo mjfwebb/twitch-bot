@@ -1,9 +1,9 @@
-import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
-import Config from '../../config';
-import { SPOTIFY_API_URL } from '../../constants';
-import { logger } from '../../logger';
-import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SpotifySong, SpotifyTrack } from './types';
+import { fetchWithRetry, getCurrentAccessToken } from "../../auth/spotify";
+import Config from "../../config";
+import { SPOTIFY_API_URL } from "../../constants";
+import { logger } from "../../logger";
+import { hasOwnProperty } from "../../utils/hasOwnProperty";
+import type { SpotifySong, SpotifyTrack } from "./types";
 
 const currentSong: SpotifySong | null = null;
 
@@ -15,13 +15,16 @@ export const getPlaybackQueue = async (): Promise<SpotifyTrack[] | null> => {
       const url = `${SPOTIFY_API_URL}me/player/queue`;
 
       const result = await fetchWithRetry(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
-      if (hasOwnProperty(result, 'currently_playing') && hasOwnProperty(result, 'queue')) {
+      if (
+        hasOwnProperty(result, "currently_playing") &&
+        hasOwnProperty(result, "queue")
+      ) {
         return result.queue as SpotifyTrack[];
       }
     } catch (error) {
