@@ -26,14 +26,14 @@ async function getVoiceBuffer(voice: Voice, text: string): Promise<Buffer | null
   }
 }
 
-export const runTTS = async (message: string) => {
+export const runTTS = async (message: string, voice: Voice = {
+  name: 'Brian',
+  id: 'Brian',
+  api: 'streamelements',
+}) => {
   const words = message.split(' ');
   // Set the default voice to Brian from StreamElements
-  let nextVoice: Voice = {
-    name: 'Brian',
-    id: 'Brian',
-    api: 'streamelements',
-  };
+  let nextVoice: Voice = voice;
   let currentMessage = '';
   let buffer: Buffer = Buffer.from([]);
 
