@@ -34,7 +34,11 @@ const useShadowParameters = (
   value?: string,
 ): [TextShadowPickerParams, (column: keyof TextShadowPickerParams) => (value: string | ShadowOffset | undefined) => void] => {
   const isControlled = value && onChange;
-  const [state, setState] = useState<TextShadowPickerParams>({ offset: { x: '1px', y: '1px' }, blur: '2px', color: '#000000ff' });
+  const [state, setState] = useState<TextShadowPickerParams>({
+    offset: { x: '1px', y: '1px' },
+    blur: '2px',
+    color: '#000000ff',
+  });
 
   useEffect(() => {
     if (!isControlled) return;

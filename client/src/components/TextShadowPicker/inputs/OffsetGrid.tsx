@@ -75,7 +75,9 @@ export default ({ offset: { x, y }, max = 20, onChange }: Props) => {
       }
     };
 
-    window.addEventListener<'touchmove'>('touchmove', listener, { passive: false });
+    window.addEventListener<'touchmove'>('touchmove', listener, {
+      passive: false,
+    });
     return () => window.removeEventListener('touchmove', listener);
   }, [updatePos]);
 

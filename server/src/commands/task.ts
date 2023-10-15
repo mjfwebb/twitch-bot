@@ -9,7 +9,7 @@ export const task: BotCommand = {
   description: 'Gets the current task',
   cooldown: 5 * SECOND_MS,
   callback: (connection) => {
-    const task = Tasks.data[Tasks.data.length -1];
+    const task = Tasks.data[Tasks.data.length - 1];
     if (task) {
       sendChatMessage(connection, `Current task: ${task.content.command.botCommandParams}`);
     } else {

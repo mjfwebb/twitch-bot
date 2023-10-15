@@ -34,7 +34,7 @@ export const queuesong: BotCommand = {
           trackId = trackId.split('?')[0];
         }
       }
-      
+
       // If the user has pasted a spotiy.link url, make a request to the spotify.link api to get the track id
       if (trackInput.startsWith(spotifyLinkUrl)) {
         const spotifyLinkUrlResponse = await fetch(trackInput);
@@ -57,8 +57,11 @@ export const queuesong: BotCommand = {
       }
 
       // If the input is neither a url or a uri, send a message to the chat and exit
-      if (!trackInput.startsWith(trackStart) && !trackInput.startsWith(openSpotifyTrackUrl)  && !trackInput.startsWith(spotifyLinkUrl)) {
-        sendChatMessage(connection, `That doesn't look right... athanoThink it needs to be like ${trackStart}stuff, or ${openSpotifyTrackUrl}stuff, or ${spotifyLinkUrl}stuff`);
+      if (!trackInput.startsWith(trackStart) && !trackInput.startsWith(openSpotifyTrackUrl) && !trackInput.startsWith(spotifyLinkUrl)) {
+        sendChatMessage(
+          connection,
+          `That doesn't look right... athanoThink it needs to be like ${trackStart}stuff, or ${openSpotifyTrackUrl}stuff, or ${spotifyLinkUrl}stuff`,
+        );
         return;
       }
 

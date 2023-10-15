@@ -31,7 +31,9 @@ export type Command = {
   botCommandParams?: string;
 };
 
-export type CommandWithBotCommandParams = Omit<Command, 'botCommandParams'> & { botCommandParams: string };
+export type CommandWithBotCommandParams = Omit<Command, 'botCommandParams'> & {
+  botCommandParams: string;
+};
 
 export type Source = {
   nick: string | null;
@@ -225,7 +227,11 @@ export type ParsedMessageWithCommand = {
   parameters: string | null;
 };
 
-export type ParsedCommand = { commandName: string; botCommand: BotCommand; parsedMessage: ParsedMessage };
+export type ParsedCommand = {
+  commandName: string;
+  botCommand: BotCommand;
+  parsedMessage: ParsedMessage;
+};
 
 export type BotCommandCooldown = {
   commandId: string;
@@ -327,7 +333,11 @@ export type Cheermote = {
   is_charitable: boolean;
 };
 
-export type ChatMessage = { id: string; user: User; parsedMessage: ParsedMessage };
+export type ChatMessage = {
+  id: string;
+  user: User;
+  parsedMessage: ParsedMessage;
+};
 
 export type TwitchGame = {
   id: string; // An ID that identifies the game or category.

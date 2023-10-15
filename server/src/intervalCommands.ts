@@ -27,7 +27,12 @@ export const loadSpotifyIntervalCommands = () => {
 };
 
 export const loadIntervalCommands = () => {
-  intervalCommands.push(...IntervalCommands.data.map((intervalCommand) => ({ ...intervalCommand, currentTick: 0 })));
+  intervalCommands.push(
+    ...IntervalCommands.data.map((intervalCommand) => ({
+      ...intervalCommand,
+      currentTick: 0,
+    })),
+  );
 };
 
 export function runIntervalCommands() {

@@ -1,6 +1,6 @@
-import { existsSync, readFileSync, writeFileSync } from "fs";
-import { logLevels, logger, type LogLevel } from "./logger";
-import { hasOwnProperty } from "./utils/hasOwnProperty";
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { logLevels, logger, type LogLevel } from './logger';
+import { hasOwnProperty } from './utils/hasOwnProperty';
 
 export type WebhookConfig = {
   enabled: boolean;
@@ -90,16 +90,10 @@ interface Config {
   features: FeaturesConfig;
 }
 
-const configFileName = "config.json";
-const missingPropertyErrorMessage = (missingProperty: string) =>
-  `Missing configuration in ${configFileName}: ${missingProperty}`;
-const invalidPropertyErrorMessage = (
-  invalidProperty: string,
-  validProperties: string[]
-) =>
-  `Invalid configuration in ${configFileName}: ${invalidProperty}. It should be one of: ${validProperties.join(
-    ", "
-  )}`;
+const configFileName = 'config.json';
+const missingPropertyErrorMessage = (missingProperty: string) => `Missing configuration in ${configFileName}: ${missingProperty}`;
+const invalidPropertyErrorMessage = (invalidProperty: string, validProperties: string[]) =>
+  `Invalid configuration in ${configFileName}: ${invalidProperty}. It should be one of: ${validProperties.join(', ')}`;
 
 export function assertConfigFileExists(): void {
   if (!existsSync(configFileName)) {
@@ -108,17 +102,7 @@ export function assertConfigFileExists(): void {
   }
 }
 
-function parseConfig<T>({
-  config,
-  defaultConfig,
-  part,
-  properties,
-}: {
-  config: unknown;
-  defaultConfig: T;
-  part: string;
-  properties: string[];
-}): T {
+function parseConfig<T>({ config, defaultConfig, part, properties }: { config: unknown; defaultConfig: T; part: string; properties: string[] }): T {
   if (!hasOwnProperty(config, part)) {
     logger.error(`Missing in config.json: ${part}`);
 
@@ -129,7 +113,7 @@ function parseConfig<T>({
 
   const configPart = config[part];
 
-  if (!configPart || typeof configPart !== "object") {
+  if (!configPart || typeof configPart !== 'object') {
     logger.error(`Invalid ${part} config`);
 
     return defaultConfig;
@@ -148,32 +132,22 @@ function parseConfig<T>({
 
 function readTwitchConfig(config: unknown): TwitchConfig {
   const defaultTwitchConfig: TwitchConfig = {
-    broadcaster_id: "",
-    client_id: "",
-    client_secret: "",
-    grant_type: "",
-    account: "",
-    channel: "",
-    auth_code: "",
-    redirect_uri: "",
+    broadcaster_id: '',
+    client_id: '',
+    client_secret: '',
+    grant_type: '',
+    account: '',
+    channel: '',
+    auth_code: '',
+    redirect_uri: '',
     scopes: [],
   };
 
   const parsedTwitchConfig = parseConfig<TwitchConfig>({
     config,
     defaultConfig: defaultTwitchConfig,
-    part: "twitch",
-    properties: [
-      "broadcaster_id",
-      "client_id",
-      "client_secret",
-      "grant_type",
-      "account",
-      "channel",
-      "auth_code",
-      "redirect_uri",
-      "scopes",
-    ],
+    part: 'twitch',
+    properties: ['broadcaster_id', 'client_id', 'client_secret', 'grant_type', 'account', 'channel', 'auth_code', 'redirect_uri', 'scopes'],
   });
 
   return parsedTwitchConfig;
@@ -182,29 +156,20 @@ function readTwitchConfig(config: unknown): TwitchConfig {
 function readSpotifyConfig(config: unknown): SpotifyConfig {
   const defaultSpotifyConfig: SpotifyConfig = {
     enabled: false,
-    client_id: "",
-    client_secret: "",
-    grant_type: "",
-    auth_code: "",
-    redirect_uri: "",
-    country_code: "",
+    client_id: '',
+    client_secret: '',
+    grant_type: '',
+    auth_code: '',
+    redirect_uri: '',
+    country_code: '',
     scopes: [],
   };
 
   const parsedSpotifyConfig = parseConfig<SpotifyConfig>({
     config,
     defaultConfig: defaultSpotifyConfig,
-    part: "spotify",
-    properties: [
-      "enabled",
-      "client_id",
-      "client_secret",
-      "grant_type",
-      "auth_code",
-      "redirect_uri",
-      "country_code",
-      "scopes",
-    ],
+    part: 'spotify',
+    properties: ['enabled', 'client_id', 'client_secret', 'grant_type', 'auth_code', 'redirect_uri', 'country_code', 'scopes'],
   });
 
   return parsedSpotifyConfig;
@@ -213,16 +178,16 @@ function readSpotifyConfig(config: unknown): SpotifyConfig {
 function readGitHubConfig(config: unknown): GitHubConfig {
   const defaultGitHubConfig: GitHubConfig = {
     enabled: false,
-    owner: "",
-    repo: "",
-    access_token: "",
+    owner: '',
+    repo: '',
+    access_token: '',
   };
 
   const parsedGitHubConfig = parseConfig<GitHubConfig>({
     config,
     defaultConfig: defaultGitHubConfig,
-    part: "github",
-    properties: ["enabled", "owner", "repo", "access_token"],
+    part: 'github',
+    properties: ['enabled', 'owner', 'repo', 'access_token'],
   });
 
   return parsedGitHubConfig;
@@ -236,8 +201,8 @@ function readSevenTVConfig(config: unknown): SevenTVConfig {
   const parsedSevenTVConfig = parseConfig<SevenTVConfig>({
     config,
     defaultConfig: defaultSevenTVConfig,
-    part: "seventv",
-    properties: ["enabled", "user_id"],
+    part: 'seventv',
+    properties: ['enabled', 'user_id'],
   });
 
   return parsedSevenTVConfig;
@@ -251,8 +216,8 @@ function readBetterTTVConfig(config: unknown): BetterTTVConfig {
   const parsedBetterTTVConfig = parseConfig<BetterTTVConfig>({
     config,
     defaultConfig: defaultBetterTTVConfig,
-    part: "betterttv",
-    properties: ["enabled", "provider", "provider_id"],
+    part: 'betterttv',
+    properties: ['enabled', 'provider', 'provider_id'],
   });
 
   return parsedBetterTTVConfig;
@@ -266,8 +231,8 @@ function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
   const parsedFrankerFaceZConfig = parseConfig<FrankerFaceZConfig>({
     config,
     defaultConfig: defaultFrankerFaceZConfig,
-    part: "frankerfacez",
-    properties: ["enabled", "broadcaster_id"],
+    part: 'frankerfacez',
+    properties: ['enabled', 'broadcaster_id'],
   });
 
   return parsedFrankerFaceZConfig;
@@ -276,43 +241,34 @@ function readFrankerFaceZConfig(config: unknown): FrankerFaceZConfig {
 function readTikTokConfig(config: unknown): TikTokConfig {
   const defaultTikTokConfig: TikTokConfig = {
     enabled: false,
-    session_id: "",
+    session_id: '',
   };
 
   const parsedTikTokConfig = parseConfig<TikTokConfig>({
     config,
     defaultConfig: defaultTikTokConfig,
-    part: "tiktok",
-    properties: ["enabled", "session_id"],
+    part: 'tiktok',
+    properties: ['enabled', 'session_id'],
   });
 
   return parsedTikTokConfig;
 }
 
-function readRepeatMessageHandlerConfig(
-  config: unknown
-): RepeatMessageHandlerConfig {
+function readRepeatMessageHandlerConfig(config: unknown): RepeatMessageHandlerConfig {
   const defaultRepeatMessageHandlerConfig: RepeatMessageHandlerConfig = {
     enabled: false,
     timeout: 20,
     repetition_requirement: 3,
-    voice: "Brian",
+    voice: 'Brian',
     max_length: 50,
   };
 
-  const parsedRepeatMessageHandlerConfig =
-    parseConfig<RepeatMessageHandlerConfig>({
-      config,
-      defaultConfig: defaultRepeatMessageHandlerConfig,
-      part: "repeat_message_handler",
-      properties: [
-        "enabled",
-        "timeout",
-        "repetition_requirement",
-        "voice",
-        "max_length",
-      ],
-    });
+  const parsedRepeatMessageHandlerConfig = parseConfig<RepeatMessageHandlerConfig>({
+    config,
+    defaultConfig: defaultRepeatMessageHandlerConfig,
+    part: 'repeat_message_handler',
+    properties: ['enabled', 'timeout', 'repetition_requirement', 'voice', 'max_length'],
+  });
 
   return parsedRepeatMessageHandlerConfig;
 }
@@ -332,15 +288,15 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
   const parsedFeaturesConfig = parseConfig<FeaturesConfig>({
     config,
     defaultConfig: defaultFeaturesConfig,
-    part: "features",
+    part: 'features',
     properties: [
-      "interval_commands",
-      "bit_handler",
-      "first_message_handler",
-      "first_message_of_stream_handler",
-      "returning_chatter_handler",
-      "commands_handler",
-      "events_handler",
+      'interval_commands',
+      'bit_handler',
+      'first_message_handler',
+      'first_message_of_stream_handler',
+      'returning_chatter_handler',
+      'commands_handler',
+      'events_handler',
     ],
   });
 
@@ -350,44 +306,41 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
 function readDiscordWebhookConfig(config: unknown): WebhookConfig {
   const defaultDiscordWebhookConfig: WebhookConfig = {
     enabled: false,
-    service: "discord",
-    id: "",
-    token: "",
-    url: "",
+    service: 'discord',
+    id: '',
+    token: '',
+    url: '',
   };
 
   const parsedDiscordWebhookConfig = parseConfig<WebhookConfig>({
     config,
     defaultConfig: defaultDiscordWebhookConfig,
-    part: "discord_webhook",
-    properties: ["enabled", "service", "id", "token", "url"],
+    part: 'discord_webhook',
+    properties: ['enabled', 'service', 'id', 'token', 'url'],
   });
 
   return parsedDiscordWebhookConfig;
 }
 
 function readLogLevel(config: unknown): LogLevel {
-  const defaultLogLevel: LogLevel = "info";
+  const defaultLogLevel: LogLevel = 'info';
 
-  if (!hasOwnProperty(config, "log_level")) {
-    logger.error(missingPropertyErrorMessage("log_level"));
+  if (!hasOwnProperty(config, 'log_level')) {
+    logger.error(missingPropertyErrorMessage('log_level'));
 
     return defaultLogLevel;
   }
 
-  const logLevel = config["log_level"];
+  const logLevel = config['log_level'];
 
-  if (typeof logLevel !== "string") {
+  if (typeof logLevel !== 'string') {
     logger.error(`Invalid log_level config`);
 
     return defaultLogLevel;
   }
 
-  if (
-    typeof logLevel !== "string" ||
-    (Array.isArray(logLevel) && !logLevels.includes(logLevel))
-  ) {
-    logger.error(invalidPropertyErrorMessage("log_level", logLevels));
+  if (typeof logLevel !== 'string' || (Array.isArray(logLevel) && !logLevels.includes(logLevel))) {
+    logger.error(invalidPropertyErrorMessage('log_level', logLevels));
 
     return defaultLogLevel;
   }
@@ -395,23 +348,15 @@ function readLogLevel(config: unknown): LogLevel {
   return logLevel;
 }
 
-export function updateConfigPart<T>({
-  part,
-  property,
-  value,
-}: {
-  part: string;
-  property: string;
-  value: T;
-}): void {
-  const currentData = JSON.parse(readFileSync(configFileName, "utf8"));
+export function updateConfigPart<T>({ part, property, value }: { part: string; property: string; value: T }): void {
+  const currentData = JSON.parse(readFileSync(configFileName, 'utf8'));
 
   currentData[part][property] = value;
 
   writeFileSync(configFileName, JSON.stringify(currentData, null, 2));
 }
 
-const loadedConfig: unknown = JSON.parse(readFileSync(configFileName, "utf8"));
+const loadedConfig: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
 
 const Config: Config = {
   logLevel: readLogLevel(loadedConfig),

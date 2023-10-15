@@ -10,7 +10,12 @@ export function runBetterTTVWebsocket() {
   const client = new websocket.client();
 
   function joinChannel(connection: websocket.connection) {
-    connection.send(JSON.stringify({ name: 'join_channel', data: { name: `twitch:${Config.twitch.broadcaster_id}` } }));
+    connection.send(
+      JSON.stringify({
+        name: 'join_channel',
+        data: { name: `twitch:${Config.twitch.broadcaster_id}` },
+      }),
+    );
   }
 
   client.on('connectFailed', function (error: unknown) {
@@ -32,7 +37,10 @@ export function runBetterTTVWebsocket() {
 
     connection.on('message', function (message) {
       if (hasOwnProperty(message, 'utf8Data')) {
-        const data = JSON.parse(message.utf8Data as string) as { name: string; data: unknown };
+        const data = JSON.parse(message.utf8Data as string) as {
+          name: string;
+          data: unknown;
+        };
 
         switch (data.name) {
           case 'emote_delete':

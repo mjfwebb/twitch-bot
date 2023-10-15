@@ -17,7 +17,10 @@ export const loadCheers = async () => {
   await loadChannelCheers();
 
   // Change the order of this destructuring for your preferered cheer prioritisation
-  getIO().emit('cheers', { ...globalCheersForClient, ...channelCheersForClient });
+  getIO().emit('cheers', {
+    ...globalCheersForClient,
+    ...channelCheersForClient,
+  });
 };
 
 export const loadGlobalCheers = async () => {

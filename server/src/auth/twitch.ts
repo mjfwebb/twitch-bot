@@ -173,27 +173,35 @@ export const getTwitchAccessToken = async (twitchConfig: TwitchConfig): Promise<
 
 export const twitchAuthCodeRouter = async () => {
   if (Config.twitch.client_id && !Config.twitch.auth_code) {
-    express().get('/', (req, res) => {
-      if (req.query.code) {
-        updateConfigPart({ part: 'twitch', property: 'auth_code', value: req.query.code })
+    express()
+      .get('/', (req, res) => {
+        if (req.query.code) {
+          updateConfigPart({
+            part: 'twitch',
+            property: 'auth_code',
+            value: req.query.code,
+          });
 
-        res.send('Hello from twitch-bot! Twitch auth code received and your configuration has been updated. You may close this window. Please restart the bot.');
-      } else {
-        res.send('Hello from twitch-bot! No Twitch auth code received. You may close this window.');
-      }
-    }).listen(3000);
+          res.send(
+            'Hello from twitch-bot! Twitch auth code received and your configuration has been updated. You may close this window. Please restart the bot.',
+          );
+        } else {
+          res.send('Hello from twitch-bot! No Twitch auth code received. You may close this window.');
+        }
+      })
+      .listen(3000);
 
     logger.info(`Getting Twitch auth code with scopes ${pc.green(`${Config.twitch.scopes.join(', ')}`)}`);
     await getTwitchAuthCode();
   }
-}
+};
 
 const getTwitchAuthCode = async (): Promise<void> => {
   try {
-    const scopes = Config.twitch.scopes.map(scope => encodeURIComponent(scope)).join('+');
+    const scopes = Config.twitch.scopes.map((scope) => encodeURIComponent(scope)).join('+');
     const url = `${TWITCH_AUTH_URL}authorize?response_type=code&client_id=${Config.twitch.client_id}&redirect_uri=${Config.twitch.redirect_uri}&scope=${scopes}`;
-    open(url)
+    open(url);
   } catch (error) {
     throw new Error(`Unable to get Twitch Auth Code. Error: ${errorMessage(error)}`);
   }
-}
+};

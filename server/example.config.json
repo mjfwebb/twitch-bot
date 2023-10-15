@@ -26,11 +26,7 @@
     "auth_code": "your_auth_code",
     "redirect_uri": "redirect_uri",
     "country_code": "US",
-    "scopes": [
-      "user-read-currently-playing",
-      "user-read-playback-state",
-      "user-modify-playback-state"
-    ]
+    "scopes": ["user-read-currently-playing", "user-read-playback-state", "user-modify-playback-state"]
   },
   "github": {
     "enabled": false,

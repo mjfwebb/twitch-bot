@@ -186,7 +186,9 @@ export type ParsedMessage = {
   parameters: string;
 };
 
-export type CommandWithBotCommandParams = Omit<Command, 'botCommandParams'> & { botCommandParams: string };
+export type CommandWithBotCommandParams = Omit<Command, 'botCommandParams'> & {
+  botCommandParams: string;
+};
 
 export type TaskMessage = {
   tags: Tags;

@@ -31,7 +31,11 @@ const frankerFaceZEmotesForClient: Record<string, ChatEmote> = {};
 
 export function sendEmotes() {
   // Change the order of this destructuring for your preferered emote prioritisation
-  getIO().emit('emotes', { ...frankerFaceZEmotesForClient, ...betterTTVEmotesForClient, ...sevenTVEmotesForClient });
+  getIO().emit('emotes', {
+    ...frankerFaceZEmotesForClient,
+    ...betterTTVEmotesForClient,
+    ...sevenTVEmotesForClient,
+  });
 }
 
 export const loadEmotes = async () => {

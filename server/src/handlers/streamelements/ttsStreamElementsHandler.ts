@@ -1,16 +1,11 @@
-import fetch from "node-fetch";
-import { logger } from "../../logger";
+import fetch from 'node-fetch';
+import { logger } from '../../logger';
 
-export const ttsStreamElementsHandler = async (
-  voice: string,
-  text: string
-): Promise<ArrayBuffer | null> => {
+export const ttsStreamElementsHandler = async (voice: string, text: string): Promise<ArrayBuffer | null> => {
   try {
-    const url = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURI(
-      text
-    )}`;
+    const url = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURI(text)}`;
     const result = await fetch(url, {
-      method: "GET",
+      method: 'GET',
     });
 
     const buffer = await result.arrayBuffer();

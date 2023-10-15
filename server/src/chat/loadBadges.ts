@@ -15,7 +15,10 @@ export const loadBadges = async () => {
   await loadChannelBadges();
 
   // Change the order of this destructuring for your preferered badge prioritisation
-  getIO().emit('badges', { ...globalBadgesForClient, ...channelBadgesForClient });
+  getIO().emit('badges', {
+    ...globalBadgesForClient,
+    ...channelBadgesForClient,
+  });
 };
 
 export const loadGlobalBadges = async () => {

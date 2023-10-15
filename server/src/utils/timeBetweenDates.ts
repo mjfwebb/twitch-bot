@@ -4,7 +4,17 @@
  * @param date2 - The second date.
  * @returns An object representing the difference between the dates in each unit.
  */
-function dateDifference(date1: Date, date2: Date): { year: number; month: number; day: number; hour: number; minute: number; second: number } {
+function dateDifference(
+  date1: Date,
+  date2: Date,
+): {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+  second: number;
+} {
   const result = {
     year: date2.getFullYear() - date1.getFullYear(),
     month: date2.getMonth() - date1.getMonth(),

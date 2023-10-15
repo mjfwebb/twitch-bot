@@ -192,7 +192,13 @@ export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
 
               // Subscribe to events
               if (!isSubscribed) {
-                connection.sendUTF(JSON.stringify(createSubscribeMessage('emote_set.*', { object_id: seventTVTwitchUser.emote_set.id })));
+                connection.sendUTF(
+                  JSON.stringify(
+                    createSubscribeMessage('emote_set.*', {
+                      object_id: seventTVTwitchUser.emote_set.id,
+                    }),
+                  ),
+                );
               }
 
               // If there is no heartbeat, start one

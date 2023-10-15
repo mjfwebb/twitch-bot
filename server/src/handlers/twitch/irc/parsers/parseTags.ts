@@ -46,7 +46,10 @@ export function parseTags(tags: string): Tags {
           emotes.forEach((emote) => {
             const emoteParts = emote.split(':');
 
-            const textPositions: { startPosition: string; endPosition: string }[] = []; // The list of position objects that identify
+            const textPositions: {
+              startPosition: string;
+              endPosition: string;
+            }[] = []; // The list of position objects that identify
             // the location of the emote in the chat message.
             const positions = emoteParts[1].split(',');
             positions.forEach((position) => {

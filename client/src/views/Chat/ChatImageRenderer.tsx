@@ -121,7 +121,11 @@ export const ChatImageRenderer = ({
       let src = '';
       twemoji.parse(match, {
         callback: (icon, options) => {
-          const parseCallbackOptions = options as { base: string; size: 'svg'; ext: '.svg' };
+          const parseCallbackOptions = options as {
+            base: string;
+            size: 'svg';
+            ext: '.svg';
+          };
           if (icon.length === 0) {
             return false;
           }
@@ -273,7 +277,11 @@ export const ChatImageRenderer = ({
               srcSet={emote.srcSet}
               alt={match}
               title={match}
-              {...(modifierClasses.includes('growx') ? { width: (emote.width || 36 * 3) > 112 ? 112 : emote.width || 36 * 3 } : {})}
+              {...(modifierClasses.includes('growx')
+                ? {
+                    width: (emote.width || 36 * 3) > 112 ? 112 : emote.width || 36 * 3,
+                  }
+                : {})}
             />
           );
 
