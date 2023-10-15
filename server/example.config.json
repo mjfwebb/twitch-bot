@@ -62,6 +62,13 @@
     "token": "",
     "url": ""
   },
+  "repeat_message_handler": {
+    "enabled": true,
+    "timeout": 20,
+    "repetition_requirement": 3,
+    "voice": "Brian",
+    "max_length": 50
+  },
   "features": {
     "interval_commands": true,
     "bit_handler": true,
