@@ -10,7 +10,7 @@ export function parseTags(tags: string): Tags {
     flags: null,
   };
 
-  const dictParsedTags: { [key: string]: any } = {}; // Holds the parsed list of tags.
+  const dictParsedTags: { [key: string]: unknown } = {}; // Holds the parsed list of tags.
   // The key is the tag's name (e.g., color).
   const parsedTags = tags.split(';');
 
@@ -24,7 +24,7 @@ export function parseTags(tags: string): Tags {
       case 'badge-info':
         // badges=staff/1,broadcaster/1,turbo/1;
         if (tagValue) {
-          const dict: { [key: string]: any } = {}; // Holds the list of badge objects.
+          const dict: { [key: string]: unknown } = {}; // Holds the list of badge objects.
           // The key is the badge's name (e.g., subscriber).
           const badges = tagValue.split(',');
           badges.forEach((pair) => {
@@ -40,7 +40,7 @@ export function parseTags(tags: string): Tags {
         // emotes=25:0-4,12-16/1902:6-10
 
         if (tagValue) {
-          const dictEmotes: { [key: string]: any } = {}; // Holds a list of emote objects.
+          const dictEmotes: { [key: string]: unknown } = {}; // Holds a list of emote objects.
           // The key is the emote's ID.
           const emotes = tagValue.split('/');
           emotes.forEach((emote) => {

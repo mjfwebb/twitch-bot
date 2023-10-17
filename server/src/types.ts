@@ -132,7 +132,7 @@ export type UserStateTags = {
 };
 
 export type NoticeTags = {
-  'msg-id': string | 'resub';
+  'msg-id': 'resub';
   'target-user-id': string;
 };
 

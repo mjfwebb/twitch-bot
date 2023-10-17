@@ -27,8 +27,8 @@ async function main() {
     assertConfigFileExists();
     assertTokenFileExists();
 
-    twitchAuthCodeRouter();
-    spotifyAuthCodeRouter();
+    await twitchAuthCodeRouter();
+    await spotifyAuthCodeRouter();
 
     removeOldTTSFiles();
     loadBotCommands();

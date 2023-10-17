@@ -1,11 +1,8 @@
-import type { ExecException } from 'child_process';
+import type { ExecFileException } from 'child_process';
 import { execFile } from 'child_process';
 import ffmpegPath from 'ffmpeg-static';
 import player from 'play-sound';
-import type { SOUNDS } from './constants';
 import { skipCurrentCommand } from './handlers/botCommandHandler';
-
-type SoundEffect = (typeof SOUNDS)[number];
 
 type SoundFileType = 'wav' | 'mp3';
 
@@ -55,13 +52,13 @@ function getDurationMilliseconds(stderr: string): number {
  * @throws Error if FFmpeg is not found or an error occurs during the execution.
  */
 export async function getDuration(soundFile: string): Promise<number> {
-  const args = ['-i', soundFile, '-f', 'null', '-'];
+  const args: ReadonlyArray<string> = ['-i', soundFile, '-f', 'null', '-'];
 
   return await new Promise((resolve, reject) => {
     if (!ffmpegPath) {
       return reject('ffmpeg not found');
     }
-    execFile(ffmpegPath, args, (error: ExecException | null, _stdout: string, stderr: string): void => {
+    execFile(ffmpegPath, args, (error: ExecFileException | null, _stdout: string, stderr: string): void => {
       if (error) {
         return reject(error);
       }
@@ -110,7 +107,7 @@ async function workQueue() {
  * @returns A Promise that resolves once the sound has finished playing.
  * @remarks Supports both predefined sound effects and custom sound files.
  */
-export async function playSound<T extends SoundEffect | string>(sound: T, fileType?: SoundFileType): Promise<void> {
+export async function playSound(sound: string, fileType?: SoundFileType): Promise<void> {
   const fileExtension: string = fileType || 'wav';
 
   let file: string = sound;

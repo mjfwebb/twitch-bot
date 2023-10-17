@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "start": "tsx watch src/index.ts",
-    "lint": "eslint -c .eslintrc.js --ext .ts src/",
+    "lint": "eslint -c .eslintrc.cjs --ext .ts src/",
     "test": "vitest"
   },
   "engines": {

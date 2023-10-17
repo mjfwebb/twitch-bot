@@ -348,10 +348,18 @@ function readLogLevel(config: unknown): LogLevel {
   return logLevel;
 }
 
-export function updateConfigPart<T>({ part, property, value }: { part: string; property: string; value: T }): void {
-  const currentData = JSON.parse(readFileSync(configFileName, 'utf8'));
+export function updateConfigPart<T extends keyof Config, U extends keyof Config[T], V extends Config[T][U]>({
+  part,
+  property,
+  value,
+}: {
+  part: T;
+  property: U;
+  value: V;
+}): void {
+  const currentData = JSON.parse(readFileSync(configFileName, 'utf8')) as Config;
 
-  currentData[part][property] = value;
+  currentData[part][property] = value as Config[T][U];
 
   writeFileSync(configFileName, JSON.stringify(currentData, null, 2));
 }

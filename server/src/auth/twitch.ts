@@ -176,14 +176,17 @@ export const twitchAuthCodeRouter = async () => {
     express()
       .get('/', (req, res) => {
         if (req.query.code) {
+          const code = req.query.code as string;
+
           updateConfigPart({
             part: 'twitch',
             property: 'auth_code',
-            value: req.query.code,
+            value: code,
           });
 
           res.send(
-            'Hello from twitch-bot! Twitch auth code received and your configuration has been updated. You may close this window. Please restart the bot.',
+            'Hello from twitch-bot! Twitch auth code received and your configuration has been updated.' +
+              'You may close this window. Please restart the bot.',
           );
         } else {
           res.send('Hello from twitch-bot! No Twitch auth code received. You may close this window.');
@@ -200,7 +203,7 @@ const getTwitchAuthCode = async (): Promise<void> => {
   try {
     const scopes = Config.twitch.scopes.map((scope) => encodeURIComponent(scope)).join('+');
     const url = `${TWITCH_AUTH_URL}authorize?response_type=code&client_id=${Config.twitch.client_id}&redirect_uri=${Config.twitch.redirect_uri}&scope=${scopes}`;
-    open(url);
+    await open(url);
   } catch (error) {
     throw new Error(`Unable to get Twitch Auth Code. Error: ${errorMessage(error)}`);
   }

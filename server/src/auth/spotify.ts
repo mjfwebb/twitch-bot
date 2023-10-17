@@ -212,14 +212,17 @@ export const spotifyAuthCodeRouter = async () => {
     express()
       .get('/', (req, res) => {
         if (req.query.code) {
+          const code = req.query.code as string;
+
           updateConfigPart({
             part: 'spotify',
             property: 'auth_code',
-            value: req.query.code,
+            value: code,
           });
 
           res.send(
-            'Hello from twitch-bot! Spotify auth code received and your configuration has been updated. You may close this window. Please restart the bot.',
+            'Hello from twitch-bot! Spotify auth code received and your configuration has been updated.' +
+              'You may close this window. Please restart the bot.',
           );
         } else {
           res.send('Hello from twitch-bot! No Spotify auth code received. You may close this window.');
@@ -236,6 +239,8 @@ const getSpotifyAuthCode = async (): Promise<void> => {
   try {
     const scopes = Config.spotify.scopes.map((scope) => encodeURIComponent(scope)).join('+');
     const url = `${SPOTIFY_AUTH_URL}authorize?client_id=${Config.spotify.client_id}&response_type=code&redirect_uri=${Config.spotify.redirect_uri}&scope=${scopes}`;
-    open(url);
-  } catch (error) {}
+    await open(url);
+  } catch (error) {
+    throw new Error(`Unable to get Spotify auth code. Error: ${errorMessage(error)}`);
+  }
 };
