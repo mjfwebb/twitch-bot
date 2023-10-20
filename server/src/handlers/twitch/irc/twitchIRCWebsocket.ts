@@ -77,7 +77,7 @@ export function runTwitchIRCWebsocket() {
                 returningChatterHandler(connection, parsedMessage);
 
                 if ((!botCommand || botCommand === 'ACTION') && parsedMessage.source?.nick && parsedMessage.parameters) {
-                  discordChatWebhook(parsedMessage.source.nick, Config.webhooks.discordChatHook, parsedMessage.parameters);
+                  discordChatWebhook(parsedMessage.source.nick, parsedMessage.parameters);
                   messageHandler(parsedMessage).catch((e) => logger.error(e));
                 }
                 break;

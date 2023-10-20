@@ -3,6 +3,7 @@ import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { logger } from '../../../logger';
+import { setStreamTitle } from '../../../streamState';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
@@ -35,7 +36,29 @@ export const fetchChannelInformation = async (): Promise<ChannelInfomation | nul
 
     if (hasOwnProperty(result, 'data')) {
       assertArray(result.data);
-      if (result.data.length > 0 && hasOwnProperty(result.data[0], 'broadcaster_id') && typeof result.data[0].broadcaster_id === 'string') {
+      if (
+        result.data.length > 0 &&
+        hasOwnProperty(result.data[0], 'broadcaster_id') &&
+        typeof result.data[0].broadcaster_id === 'string' &&
+        hasOwnProperty(result.data[0], 'broadcaster_login') &&
+        typeof result.data[0].broadcaster_login === 'string' &&
+        hasOwnProperty(result.data[0], 'broadcaster_name') &&
+        typeof result.data[0].broadcaster_name === 'string' &&
+        hasOwnProperty(result.data[0], 'broadcaster_language') &&
+        typeof result.data[0].broadcaster_language === 'string' &&
+        hasOwnProperty(result.data[0], 'game_id') &&
+        typeof result.data[0].game_id === 'string' &&
+        hasOwnProperty(result.data[0], 'game_name') &&
+        typeof result.data[0].game_name === 'string' &&
+        hasOwnProperty(result.data[0], 'title') &&
+        typeof result.data[0].title === 'string' &&
+        hasOwnProperty(result.data[0], 'delay') &&
+        typeof result.data[0].delay === 'number' &&
+        hasOwnProperty(result.data[0], 'tags') &&
+        Array.isArray(result.data[0].tags)
+      ) {
+        setStreamTitle(result.data[0].title);
+
         return result.data[0] as ChannelInfomation;
       }
     }

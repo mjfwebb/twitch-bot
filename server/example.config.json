@@ -26,7 +26,11 @@
     "auth_code": "your_auth_code",
     "redirect_uri": "redirect_uri",
     "country_code": "US",
-    "scopes": ["user-read-currently-playing", "user-read-playback-state", "user-modify-playback-state"]
+    "scopes": [
+      "user-read-currently-playing",
+      "user-read-playback-state",
+      "user-modify-playback-state"
+    ]
   },
   "github": {
     "enabled": false,
@@ -58,6 +62,22 @@
     "token": "",
     "url": ""
   },
+  "webhooks": [
+    {
+      "name": "discord_chat_notification",
+      "enabled": false,
+      "id": "",
+      "token": "",
+      "url": ""
+    },
+    {
+      "name": "discord_stream_notification",
+      "enabled": false,
+      "id": "",
+      "token": "",
+      "url": ""
+    }
+  ],
   "repeat_message_handler": {
     "enabled": true,
     "timeout": 20,

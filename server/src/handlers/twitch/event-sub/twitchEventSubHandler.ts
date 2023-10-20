@@ -4,10 +4,11 @@ import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
 import { logger } from '../../../logger';
 import { ChannelPointRedeems } from '../../../storage-models/channel-point-redeem-model';
-import { setStreamStatus } from '../../../streamState';
+import { getStreamTitle, setStreamStatus } from '../../../streamState';
 import type { Command } from '../../../types';
 import type { EventsubEvent } from '../../../typings/twitchEvents';
 import { fakeParsedCommand } from '../../../utils/fakeParsedCommand';
+import { discordLiveNotificationWebhook } from '../../discord/discord';
 import { getConnection } from '../irc/twitchIRCWebsocket';
 
 export async function twitchEventSubHandler(data: EventsubEvent) {
@@ -17,6 +18,8 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
         updateStreamStartedAt(data.started_at);
       }
       setStreamStatus('online');
+      const title = getStreamTitle();
+      discordLiveNotificationWebhook(title, `https://twitch.tv/${data.broadcaster_user_login}`);
       break;
     }
 
