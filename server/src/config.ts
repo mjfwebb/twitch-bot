@@ -2,12 +2,19 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { logLevels, logger, type LogLevel } from './logger';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
-export type WebhookConfig = {
+const webhookNames = ['discord_chat_notification', 'discord_stream_notification'] as const;
+
+type WebhookName = (typeof webhookNames)[number];
+
+export type Webhook = {
   enabled: boolean;
-  service: string;
   id: string;
   token: string;
   url: string;
+};
+
+export type WebhooksConfig = {
+  [Key in WebhookName]: Webhook;
 };
 
 export interface TwitchConfig {
@@ -79,7 +86,7 @@ export type RepeatMessageHandlerConfig = {
 interface Config {
   logLevel: LogLevel;
   twitch: TwitchConfig;
-  webhooks: Record<string, WebhookConfig>;
+  webhooks: WebhooksConfig;
   spotify: SpotifyConfig;
   github: GitHubConfig;
   sevenTV: SevenTVConfig;
@@ -303,23 +310,72 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
   return parsedFeaturesConfig;
 }
 
-function readDiscordWebhookConfig(config: unknown): WebhookConfig {
-  const defaultDiscordWebhookConfig: WebhookConfig = {
-    enabled: false,
-    service: 'discord',
-    id: '',
-    token: '',
-    url: '',
+function readWebhooksConfig(config: unknown): WebhooksConfig {
+  const defaultWebhooksConfig: WebhooksConfig = {
+    [webhookNames[0]]: {
+      enabled: false,
+      id: '',
+      token: '',
+      url: '',
+    },
+    [webhookNames[1]]: {
+      enabled: false,
+      id: '',
+      token: '',
+      url: '',
+    },
   };
 
-  const parsedDiscordWebhookConfig = parseConfig<WebhookConfig>({
-    config,
-    defaultConfig: defaultDiscordWebhookConfig,
-    part: 'discord_webhook',
-    properties: ['enabled', 'service', 'id', 'token', 'url'],
-  });
+  if (!hasOwnProperty(config, 'webhooks')) {
+    logger.error(missingPropertyErrorMessage('webhooks'));
 
-  return parsedDiscordWebhookConfig;
+    return defaultWebhooksConfig;
+  }
+
+  const webhookConfig: unknown = config['webhooks'];
+
+  if (!Array.isArray(webhookConfig)) {
+    logger.error(`Invalid webhooks config: should be an array`);
+
+    return defaultWebhooksConfig;
+  }
+
+  if (webhookConfig.length !== webhookNames.length) {
+    logger.error(`Invalid webhooks config: missing webhooks`);
+
+    return defaultWebhooksConfig;
+  }
+
+  const loadededWebhooksConfig: WebhooksConfig = { ...defaultWebhooksConfig };
+
+  for (const webhookName of webhookNames) {
+    const webhook = (webhookConfig as unknown[]).find((webhook) => {
+      if (hasOwnProperty(webhook, 'name')) {
+        return webhook['name'] === webhookName;
+      }
+    });
+
+    if (!webhook) {
+      logger.error(`Invalid webhooks config: missing ${webhookName} webhook`);
+
+      return defaultWebhooksConfig;
+    }
+
+    let loadedWebhook: Record<string, unknown> = {};
+    for (const property of ['enabled', 'id', 'token', 'url']) {
+      if (!hasOwnProperty(webhook, property)) {
+        logger.error(missingPropertyErrorMessage(`webhooks.${webhookName}.${property}`));
+
+        return defaultWebhooksConfig;
+      } else {
+        loadedWebhook = { ...loadedWebhook, [property]: webhook[property] };
+      }
+    }
+
+    loadededWebhooksConfig[webhookName] = loadedWebhook as Webhook;
+  }
+
+  return loadededWebhooksConfig;
 }
 
 function readLogLevel(config: unknown): LogLevel {
@@ -369,9 +425,7 @@ const loadedConfig: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
 const Config: Config = {
   logLevel: readLogLevel(loadedConfig),
   twitch: readTwitchConfig(loadedConfig),
-  webhooks: {
-    discordChatHook: readDiscordWebhookConfig(loadedConfig),
-  },
+  webhooks: readWebhooksConfig(loadedConfig),
   spotify: readSpotifyConfig(loadedConfig),
   github: readGitHubConfig(loadedConfig),
   sevenTV: readSevenTVConfig(loadedConfig),
