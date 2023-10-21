@@ -30,7 +30,7 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
     case 'channel.subscription.gift': {
       const connection = getConnection();
       if (connection) {
-        sendChatMessage(connection, `Thank you for gifting a sub ${data.user_login}, you're so generous, you're like a generous god.`);
+        sendChatMessage(connection, `Thank you for gifting a sub ${data.user_login}, you're so generous, you're a generous god.`);
       }
       break;
     }
@@ -63,7 +63,7 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
 
     case 'channel.channel_points_custom_reward_redemption.update':
     case 'channel.channel_points_custom_reward_redemption.add': {
-      // If the event status is canceled or unknown, we don't want to run it.
+      // If the event status is cancelled or unknown, we don't want to run it.
       if (data.status === 'canceled' || data.status === 'unknown') {
         return;
       }
