@@ -1,6 +1,6 @@
 import type { connection } from 'websocket';
 import { fetchUserFollow } from '../handlers/twitch/helix/fetchUserFollow';
-import { getDisplayName } from '../streamState';
+import { StreamState } from '../streamState';
 import type { BotCommand } from '../types';
 import { timeBetweenDates } from '../utils/timeBetweenDates';
 import { findOrCreateUserByName } from './helpers/findOrCreateUser';
@@ -12,9 +12,9 @@ async function sendFollowage(connection: connection, userId: string, displayName
   const followedAt = followData?.data[0].followed_at;
   if (followedAt) {
     const timeString = timeBetweenDates(new Date(followedAt), new Date());
-    sendChatMessage(connection, `${displayName} has been following ${getDisplayName()} for ${timeString}`);
+    sendChatMessage(connection, `${displayName} has been following ${StreamState.displayName} for ${timeString}`);
   } else {
-    sendChatMessage(connection, `${displayName} is not following ${getDisplayName()}`);
+    sendChatMessage(connection, `${displayName} is not following ${StreamState.displayName}`);
   }
 }
 

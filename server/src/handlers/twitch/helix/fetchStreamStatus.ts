@@ -4,7 +4,7 @@ import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamSta
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { logger } from '../../../logger';
-import { setStreamCategory, type StreamStatus } from '../../../streamState';
+import { StreamState, type StreamStatus } from '../../../streamState';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 import { fetchGameById } from './fetchGameById';
 
@@ -30,7 +30,7 @@ export const fetchStreamStatus = async (): Promise<StreamStatus> => {
         if (hasOwnProperty(data, 'game_id') && typeof data.game_id === 'string') {
           const game = await fetchGameById(data.game_id);
           if (game) {
-            setStreamCategory(game.name);
+            StreamState.category = game.name;
           }
         }
         return 'online';
