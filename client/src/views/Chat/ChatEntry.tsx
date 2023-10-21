@@ -17,6 +17,7 @@ interface ChatEntryProps {
   textStrokeEnabled: boolean;
   textStrokeSettings: string;
   showColonAfterDisplayName: boolean;
+  chatMessagePadding: string;
 }
 
 export const ChatEntry = ({
@@ -29,6 +30,7 @@ export const ChatEntry = ({
   textStrokeEnabled,
   textStrokeSettings,
   showColonAfterDisplayName,
+  chatMessagePadding,
 }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
@@ -67,6 +69,7 @@ export const ChatEntry = ({
                 ['-webkit-text-stroke']: textStrokeSettings,
               }
             : {}),
+          padding: chatMessagePadding,
         }}
       >
         <span>

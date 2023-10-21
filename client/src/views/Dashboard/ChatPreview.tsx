@@ -11,6 +11,9 @@ export const ChatPreview = () => {
   const showColonAfterDisplayName = useChatSettingsStore((s) => s.showColonAfterDisplayName);
   const textStrokeEnabled = useChatSettingsStore((s) => s.textStrokeEnabled);
   const textStrokeSettings = useChatSettingsStore((s) => s.textStrokeSettings);
+  const chatMessagePaddingUnit = useChatSettingsStore((s) => s.chatMessagePaddingUnit);
+  const chatMessagePaddingValue = useChatSettingsStore((s) => s.chatMessagePaddingValue);
+  const chatMessagePadding = `${chatMessagePaddingValue}${chatMessagePaddingUnit}`;
 
   const chatMessageOne: ChatMessage = {
     id: '83d40613-4afc-46b5-9133-0367c89fa310',
@@ -71,6 +74,7 @@ export const ChatPreview = () => {
         showColonAfterDisplayName={showColonAfterDisplayName}
         textStrokeEnabled={textStrokeEnabled}
         textStrokeSettings={textStrokeSettings}
+        chatMessagePadding={chatMessagePadding}
       />
       <ChatEntry
         chatMessage={{
@@ -112,6 +116,7 @@ export const ChatPreview = () => {
         showColonAfterDisplayName={showColonAfterDisplayName}
         textStrokeEnabled={textStrokeEnabled}
         textStrokeSettings={textStrokeSettings}
+        chatMessagePadding={chatMessagePadding}
       />
     </>
   );

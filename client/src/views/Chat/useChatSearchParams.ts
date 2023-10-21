@@ -25,6 +25,9 @@ export const useChatSearchParams = () => {
   const fontSize =
     searchParams.get(chatSearchParamsMap.fontSize) || `${DEFAULT_CHAT_SETTINGS_VALUES.fontSizeValue}${DEFAULT_CHAT_SETTINGS_VALUES.fontSizeUnit}`;
   const fontFamily = searchParams.get(chatSearchParamsMap.fontFamily) || DEFAULT_CHAT_SETTINGS_VALUES.fontFamily;
+  const chatMessagePadding =
+    searchParams.get(chatSearchParamsMap.chatMessagePadding) ||
+    `${DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingValue}${DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingUnit}`;
 
   return {
     animatedEntry,
@@ -43,5 +46,6 @@ export const useChatSearchParams = () => {
     textStrokeSettings,
     fontSize,
     fontFamily,
+    chatMessagePadding,
   };
 };
