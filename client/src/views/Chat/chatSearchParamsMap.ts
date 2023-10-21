@@ -15,4 +15,5 @@ export const chatSearchParamsMap = {
   textStrokeSettings: 'text-stroke',
   fontSize: 'font-size',
   fontFamily: 'font-family',
+  chatMessagePadding: 'chat-message-padding',
 };

@@ -26,6 +26,8 @@ export const ChatDashboard = () => {
   const heightUnit = useChatSettingsStore((s) => s.heightUnit);
   const widthValue = useChatSettingsStore((s) => s.widthValue);
   const widthUnit = useChatSettingsStore((s) => s.widthUnit);
+  const chatMessagePaddingValue = useChatSettingsStore((s) => s.chatMessagePaddingValue);
+  const chatMessagePaddingUnit = useChatSettingsStore((s) => s.chatMessagePaddingUnit);
   const animatedExit = useChatSettingsStore((s) => s.animatedExit);
   const secondsBeforeExit = useChatSettingsStore((s) => s.secondsBeforeExit);
   const animatedEntry = useChatSettingsStore((s) => s.animatedEntry);
@@ -70,6 +72,13 @@ export const ChatDashboard = () => {
   if (widthValue !== DEFAULT_CHAT_SETTINGS_VALUES.widthValue || widthUnit !== DEFAULT_CHAT_SETTINGS_VALUES.widthUnit) {
     const width = `${widthValue}${widthUnit}`;
     chatURL.searchParams.append(chatSearchParamsMap.width, width);
+  }
+  if (
+    chatMessagePaddingValue !== DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingValue ||
+    chatMessagePaddingUnit !== DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingUnit
+  ) {
+    const chatMessagePadding = `${chatMessagePaddingValue}${chatMessagePaddingUnit}`;
+    chatURL.searchParams.append(chatSearchParamsMap.chatMessagePadding, chatMessagePadding);
   }
   if (animatedExit) {
     chatURL.searchParams.append(chatSearchParamsMap.animatedExit, 'true');
@@ -232,6 +241,23 @@ export const ChatDashboard = () => {
               useChatSettingsStore.getState().setHeightUnit(heightUnit);
             }}
             cssUnits={['px', 'vh', 'em']}
+          />
+        </div>
+        <div className="chat-modifiers-row chat-modifiers-label-above">
+          <label htmlFor="chat_message_padding">Chat Message Padding</label>
+          <CSSSizePicker
+            id="chat_message_padding"
+            defaultValue={DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingValue}
+            defaultUnit={DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingUnit}
+            value={chatMessagePaddingValue}
+            unit={chatMessagePaddingUnit}
+            onValueChange={(chatMessagePaddingValue) => {
+              useChatSettingsStore.getState().setChatMessagePaddingValue(chatMessagePaddingValue);
+            }}
+            onUnitChange={(chatMessagePaddingUnit) => {
+              useChatSettingsStore.getState().setChatMessagePaddingUnit(chatMessagePaddingUnit);
+            }}
+            cssUnits={['px', 'rem', 'em']}
           />
         </div>
         <div className="chat-modifiers-row">

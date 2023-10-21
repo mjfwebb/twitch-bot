@@ -24,6 +24,8 @@ export const DEFAULT_CHAT_SETTINGS_VALUES = {
   fontSizeValue: PRESET_CHAT_SETTINGS_VALUES.fontSizeValueMedium,
   fontSizeUnit: PRESET_CHAT_SETTINGS_VALUES.fontSizeUnit,
   fontFamily: 'Sans-Serif',
+  chatMessagePaddingValue: 0.2,
+  chatMessagePaddingUnit: 'rem',
 };
 
 export const PRESET_SONG_SETTINGS_VALUES = {

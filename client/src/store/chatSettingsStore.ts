@@ -10,6 +10,8 @@ interface ChatPersistedSettings {
   heightUnit: string;
   widthValue: number;
   widthUnit: string;
+  chatMessagePaddingValue: number;
+  chatMessagePaddingUnit: string;
   animatedExit: boolean;
   secondsBeforeExit: number;
   dropShadowEnabled: boolean;
@@ -29,6 +31,8 @@ interface ChatPersistedSettings {
   setHeightUnit: (heightUnit: string) => void;
   setWidthValue: (widthValue: number) => void;
   setWidthUnit: (widthUnit: string) => void;
+  setChatMessagePaddingValue: (chatMessagePaddingValue: number) => void;
+  setChatMessagePaddingUnit: (chatMessagePaddingUnit: string) => void;
   setAnimatedExit: (disappears: boolean) => void;
   setSecondsBeforeExit: (secondsBeforeExit: number) => void;
   setDropShadowEnabled: (dropShadowEnabled: boolean) => void;
@@ -54,6 +58,8 @@ export const useChatSettingsStore = create(
       heightUnit: DEFAULT_CHAT_SETTINGS_VALUES.heightUnit,
       widthValue: DEFAULT_CHAT_SETTINGS_VALUES.widthValue,
       widthUnit: DEFAULT_CHAT_SETTINGS_VALUES.widthUnit,
+      chatMessagePaddingValue: DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingValue,
+      chatMessagePaddingUnit: DEFAULT_CHAT_SETTINGS_VALUES.chatMessagePaddingUnit,
       animatedExit: false,
       secondsBeforeExit: DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit,
       dropShadowEnabled: false,
@@ -84,6 +90,12 @@ export const useChatSettingsStore = create(
       },
       setWidthUnit: (widthUnit: string) => {
         set(() => ({ widthUnit }));
+      },
+      setChatMessagePaddingValue: (chatMessagePaddingValue: number) => {
+        set(() => ({ chatMessagePaddingValue }));
+      },
+      setChatMessagePaddingUnit: (chatMessagePaddingUnit: string) => {
+        set(() => ({ chatMessagePaddingUnit }));
       },
       setAnimatedExit: (animatedExit: boolean) => {
         set(() => ({ animatedExit }));
