@@ -3,7 +3,7 @@ import { getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { logger } from '../../../logger';
-import { setStreamTitle } from '../../../streamState';
+import { StreamState } from '../../../streamState';
 import { assertArray } from '../../../utils/assertArray';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 
@@ -57,7 +57,7 @@ export const fetchChannelInformation = async (): Promise<ChannelInfomation | nul
         hasOwnProperty(result.data[0], 'tags') &&
         Array.isArray(result.data[0].tags)
       ) {
-        setStreamTitle(result.data[0].title);
+        StreamState.title = result.data[0].title;
 
         return result.data[0] as ChannelInfomation;
       }

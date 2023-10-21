@@ -1,7 +1,7 @@
 import type { connection } from 'websocket';
 import type { Quote } from '../storage-models/quote-model';
 import { Quotes } from '../storage-models/quote-model';
-import { getStreamCategory } from '../streamState';
+import { StreamState } from '../streamState';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
@@ -35,7 +35,7 @@ export const quote: BotCommand = {
                 quoteId: newId,
                 quoteText,
                 author: parsedCommand.parsedMessage.tags?.['display-name'] || 'unknown',
-                category: getStreamCategory(),
+                category: StreamState.category,
                 deleted: false,
                 createdAt: isoString,
                 updatedAt: isoString,

@@ -4,7 +4,7 @@ import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
 import { updateStreamStartedAt } from '../../../commands/helpers/updateStreamStartedAt';
 import { logger } from '../../../logger';
 import { ChannelPointRedeems } from '../../../storage-models/channel-point-redeem-model';
-import { getStreamTitle, setStreamStatus } from '../../../streamState';
+import { StreamState } from '../../../streamState';
 import type { Command } from '../../../types';
 import type { EventsubEvent } from '../../../typings/twitchEvents';
 import { fakeParsedCommand } from '../../../utils/fakeParsedCommand';
@@ -17,14 +17,13 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
       if (data.started_at) {
         updateStreamStartedAt(data.started_at);
       }
-      setStreamStatus('online');
-      const title = getStreamTitle();
-      discordLiveNotificationWebhook(title, `https://twitch.tv/${data.broadcaster_user_login}`);
+      StreamState.status = 'online';
+      discordLiveNotificationWebhook(StreamState.title, `https://twitch.tv/${data.broadcaster_user_login}`);
       break;
     }
 
     case 'stream.offline': {
-      setStreamStatus('offline');
+      StreamState.status = 'offline';
       break;
     }
 

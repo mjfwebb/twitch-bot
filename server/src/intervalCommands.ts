@@ -4,7 +4,7 @@ import { SECOND_MS } from './constants';
 import { getConnection } from './handlers/twitch/irc/twitchIRCWebsocket';
 import type { IntervalCommand } from './storage-models/interval-command-model';
 import { IntervalCommands } from './storage-models/interval-command-model';
-import { getStreamStatus } from './streamState';
+import { StreamState } from './streamState';
 import type { Command } from './types';
 import { fakeParsedCommand } from './utils/fakeParsedCommand';
 
@@ -45,8 +45,7 @@ export function runIntervalCommands() {
     for (const intervalCommand of intervalCommands) {
       if (intervalCommand.currentTick === intervalCommand.tickInterval + intervalCommand.startDelay) {
         if (intervalCommand.mustBeStreaming) {
-          const streamStatus = getStreamStatus();
-          if (streamStatus !== 'online') {
+          if (StreamState.status !== 'online') {
             continue;
           }
         }

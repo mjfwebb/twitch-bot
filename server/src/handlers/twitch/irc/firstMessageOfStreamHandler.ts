@@ -3,7 +3,7 @@ import { findOrCreateUserById } from '../../../commands/helpers/findOrCreateUser
 import { sendChatMessage } from '../../../commands/helpers/sendChatMessage';
 import Config from '../../../config';
 import { Users } from '../../../storage-models/user-model';
-import { getStreamStartedAt } from '../../../streamState';
+import { StreamState } from '../../../streamState';
 import type { ParsedMessage } from '../../../types';
 
 export function firstMessageOfStreamHandler(connection: websocket.connection, parsedMessage: ParsedMessage): void {
@@ -19,7 +19,7 @@ export function firstMessageOfStreamHandler(connection: websocket.connection, pa
   if (userId && nick && displayName) {
     const user = findOrCreateUserById(userId, nick, displayName);
 
-    if (new Date(user.lastSeen).getTime() < new Date(getStreamStartedAt()).getTime()) {
+    if (new Date(user.lastSeen).getTime() < StreamState.startedAt.getTime()) {
       user.lastSeen = new Date().toISOString();
       Users.saveOne(user);
       if (user.welcomeMessage) {

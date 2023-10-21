@@ -1,5 +1,5 @@
 import { SECOND_MS } from '../constants';
-import { getStreamStartedAt, getStreamStatus } from '../streamState';
+import { StreamState } from '../streamState';
 import type { BotCommand } from '../types';
 import { timeBetweenDates } from '../utils/timeBetweenDates';
 import { sendChatMessage } from './helpers/sendChatMessage';
@@ -9,8 +9,8 @@ export const uptime: BotCommand = {
   id: 'uptime',
   cooldown: 5 * SECOND_MS,
   callback: (connection) => {
-    if (getStreamStatus() === 'online') {
-      const timeString = timeBetweenDates(new Date(getStreamStartedAt()), new Date());
+    if (StreamState.status === 'online') {
+      const timeString = timeBetweenDates(StreamState.startedAt, new Date());
       sendChatMessage(connection, `The stream has been live for ${timeString}`);
     } else {
       sendChatMessage(connection, `The stream is offline`);

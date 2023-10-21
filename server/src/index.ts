@@ -19,7 +19,7 @@ import { intervalCommands, loadIntervalCommands, loadSpotifyIntervalCommands, ru
 import { logger } from './logger';
 import { removeOldTTSFiles } from './removeOldTTSFiles';
 import { runSocketServer } from './runSocketServer';
-import { setDisplayName, setStreamStatus } from './streamState';
+import { StreamState } from './streamState';
 import { isError } from './utils/isError';
 
 async function main() {
@@ -68,10 +68,10 @@ async function main() {
     await fetchKnownTwitchViewerBots();
 
     logger.info(`Getting Twitch stream status`);
-    setStreamStatus(await fetchStreamStatus());
+    StreamState.status = await fetchStreamStatus();
 
     logger.info(`Getting Twitch channel information`);
-    setDisplayName((await fetchChannelInformation())?.broadcaster_name || Config.twitch.account);
+    StreamState.displayName = (await fetchChannelInformation())?.broadcaster_name || Config.twitch.account;
 
     logger.info(`Running Twitch IRC WebSocket client`);
     runTwitchIRCWebsocket();
