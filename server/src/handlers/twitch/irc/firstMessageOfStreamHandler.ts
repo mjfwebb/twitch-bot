@@ -12,6 +12,11 @@ export function firstMessageOfStreamHandler(connection: websocket.connection, pa
     return;
   }
 
+  // If the stream is offline, then we don't handle this event
+  if (StreamState.status === 'offline') {
+    return;
+  }
+
   const nick = parsedMessage.source?.nick;
   const userId = parsedMessage.tags?.['user-id'];
   const displayName = parsedMessage.tags?.['display-name'];
