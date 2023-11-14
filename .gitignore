@@ -25,3 +25,6 @@ tasks.json
 quotes.json
 channelPointRedeems.json
 intervalCommands.json
+
+# pnpm files
+*/pnpm-lock.yaml
