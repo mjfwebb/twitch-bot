@@ -18,13 +18,13 @@ To get the auth_code construct your URL and enter it into the browser. Here's an
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`.
-
 Method 2: Automated Retrieval
 
 Fill in the required details in `config.json` for Twitch, leaving the `auth_code` field empty. Ensure your `redirect_uri` is set to `http://localhost:3000`.
 
 Once set, run the server with `npm run start` within the server directory. The bot will automatically retrieve and update your `auth_code`.
+
+The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`.
 
 ### Spotify
 
