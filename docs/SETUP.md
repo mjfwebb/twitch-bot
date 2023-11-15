@@ -18,12 +18,15 @@ npm install
 
 ## Setup configuration files
 
-It is highly recommended you use the setup script to set the configuration.json settings. To do so, run the `npm run setup` script.
+Create a `config.json` and `tokens.json` in the server folder using the examples files.
+
+Navigate to the server folder and copy the example files to create your configuration files:
+
+```bash
+cd server
+cp ./example.tokens.json ./tokens.json
+cp ./example.config.json ./config.json
 
 ```
-  cd server
-  npm run setup
-```
-
 
 Once you have these files, go ahead and [configure them](CONFIGURATION.md)

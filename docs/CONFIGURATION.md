@@ -1,9 +1,8 @@
-
 # Configuration
 
 Ensure you have [setup your environment and configuration file](SETUP.md) before continuing,
 
-**WARNING**: The configuration file `config.json` files will contain sensitive information. Do not share this information. 
+**WARNING**: The configuration file `config.json` files will contain sensitive information. Do not share this information.
 
 ## Where to get the data
 
@@ -11,13 +10,21 @@ The listed scopes are relevant for the existing commands in the repository. If y
 
 ### Twitch
 
-To get the auth_code construct your URL and enter it into the browser.  Here's an example:
+Method 1: Manual URL Construction
+
+To get the auth_code construct your URL and enter it into the browser. Here's an example:
 
 `https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=channel%3Amanage%3Aredemptions+channel%3Aread%3Aredemptions+moderator%3Amanage%3Abanned_users+chat%3Aread+chat%3Aedit+moderator%3Aread%3Achatters+channel%3Amanage%3Abroadcast`
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`. 
+Method 2: Automated Retrieval
+
+Fill in the required details in `config.json` for Twitch, leaving the `auth_code` field empty. Ensure your `redirect_uri` is set to `http://localhost:3000`.
+
+Once set, run the server with `npm run start` within the server directory. The bot will automatically retrieve and update your `auth_code`.
+
+The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`.
 
 ### Spotify
 
@@ -31,7 +38,7 @@ To get the auth_code construct your URL and enter it into the browser. Here's an
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`. 
+The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`.
 
 ### GitHub
 
