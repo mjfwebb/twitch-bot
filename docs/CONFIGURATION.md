@@ -6,11 +6,19 @@ Ensure you have [setup your environment and configuration file](SETUP.md) before
 
 ## Where to get the data
 
-The listed scopes are relevant for the existing commands in the repository. If you would like to add new features with more in-depth API interactions then you should adjust the scopes accordingly.
+The listed scopes are relevant to the existing commands in the repository. If you would like to add new features with more in-depth API interactions then you should adjust the scopes accordingly.
 
 ### Twitch
 
-Method 1: Manual URL Construction
+The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`.
+
+#### Method 1: Automated Retrieval
+
+Fill in the required details in `config.json` for Twitch, leaving the `auth_code` field empty. Ensure your `redirect_uri` is set to `http://localhost:3000`.
+
+Once set, run the server with `npm run start` within the server directory. The bot will automatically retrieve and update your `auth_code`.
+
+#### Method 2: Manual URL Construction
 
 To get the auth_code construct your URL and enter it into the browser. Here's an example:
 
@@ -18,15 +26,9 @@ To get the auth_code construct your URL and enter it into the browser. Here's an
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-Method 2: Automated Retrieval
-
-Fill in the required details in `config.json` for Twitch, leaving the `auth_code` field empty. Ensure your `redirect_uri` is set to `http://localhost:3000`.
-
-Once set, run the server with `npm run start` within the server directory. The bot will automatically retrieve and update your `auth_code`.
-
-The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`.
-
 ### Spotify
+
+The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`.
 
 Visit https://developer.spotify.com/documentation/web-api/tutorials/getting-started to create an app and obtain the `client_id` and `client_secret`
 
@@ -38,29 +40,27 @@ To get the auth_code construct your URL and enter it into the browser. Here's an
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`.
-
 ### GitHub
-
-Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
 
 Ensure that the personal access token includes the scope to access and modify issues.
 
+Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
+
 ### SevenTV
 
-You only need to toggle the enabled flag to true. Internally the bot will use the Twitch account's ID to find your SevenTV ID.
+You only need to toggle the enabled flag to `true`. Internally the bot will use the Twitch account's ID to find your SevenTV ID.
 
 ### BetterTTV
 
-You only need to toggle the enabled flag to true. Internally the bot will use the Twitch account's ID to find your BTTV ID.
+You only need to toggle the enabled flag to `true`. Internally the bot will use the Twitch account's ID to find your BTTV ID.
 
 ### FrankerFaceZ
 
-You only need to toggle the enabled flag to true. Internally the bot will use the Twitch account's ID to find your FFZ ID.
+You only need to toggle the enabled flag to `true`. Internally the bot will use the Twitch account's ID to find your FFZ ID.
 
 ### TikTok
 
-To get the `session_id` to use the TikTok voices in the !tts command you need to create a TikTok account and extract the session_id from your browser. This can be done by accessing the cookies in your browser and copying the value of the `session_id` cookie.
+To get the `session_id` to use the TikTok voices in the `!tts` command you need to create a TikTok account and extract the `session_id` from your browser. This can be done by accessing the cookies in your browser and copying the value of the `session_id` cookie.
 
 ## Setting up your commands
 
@@ -80,7 +80,7 @@ You can find more information about these features in the [channel point rewards
 
 ## Interval commands
 
-Sometimes you want something to happen on a regular interval. You can set up interval commands to do this.
+Sometimes you want something to occur on a regular interval. You can set up interval commands to do this.
 
 You can find more information about these features in the [interval commands configuration guide](INTERVAL_COMMANDS.md)
 
