@@ -76,7 +76,7 @@ A lot of the power of the bot comes from the commands that you set up. While a l
 
 The bot can automatically handle channel point reward redemptions.
 
-You can find more information about these features in the [channel point rewards configuration guide](CHANNEL_POINT_REWARDS.md)
+You can find more information about these features in the [channel point rewards configuration guide](CHANNEL_POINT_REDEEMS.md)
 
 ## Interval commands
 
