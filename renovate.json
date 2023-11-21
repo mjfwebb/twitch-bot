@@ -3,5 +3,10 @@
   "extends": [
     "config:best-practices"
   ],
-  "groupName": "all"
+  "groupName": "all",
+  "rebaseWhen": "auto",
+  "automerge": true,
+  "major": {
+    "automerge": false
+  },
 }
