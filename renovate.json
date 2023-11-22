@@ -1,12 +1,10 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices"
-  ],
-  "groupName": "all",
-  "rebaseWhen": "auto",
-  "automerge": true,
-  "major": {
-    "automerge": false
-  },
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:best-practices"],
+    "groupName": "all",
+    "rebaseWhen": "auto",
+    "automerge": true,
+    "major": {
+        "automerge": false
+    }
 }
