@@ -18,12 +18,13 @@ export const setcooldown: BotCommand = {
         const newCommandParts = newCommand.split(' ');
         if (newCommandParts.length > 1) {
           const commandName = stripLeadingExclamationMark(newCommandParts[0]);
-          const newCommandCooldown = parseInt(newCommandParts[1]);
+          const newCommandCooldown = Number(newCommandParts[1]);
+          if (isNaN(newCommandCooldown) || newCommandCooldown <= 0) {
+            sendChatMessage(connection, `Invalid cooldown parameter provided.`);
+            return;
+          }
           const command = Commands.findOneByCommandId(commandName);
           if (command) {
-            if (newCommandCooldown <= 0) {
-              sendChatMessage(connection, `Invalid cooldown parameter provided.`);
-            }
             command.cooldown = newCommandCooldown;
             command.updatedAt = new Date().toISOString();
             Commands.saveOne(command);
