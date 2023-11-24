@@ -3,6 +3,7 @@ import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
+import { stripLeadingExclamationMark } from './helpers/stripLeadingExclamationMark';
 
 export const setmessage: BotCommand = {
   command: 'setmessage',
@@ -16,7 +17,7 @@ export const setmessage: BotCommand = {
       if (newCommand) {
         const newCommandParts = newCommand.split(' ');
         if (newCommandParts.length > 1) {
-          const commandName = newCommandParts[0];
+          const commandName = stripLeadingExclamationMark(newCommandParts[0]);
           const newCommandMessage = newCommandParts.slice(1).join(' ');
           const command = Commands.findOneByCommandId(commandName);
           if (command) {
