@@ -4,6 +4,7 @@ import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
+import { stripLeadingExclamationMark } from './helpers/stripLeadingExclamationMark';
 
 export const addcommand: BotCommand = {
   command: 'addcommand',
@@ -17,7 +18,7 @@ export const addcommand: BotCommand = {
       if (newCommand) {
         const newCommandParts = newCommand.split(' ');
         if (newCommandParts.length > 1) {
-          const newCommandName = newCommandParts[0];
+          const newCommandName = stripLeadingExclamationMark(newCommandParts[0]);
           const command = Commands.findOneByCommandId(newCommandName);
           if (command) {
             return sendChatMessage(connection, `The command ${newCommandName} already exists!`);

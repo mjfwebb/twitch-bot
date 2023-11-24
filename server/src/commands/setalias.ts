@@ -3,6 +3,7 @@ import { Commands } from '../storage-models/command-model';
 import type { BotCommand } from '../types';
 import { hasBotCommandParams } from './helpers/hasBotCommandParams';
 import { sendChatMessage } from './helpers/sendChatMessage';
+import { stripLeadingExclamationMark } from './helpers/stripLeadingExclamationMark';
 
 export const setalias: BotCommand = {
   command: 'setalias',
@@ -16,8 +17,8 @@ export const setalias: BotCommand = {
       if (newCommand) {
         const newCommandParts = newCommand.split(' ');
         if (newCommandParts.length > 1) {
-          const commandName = newCommandParts[0];
-          const commandAlias = newCommandParts[1];
+          const commandName = stripLeadingExclamationMark(newCommandParts[0]);
+          const commandAlias = stripLeadingExclamationMark(newCommandParts[1]);
 
           const command = Commands.findOneByCommandId(commandName);
           if (command && command.command) {
