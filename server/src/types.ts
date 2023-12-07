@@ -337,6 +337,7 @@ export type ChatMessage = {
   id: string;
   user: User;
   parsedMessage: ParsedMessage;
+  isSpotlighted: boolean;
 };
 
 export type TwitchGame = {

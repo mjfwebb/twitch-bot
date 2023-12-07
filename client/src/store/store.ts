@@ -83,7 +83,6 @@ const useStore = create<Store>((set, get) => ({
       ...state,
       chatMessages,
     }));
-    // }
   },
 }));
 

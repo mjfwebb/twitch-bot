@@ -6,6 +6,7 @@ export class StreamState {
   private static _startedAt: Date;
   private static _displayName = '';
   private static _title = '';
+  public static spotlightedUser: string | undefined = undefined;
 
   public static get status() {
     return this._status;

@@ -94,6 +94,7 @@ export type ChatMessage = {
     avatarUrl: string;
   } | null;
   parsedMessage: ParsedMessage;
+  isSpotlighted: boolean;
 };
 
 export type ChatEmote = {

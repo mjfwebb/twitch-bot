@@ -35,6 +35,7 @@ import { skipsong } from './commands/skipsong';
 import { skiptts } from './commands/skiptts';
 import { song } from './commands/song';
 import { songqueue } from './commands/songqueue';
+import { spotlight } from './commands/spotlight';
 import { task } from './commands/task';
 import { tts } from './commands/tts';
 import { uptime } from './commands/uptime';
@@ -132,6 +133,7 @@ const complexBotCommands: BotCommand[] = [
   settask,
   settitle,
   skiptts,
+  spotlight,
   task,
   tts,
   uptime,

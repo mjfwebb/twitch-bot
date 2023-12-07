@@ -57,6 +57,7 @@ export const ChatEntry = ({
           'chat-message-body',
           isSelected && 'chat-message-body-selected',
           showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber',
+          chatMessage.isSpotlighted && 'chat-message-body-spotlighted',
         )}
         style={{
           ...(dropShadowEnabled
@@ -78,7 +79,7 @@ export const ChatEntry = ({
           <span
             className="chat-message-nick"
             style={{
-              color: isSelected ? 'white' : contrastCorrected(color || '#fff', backgroundColor),
+              color: isSelected || chatMessage.isSpotlighted ? 'white' : contrastCorrected(color || '#fff', backgroundColor),
             }}
           >
             {user.displayName}
