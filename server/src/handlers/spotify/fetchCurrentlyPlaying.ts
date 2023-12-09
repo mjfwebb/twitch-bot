@@ -3,8 +3,7 @@ import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
 import { logger } from '../../logger';
 import { getIO } from '../../runSocketServer';
-import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SpotifySong } from './types';
+import { spotifySongSchema, type SpotifySong } from './schemas';
 
 const playedSongs: SpotifySong[] = [];
 
@@ -41,19 +40,10 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
         return null;
       }
 
-      if (
-        hasOwnProperty(result, 'item') &&
-        hasOwnProperty(result.item, 'name') &&
-        hasOwnProperty(result.item, 'external_urls') &&
-        hasOwnProperty(result.item.external_urls, 'spotify') &&
-        typeof result.item.name === 'string' &&
-        typeof result.item.external_urls.spotify === 'string'
-      ) {
-        getIO().emit('currentSong', result);
-        const resultSong = result as SpotifySong;
-        if (resultSong.item.id && getCurrentSpotifySong()?.item.id !== resultSong.item.id) {
-          playedSongs.push(result as SpotifySong);
-        }
+      const song = spotifySongSchema.parse(result);
+      getIO().emit('currentSong', song);
+      if (song.item.id && getCurrentSpotifySong()?.item.id !== song.item.id) {
+        playedSongs.push(song);
       }
     } catch (error) {
       logger.error(error);

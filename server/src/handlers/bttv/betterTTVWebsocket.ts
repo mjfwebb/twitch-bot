@@ -4,7 +4,7 @@ import Config from '../../config';
 import { BETTER_TTV_WEBSOCKET_URL } from '../../constants';
 import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { BttvEmote } from './types';
+import type { BttvEmote } from './schemas';
 
 export function runBetterTTVWebsocket() {
   const client = new websocket.client();

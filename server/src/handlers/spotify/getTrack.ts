@@ -2,8 +2,7 @@ import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
 import { logger } from '../../logger';
-import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SpotifyTrack } from './types';
+import { spotifyTrackSchema, type SpotifyTrack } from './schemas';
 
 export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> => {
   if (Config.spotify.enabled) {
@@ -20,9 +19,7 @@ export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> =>
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
-      if (hasOwnProperty(result, 'album') && hasOwnProperty(result, 'name') && typeof result.name === 'string') {
-        return result as SpotifyTrack;
-      }
+      return spotifyTrackSchema.parse(result);
     } catch (error) {
       logger.error(error);
     }

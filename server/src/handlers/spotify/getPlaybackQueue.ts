@@ -2,14 +2,14 @@ import { fetchWithRetry, getCurrentAccessToken } from '../../auth/spotify';
 import Config from '../../config';
 import { SPOTIFY_API_URL } from '../../constants';
 import { logger } from '../../logger';
-import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SpotifySong, SpotifyTrack } from './types';
+import type { SpotifySong, SpotifyTracks } from './schemas';
+import { spotifyTracksSchema } from './schemas';
 
 const currentSong: SpotifySong | null = null;
 
 export const getCurrentSpotifySong = () => currentSong;
 
-export const getPlaybackQueue = async (): Promise<SpotifyTrack[] | null> => {
+export const getPlaybackQueue = async (): Promise<SpotifyTracks | null> => {
   if (Config.spotify.enabled) {
     try {
       const url = `${SPOTIFY_API_URL}me/player/queue`;
@@ -21,9 +21,7 @@ export const getPlaybackQueue = async (): Promise<SpotifyTrack[] | null> => {
           Authorization: `Bearer ${getCurrentAccessToken()}`,
         },
       });
-      if (hasOwnProperty(result, 'currently_playing') && hasOwnProperty(result, 'queue')) {
-        return result.queue as SpotifyTrack[];
-      }
+      return spotifyTracksSchema.parse(result);
     } catch (error) {
       logger.error(error);
     }

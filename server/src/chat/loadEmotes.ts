@@ -1,14 +1,14 @@
 import Config from '../config';
 import { fetchBetterTTVGlobalEmotes } from '../handlers/bttv/fetchBetterTTVGlobalEmotes';
 import { fetchBetterTTVUser } from '../handlers/bttv/fetchBetterTTVUser';
-import type { BttvEmote } from '../handlers/bttv/types';
+import type { BttvEmote } from '../handlers/bttv/schemas';
 import { fetchFrankerFaceZGlobalEmotes } from '../handlers/frankerfacez/fetchFrankerFaceZGlobalEmotes';
 import { fetchFrankerFaceZRoomEmotes } from '../handlers/frankerfacez/fetchFrankerFaceZRoomEmotes';
-import type { FrankerFaceZEmote } from '../handlers/frankerfacez/types';
+import type { FrankerFaceZEmote } from '../handlers/frankerfacez/schemas';
 import { fetchSevenTVEmote } from '../handlers/sevenTV/fetchSevenTVEmote';
 import { fetchSevenTVEmoteSet } from '../handlers/sevenTV/fetchSevenTVEmoteSets';
+import type { SevenTVEmote } from '../handlers/sevenTV/schemas';
 import { getSevenTVUser } from '../handlers/sevenTV/sevenTVUser';
-import type { SevenTVEmote } from '../handlers/sevenTV/types';
 import { logger } from '../logger';
 import { getIO } from '../runSocketServer';
 

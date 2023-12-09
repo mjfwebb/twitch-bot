@@ -1,4 +1,4 @@
-import type { SpotifyTrack } from '../../handlers/spotify/types';
+import type { SpotifyTrack } from '../../handlers/spotify/schemas';
 
 export const songDetails = (song: SpotifyTrack, includeLink = true) => {
   const externalLink = includeLink ? ` (${song.external_urls.spotify})` : '';

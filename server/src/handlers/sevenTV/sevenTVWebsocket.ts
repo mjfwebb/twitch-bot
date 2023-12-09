@@ -3,7 +3,7 @@ import { addSevenTVEmote, removeSevenTVEmote } from '../../chat/loadEmotes';
 import { SEVEN_TV_WEBSOCKET_URL } from '../../constants';
 import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SevenTVEmote, SevenTVTwitchUser } from './types';
+import type { SevenTVEmote, SevenTVTwitchUser } from './schemas';
 
 const closeCodes = {
   ServerError: 4000, // An error occured on the server's end

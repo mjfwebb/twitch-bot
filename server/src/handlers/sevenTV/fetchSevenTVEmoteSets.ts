@@ -2,17 +2,13 @@
 
 import fetch from 'node-fetch';
 import { logger } from '../../logger';
-import { hasOwnProperty } from '../../utils/hasOwnProperty';
-import type { SevenTVEmoteSet } from './types';
+import { sevenTVEmoteSetSchema, type SevenTVEmoteSet } from './schemas';
 
 export const fetchSevenTVEmoteSet = async (emoteSetId: string): Promise<SevenTVEmoteSet | null> => {
   try {
     const url = `https://7tv.io/v3/emote-sets/${emoteSetId}`;
     const response = await fetch(url, { method: 'GET' });
-    const data: unknown = await response.json();
-    if (hasOwnProperty(data, 'id') && hasOwnProperty(data, 'name') && hasOwnProperty(data, 'flags') && hasOwnProperty(data, 'emotes')) {
-      return data as SevenTVEmoteSet;
-    }
+    return await sevenTVEmoteSetSchema.parseAsync(await response.json());
   } catch (error) {
     logger.error(error);
   }
