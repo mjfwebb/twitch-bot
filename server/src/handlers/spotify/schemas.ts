@@ -10,16 +10,18 @@ const spotifyArtistSchema = z.object({
   external_urls: z.object({
     spotify: z.string(),
   }),
-  followers: z.object({
-    href: z.string(),
-    total: z.number(),
-  }),
-  genres: z.array(z.string()),
+  followers: z.optional(
+    z.object({
+      href: z.string(),
+      total: z.number(),
+    }),
+  ),
+  genres: z.optional(z.array(z.string())),
   href: z.string(),
   id: z.string(),
-  images: z.array(imageSchema),
+  images: z.optional(z.array(imageSchema)),
   name: z.string(),
-  popularity: z.number(),
+  popularity: z.optional(z.number()),
   type: z.string(),
   uri: z.string(),
 });
@@ -40,21 +42,25 @@ export const spotifyTrackSchema = z.object({
     release_date_precision: z.string(),
     type: z.string(),
     uri: z.string(),
-    copyrights: z.tuple([
+    copyrights: z.optional(
+      z.tuple([
+        z.object({
+          text: z.string(),
+          type: z.string(),
+        }),
+      ]),
+    ),
+    external_ids: z.optional(
       z.object({
-        text: z.string(),
-        type: z.string(),
+        isrc: z.string(),
+        ean: z.optional(z.string()),
+        upc: z.optional(z.string()),
       }),
-    ]),
-    external_ids: z.object({
-      isrc: z.string(),
-      ean: z.string(),
-      upc: z.string(),
-    }),
-    genres: z.array(z.string()),
-    label: z.string(),
-    popularity: z.number(),
-    album_group: z.string(),
+    ),
+    genres: z.optional(z.array(z.string())),
+    label: z.optional(z.string()),
+    popularity: z.optional(z.number()),
+    album_group: z.optional(z.string()),
     artists: z.tuple([
       z.object({
         external_urls: z.object({
@@ -75,18 +81,18 @@ export const spotifyTrackSchema = z.object({
   explicit: z.boolean(),
   external_ids: z.object({
     isrc: z.string(),
-    ean: z.string(),
-    upc: z.string(),
+    ean: z.optional(z.string()),
+    upc: z.optional(z.string()),
   }),
   external_urls: z.object({
     spotify: z.string(),
   }),
   href: z.string(),
   id: z.string(),
-  is_playable: z.boolean(),
+  is_playable: z.optional(z.boolean()),
   name: z.string(),
-  popularity: z.number(),
-  preview_url: z.string(),
+  popularity: z.optional(z.number()),
+  preview_url: z.optional(z.nullable(z.string())),
   track_number: z.number(),
   type: z.string(),
   uri: z.string(),
@@ -108,7 +114,7 @@ export const spotifySongSchema = z.object({
   currently_playing_type: z.string(),
   actions: z.object({
     disallows: z.object({
-      resuming: z.boolean(),
+      resuming: z.optional(z.boolean()),
     }),
   }),
   is_playing: z.boolean(),

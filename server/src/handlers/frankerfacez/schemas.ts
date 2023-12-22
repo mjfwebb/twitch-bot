@@ -15,7 +15,7 @@ export const frankerFaceZEmoteSetsSchema = z.record(
   z.object({
     id: z.number(),
     title: z.string(),
-    emoticons: z.record(frankerFaceZEmoteSchema),
+    emoticons: z.optional(z.array(frankerFaceZEmoteSchema)),
   }),
 );
 
