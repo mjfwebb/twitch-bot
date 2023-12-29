@@ -61,7 +61,7 @@ export const spotifyTrackSchema = z.object({
     label: z.optional(z.string()),
     popularity: z.optional(z.number()),
     album_group: z.optional(z.string()),
-    artists: z.tuple([
+    artists: z.array(
       z.object({
         external_urls: z.object({
           spotify: z.string(),
@@ -72,7 +72,7 @@ export const spotifyTrackSchema = z.object({
         type: z.literal('artist'),
         uri: z.string(),
       }),
-    ]),
+    ),
   }),
   artists: z.array(spotifyArtistSchema),
   available_markets: z.array(z.string()),
