@@ -41,7 +41,7 @@ export const sevenTVEmoteSchema = z.object({
   name: z.string(),
   flags: z.number(),
   timestamp: z.number(),
-  actor_id: z.string(),
+  actor_id: z.nullable(z.string()),
   data: sevenTVEmoteDataSchema,
 });
 
@@ -73,14 +73,14 @@ export const sevenTVUserSchema = z.object({
       }),
     ),
   ),
-  editors: z.array(
+  editors: z.optional(z.array(
     z.object({
       id: z.string(),
       permissions: z.number(),
       visible: z.boolean(),
       added_at: z.number(),
     }),
-  ),
+  )),
   roles: z.array(z.string()),
   connections: z.array(
     z.object({
@@ -91,7 +91,7 @@ export const sevenTVUserSchema = z.object({
       linked_at: z.number(),
       emote_capacity: z.number(),
       emote_set_id: z.null(),
-      emote_set: z.object({
+      emote_set: z.nullable(z.object({
         id: z.string(),
         name: z.string(),
         flags: z.number(),
@@ -100,7 +100,7 @@ export const sevenTVUserSchema = z.object({
         privileged: z.boolean(),
         capacity: z.number(),
         owner: sevenTVEmoteDataSetOwnerSchema,
-      }),
+      })),
     }),
   ),
 });
