@@ -68,12 +68,12 @@ export const addFrankerFaceZEmote = (emote: FrankerFaceZEmote) => {
 const loadFrankerFaceZGlobalEmotes = async () => {
   if (Config.frankerFaceZ.enabled) {
     const frankerFaceZGlobalEmotes = await fetchFrankerFaceZGlobalEmotes();
-    if (frankerFaceZGlobalEmotes) {
+    if (frankerFaceZGlobalEmotes && frankerFaceZGlobalEmotes.sets) {
       const emoteSets = frankerFaceZGlobalEmotes.default_sets;
       for (const emoteSet of emoteSets) {
         const frankerFaceZEmoteSet = frankerFaceZGlobalEmotes.sets[emoteSet];
         if (frankerFaceZEmoteSet) {
-          Object.values(frankerFaceZEmoteSet.emoticons).forEach((emote) => addFrankerFaceZEmote(emote));
+          Object.values(frankerFaceZEmoteSet.emoticons || []).forEach((emote) => addFrankerFaceZEmote(emote));
         }
       }
     }
@@ -83,10 +83,9 @@ const loadFrankerFaceZGlobalEmotes = async () => {
 const loadFrankerFaceZRoomEmotes = async () => {
   if (Config.frankerFaceZ.enabled) {
     const frankerFaceZRoomEmotes = await fetchFrankerFaceZRoomEmotes();
-    if (frankerFaceZRoomEmotes) {
-      const emoteSets = frankerFaceZRoomEmotes.sets;
-      for (const emoteSet of Object.values(emoteSets)) {
-        Object.values(emoteSet.emoticons).forEach((emote) => addFrankerFaceZEmote(emote));
+    if (frankerFaceZRoomEmotes && frankerFaceZRoomEmotes.sets) {
+      for (const emoteSet of Object.values(frankerFaceZRoomEmotes.sets)) {
+        Object.values(emoteSet.emoticons || []).forEach((emote) => addFrankerFaceZEmote(emote));
       }
     }
   }

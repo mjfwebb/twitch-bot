@@ -11,13 +11,13 @@ export const frankerFaceZEmoteSchema = z.object({
   urls: z.record(z.string()),
 });
 
-export const frankerFaceZEmoteSetsSchema = z.record(
+export const frankerFaceZEmoteSetsSchema = z.optional(z.record(
   z.object({
     id: z.number(),
     title: z.string(),
     emoticons: z.optional(z.array(frankerFaceZEmoteSchema)),
   }),
-);
+));
 
 export const frankerFaceZGlobalEmotesSchema = z.object({
   default_sets: z.array(z.number()),
