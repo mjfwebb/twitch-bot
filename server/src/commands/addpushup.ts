@@ -1,9 +1,7 @@
 import { editCustomReward, getCustomRewards } from '../handlers/twitch/helix/customRewards';
+import { logger } from '../logger';
 import type { BotCommand } from '../types';
 import { sendChatMessage } from './helpers/sendChatMessage';
-
-const pushupRedeemId = 'd17e63c6-208f-4275-bcd7-6a558cc5a494';
-const addPushupRedeemId = '0279c574-da62-4a22-acf1-e2e97523ea10';
 
 export const addpushup: BotCommand = {
   command: 'addpushup',
@@ -11,23 +9,29 @@ export const addpushup: BotCommand = {
   hidden: true,
   privileged: true,
   callback: async (connection) => {
-    const customReward = getCustomRewards().find((customReward) => customReward.id === pushupRedeemId);
+    const customReward = getCustomRewards().find((customReward) => customReward.title.includes('pushups on camera'));
     const amount = customReward?.title.split(' ')[0];
 
     if (amount) {
       const amountIncremented = +amount + 1;
 
-      await editCustomReward(pushupRedeemId, {
+      await editCustomReward(customReward.id, {
         title: customReward.title.replace(amount, String(amountIncremented)),
       });
 
-      const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.id === addPushupRedeemId);
+      const pushupAddOneReward = getCustomRewards().find((customReward) => customReward.title.includes('1 more pushup'));
       if (pushupAddOneReward) {
-        await editCustomReward(addPushupRedeemId, {
+        await editCustomReward(pushupAddOneReward.id, {
           cost: pushupAddOneReward.cost + 1000,
         });
+        sendChatMessage(connection, 'It goes ever upwards');
+      } else {
+        logger.error('Could not find add pushup customReward');
+        sendChatMessage(connection, 'Sorry! I could not find the add pushup reward');
       }
-      sendChatMessage(connection, 'It goes ever upwards');
+    } else {
+      logger.error('Could not find do pushups customReward');
+      sendChatMessage(connection, 'Sorry! I could not find the do pushups reward');
     }
   },
 };
