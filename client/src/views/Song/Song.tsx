@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import useStore from '../../store/store';
 import type { SpotifySong } from '../../types';
-import { useSongSearchParams } from './useChatSearchParams';
+import { useSongSearchParams } from './useSongSearchParams';
 
 import './Song.less';
 
