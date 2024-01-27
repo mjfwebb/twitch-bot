@@ -16,6 +16,7 @@ export const ChatPreview = () => {
   const chatMessagePadding = `${chatMessagePaddingValue}${chatMessagePaddingUnit}`;
 
   const chatMessageOne: ChatMessage = {
+    isSpotlighted: false,
     id: '83d40613-4afc-46b5-9133-0367c89fa310',
     user: {
       userId: '30458956',
@@ -78,6 +79,7 @@ export const ChatPreview = () => {
       />
       <ChatEntry
         chatMessage={{
+          isSpotlighted: false,
           id: '2',
           parsedMessage: {
             tags: {
