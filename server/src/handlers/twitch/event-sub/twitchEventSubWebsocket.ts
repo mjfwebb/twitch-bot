@@ -11,6 +11,8 @@ import { subscribeToStreamOfflineNotifications } from './subscribers/subscribeTo
 import { subscribeToStreamOnlineNotifications } from './subscribers/subscribeToStreamOnlineNotifications';
 import { twitchEventSubHandler } from './twitchEventSubHandler';
 
+let isConnected = false;
+
 export function runTwitchEventSubWebsocket() {
   const client = new websocket.client();
 
@@ -26,10 +28,12 @@ export function runTwitchEventSubWebsocket() {
     });
 
     connection.on('close', function () {
+      isConnected = false;
       logger.info('Twitch EventSub WebSocket: Connection Closed');
     });
 
     connection.on('message', function (message) {
+      isConnected = true;
       if (hasOwnProperty(message, 'utf8Data')) {
         const data = JSON.parse(message.utf8Data as string) as TwitchWebsocketMessage;
 
@@ -67,6 +71,12 @@ export function runTwitchEventSubWebsocket() {
     });
   });
   client.connect(TWITCH_WEBSOCKET_EVENTSUB_URL);
+  setInterval(() => {
+    if (!isConnected) {
+      logger.info('Twitch EventSub: Reconnecting...');
+      client.connect(TWITCH_WEBSOCKET_EVENTSUB_URL);
+    }
+  }, 10000);
 }
 
 function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
