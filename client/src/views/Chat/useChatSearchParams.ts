@@ -16,6 +16,7 @@ export const useChatSearchParams = () => {
       : DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit;
   const dropShadowEnabled = searchParams.get(chatSearchParamsMap.dropShadowEnabled) === 'true' ? true : false;
   const dropShadowSettings = searchParams.get(chatSearchParamsMap.dropShadowSettings) || DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings;
+  const thickTextShadowEnabled = searchParams.get(chatSearchParamsMap.thickTextShadowEnabled) === 'true' ? true : false;
   const foregroundColor = searchParams.get(chatSearchParamsMap.foregroundColor) || DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor;
   const showAvatars = searchParams.get(chatSearchParamsMap.showAvatars) === 'false' ? false : true;
   const showBorders = searchParams.get(chatSearchParamsMap.showBorders) === 'false' ? false : true;
@@ -38,6 +39,7 @@ export const useChatSearchParams = () => {
     secondsBeforeExit,
     dropShadowEnabled,
     dropShadowSettings,
+    thickTextShadowEnabled,
     foregroundColor,
     showAvatars,
     showBorders,

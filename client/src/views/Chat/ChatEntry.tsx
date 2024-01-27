@@ -14,6 +14,7 @@ interface ChatEntryProps {
   showBorders: boolean;
   dropShadowEnabled: boolean;
   dropShadowSettings: string;
+  thickTextShadowEnabled: boolean;
   textStrokeEnabled: boolean;
   textStrokeSettings: string;
   showColonAfterDisplayName: boolean;
@@ -29,6 +30,7 @@ export const ChatEntry = ({
   dropShadowSettings,
   textStrokeEnabled,
   textStrokeSettings,
+  thickTextShadowEnabled,
   showColonAfterDisplayName,
   chatMessagePadding,
 }: ChatEntryProps) => {
@@ -58,9 +60,10 @@ export const ChatEntry = ({
           isSelected && 'chat-message-body-selected',
           showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber',
           chatMessage.isSpotlighted && 'chat-message-body-spotlighted',
+          dropShadowEnabled && thickTextShadowEnabled && 'chat-message-body-thick-text-shadow',
         )}
         style={{
-          ...(dropShadowEnabled
+          ...(dropShadowEnabled && !thickTextShadowEnabled
             ? {
                 textShadow: dropShadowSettings,
               }

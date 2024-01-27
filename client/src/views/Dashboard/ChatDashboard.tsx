@@ -33,6 +33,7 @@ export const ChatDashboard = () => {
   const animatedEntry = useChatSettingsStore((s) => s.animatedEntry);
   const dropShadowEnabled = useChatSettingsStore((s) => s.dropShadowEnabled);
   const dropShadowSettings = useChatSettingsStore((s) => s.dropShadowSettings);
+  const thickTextShadowEnabled = useChatSettingsStore((s) => s.thickTextShadowEnabled);
   const textStrokeEnabled = useChatSettingsStore((s) => s.textStrokeEnabled);
   const textStrokeSettings = useChatSettingsStore((s) => s.textStrokeSettings);
   const fontSizeValue = useChatSettingsStore((s) => s.fontSizeValue);
@@ -91,6 +92,9 @@ export const ChatDashboard = () => {
   }
   if (dropShadowEnabled) {
     chatURL.searchParams.append(chatSearchParamsMap.dropShadowEnabled, 'true');
+  }
+  if (dropShadowEnabled && thickTextShadowEnabled) {
+    chatURL.searchParams.append(chatSearchParamsMap.thickTextShadowEnabled, 'true');
   }
   if (dropShadowEnabled && dropShadowSettings !== DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings) {
     chatURL.searchParams.append(chatSearchParamsMap.dropShadowSettings, dropShadowSettings);
@@ -270,8 +274,19 @@ export const ChatDashboard = () => {
           <label htmlFor="chat_has_drop_shadow">Text has drop shadow</label>
         </div>
         {dropShadowEnabled && (
+          <div className="chat-modifiers-row">
+            <input
+              type="checkbox"
+              id="chat_has_thick_drop_shadow"
+              checked={thickTextShadowEnabled}
+              onChange={(event) => useChatSettingsStore.getState().setThickTextShadowEnabled(event.target.checked)}
+            />
+            <label htmlFor="chat_has_thick_drop_shadow">Text has thick drop shadow</label>
+          </div>
+        )}
+        {dropShadowEnabled && !thickTextShadowEnabled && (
           <div className="chat-modifiers-row chat-modifiers-label-above">
-            <label htmlFor="chat_drop_shadow">Drop shadow settings</label>
+            <label htmlFor="chat_drop_shadow">Alternative drop shadow settings:</label>
             <TextShadowPicker
               value={dropShadowSettings}
               onChange={(value) => {

@@ -16,6 +16,7 @@ interface ChatPersistedSettings {
   secondsBeforeExit: number;
   dropShadowEnabled: boolean;
   dropShadowSettings: string;
+  thickTextShadowEnabled: boolean;
   foregroundColor: string;
   showAvatars: boolean;
   showBorders: boolean;
@@ -37,6 +38,7 @@ interface ChatPersistedSettings {
   setSecondsBeforeExit: (secondsBeforeExit: number) => void;
   setDropShadowEnabled: (dropShadowEnabled: boolean) => void;
   setDropShadowSettings: (dropShadowSettings: string) => void;
+  setThickTextShadowEnabled: (thickTextShadowEnabled: boolean) => void;
   setForegroundColor: (foregroundColor: string) => void;
   setShowAvatars: (showAvatars: boolean) => void;
   setShowBorders: (showBorders: boolean) => void;
@@ -64,6 +66,7 @@ export const useChatSettingsStore = create(
       secondsBeforeExit: DEFAULT_CHAT_SETTINGS_VALUES.secondsBeforeExit,
       dropShadowEnabled: false,
       dropShadowSettings: DEFAULT_CHAT_SETTINGS_VALUES.dropShadowSettings,
+      thickTextShadowEnabled: false,
       foregroundColor: DEFAULT_CHAT_SETTINGS_VALUES.foregroundColor,
       textStrokeEnabled: false,
       textStrokeSettings: DEFAULT_CHAT_SETTINGS_VALUES.textStrokeSettings,
@@ -108,6 +111,9 @@ export const useChatSettingsStore = create(
       },
       setDropShadowSettings: (dropShadowSettings: string) => {
         set(() => ({ dropShadowSettings }));
+      },
+      setThickTextShadowEnabled: (thickTextShadowEnabled: boolean) => {
+        set(() => ({ thickTextShadowEnabled }));
       },
       setForegroundColor: (foregroundColor: string) => {
         set(() => ({ foregroundColor }));

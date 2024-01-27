@@ -23,6 +23,7 @@ export const NonDisappearingChat = () => {
         showBorders={chatSearchParams.showBorders}
         dropShadowEnabled={chatSearchParams.dropShadowEnabled}
         dropShadowSettings={chatSearchParams.dropShadowSettings}
+        thickTextShadowEnabled={chatSearchParams.thickTextShadowEnabled}
         textStrokeEnabled={chatSearchParams.textStrokeEnabled}
         textStrokeSettings={chatSearchParams.textStrokeSettings}
         showColonAfterDisplayName={chatSearchParams.showColonAfterDisplayName}

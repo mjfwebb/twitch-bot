@@ -8,6 +8,7 @@ export const ChatPreview = () => {
   const showBorders = useChatSettingsStore((s) => s.showBorders);
   const dropShadowEnabled = useChatSettingsStore((s) => s.dropShadowEnabled);
   const dropShadowSettings = useChatSettingsStore((s) => s.dropShadowSettings);
+  const thickTextShadowEnabled = useChatSettingsStore((s) => s.thickTextShadowEnabled);
   const showColonAfterDisplayName = useChatSettingsStore((s) => s.showColonAfterDisplayName);
   const textStrokeEnabled = useChatSettingsStore((s) => s.textStrokeEnabled);
   const textStrokeSettings = useChatSettingsStore((s) => s.textStrokeSettings);
@@ -72,6 +73,7 @@ export const ChatPreview = () => {
         showBorders={showBorders}
         dropShadowEnabled={dropShadowEnabled}
         dropShadowSettings={dropShadowSettings}
+        thickTextShadowEnabled={thickTextShadowEnabled}
         showColonAfterDisplayName={showColonAfterDisplayName}
         textStrokeEnabled={textStrokeEnabled}
         textStrokeSettings={textStrokeSettings}
@@ -115,6 +117,7 @@ export const ChatPreview = () => {
         showBorders={showBorders}
         dropShadowEnabled={dropShadowEnabled}
         dropShadowSettings={dropShadowSettings}
+        thickTextShadowEnabled={thickTextShadowEnabled}
         showColonAfterDisplayName={showColonAfterDisplayName}
         textStrokeEnabled={textStrokeEnabled}
         textStrokeSettings={textStrokeSettings}
