@@ -17,13 +17,13 @@ An example of a channel point reward redemption action is:
       "message": "This is a test message!",
       "command": "test",
       "commandParams": "This is a test command!",
-      "onStatus": "fulfilled",
+      "onStatus": "fulfilled"
     }
   ]
 }
 ```
 
-The `id` and `title` fields are the ID and title of the channel point reward. 
+The `id` and `title` fields are the ID and title of the channel point reward.
 
 The `message` field is the message that will be sent to chat when the reward is redeemed. If the message is an empty string, no message will be sent to chat.
 
@@ -33,7 +33,7 @@ The `command` field is the command that will be run when the reward is redeemed.
 
 The `commandParams` field is the parameters that will be passed to the command when it is run. If the commandParams is an empty string, no parameters will be passed to the command.
 
-The `onlyRunWhenFulfilled` field is a boolean that determines if the command will be run when the 
+The `onlyRunWhenFulfilled` field is a boolean that determines if the command will be run when the
 reward is redeemed or when the reward is fulfilled. If this is set to `true`, the command will only be run when the reward is fulfilled. If this is set to `false`, the command will be run when the reward is redeemed and not automatically set to fulfilled.
 
 Fulfilled in this case means either of the following:
@@ -54,7 +54,7 @@ Here's another example using the user input provided in the redeem:
       "message": "",
       "command": "queuesong",
       "commandParams": "%input%",
-      "onStatus": "unfulfilled",
+      "onStatus": "unfulfilled"
     }
   ]
 }
