@@ -4,7 +4,6 @@ import Config from '../../../config';
 import { TWITCH_CHAT_IRC_WS_URL } from '../../../constants';
 import { logger } from '../../../logger';
 import { botCommandHandler } from '../../botCommandHandler';
-import { discordChatWebhook } from '../../discord/discord';
 import { bitHandler } from './bitHandler';
 import { firstMessageHandler } from './firstMessageHandler';
 import { firstMessageOfStreamHandler } from './firstMessageOfStreamHandler';
@@ -77,7 +76,6 @@ export function runTwitchIRCWebsocket() {
                 returningChatterHandler(connection, parsedMessage);
 
                 if ((!botCommand || botCommand === 'ACTION') && parsedMessage.source?.nick && parsedMessage.parameters) {
-                  discordChatWebhook(parsedMessage.source.nick, parsedMessage.parameters);
                   messageHandler(parsedMessage).catch((e) => logger.error(e));
                 }
                 break;

@@ -49,11 +49,6 @@ async function main() {
       logger.info(`${pc.green('[Spotify enabled]')} Loading Spotify interval commands`);
       loadSpotifyIntervalCommands();
     }
-
-    if (Config.github.enabled) {
-      logger.info(`${pc.green('[GitHub enabled]')} Loading GitHub bot commands`);
-    }
-
     loadChatExclusionList();
 
     logger.info(`Getting Twitch custom rewards`);

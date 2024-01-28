@@ -32,12 +32,6 @@
       "user-modify-playback-state"
     ]
   },
-  "github": {
-    "enabled": false,
-    "owner": "owner",
-    "repo": "repo",
-    "access_token": "access_token"
-  },
   "seventv": {
     "enabled": false,
     "user_id": ""
@@ -55,21 +49,7 @@
     "enabled": false,
     "session_id": ""
   },
-  "discord_webhook": {
-    "enabled": false,
-    "service": "discord",
-    "id": "",
-    "token": "",
-    "url": ""
-  },
   "webhooks": [
-    {
-      "name": "discord_chat_notification",
-      "enabled": false,
-      "id": "",
-      "token": "",
-      "url": ""
-    },
     {
       "name": "discord_stream_notification",
       "enabled": false,

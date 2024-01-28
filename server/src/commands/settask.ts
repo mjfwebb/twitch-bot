@@ -1,3 +1,4 @@
+import Config from '../config';
 import { SECOND_MS } from '../constants';
 import { getIO } from '../runSocketServer';
 import type { Task } from '../storage-models/task-model';
@@ -9,7 +10,7 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const settask: BotCommand = {
   command: 'settask',
   id: 'settask',
-  mustBeUser: ['athano', 'jumpylionnn'],
+  mustBeUser: [Config.twitch.account],
   description: 'Sets the current task',
   cooldown: 5 * SECOND_MS,
   callback: (connection, parsedCommand) => {

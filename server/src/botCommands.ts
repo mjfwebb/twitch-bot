@@ -1,25 +1,15 @@
-import { addburpee } from './commands/addburpee';
 import { addcommand } from './commands/addcommand';
-import { addissue } from './commands/addissue';
-import { addpushup } from './commands/addpushup';
-import { addsquat } from './commands/addsquat';
 import { commands } from './commands/commands';
-import { delvoid } from './commands/delvoid';
 import { fetchcurrentsong } from './commands/fetchcurrentsong';
 import { followage } from './commands/followage';
-import { forodor } from './commands/forodor';
 import { help } from './commands/help';
 import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
-import { issue } from './commands/issue';
 import { lastsong } from './commands/lastsong';
-import { lutf1sk } from './commands/lutf1sk';
-import { play } from './commands/play';
 import { point } from './commands/point';
 import { pointladder } from './commands/pointladder';
 import { queuesong } from './commands/queuesong';
 import { quote } from './commands/quote';
-import { randomissue } from './commands/randomissue';
 import { removealias } from './commands/removealias';
 import { removecommand } from './commands/removecommand';
 import { roll } from './commands/roll';
@@ -58,8 +48,7 @@ export function loadBotCommands() {
   botCommands.length = 0;
   const customCommands = loadCustomCommands();
   const spotifyCommands = loadSpotifyCommands();
-  const githubCommands = loadGitHubCommands();
-  botCommands.push(...spotifyCommands, ...githubCommands, ...customCommands);
+  botCommands.push(...spotifyCommands, ...customCommands);
 }
 
 export function loadCustomCommands(): BotCommand[] {
@@ -94,30 +83,13 @@ export function getBotCommands(): BotCommand[] {
   return botCommands;
 }
 
-export function loadGitHubCommands(): BotCommand[] {
-  if (Config.github.enabled) {
-    return githubCommands;
-  }
-  return [];
-}
-
 const spotifyCommands: BotCommand[] = [skipsong, song, songqueue, queuesong, lastsong, fetchcurrentsong];
 
-const githubCommands: BotCommand[] = [addissue, randomissue];
-
 const complexBotCommands: BotCommand[] = [
-  addburpee,
   addcommand,
-  addpushup,
-  addsquat,
   commands,
-  delvoid,
   followage,
-  forodor,
   help,
-  issue,
-  lutf1sk,
-  play,
   point,
   pointladder,
   quote,

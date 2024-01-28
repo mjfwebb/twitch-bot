@@ -1,3 +1,4 @@
+import Config from '../config';
 import { fetchChannelInformation } from '../handlers/twitch/helix/fetchChannelInformation';
 import { setStreamTags } from '../handlers/twitch/helix/setStreamTags';
 import type { BotCommand } from '../types';
@@ -7,7 +8,7 @@ import { sendChatMessage } from './helpers/sendChatMessage';
 export const settags: BotCommand = {
   command: ['settags', 'tags'],
   id: 'settags',
-  mustBeUser: ['athano'],
+  mustBeUser: [Config.twitch.account],
   privileged: true,
   hidden: true,
   callback: async (connection, parsedCommand) => {

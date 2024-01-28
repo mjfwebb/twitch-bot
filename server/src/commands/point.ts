@@ -1,3 +1,4 @@
+import Config from '../config';
 import { Users } from '../storage-models/user-model';
 import type { BotCommand } from '../types';
 import { findUserByTargetName } from './helpers/findOrCreateUser';
@@ -8,7 +9,7 @@ export const point: BotCommand = {
   command: 'point',
   id: 'point',
   cooldown: 0,
-  mustBeUser: ['athano'],
+  mustBeUser: [Config.twitch.account],
   description: 'Add a point to a user for being helpful',
   callback: (connection, parsedCommand) => {
     if (hasBotCommandParams(parsedCommand.parsedMessage)) {

@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { logLevels, logger, type LogLevel } from './logger';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
-const webhookNames = ['discord_chat_notification', 'discord_stream_notification'] as const;
+const webhookNames = ['discord_stream_notification'] as const;
 
 type WebhookName = (typeof webhookNames)[number];
 
@@ -38,13 +38,6 @@ export type SpotifyConfig = {
   redirect_uri: string;
   country_code: string;
   scopes: string[];
-};
-
-export type GitHubConfig = {
-  enabled: boolean;
-  owner: string;
-  repo: string;
-  access_token: string;
 };
 
 export type SevenTVConfig = {
@@ -88,7 +81,6 @@ interface Config {
   twitch: TwitchConfig;
   webhooks: WebhooksConfig;
   spotify: SpotifyConfig;
-  github: GitHubConfig;
   sevenTV: SevenTVConfig;
   betterTTV: BetterTTVConfig;
   frankerFaceZ: FrankerFaceZConfig;
@@ -180,24 +172,6 @@ function readSpotifyConfig(config: unknown): SpotifyConfig {
   });
 
   return parsedSpotifyConfig;
-}
-
-function readGitHubConfig(config: unknown): GitHubConfig {
-  const defaultGitHubConfig: GitHubConfig = {
-    enabled: false,
-    owner: '',
-    repo: '',
-    access_token: '',
-  };
-
-  const parsedGitHubConfig = parseConfig<GitHubConfig>({
-    config,
-    defaultConfig: defaultGitHubConfig,
-    part: 'github',
-    properties: ['enabled', 'owner', 'repo', 'access_token'],
-  });
-
-  return parsedGitHubConfig;
 }
 
 function readSevenTVConfig(config: unknown): SevenTVConfig {
@@ -318,12 +292,6 @@ function readWebhooksConfig(config: unknown): WebhooksConfig {
       token: '',
       url: '',
     },
-    [webhookNames[1]]: {
-      enabled: false,
-      id: '',
-      token: '',
-      url: '',
-    },
   };
 
   if (!hasOwnProperty(config, 'webhooks')) {
@@ -427,7 +395,6 @@ const Config: Config = {
   twitch: readTwitchConfig(loadedConfig),
   webhooks: readWebhooksConfig(loadedConfig),
   spotify: readSpotifyConfig(loadedConfig),
-  github: readGitHubConfig(loadedConfig),
   sevenTV: readSevenTVConfig(loadedConfig),
   betterTTV: readBetterTTVConfig(loadedConfig),
   frankerFaceZ: readFrankerFaceZConfig(loadedConfig),
