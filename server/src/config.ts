@@ -309,7 +309,7 @@ function readWebhooksConfig(config: unknown): WebhooksConfig {
   }
 
   if (webhookConfig.length !== webhookNames.length) {
-    logger.error(`Invalid webhooks config: missing webhooks`);
+    logger.error(`Invalid webhooks config: wrong number of webhooks`);
 
     return defaultWebhooksConfig;
   }
