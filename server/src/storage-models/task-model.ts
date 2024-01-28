@@ -8,14 +8,16 @@ import { timestampProperties, timestampPropertyTypes, type Timestamp } from './t
 
 export interface Task extends Timestamp {
   content: ParsedMessageWithAllProps;
+  message: string;
 }
 
-const taskProperties = ['content'] as const;
+const taskProperties = ['content', 'message'] as const;
 
 type TaskProperties = (typeof taskProperties)[number];
 
 const propertyTypes: Record<TaskProperties, string> & typeof timestampPropertyTypes = {
   content: 'object',
+  message: 'string',
   ...timestampPropertyTypes,
 };
 

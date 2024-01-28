@@ -2,7 +2,9 @@ import { addcommand } from './commands/addcommand';
 import { commands } from './commands/commands';
 import { fetchcurrentsong } from './commands/fetchcurrentsong';
 import { followage } from './commands/followage';
+import { get } from './commands/get';
 import { help } from './commands/help';
+import { findBotCommand } from './commands/helpers/findBotCommand';
 import { hasBotCommandParams } from './commands/helpers/hasBotCommandParams';
 import { sendChatMessage } from './commands/helpers/sendChatMessage';
 import { lastsong } from './commands/lastsong';
@@ -13,20 +15,12 @@ import { quote } from './commands/quote';
 import { removealias } from './commands/removealias';
 import { removecommand } from './commands/removecommand';
 import { roll } from './commands/roll';
-import { setalias } from './commands/setalias';
-import { setcategory } from './commands/setcategory';
-import { setcooldown } from './commands/setcooldown';
-import { setdescription } from './commands/setdescription';
-import { setmessage } from './commands/setmessage';
-import { settags } from './commands/settags';
-import { settask } from './commands/settask';
-import { settitle } from './commands/settitle';
+import { set } from './commands/set';
 import { skipsong } from './commands/skipsong';
 import { skiptts } from './commands/skiptts';
 import { song } from './commands/song';
 import { songqueue } from './commands/songqueue';
 import { spotlight } from './commands/spotlight';
-import { task } from './commands/task';
 import { tts } from './commands/tts';
 import { uptime } from './commands/uptime';
 import { viewers } from './commands/viewers';
@@ -35,6 +29,7 @@ import { welcome } from './commands/welcome';
 import { whoami } from './commands/whoami';
 import Config from './config';
 import { fetchChatters } from './handlers/twitch/helix/fetchChatters';
+import { getConnection } from './handlers/twitch/irc/twitchIRCWebsocket';
 import { playSound } from './playSound';
 import { getIO } from './runSocketServer';
 import type { Command } from './storage-models/command-model';
@@ -96,31 +91,25 @@ const complexBotCommands: BotCommand[] = [
   removealias,
   removecommand,
   roll,
-  setalias,
-  setcategory,
-  setcooldown,
-  setdescription,
-  setmessage,
-  settags,
-  settask,
-  settitle,
   skiptts,
   spotlight,
-  task,
   tts,
   uptime,
   viewers,
   voices,
   welcome,
   whoami,
+  set,
+  get,
 ];
 
 const soundMatchRegex = /%sound:([a-zA-Z0-9-_.]+)%/g;
 const messageMatchRegex = /%emit:([a-zA-Z0-9-_.]+)%/g;
+const commandMatchRegex = /%command:([a-zA-Z0-9-_.]+ .+)%/g;
 
 export const messageWithoutTags = (message: string): string => {
   // Remove all instances of %sound:[something]% and %emit:[something]% from the message
-  return message.replace(soundMatchRegex, '').replace(messageMatchRegex, '');
+  return message.replace(soundMatchRegex, '').replace(messageMatchRegex, '').replace(commandMatchRegex, '');
 };
 
 export const runMessageTags = async (message: string) => {
@@ -139,6 +128,15 @@ export const runMessageTags = async (message: string) => {
 
     while ((match = messageMatchRegex.exec(message)) !== null) {
       messagesToEmit.push(match[1]);
+    }
+  }
+
+  const commandsToRun: string[] = [];
+  if (message.includes('%command')) {
+    let match;
+
+    while ((match = commandMatchRegex.exec(message)) !== null) {
+      commandsToRun.push(match[1]);
     }
   }
 
@@ -162,6 +160,39 @@ export const runMessageTags = async (message: string) => {
       } else {
         // Default to wav
         await playSound(sound);
+      }
+    }
+  }
+
+  // Run all commands in sequence
+  if (commandsToRun.length > 0) {
+    const connection = getConnection();
+    if (!connection) {
+      return;
+    }
+    for (const command of commandsToRun) {
+      const commandParts = command.split(' ');
+      const params = commandParts.splice(1).join(' ');
+
+      const botCommand = findBotCommand(commandParts[0]);
+      if (botCommand) {
+        await botCommand.callback(connection, {
+          commandName: botCommand.id,
+          botCommand,
+          parsedMessage: {
+            tags: {},
+            source: {
+              nick: Config.twitch.account,
+              host: '',
+            },
+            parameters: '',
+            command: {
+              botCommand: botCommand.id,
+              botCommandParams: params,
+              command,
+            },
+          },
+        });
       }
     }
   }

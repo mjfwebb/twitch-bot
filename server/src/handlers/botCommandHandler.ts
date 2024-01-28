@@ -1,8 +1,8 @@
 import type websocket from 'websocket';
 
 import { findBotCommand } from '../commands/helpers/findBotCommand';
+import { isAllowedUser } from '../commands/helpers/isAllowedUser';
 import { isPrivileged } from '../commands/helpers/isPrivileged';
-import { isUser } from '../commands/helpers/isUser';
 import { sendChatMessage } from '../commands/helpers/sendChatMessage';
 import { Commands } from '../storage-models/command-model';
 import type { BotCommandCooldown, ParsedCommand, ParsedMessage } from '../types';
@@ -85,7 +85,7 @@ export async function botCommandHandler(connection: websocket.connection, parsed
     return;
   }
 
-  if (botCommand.mustBeUser && !isUser(parsedMessage, botCommand.mustBeUser)) {
+  if (botCommand.mustBeUser && !isAllowedUser(parsedMessage.source?.nick || '', botCommand.mustBeUser)) {
     return;
   }
 

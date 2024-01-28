@@ -1,0 +1,88 @@
+[
+  {
+    "command": [
+      "chortle"
+    ],
+    "commandId": "chortle",
+    "cooldown": 0,
+    "message": "The streamer has chortled %count% times!",
+    "description": "",
+    "timesUsed": 5,
+    "createdAt": "",
+    "updatedAt": ""
+  },
+  {
+    "command": [
+      "wave"
+    ],
+    "commandId": "wave",
+    "cooldown": 0,
+    "message": "%user% waves at %target%!",
+    "description": "",
+    "timesUsed": 15,
+    "createdAt": "",
+    "updatedAt": ""
+  },
+  {
+    "command": [
+      "task"
+    ],
+    "commandId": "task",
+    "message": "%command:get task%",
+    "timesUsed": 39,
+    "cooldown": 0,
+    "description": "",
+    "createdAt": "",
+    "updatedAt": ""
+  },
+  {
+    "command": [
+      "party"
+    ],
+    "commandId": "party",
+    "message": "Time to party! 🎉 %sound:party%",
+    "timesUsed": 12,
+    "cooldown": 10000,
+    "description": "Starts a party",
+    "privilage": true,
+    "createdAt": "",
+    "updatedAt": ""
+  },
+  {
+    "command": [
+      "time"
+    ],
+    "commandId": "time",
+    "description": "Tells you what time it is where the streamer is",
+    "timesUsed": 5,
+    "cooldown": 0,
+    "message": "It's %now% where I am",
+    "createdAt": "",
+    "updatedAt": ""
+  },
+  {
+    "command": [
+      "success"
+    ],
+    "commandId": "success",
+    "message": "%sound:success%%emit:confetti%",
+    "timesUsed": 6,
+    "cooldown": 0,
+    "description": "Used when something goes well",
+    "createdAt": "",
+    "updatedAt": "",
+    "privileged": true
+  },
+  {
+    "command": [
+      "clear"
+    ],
+    "commandId": "clear",
+    "message": "%emit:clearChat%",
+    "timesUsed": 0,
+    "cooldown": 0,
+    "description": "",
+    "createdAt": "",
+    "updatedAt": ""
+  }
+]
