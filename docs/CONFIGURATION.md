@@ -40,12 +40,6 @@ To get the auth_code construct your URL and enter it into the browser. Here's an
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-### GitHub
-
-Ensure that the personal access token includes the scope to access and modify issues.
-
-Visit https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token to obtain the `access_token`
-
 ### SevenTV
 
 You only need to toggle the enabled flag to `true`. Internally the bot will use the Twitch account's ID to find your SevenTV ID.
