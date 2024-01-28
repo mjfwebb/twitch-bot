@@ -19,6 +19,9 @@ function socketEventHandler(socket: Socket) {
       jsConfetti.addConfetti();
     }, 1500);
   });
+  socket.on('clearChat', () => {
+    useStore.getState().clearChat();
+  });
   socket.on('chatMessage', (data: ChatMessage) => {
     useStore.getState().addChatMessage(data);
   });

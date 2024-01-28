@@ -90,6 +90,7 @@ export const generateFakeChatMessage = (index = 0) => {
   };
 
   const fakeChatMessage: ChatMessage = {
+    isSpotlighted: false,
     id: `fake-chat-message-id-${fakeChatMessageCount++}`,
     user,
     parsedMessage,
