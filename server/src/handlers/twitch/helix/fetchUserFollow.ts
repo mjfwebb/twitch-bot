@@ -11,11 +11,9 @@ import { hasOwnProperty } from '../../../utils/hasOwnProperty';
 type UserFollow = {
   total: number;
   data: {
-    from_id: string;
-    from_login: string;
-    from_name: string;
-    to_id: string;
-    to_name: string;
+    user_id: string;
+    user_login: string;
+    user_name: string;
     followed_at: string;
   }[];
   pagination: {
@@ -25,7 +23,7 @@ type UserFollow = {
 
 export const fetchUserFollow = async (userId: string): Promise<UserFollow | null> => {
   try {
-    const url = `${TWITCH_HELIX_URL}users/follows?from_id=${userId}&to_id=${Config.twitch.broadcaster_id}`;
+    const url = `${TWITCH_HELIX_URL}channels/followers?user_id=${userId}&broadcaster_id=${Config.twitch.broadcaster_id}`;
     const accessToken = getCurrentAccessToken();
 
     const response = await fetch(url, {
@@ -40,13 +38,7 @@ export const fetchUserFollow = async (userId: string): Promise<UserFollow | null
 
     if (hasOwnProperty(result, 'data')) {
       assertArray(result.data);
-      if (
-        result.data.length > 0 &&
-        hasOwnProperty(result.data[0], 'from_id') &&
-        typeof result.data[0].from_id === 'string' &&
-        hasOwnProperty(result.data[0], 'to_id') &&
-        typeof result.data[0].to_id === 'string'
-      ) {
+      if (result.data.length > 0 && hasOwnProperty(result.data[0], 'followed_at') && typeof result.data[0].followed_at === 'string') {
         return result as UserFollow;
       }
     }
