@@ -10,7 +10,7 @@ You can use `%count%` in the message text to display how many times that command
 
 ### %user% and %target%
 
-You can use `%user%` and `%target` in the message text as placeholders for the command user and the user name of the command target. For example: `!addcommand wave %user% waves at %target%`. This would then be used like `!wave FriendlyChatter` with the result `Athano waves at FriendlyChatter`.
+You can use `%user%` and `%target%` in the message text as placeholders for the command user and the user name of the command target. For example: `!addcommand wave %user% waves at %target%`. This would then be used like `!wave FriendlyChatter` with the result `Athano waves at FriendlyChatter`.
 
 ### %sound:<name>%
 
