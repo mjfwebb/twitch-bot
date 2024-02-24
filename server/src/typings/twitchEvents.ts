@@ -16,7 +16,8 @@ export type EventsubEvent =
   | ChannelSubscriptionGiftEvent
   | ChannelRaidEvent
   | ChannelFollowEvent
-  | ChannelPointsCustomRewardRedemptionEvent;
+  | ChannelPointsCustomRewardRedemptionEvent
+  | ChannelSubscribeMessageEvent;
 
 export type EventsubEventBase<EventType extends EventsubSubscriptionType> = {
   eventType: EventType;
@@ -28,7 +29,7 @@ export type EventsubSubscriptionType =
   | 'channel.subscribe'
   // | 'channel.subscription.end'
   | 'channel.subscription.gift'
-  // | 'channel.subscription.message'
+  | 'channel.subscription.message'
   // | 'channel.cheer'
   | 'channel.raid'
   // | 'channel.ban'
@@ -66,6 +67,29 @@ export type EventsubSubscriptionType =
 // | 'user.authorization.grant'
 // | 'user.authorization.revoke'
 // | 'user.update';
+
+type EmotePlacement = {
+  begin: number; //	The index of where the Emote starts in the text.
+  end: number; //	The index of where the Emote ends in the text.
+  id: string; //	The emote ID.
+};
+
+interface ChannelSubscribeMessageEvent extends EventsubEventBase<'channel.subscription.message'> {
+  user_id: string; //	The user ID of the user who sent a resubscription chat message.
+  user_login: string; //	The user login of the user who sent a resubscription chat message.
+  user_name: string; //	The user display name of the user who a resubscription chat message.
+  broadcaster_user_id: string; //	The broadcaster user ID.
+  broadcaster_user_login: string; //	The broadcaster login.
+  broadcaster_user_name: string; //	The broadcaster display name.
+  tier: string; //	The tier of the user’s subscription.
+  message: {
+    text: string;
+    emotes: EmotePlacement[];
+  }; //	An object that contains the resubscription message and emote information needed to recreate the message.
+  cumulative_months: number; //	The total number of months the user has been subscribed to the channel.
+  streak_months: number; //	The number of consecutive months the user’s current subscription has been active. This value is null if the user has opted out of sharing this information.
+  duration_months: number; //	The month duration of the subscription.
+}
 
 interface ChannelSubscribeEvent extends EventsubEventBase<'channel.subscribe'> {
   user_id: string; // The user ID for the user who subscribed to the specified channel.
