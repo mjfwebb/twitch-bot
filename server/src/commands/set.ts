@@ -4,6 +4,7 @@ import { SECOND_MS } from '../constants';
 import { fetchGameByName } from '../handlers/twitch/helix/fetchGameByName';
 import { setStreamGame } from '../handlers/twitch/helix/setStreamGame';
 import { setStreamTags } from '../handlers/twitch/helix/setStreamTags';
+import { setStreamTitle } from '../handlers/twitch/helix/setStreamTitle';
 import { getIO } from '../runSocketServer';
 import { Commands } from '../storage-models/command-model';
 import type { Task } from '../storage-models/task-model';
@@ -218,7 +219,7 @@ export const set: BotCommand = {
       case 'title': {
         const newTitle = commandParams;
         if (newTitle) {
-          await setStreamGame(newTitle);
+          await setStreamTitle(newTitle);
           sendChatMessage(connection, `Title updated to ${newTitle} 🎉`);
         }
         break;
