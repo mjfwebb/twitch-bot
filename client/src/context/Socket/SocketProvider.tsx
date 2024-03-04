@@ -56,6 +56,7 @@ const SocketProvider = (props: SocketProviderProps) => {
           socket.current.on('connect_error', onConnectError);
           socket.current.on('disconnect', onDisconnect);
           socket.current.on('connect', () => {
+            useStore.getState().resetState();
             sendToServer('getTask');
             sendToServer('getSong');
             sendToServer('getEmotes');
