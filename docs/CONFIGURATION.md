@@ -78,8 +78,26 @@ Sometimes you want something to occur on a regular interval. You can set up inte
 
 You can find more information about these features in the [interval commands configuration guide](INTERVAL_COMMANDS.md)
 
-## Add users to the chat exclusion list
+## Add users to the chat user exclusion list
 
-Open `chat-exclusion-list.txt` in the root directory of the project. Add the usernames of the users you want to exclude from chat commands. Each username should be on a new line.
+Open `chat-user-exclusion-list.txt` in the root directory of the project. Add the usernames of the users you want to exclude from chat commands. Each username should be on a new line.
 
 This file will be created automatically when you run the server for the first time.
+
+For example, to exclude the user `troll` from chat commands, you would add the following line to the file:
+
+```plaintext
+troll
+```
+
+## Add commands to the chat command inclusion list
+
+Open `chat-command-inclusion-list.txt` in the root directory of the project. Add the commands you want to include in chat. Each command should be on a new line.
+
+This file will be created automatically when you run the server for the first time.
+
+For example, to add the `!tts` command to the chat command inclusion list, you would add the following line to the file:
+
+```plaintext
+tts
+```

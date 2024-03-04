@@ -64,8 +64,6 @@ export function runTwitchIRCWebsocket() {
           const parsedMessage = parseMessage(message);
 
           if (parsedMessage && parsedMessage.command) {
-            const botCommand = parsedMessage.command.botCommand;
-
             switch (parsedMessage.command.command) {
               case 'PRIVMSG':
                 botCommandHandler(connection, parsedMessage).catch((e) => logger.error(e));
@@ -75,7 +73,7 @@ export function runTwitchIRCWebsocket() {
                 firstMessageOfStreamHandler(connection, parsedMessage);
                 returningChatterHandler(connection, parsedMessage);
 
-                if ((!botCommand || botCommand === 'ACTION') && parsedMessage.source?.nick && parsedMessage.parameters) {
+                if (parsedMessage.source?.nick && parsedMessage.parameters) {
                   messageHandler(parsedMessage).catch((e) => logger.error(e));
                 }
                 break;

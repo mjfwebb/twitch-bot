@@ -1,4 +1,4 @@
-import { getChatExlusionList } from '../../../chat/chatExclusionList';
+import { getChatCommandInclusionList, getChatUserExclusionList } from '../../../chat/chatFiltering';
 import { addChatMessage } from '../../../chat/chatMessages';
 import { getChatUser } from '../../../commands/helpers/findOrCreateUser';
 import { runTTS } from '../../../commands/tts';
@@ -51,7 +51,14 @@ export async function messageHandler(parsedMessage: ParsedMessage): Promise<void
   const displayName = parsedMessage.tags?.['display-name'];
   const chatMessageId = parsedMessage.tags?.['id'];
 
-  const chatExcludedUsers = getChatExlusionList();
+  const chatExcludedUsers = getChatUserExclusionList();
+  const chatIncludedCommands = getChatCommandInclusionList();
+
+  const botCommand = parsedMessage.command?.botCommand;
+
+  if (botCommand && botCommand !== 'ACTION' && !chatIncludedCommands.has(botCommand)) {
+    return;
+  }
 
   if (userId && nick && displayName && chatMessageId) {
     const chatUser = await getChatUser(userId, nick, displayName);
