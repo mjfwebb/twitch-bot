@@ -254,6 +254,7 @@ function loadMessageCommands(): BotCommand[] {
     description: c.description || '',
     cooldown: c.cooldown || 0,
     callback: async (connection, parsedCommand) => commandCallbackGenerator(c)(connection, parsedCommand),
+    privileged: c.privileged || false,
   }));
 
   return botCommands;
