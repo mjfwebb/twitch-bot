@@ -44,7 +44,7 @@
     "timesUsed": 12,
     "cooldown": 10000,
     "description": "Starts a party",
-    "privilage": true,
+    "privileged": true,
     "createdAt": "",
     "updatedAt": ""
   },

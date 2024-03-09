@@ -46,13 +46,20 @@ export function loadBotCommands() {
   botCommands.push(...spotifyCommands, ...customCommands);
 }
 
-export function loadCustomCommands(): BotCommand[] {
+function loadBuiltInCommands(): BotCommand[] {
+  if (Config.features.built_in_commands_handler) {
+    return builtInCommands;
+  }
+  return [];
+}
+
+function loadCustomCommands(): BotCommand[] {
   if (Config.features.commands_handler) {
     const messageCommands = loadMessageCommands();
 
     // Need to merge the commands from the database with the message commands
     // as the messageCommands can contain aliases for the complex commands
-    const loadedCommands = [...complexBotCommands];
+    const loadedCommands = loadBuiltInCommands();
     for (const messageCommand of messageCommands) {
       const foundIndex = loadedCommands.findIndex((c) => c.id === messageCommand.id);
       if (foundIndex === -1) {
@@ -80,7 +87,7 @@ export function getBotCommands(): BotCommand[] {
 
 const spotifyCommands: BotCommand[] = [skipsong, song, songqueue, queuesong, lastsong, fetchcurrentsong];
 
-const complexBotCommands: BotCommand[] = [
+const builtInCommands: BotCommand[] = [
   addcommand,
   commands,
   followage,

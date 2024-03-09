@@ -65,6 +65,7 @@ export type FeaturesConfig = {
   first_message_of_stream_handler: boolean;
   returning_chatter_handler: boolean;
   commands_handler: boolean;
+  built_in_commands_handler: boolean;
   events_handler: boolean;
 };
 
@@ -263,6 +264,7 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
     first_message_of_stream_handler: true,
     returning_chatter_handler: true,
     commands_handler: true,
+    built_in_commands_handler: true,
     events_handler: true,
   };
 
@@ -277,6 +279,7 @@ function readFeaturesConfig(config: unknown): FeaturesConfig {
       'first_message_of_stream_handler',
       'returning_chatter_handler',
       'commands_handler',
+      'built_in_commands_handler',
       'events_handler',
     ],
   });
