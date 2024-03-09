@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
 import { logger } from '../logger';
 
@@ -40,7 +40,10 @@ export function loadChatUserExclusionList() {
     logger.info(`${pc.blue('Startup:')} Migrating old chat exclusion list to new format`);
     const oldChatExclusionListContents = readFileSync(oldChatExclusionListFilename, 'utf8');
     writeFileSync(chatUserExclusionListFilename, oldChatExclusionListContents);
-    writeFileSync(oldChatExclusionListFilename, '');
+
+    // Remove the old chat-exclusion-list.txt file
+    logger.info(`${pc.blue('Startup:')} Removing old chat exclusion list`);
+    unlinkSync(oldChatExclusionListFilename);
   }
 
   // If the file chat-exclusion-list.txt exists, load it into memory
