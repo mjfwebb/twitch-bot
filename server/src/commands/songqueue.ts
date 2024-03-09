@@ -11,9 +11,9 @@ export const songqueue: BotCommand = {
   privileged: false,
   description: 'Shows the next songs in the playback queue (from Spotify)',
   callback: async (connection) => {
-    const queue = await getPlaybackQueue();
-    if (queue) {
-      const nextInQueue = queue.splice(0, 3);
+    const result = await getPlaybackQueue();
+    if (result?.queue) {
+      const nextInQueue = result?.queue.splice(0, 3);
       sendChatMessage(
         connection,
         `Next ${nextInQueue.length} queued songs: ${nextInQueue.map((queueItem, index) => `${index + 1}) ${songDetails(queueItem)}`).join(', ')}`,

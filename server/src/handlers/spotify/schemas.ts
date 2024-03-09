@@ -120,8 +120,11 @@ export const spotifySongSchema = z.object({
   is_playing: z.boolean(),
 });
 
-export const spotifyTracksSchema = z.array(spotifyTrackSchema);
+export const spotifyQueueSchema = z.object({
+  currently_playing: z.optional(z.any()), // Setting this to any for now, as it is not used
+  queue: z.array(spotifyTrackSchema),
+});
 
 export type SpotifyTrack = z.infer<typeof spotifyTrackSchema>;
-export type SpotifyTracks = z.infer<typeof spotifyTracksSchema>;
 export type SpotifySong = z.infer<typeof spotifySongSchema>;
+export type SpotifyQueue = z.infer<typeof spotifyQueueSchema>;
