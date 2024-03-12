@@ -10,18 +10,9 @@ const spotifyArtistSchema = z.object({
   external_urls: z.object({
     spotify: z.string(),
   }),
-  followers: z.optional(
-    z.object({
-      href: z.string(),
-      total: z.number(),
-    }),
-  ),
-  genres: z.optional(z.array(z.string())),
   href: z.string(),
   id: z.string(),
-  images: z.optional(z.array(imageSchema)),
   name: z.string(),
-  popularity: z.optional(z.number()),
   type: z.string(),
   uri: z.string(),
 });
@@ -29,38 +20,6 @@ const spotifyArtistSchema = z.object({
 export const spotifyTrackSchema = z.object({
   album: z.object({
     album_type: z.string(),
-    total_tracks: z.number(),
-    available_markets: z.array(z.string()),
-    external_urls: z.object({
-      spotify: z.string(),
-    }),
-    href: z.string(),
-    id: z.string(),
-    images: z.array(imageSchema),
-    name: z.string(),
-    release_date: z.string(),
-    release_date_precision: z.string(),
-    type: z.string(),
-    uri: z.string(),
-    copyrights: z.optional(
-      z.tuple([
-        z.object({
-          text: z.string(),
-          type: z.string(),
-        }),
-      ]),
-    ),
-    external_ids: z.optional(
-      z.object({
-        isrc: z.string(),
-        ean: z.optional(z.string()),
-        upc: z.optional(z.string()),
-      }),
-    ),
-    genres: z.optional(z.array(z.string())),
-    label: z.optional(z.string()),
-    popularity: z.optional(z.number()),
-    album_group: z.optional(z.string()),
     artists: z.array(
       z.object({
         external_urls: z.object({
@@ -73,9 +32,20 @@ export const spotifyTrackSchema = z.object({
         uri: z.string(),
       }),
     ),
+    external_urls: z.object({
+      spotify: z.string(),
+    }),
+    href: z.string(),
+    id: z.string(),
+    images: z.array(imageSchema),
+    name: z.string(),
+    release_date: z.string(),
+    release_date_precision: z.string(),
+    total_tracks: z.number(),
+    type: z.string(),
+    uri: z.string(),
   }),
   artists: z.array(spotifyArtistSchema),
-  available_markets: z.array(z.string()),
   disc_number: z.number(),
   duration_ms: z.number(),
   explicit: z.boolean(),
@@ -89,6 +59,7 @@ export const spotifyTrackSchema = z.object({
   }),
   href: z.string(),
   id: z.string(),
+  is_local: z.boolean(),
   is_playable: z.optional(z.boolean()),
   name: z.string(),
   popularity: z.optional(z.number()),
@@ -96,7 +67,6 @@ export const spotifyTrackSchema = z.object({
   track_number: z.number(),
   type: z.string(),
   uri: z.string(),
-  is_local: z.boolean(),
 });
 
 export const spotifySongSchema = z.object({
