@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@radix-ui/react-tabs": "^1.0.4",
+    "@twemoji/api": "^15.1.0",
     "classnames": "^2.3.2",
     "color": "^4.2.3",
     "framer-motion": "^11.0.0",
@@ -26,7 +27,6 @@
     "react-virtuoso": "^4.3.8",
     "socket.io-client": "^4.5.4",
     "styled-components": "^6.0.0-rc.6",
-    "twemoji": "^14.0.2",
     "vitest": "^1.0.0",
     "wouter": "^3.0.2",
     "zustand": "^4.3.2"

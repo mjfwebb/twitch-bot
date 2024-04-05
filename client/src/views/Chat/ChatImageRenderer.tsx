@@ -1,5 +1,5 @@
+import twemoji from '@twemoji/api';
 import classNames from 'classnames';
-import twemoji from 'twemoji';
 
 import useStore from '../../store/store';
 import type { Emotes } from '../../twitchTypes';
