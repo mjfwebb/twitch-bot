@@ -84,7 +84,9 @@ export const SongDisplay = ({
               ? {
                   x: [0, -titleOverflowWidth],
                 }
-              : {}),
+              : {
+                  x: [0, 0],
+                }),
           }}
           style={{
             ...(titleTooWide
@@ -137,7 +139,9 @@ export const SongDisplay = ({
               ? {
                   x: [0, -artistsOverflowWidth],
                 }
-              : {}),
+              : {
+                  x: [0, 0],
+                }),
           }}
           style={{
             ...(artistsTooWide
