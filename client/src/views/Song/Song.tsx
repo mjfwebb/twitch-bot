@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { motion } from 'framer-motion';
 
@@ -52,11 +52,24 @@ export const SongDisplay = ({
   const songInfoRef = useRef<HTMLDivElement>(null);
   const songTitleRef = useRef<HTMLDivElement>(null);
   const songArtistsRef = useRef<HTMLDivElement>(null);
-  const songInfoWidth = songInfoRef.current?.clientWidth || 0;
-  const titleWidth = songTitleRef.current?.offsetWidth || 0;
-  const artistsWidth = songArtistsRef.current?.offsetWidth || 0;
-  const titleTooWide = titleWidth + 32 > songInfoWidth;
-  const artistsTooWide = artistsWidth + 32 > songInfoWidth;
+  const [songInfoWidth, setSongInfoWidth] = useState<number>(0);
+  const [titleWidth, setTitleWidth] = useState<number>(0);
+  const [artistsWidth, setArtistsWidth] = useState<number>(0);
+  const titleTooWide = titleWidth > songInfoWidth;
+  const artistsTooWide = artistsWidth > songInfoWidth;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const songInfoWidth = songInfoRef.current?.clientWidth || 0;
+      const titleWidth = songTitleRef.current?.offsetWidth || 0;
+      const artistsWidth = songArtistsRef.current?.offsetWidth || 0;
+
+      setSongInfoWidth(songInfoWidth);
+      setTitleWidth(titleWidth);
+      setArtistsWidth(artistsWidth);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   // Add 32px for padding
   const titleOverflowWidth = titleWidth + 32 - songInfoWidth;
