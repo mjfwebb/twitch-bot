@@ -102,8 +102,8 @@ export const removeSevenTVEmote = (emoteId: string) => {
 
 export const addSevenTVEmote = async (emote: SevenTVEmote) => {
   const name = emote.name;
-  // Use the second in the array of files as it will be the smallest WebP
-  const file = emote.data.host.files[2];
+  // Use the largest emote for that 4K crispiness
+  const file = emote.data.host.files.find((file) => file.name === '3x.webp' || file.name === '3x.avif');
 
   if (file) {
     const imageUrl = `${emote.data.host.url}/${file.name}`;
