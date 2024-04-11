@@ -154,10 +154,11 @@ export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
             case SevenTVWebsocketOpCodes.Dispatch: {
               const { body } = d as DispatchMessage['d'];
               // An emote has been added to the user's emote set
-              if ((body.pushed && body.pushed.length) || (body.added && body.added.length)) {
+              if ((body.pushed && body.pushed.length) || (body.added && body.added.length) || (body.updated && body.updated.length)) {
                 const pushed = body.pushed || [];
                 const added = body.added || [];
-                for (const entry of [...pushed, ...added]) {
+                const updated = body.updated || [];
+                for (const entry of [...pushed, ...added, ...updated]) {
                   if (entry.key === 'emotes') {
                     const emote = entry.value as SevenTVEmote;
                     logger.info(`SevenTV WebSocket: Emote added: "${emote.name}" with ID: ${emote.id}`);
@@ -167,10 +168,11 @@ export function runSevenTVWebsocket(seventTVTwitchUser: SevenTVTwitchUser) {
               }
 
               // An emote has been removed from the user's emote set
-              if ((body.removed && body.removed.length) || (body.pulled && body.pulled.length)) {
+              if ((body.removed && body.removed.length) || (body.pulled && body.pulled.length) || (body.updated && body.updated.length)) {
                 const pulled = body.pulled || [];
                 const removed = body.removed || [];
-                for (const entry of [...removed, ...pulled]) {
+                const updated = body.updated || [];
+                for (const entry of [...removed, ...pulled, ...updated]) {
                   if (entry.key === 'emotes') {
                     const emote = entry.old_value as SevenTVEmote;
                     logger.info(`SevenTV WebSocket: Emote removed: "${emote.name}" with ID: ${emote.id}`);
