@@ -2,10 +2,6 @@
 // component parts (tags, source (nick and host), command, parameters).
 // Expects the caller to pass a single message. (Remember, the Twitch
 // IRC server may send one or more IRC messages in a single message.)
-// Parses an IRC message and returns a JSON object with the message's
-// component parts (tags, source (nick and host), command, parameters).
-// Expects the caller to pass a single message. (Remember, the Twitch
-// IRC server may send one or more IRC messages in a single message.)
 
 import type { ParsedMessage } from '../../../../types';
 import { parseCommand } from './parseCommand';
