@@ -6,9 +6,15 @@ import { eventSubscribe } from './eventSubscribe';
 
 export const subscribeToFollows = async (sessionId: string) => {
   try {
-    await eventSubscribe(sessionId, 'channel.follow', {
-      broadcaster_user_id: Config.twitch.broadcaster_id,
-    });
+    await eventSubscribe(
+      sessionId,
+      'channel.follow',
+      {
+        broadcaster_user_id: Config.twitch.broadcaster_id,
+        moderator_user_id: Config.twitch.broadcaster_id,
+      },
+      '2',
+    );
   } catch (error) {
     logger.error(error);
   }
