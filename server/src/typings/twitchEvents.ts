@@ -18,7 +18,8 @@ export type EventsubEvent =
   | ChannelFollowEvent
   | ChannelPointsCustomRewardRedemptionEvent
   | ChannelSubscribeMessageEvent
-  | ChannelChatMessageEvent;
+  | ChannelChatMessageEvent
+  | ChannelChatMessageDeleteEvent;
 
 export type EventsubEventBase<EventType extends EventsubSubscriptionType> = {
   eventType: EventType;
@@ -68,7 +69,8 @@ export type EventsubSubscriptionType =
   // | 'user.authorization.grant'
   // | 'user.authorization.revoke'
   // | 'user.update'
-  | 'channel.chat.message';
+  | 'channel.chat.message'
+  | 'channel.chat.message_delete';
 
 type EmotePlacement = {
   begin: number; //	The index of where the Emote starts in the text.
@@ -241,4 +243,14 @@ interface ChannelChatMessageEvent extends EventsubEventBase<'channel.chat.messag
   color: string; // The color of the user’s name in the chat room.
   reply?: ChatMessageReply; // Metadata if this message is a reply.
   channel_points_custom_reward_id?: string; // The ID of a channel points custom reward that was redeemed.
+}
+
+interface ChannelChatMessageDeleteEvent extends EventsubEventBase<'channel.chat.message_delete'> {
+  broadcaster_user_id: string; // The broadcaster user ID.
+  broadcaster_user_name: string; // The broadcaster display name.
+  broadcaster_user_login: string; // The broadcaster login.
+  target_user_id: string; // The ID of the user whose message was deleted.
+  target_user_name: string; // The user name of the user whose message was deleted.
+  target_user_login: string; // The user login of the user whose message was deleted.
+  message_id: string; // A UUID that identifies the message that was removed.
 }

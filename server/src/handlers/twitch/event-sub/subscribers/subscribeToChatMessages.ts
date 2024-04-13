@@ -8,6 +8,10 @@ export const subscribeToChatMessages = async (sessionId: string) => {
       broadcaster_user_id: Config.twitch.broadcaster_id,
       user_id: Config.twitch.broadcaster_id,
     });
+    await eventSubscribe(sessionId, 'channel.chat.message_delete', {
+      broadcaster_user_id: Config.twitch.broadcaster_id,
+      user_id: Config.twitch.broadcaster_id,
+    });
   } catch (error) {
     logger.error(error);
   }
