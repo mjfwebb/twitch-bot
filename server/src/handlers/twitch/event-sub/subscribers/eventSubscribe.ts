@@ -3,6 +3,7 @@ import Config from '../../../../config';
 import { TWITCH_HELIX_URL } from '../../../../constants';
 import { logger } from '../../../../logger';
 import type { EventSubCondition, EventsubSubscriptionType } from '../../../../typings/twitchEvents';
+import { hasOwnProperty } from '../../../../utils/hasOwnProperty';
 
 export const eventSubscribe = async (sessionId: string, type: EventsubSubscriptionType, condition: EventSubCondition, version = '1') => {
   try {
@@ -19,7 +20,7 @@ export const eventSubscribe = async (sessionId: string, type: EventsubSubscripti
       },
     });
 
-    await fetchWithRetry(url, {
+    const result = await fetchWithRetry(url, {
       method: 'POST',
       headers: {
         'Client-Id': Config.twitch.client_id,
@@ -28,6 +29,10 @@ export const eventSubscribe = async (sessionId: string, type: EventsubSubscripti
       },
       body,
     });
+
+    if (hasOwnProperty(result, 'error')) {
+      logger.error(`${type}: Error: ${JSON.stringify(result)}`);
+    }
   } catch (error) {
     logger.error(error);
   }

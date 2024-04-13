@@ -4,6 +4,7 @@ import { logger } from '../../../logger';
 import type { TwitchWebsocketMessage } from '../../../types';
 import type { EventSubResponse, EventsubEvent } from '../../../typings/twitchEvents';
 import { hasOwnProperty } from '../../../utils/hasOwnProperty';
+import { subscribeToChatMessages } from './subscribers/subscribeToChatMessages';
 import { subscribeToFollows } from './subscribers/subscribeToFollows';
 import { subscribeToRaids } from './subscribers/subscribeToRaids';
 import { subscribeToRedeems } from './subscribers/subscribeToRedeems';
@@ -32,7 +33,8 @@ export function runTwitchEventSubWebsocket() {
       logger.info('Twitch EventSub WebSocket: Connection Closed');
     });
 
-    connection.on('message', function (message) {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    connection.on('message', async function (message) {
       isConnected = true;
       if (hasOwnProperty(message, 'utf8Data')) {
         const data = JSON.parse(message.utf8Data as string) as TwitchWebsocketMessage;
@@ -42,11 +44,18 @@ export function runTwitchEventSubWebsocket() {
             {
               const sessionId = data.payload.session?.id;
               if (sessionId) {
-                subscribeToRedeems(sessionId).catch((e) => logger.error(e));
-                subscribeToFollows(sessionId).catch((e) => logger.error(e));
-                subscribeToRaids(sessionId).catch((e) => logger.error(e));
-                subscribeToStreamOnlineNotifications(sessionId).catch((e) => logger.error(e));
-                subscribeToStreamOfflineNotifications(sessionId).catch((e) => logger.error(e));
+                try {
+                  await Promise.all([
+                    subscribeToRedeems(sessionId),
+                    subscribeToFollows(sessionId),
+                    subscribeToRaids(sessionId),
+                    subscribeToStreamOnlineNotifications(sessionId),
+                    subscribeToStreamOfflineNotifications(sessionId),
+                    subscribeToChatMessages(sessionId),
+                  ]);
+                } catch (error) {
+                  logger.error(error);
+                }
               }
             }
 

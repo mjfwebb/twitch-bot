@@ -17,7 +17,8 @@ export type EventsubEvent =
   | ChannelRaidEvent
   | ChannelFollowEvent
   | ChannelPointsCustomRewardRedemptionEvent
-  | ChannelSubscribeMessageEvent;
+  | ChannelSubscribeMessageEvent
+  | ChannelChatMessageEvent;
 
 export type EventsubEventBase<EventType extends EventsubSubscriptionType> = {
   eventType: EventType;
@@ -63,10 +64,11 @@ export type EventsubSubscriptionType =
   // | 'channel.shield_mode.begin'
   // | 'channel.shield_mode.end'
   | 'stream.online'
-  | 'stream.offline';
-// | 'user.authorization.grant'
-// | 'user.authorization.revoke'
-// | 'user.update';
+  | 'stream.offline'
+  // | 'user.authorization.grant'
+  // | 'user.authorization.revoke'
+  // | 'user.update'
+  | 'channel.chat.message';
 
 type EmotePlacement = {
   begin: number; //	The index of where the Emote starts in the text.
@@ -166,4 +168,77 @@ interface ChannelPointsCustomReward {
   title: string; // The reward name.
   cost: number; // The reward cost.
   prompt: string; // The reward description.
+}
+
+interface Cheermote {
+  prefix: string; // The name portion of the Cheermote string that you use in chat to cheer Bits. The full Cheermote string is the concatenation of {prefix} + {number of Bits}. For example, if the prefix is “Cheer” and you want to cheer 100 Bits, the full Cheermote string is Cheer100. When the Cheermote string is entered in chat, Twitch converts it to the image associated with the Bits tier that was cheered.
+  bits: number; // The amount of bits cheered.
+  tier: number; // The tier level of the cheermote.
+}
+
+interface Emote {
+  id: string; // An ID that uniquely identifies this emote.
+  emote_set_id: string; // An ID that identifies the emote set that the emote belongs to.
+  owner_id: string; // The ID of the broadcaster who owns the emote.
+  format: 'animated' | 'static'; // The formats that the emote is available in. For example, if the emote is available only as a static PNG, the array contains only static. But if the emote is available as a static PNG and an animated GIF, the array contains static and animated. The possible formats are: animated - An animated GIF is available for this emote. static - A static PNG file is available for this emote.
+}
+
+interface Mention {
+  user_id: string; // The user ID of the mentioned user.
+  user_name: string; // The user name of the mentioned user.
+  user_login: string; // The user login of the mentioned user.
+}
+
+interface ChatMessageFragment {
+  type: 'text' | 'cheermote' | 'emote' | 'mention'; // The type of message fragment.
+  text: string; // Message text in fragment.
+  cheermote?: Cheermote; // Metadata pertaining to the cheermote.
+  emote?: Emote; // Metadata pertaining to the emote.
+  mention?: Mention; // Metadata pertaining to the mention.
+}
+
+interface Cheer {
+  bits: number; // The amount of Bits used.
+  total_bits: number; // The total number of Bits used in the channel by the user.
+  message: string; // The message sent with the cheer.
+}
+
+interface ChatBadge {
+  set_id: string; // An ID that identifies this set of chat badges. For example, Bits or Subscriber.
+  version: string; // An ID that identifies this version of the badge. The ID can be any value. For example, for Bits, the ID is the Bits tier level, but for World of Warcraft, it could be Alliance or Horde.
+  info: string; // Contains metadata related to the chat badges in the badges tag. Currently, this tag contains metadata only for subscriber badges, to indicate the number of months the user has been a subscriber.
+}
+
+interface ChatMessageReply {
+  parent_message_id: string; // An ID that uniquely identifies the parent message that this message is replying to.
+  parent_message_body: string; // The message body of the parent message.
+  parent_user_id: string; // User ID of the sender of the parent message.
+  parent_user_name: string; // User name of the sender of the parent message.
+  parent_user_login: string; // User login of the sender of the parent message.
+  thread_message_id: string; // An ID that identifies the parent message of the reply thread.
+  thread_user_id: string; // User ID of the sender of the thread’s parent message.
+  thread_user_name: string; // User name of the sender of the thread’s parent message.
+  thread_user_login: string; // User login of the sender of the thread’s parent message.
+}
+
+interface ChatMessage {
+  text: string; // The chat message in plain text.
+  fragments: ChatMessageFragment[]; // Ordered list of chat message fragments.
+}
+
+interface ChannelChatMessageEvent extends EventsubEventBase<'channel.chat.message'> {
+  broadcaster_user_id: string; // The broadcaster user ID.
+  broadcaster_user_name: string; // The broadcaster display name.
+  broadcaster_user_login: string; // The broadcaster login.
+  chatter_user_id: string; // The user ID of the user that sent the message.
+  chatter_user_name: string; // The user name of the user that sent the message.
+  chatter_user_login: string; // The user login of the user that sent the message.
+  message_id: string; // A UUID that identifies the message.
+  message: ChatMessage; // The structured chat message.
+  message_type: 'text' | 'channel_points_highlighted' | 'channel_points_sub_only' | 'user_intro'; // The type of message.
+  badges: ChatBadge[]; // List of chat badges.
+  cheer?: Cheer; // Metadata if this message is a cheer.
+  color: string; // The color of the user’s name in the chat room.
+  reply?: ChatMessageReply; // Metadata if this message is a reply.
+  channel_points_custom_reward_id?: string; // The ID of a channel points custom reward that was redeemed.
 }

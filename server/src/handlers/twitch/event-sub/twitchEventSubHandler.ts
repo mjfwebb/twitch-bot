@@ -119,6 +119,17 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
       }
       break;
     }
+
+    case 'channel.chat.message': {
+      switch (data.message_type) {
+        case 'text': {
+          logger.info(`Received chat message from ${data.chatter_user_name}: ${data.message.text}`);
+          break;
+        }
+      }
+      break;
+    }
+
     default:
       break;
   }
