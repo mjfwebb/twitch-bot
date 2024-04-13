@@ -13,6 +13,8 @@ import { subscribeToStreamOnlineNotifications } from './subscribers/subscribeToS
 import { twitchEventSubHandler } from './twitchEventSubHandler';
 
 let isConnected = false;
+let keepAliveSeconds = 11;
+let keepAliveCountdown = 0;
 
 export function runTwitchEventSubWebsocket() {
   const client = new websocket.client();
@@ -43,6 +45,14 @@ export function runTwitchEventSubWebsocket() {
           case 'session_welcome':
             {
               const sessionId = data.payload.session?.id;
+              const parsedKeepAliveSeconds = Number(data.payload.session?.keepalive_timeout_seconds);
+              if (parsedKeepAliveSeconds) {
+                logger.info(`Twitch EventSub: Keep alive seconds provided by Twitch: ${parsedKeepAliveSeconds}`);
+                keepAliveSeconds = parsedKeepAliveSeconds + 1; // Add 1 second to the keep alive seconds to account for latency
+              } else {
+                logger.error(`Twitch EventSub: Keep alive seconds not provided by Twitch, using default of ${keepAliveSeconds} seconds`);
+              }
+              keepAliveCountdown = keepAliveSeconds;
               if (sessionId) {
                 try {
                   await Promise.all([
@@ -62,6 +72,7 @@ export function runTwitchEventSubWebsocket() {
             break;
 
           case 'notification':
+            keepAliveCountdown = keepAliveSeconds;
             if (isSubscriptionEvent(data.payload)) {
               // Transform the data first so that we can have a discriminated union type
               const transformedData = {
@@ -72,14 +83,27 @@ export function runTwitchEventSubWebsocket() {
               twitchEventSubHandler(transformedData).catch((e) => logger.error(e));
             }
             break;
+
+          case 'session_keepalive':
+            logger.info('Twitch EventSub: Keep alive received');
+            keepAliveCountdown = keepAliveSeconds;
+            break;
+
           default:
-            // console.info({ messageType: data.metadata.message_type, payload: data.payload });
             break;
         }
       }
     });
   });
   client.connect(TWITCH_WEBSOCKET_EVENTSUB_URL);
+  setInterval(() => {
+    if (keepAliveCountdown <= 0) {
+      logger.info('Twitch EventSub: Keep alive reached 0, reconnecting...');
+      isConnected = false;
+      keepAliveCountdown = 999999999; // Set to a high number to prevent multiple reconnects
+    }
+    keepAliveCountdown--;
+  }, 1000);
   setInterval(() => {
     if (!isConnected) {
       logger.info('Twitch EventSub: Reconnecting...');
