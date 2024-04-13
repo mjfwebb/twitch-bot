@@ -4,7 +4,7 @@ import type { User } from './storage-models/user-model';
 
 export type TwitchWebsocketMetadata = {
   message_id: string;
-  message_type: 'session_welcome' | 'session_keepalive' | 'notification';
+  message_type: 'session_welcome' | 'session_keepalive' | 'notification' | 'session_reconnect';
   message_timestamp: Date;
 };
 
@@ -13,7 +13,7 @@ export type TwitchWebsocketSessionData = {
   status: 'connected';
   connected_at: Date;
   keepalive_timeout_seconds: number;
-  reconnect_url: null;
+  reconnect_url: null | string;
 };
 
 export type TwitchWebsocketMessage = {

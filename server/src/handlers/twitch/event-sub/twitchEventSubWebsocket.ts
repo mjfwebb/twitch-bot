@@ -12,6 +12,7 @@ import { subscribeToStreamOfflineNotifications } from './subscribers/subscribeTo
 import { subscribeToStreamOnlineNotifications } from './subscribers/subscribeToStreamOnlineNotifications';
 import { twitchEventSubHandler } from './twitchEventSubHandler';
 
+let connectionUrl = TWITCH_WEBSOCKET_EVENTSUB_URL;
 let isConnected = false;
 let keepAliveSeconds = 11;
 let keepAliveCountdown = 0;
@@ -85,8 +86,20 @@ export function runTwitchEventSubWebsocket() {
             break;
 
           case 'session_keepalive':
-            logger.info('Twitch EventSub: Keep alive received');
             keepAliveCountdown = keepAliveSeconds;
+            break;
+
+          case 'session_reconnect':
+            if (isReconnectEvent(data.payload)) {
+              const reconnectURL = data.payload.session?.reconnect_url;
+              if (reconnectURL) {
+                logger.info(
+                  `Twitch EventSub: Reconnect event received. Setting new connection URL to reconnect URL: ${reconnectURL}. Connection will be re-established.`,
+                );
+                connectionUrl = reconnectURL;
+                client.connect(reconnectURL);
+              }
+            }
             break;
 
           default:
@@ -95,7 +108,7 @@ export function runTwitchEventSubWebsocket() {
       }
     });
   });
-  client.connect(TWITCH_WEBSOCKET_EVENTSUB_URL);
+  client.connect(connectionUrl);
   setInterval(() => {
     if (keepAliveCountdown <= 0) {
       logger.info('Twitch EventSub: Keep alive reached 0, reconnecting...');
@@ -107,7 +120,7 @@ export function runTwitchEventSubWebsocket() {
   setInterval(() => {
     if (!isConnected) {
       logger.info('Twitch EventSub: Reconnecting...');
-      client.connect(TWITCH_WEBSOCKET_EVENTSUB_URL);
+      client.connect(connectionUrl);
     }
   }, 10000);
 }
@@ -120,4 +133,8 @@ function isSubscriptionEvent(payload: unknown): payload is EventSubResponse {
     hasOwnProperty(payload.subscription, 'type') &&
     typeof payload.subscription.type === 'string'
   );
+}
+
+function isReconnectEvent(payload: unknown): payload is { reconnect_url: string } {
+  return hasOwnProperty(payload, 'reconnect_url') && typeof payload.reconnect_url === 'string';
 }
