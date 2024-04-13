@@ -4,14 +4,14 @@ import { TWITCH_HELIX_URL } from '../../../../constants';
 import { logger } from '../../../../logger';
 import type { EventSubCondition, EventsubSubscriptionType } from '../../../../typings/twitchEvents';
 
-export const eventSubscribe = async (sessionId: string, type: EventsubSubscriptionType, condition: EventSubCondition) => {
+export const eventSubscribe = async (sessionId: string, type: EventsubSubscriptionType, condition: EventSubCondition, version = '1') => {
   try {
     const url = `${TWITCH_HELIX_URL}eventsub/subscriptions`;
     const accessToken = getCurrentAccessToken();
 
     const body = JSON.stringify({
       type,
-      version: '1',
+      version,
       condition,
       transport: {
         method: 'websocket',

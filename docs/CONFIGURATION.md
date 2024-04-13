@@ -10,7 +10,7 @@ The listed scopes are relevant to the existing commands in the repository. If yo
 
 ### Twitch
 
-The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users` and `channel:manage:broadcast`.
+The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users`, `channel:manage:broadcast` and `moderator:read:followers`.
 
 #### Method 1: Automated Retrieval
 
