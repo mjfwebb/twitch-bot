@@ -13,6 +13,7 @@ interface SocketProviderProps {
 
 const SocketProvider = (props: SocketProviderProps) => {
   const socket = useRef<Socket>();
+  const timer = useRef<NodeJS.Timeout>();
 
   const { resetState } = useStore.getState();
 
@@ -64,6 +65,9 @@ const SocketProvider = (props: SocketProviderProps) => {
             sendToServer('getCheers');
             sendToServer('getChatMessages');
           });
+          timer.current = setInterval(() => {
+            sendToServer('getEmotes');
+          }, 30000);
         }
 
         socketEventHandler(socket.current);
@@ -72,6 +76,7 @@ const SocketProvider = (props: SocketProviderProps) => {
     return function cleanup() {
       if (socket.current) {
         socket.current.disconnect();
+        clearTimeout(timer.current);
       }
     };
   }, [resetState, sendToServer]);
