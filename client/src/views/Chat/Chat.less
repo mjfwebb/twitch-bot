@@ -134,6 +134,10 @@
       animation: bttv-emote-modifier-party 1.5s linear infinite;
     }
 
+    &--shake {
+      animation: bttv-emote-modifier-shake .5s step-start infinite;
+    }
+
     &--rotate {
       transform: rotate(90deg);
     }
@@ -197,5 +201,51 @@
 
   100% {
     filter: sepia(.5) hue-rotate(1turn) saturate(2.5);
+  }
+}
+
+@keyframes bttv-emote-modifier-shake {
+  0% {
+    translate: 0 1px;
+  }
+
+  10% {
+    translate: 2px 0;
+  }
+
+  20% {
+    translate: 1px -2px;
+  }
+
+  30% {
+    translate: -2px 1px;
+  }
+
+  40% {
+    translate: 0 -1px;
+  }
+
+  50% {
+    translate: 2px 2px;
+  }
+
+  60% {
+    translate: -1px -1px;
+  }
+
+  70% {
+    translate: -2px 2px;
+  }
+
+  80% {
+    translate: 2px 1px;
+  }
+
+  90% {
+    translate: -1px -2px;
+  }
+
+  100% {
+    translate: 1px 0;
   }
 }
