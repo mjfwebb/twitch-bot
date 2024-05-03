@@ -44,6 +44,12 @@ export type SevenTVConfig = {
   enabled: boolean;
 };
 
+export type OBSConfig = {
+  enabled: boolean;
+  url: string;
+  password: string;
+};
+
 export type BetterTTVConfig = {
   enabled: boolean;
 };
@@ -88,6 +94,7 @@ interface Config {
   tiktok: TikTokConfig;
   repeatMessageHandler: RepeatMessageHandlerConfig;
   features: FeaturesConfig;
+  obs: OBSConfig;
 }
 
 const configFileName = 'config.json';
@@ -173,6 +180,23 @@ function readSpotifyConfig(config: unknown): SpotifyConfig {
   });
 
   return parsedSpotifyConfig;
+}
+
+function readOBSConfig(config: unknown): OBSConfig {
+  const defaultOBSConfig: OBSConfig = {
+    enabled: false,
+    url: '',
+    password: '',
+  };
+
+  const parsedOBSConfig = parseConfig<OBSConfig>({
+    config,
+    defaultConfig: defaultOBSConfig,
+    part: 'obs',
+    properties: ['enabled', 'url', 'password'],
+  });
+
+  return parsedOBSConfig;
 }
 
 function readSevenTVConfig(config: unknown): SevenTVConfig {
@@ -404,6 +428,7 @@ const Config: Config = {
   tiktok: readTikTokConfig(loadedConfig),
   repeatMessageHandler: readRepeatMessageHandlerConfig(loadedConfig),
   features: readFeaturesConfig(loadedConfig),
+  obs: readOBSConfig(loadedConfig),
 };
 
 export default Config;
