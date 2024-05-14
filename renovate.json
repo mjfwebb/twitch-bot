@@ -1,10 +1,15 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:best-practices"],
+    "extends": [
+        "config:best-practices"
+    ],
     "groupName": "all",
     "rebaseWhen": "auto",
     "automerge": true,
     "major": {
         "automerge": false
-    }
+    },
+    "schedule": [
+        "before 4am on Monday"
+    ]
 }
