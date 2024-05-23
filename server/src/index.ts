@@ -6,6 +6,7 @@ import { loadBotCommands } from './botCommands';
 import { loadChatCommandInclusionList, loadChatUserExclusionList } from './chat/chatFiltering';
 import Config, { assertConfigFileExists } from './config';
 import { runBetterTTVWebsocket } from './handlers/bttv/betterTTVWebsocket';
+import { runOBSWebsocket } from './handlers/obs/obsWebsocket';
 import { fetchSevenTVTwitchUser } from './handlers/sevenTV/fetchSevenTVTwitchUser';
 import { setSevenTVUser } from './handlers/sevenTV/sevenTVUser';
 import { runSevenTVWebsocket } from './handlers/sevenTV/sevenTVWebsocket';
@@ -109,6 +110,10 @@ async function main() {
         logger.info(`${pc.green('[7TV enabled]')} Running 7TV WebSocket client`);
         runSevenTVWebsocket(sevenTVUser);
       }
+    }
+
+    if (Config.obs.enabled) {
+      runOBSWebsocket(Config.obs);
     }
   } catch (error) {
     if (isError(error)) {

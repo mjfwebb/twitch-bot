@@ -75,5 +75,10 @@
     "commands_handler": true,
     "built_in_commands_handler": true,
     "events_handler": true
+  },
+  "obs": {
+    "enabled": false,
+    "url": "",
+    "password": ""
   }
 }
