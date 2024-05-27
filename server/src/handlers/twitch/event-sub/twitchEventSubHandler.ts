@@ -100,7 +100,11 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
                 const command: Command = {
                   command: action.command,
                   botCommand: action.command,
-                  botCommandParams: action.commandParams.replace('%input%', data.user_input),
+                  botCommandParams: action.commandParams
+                    .replace('%input%', data.user_input)
+                    .replace('%user%', data.user_name)
+                    .replace('%now%', new Date().toTimeString())
+                    .replace('%count%', String(reward.timesUsed + 1)),
                 };
 
                 await foundCommand.callback(connection, fakeParsedCommand(command));
