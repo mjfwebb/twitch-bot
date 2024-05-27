@@ -6,6 +6,10 @@ import type { OBSConfig } from '../../config';
 import { logger } from '../../logger';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 
+let connectionRef: websocket.connection | undefined;
+
+export const getOBSWebSocketConnection = () => connectionRef;
+
 const WebsocketOpCodes = {
   Hello: 0, // The initial message sent by obs-websocket to newly connected clients.
   Identify: 1, // The message sent by a newly connected client to obs-websocket in response to a Hello.
@@ -825,12 +829,16 @@ export function runOBSWebsocket(config: OBSConfig) {
   client.on('connect', function (connection) {
     logger.info('OBS WebSocket: Client Connected');
 
+    // Store the connection ref so it can be exported
+    connectionRef = connection;
+
     connection.on('error', function (error) {
       logger.error('OBS WebSocket: Connection Error: ' + error.toString());
     });
 
     connection.on('close', function () {
       isConnected = false;
+      connectionRef = undefined;
       logger.info('OBS WebSocket: Connection Closed');
     });
 
