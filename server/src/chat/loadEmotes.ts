@@ -96,8 +96,6 @@ export const removeSevenTVEmote = (emoteId: string) => {
   if (!foundEmote) return;
 
   delete sevenTVEmotesForClient[foundEmote.name];
-
-  sendEmotes();
 };
 
 export const addSevenTVEmote = async (emote: SevenTVEmote) => {
@@ -142,8 +140,6 @@ export const addSevenTVEmote = async (emote: SevenTVEmote) => {
       name,
     };
   }
-
-  sendEmotes();
 };
 
 const loadSevenTVEmotes = async () => {
@@ -168,8 +164,6 @@ export const removeBetterTTVEmote = (emoteId: string) => {
   if (!foundEmote) return;
 
   delete betterTTVEmotesForClient[foundEmote.name];
-
-  sendEmotes();
 };
 
 export const addBetterTTVEmote = (emote: Pick<BttvEmote, 'code' | 'id' | 'imageType'>) => {
@@ -184,8 +178,6 @@ export const addBetterTTVEmote = (emote: Pick<BttvEmote, 'code' | 'id' | 'imageT
     id: emote.id,
     name: emote.code,
   };
-
-  sendEmotes();
 };
 
 const loadBetterTTVUserEmotes = async () => {
