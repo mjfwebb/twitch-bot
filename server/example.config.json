@@ -15,7 +15,10 @@
       "channel:manage:redemptions",
       "channel:read:redemptions",
       "moderator:manage:banned_users",
-      "channel:manage:broadcast"
+      "channel:manage:broadcast",
+      "moderator:read:chatters",
+      "moderator:read:followers",
+      "user:read:chat"
     ]
   },
   "spotify": {
