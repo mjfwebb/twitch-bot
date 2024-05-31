@@ -1,4 +1,5 @@
-//api.twitch.tv/helix/users/follows
+// https://api.twitch.tv/helix/channels/followers
+// Required scope: moderator:read:followers
 
 import fetch from 'node-fetch';
 import { getCurrentAccessToken } from '../../../auth/twitch';
