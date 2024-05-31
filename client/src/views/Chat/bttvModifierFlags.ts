@@ -6,7 +6,7 @@ export const bttvModifierMap: Record<BTTVModifier, string> = {
   'v!': 'flipy',
   'w!': 'growx',
   'r!': 'rotate',
-  'l!': 'rotateLeft',
+  'l!': 'rotate-left',
   'z!': 'zerowidth',
   'c!': 'cursed',
   'p!': 'party',
