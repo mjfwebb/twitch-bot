@@ -44,7 +44,7 @@ type NewCustomReward = {
   should_redemptions_skip_request_queue?: boolean; // A Boolean value that determines whether redemptions should be set to FULFILLED status immediately when a reward is redeemed. If false, status is set to UNFULFILLED and follows the normal request queue process. The default is false.
 };
 
-let customRewards: CustomReward[];
+let customRewards: CustomReward[] = [];
 
 export const getCustomRewards = () => customRewards;
 
