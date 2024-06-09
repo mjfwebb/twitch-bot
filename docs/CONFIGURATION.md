@@ -80,24 +80,30 @@ You can find more information about these features in the [interval commands con
 
 ## Add users to the chat user exclusion list
 
-Open `chat-user-exclusion-list.txt` in the root directory of the project. Add the usernames of the users you want to exclude from chat commands. Each username should be on a new line.
+If you would like certain users' messages to be filtered from the chat client, you can add them to the `chat-user-exclusion-list.txt` file in the root directory of the project.
 
-This file will be created automatically when you run the server for the first time.
+Each username should be on a new line.
 
-For example, to exclude the user `troll` from chat commands, you would add the following line to the file:
+For example, to exclude the users `troll` and `troll2` from chat commands, you would add the following lines to the file:
 
 ```plaintext
 troll
+troll2
 ```
+
+Note that `chat-user-exclusion-list.txt` will be created automatically when you run the server for the first time.
 
 ## Add commands to the chat command inclusion list
 
-Open `chat-command-inclusion-list.txt` in the root directory of the project. Add the commands you want to include in chat. Each command should be on a new line.
+By default, messages the start with `!` are not sent to the chat client. If you would like certain commands to appear in the chat overlay, you can add them to the `chat-command-inclusion-list.txt` file in the root directory of the project.
 
-This file will be created automatically when you run the server for the first time.
+Each command should be on a new line.
 
-For example, to add the `!tts` command to the chat command inclusion list, you would add the following line to the file:
+For example, to add the `!tts` and `!hello` commands to the chat command inclusion list, you would add the following lines to the file:
 
 ```plaintext
 tts
+hello
 ```
+
+Note that `chat-command-inclusion-list.txt` will be created automatically when you run the server for the first time.
