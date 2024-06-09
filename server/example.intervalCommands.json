@@ -1,0 +1,14 @@
+[
+  {
+    "actions": [
+      {
+        "message": "This twitch bot is opensource and the source code can be found at https://github.com/mjfwebb/twitch-bot/",
+        "command": "",
+        "commandParams": ""
+      }
+    ],
+    "tickInterval": 3600,
+    "startDelay": 600,
+    "mustBeStreaming": true
+  }
+]
