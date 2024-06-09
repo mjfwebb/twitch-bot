@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 // https://api.twitch.tv/helix/channel_points/custom_rewards
 
+import { StatusCodes } from 'http-status-codes';
 import { fetchWithRetry, getCurrentAccessToken } from '../../../auth/twitch';
 import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
@@ -108,6 +109,12 @@ export const fetchCustomRewards = async (): Promise<void> => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    if (hasOwnProperty(result, 'status') && result.status === StatusCodes.FORBIDDEN) {
+      logger.error('Unable to retrieve custom rewards. You need to be an affiliate or partner.');
+      return;
+    }
+
     if (hasOwnProperty(result, 'data')) {
       const customRewardsData: unknown = result.data;
       assertArray(customRewardsData);
