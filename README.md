@@ -32,10 +32,11 @@ We used Twitch's example at https://dev.twitch.tv/docs/irc/example-bot as a star
 - Sound effects
 - Spotify integration with song requests
 - Spotify song overlay
-- Twitch rewards integration
+- Twitch channel point rewards integration
 - Interval commands (e.g. periodic messages)
 - Twitch task overlay
 - Discord webhook integration for announcing stream start
+- OBS websocket integration
 - Probably more!
 
 ## Setup
