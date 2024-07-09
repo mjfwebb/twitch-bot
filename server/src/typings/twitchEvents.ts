@@ -27,52 +27,78 @@ export type EventsubEventBase<EventType extends EventsubSubscriptionType> = {
 };
 
 export type EventsubSubscriptionType =
-  // | 'channel.update'
-  | 'channel.follow'
-  | 'channel.subscribe'
-  // | 'channel.subscription.end'
-  | 'channel.subscription.gift'
-  | 'channel.subscription.message'
-  // | 'channel.cheer'
-  | 'channel.raid'
-  // | 'channel.ban'
-  // | 'channel.unban'
-  // | 'channel.moderator.add'
-  // | 'channel.moderator.remove'
-  // | 'channel.channel_points_custom_reward.add'
-  // | 'channel.channel_points_custom_reward.update'
-  // | 'channel.channel_points_custom_reward.remove'
-  | 'channel.channel_points_custom_reward_redemption.add'
-  | 'channel.channel_points_custom_reward_redemption.update'
-  // | 'channel.poll.begin'
-  // | 'channel.poll.progress'
-  // | 'channel.poll.end'
-  // | 'channel.prediction.begin'
-  // | 'channel.prediction.progress'
-  // | 'channel.prediction.lock'
-  // | 'channel.prediction.end'
-  // | 'channel.charity_campaign.donate'
-  // | 'channel.charity_campaign.start'
-  // | 'channel.charity_campaign.progress'
-  // | 'channel.charity_campaign.stop'
-  // | 'drop.entitlement.grant'
-  // | 'extension.bits_transaction.create'
-  // | 'channel.goal.begin'
-  // | 'channel.goal.progress'
-  // | 'channel.goal.end'
-  // | 'channel.hype_train.begin'
-  // | 'channel.hype_train.progress'
-  // | 'channel.hype_train.end'
-  // | 'channel.shield_mode.begin'
-  // | 'channel.shield_mode.end'
-  | 'stream.online'
-  | 'stream.offline'
-  // | 'user.authorization.grant'
-  // | 'user.authorization.revoke'
-  // | 'user.update'
-  | 'channel.chat.message'
-  | 'channel.chat.message_delete'
-  | 'channel.chat.notification';
+  // | 'automod.message.hold' // A user is notified if a message is caught by automod for review.
+  // | 'automod.message.update' // A message in the automod queue had its status changed.
+  // | 'automod.settings.update' // A notification is sent when a broadcaster’s automod settings are updated.
+  // | 'automod.terms.update' // A notification is sent when a broadcaster’s automod terms are updated. Changes to private terms are not sent.
+  // | 'channel.update' // A broadcaster updates their channel properties e.g., category, title, content classification labels, broadcast, or language.
+  | 'channel.follow' // A specified channel receives a follow.
+  // | 'channel.ad_break.begin' // A midroll commercial break has started running.
+  // | 'channel.chat.clear' // A moderator or bot has cleared all messages from the chat room.
+  // | 'channel.chat.clear_user_messages' // A moderator or bot has cleared all messages from a specific user.
+  | 'channel.chat.message' // Any user sends a message to a specific chat room.
+  | 'channel.chat.message_delete' // A moderator has removed a specific message.
+  | 'channel.chat.notification' // A notification for when an event that appears in chat has occurred.
+  // | 'channel.chat.settings.update' // A notification for when a broadcaster’s chat settings are updated.
+  // | 'channel.chat.user_message_hold' // A user is notified if their message is caught by automod.
+  // | 'channel.chat.user_message_update' // A user is notified if their message’s automod status is updated.
+  | 'channel.subscribe' // A notification when a specified channel receives a subscriber. This does not include resubscribes.
+  // | 'channel.subscription.end' // A notification when a subscription to the specified channel ends.
+  | 'channel.subscription.gift' // A notification when a viewer gives a gift subscription to one or more users in the specified channel.
+  | 'channel.subscription.message' // A notification when a user sends a resubscription chat message in a specific channel.
+  // | 'channel.cheer' // A user cheers on the specified channel.
+  | 'channel.raid' // A broadcaster raids another broadcaster’s channel.
+  // | 'channel.ban' // A viewer is banned from the specified channel.
+  // | 'channel.unban' // A viewer is unbanned from the specified channel.
+  // | 'channel.unban_request.create' // A user creates an unban request.
+  // | 'channel.unban_request.resolve' // An unban request has been resolved.
+  // | 'channel.moderate' // A moderator performs a moderation action in a channel. Beta includes warnings.
+  // | 'channel.moderator.add' // Moderator privileges were added to a user on a specified channel.
+  // | 'channel.moderator.remove' // Moderator privileges were removed from a user on a specified channel.
+  // | 'channel.guest_star_session.begin' // The host began a Guest Star session. Beta.
+  // | 'channel.guest_star_session.end' // A running Guest Star session has ended. Beta.
+  // | 'channel.guest_star_guest.update' // A guest or a slot is updated in an active Guest Star session. Beta.
+  // | 'channel.guest_star_settings.update' // The host preferences for Guest Star have been updated. Beta.
+  // | 'channel.channel_points_automatic_reward_redemption.add' // A viewer has redeemed an automatic channel points reward on the specified channel.
+  // | 'channel.channel_points_custom_reward.add' // A custom channel points reward has been created for the specified channel.
+  // | 'channel.channel_points_custom_reward.update' // A custom channel points reward has been updated for the specified channel.
+  // | 'channel.channel_points_custom_reward.remove' // A custom channel points reward has been removed from the specified channel.
+  | 'channel.channel_points_custom_reward_redemption.add' // A viewer has redeemed a custom channel points reward on the specified channel.
+  | 'channel.channel_points_custom_reward_redemption.update' // A redemption of a channel points custom reward has been updated for the specified channel.
+  // | 'channel.poll.begin' // A poll started on a specified channel.
+  // | 'channel.poll.progress' // Users respond to a poll on a specified channel.
+  // | 'channel.poll.end' // A poll ended on a specified channel.
+  // | 'channel.prediction.begin' // A Prediction started on a specified channel.
+  // | 'channel.prediction.progress' // Users participated in a Prediction on a specified channel.
+  // | 'channel.prediction.lock' // A Prediction was locked on a specified channel.
+  // | 'channel.prediction.end' // A Prediction ended on a specified channel.
+  // | 'channel.suspicious_user.message' // A chat message has been sent by a suspicious user.
+  // | 'channel.suspicious_user.update' // A suspicious user has been updated.
+  // | 'channel.vip.add' // A VIP is added to the channel.
+  // | 'channel.vip.remove' // A VIP is removed from the channel.
+  // | 'channel.warning.acknowledge' // A user awknowledges a warning. Broadcasters and moderators can see the warning’s details.
+  // | 'channel.warning.send' // A user is sent a warning. Broadcasters and moderators can see the warning’s details.
+  // | 'channel.charity_campaign.donate' // Sends an event notification when a user donates to the broadcaster’s charity campaign.
+  // | 'channel.charity_campaign.start' // Sends an event notification when the broadcaster starts a charity campaign.
+  // | 'channel.charity_campaign.progress' // Sends an event notification when progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.
+  // | 'channel.charity_campaign.stop' // Sends an event notification when the broadcaster stops a charity campaign.
+  // | 'conduit.shard.disabled' // Sends a notification when EventSub disables a shard due to the status of the underlying transport changing.
+  // | 'drop.entitlement.grant' // An entitlement for a Drop is granted to a user.
+  // | 'extension.bits_transaction.create' // A Bits transaction occurred for a specified Twitch Extension.
+  // | 'channel.goal.begin' // Get notified when a broadcaster begins a goal.
+  // | 'channel.goal.progress' // Get notified when progress (either positive or negative) is made towards a broadcaster’s goal.
+  // | 'channel.goal.end' // Get notified when a broadcaster ends a goal.
+  // | 'channel.hype_train.begin' // A Hype Train begins on the specified channel.
+  // | 'channel.hype_train.progress' // A Hype Train makes progress on the specified channel.
+  // | 'channel.hype_train.end' // A Hype Train ends on the specified channel.
+  // | 'channel.shield_mode.begin' // Sends a notification when the broadcaster activates Shield Mode.
+  // | 'channel.shield_mode.end' // Sends a notification when the broadcaster deactivates Shield Mode.
+  | 'stream.online' // The specified broadcaster starts a stream.
+  | 'stream.offline'; // The specified broadcaster stops a stream.
+// | 'user.authorization.grant' // A user’s authorization has been granted to your client id.
+// | 'user.authorization.revoke' // A user’s authorization has been revoked for your client id.
+// | 'user.update' // A user has updated their account.
+// | 'user.whisper.message' // A user receives a whisper.
 
 type EmotePlacement = {
   begin: number; //	The index of where the Emote starts in the text.
