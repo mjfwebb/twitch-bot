@@ -8,11 +8,15 @@ export const addSongToPlaybackQueue = async (trackURI: string): Promise<boolean>
     try {
       const url = `${SPOTIFY_API_URL}me/player/queue?uri=${encodeURIComponent(trackURI)}`;
 
-      await fetchWithRetry(url, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${getCurrentAccessToken()}`,
+      await fetchWithRetry({
+        url,
+        init: {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${getCurrentAccessToken()}`,
+          },
         },
+        shouldJSONParse: false,
       });
       return true;
     } catch (error) {

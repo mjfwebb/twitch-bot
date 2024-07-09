@@ -28,7 +28,15 @@ let rateLimitReached = false;
  * @remarks To support checking the response (which requires using result.json()) we pass back the parsed data response, instead of the whole Reponse.
  * This seems reasonable since all interactions with the API always want the JSON data anyway.
  */
-export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
+
+interface FetchWithRetryOptions {
+  url: string;
+  init?: RequestInit | undefined;
+  attemptNumber?: number;
+  shouldJSONParse?: boolean;
+}
+
+export const fetchWithRetry = async ({ url, init, attemptNumber = 0, shouldJSONParse = true }: FetchWithRetryOptions): Promise<unknown> => {
   if (rateLimitReached) {
     throw new Error('Spotify API rate limit reached. Waiting for rate limit to be lifted.');
   }
@@ -56,9 +64,11 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
     }
   }
 
-  let data: unknown;
+  let data = null;
   try {
-    data = await result.json();
+    if (result.status === StatusCodes.OK && shouldJSONParse) {
+      data = await result.json();
+    }
   } catch (error) {
     logger.error(`Unable to parse JSON response from Spotify API. Error: ${errorMessage(error)}. Response: ${JSON.stringify(result)}`);
 
@@ -66,7 +76,12 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
   }
   const shouldRetry = checkResponseForErrors(data);
   if (shouldRetry) {
-    return fetchWithRetry(url, init, attemptNumber + 1);
+    return fetchWithRetry({
+      url,
+      init,
+      attemptNumber: attemptNumber + 1,
+      shouldJSONParse,
+    });
   } else {
     return data;
   }
@@ -80,7 +95,7 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
  * @remarks If the error status is UNAUTHORIZED, it attempts to refresh the Access Token.
  */
 export const checkResponseForErrors = (data: unknown): boolean => {
-  if (hasOwnProperty(data, 'error') && hasOwnProperty(data.error, 'status')) {
+  if (data !== null && hasOwnProperty(data, 'error') && hasOwnProperty(data.error, 'status')) {
     assert(typeof data.error.status === 'number', 'status in data response is not a number');
     if (data.error.status === StatusCodes.BAD_REQUEST) {
       assert(hasOwnProperty(data, 'message'), 'message not found in data response');

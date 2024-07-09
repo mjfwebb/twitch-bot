@@ -14,11 +14,14 @@ export const getPlaybackQueue = async (): Promise<SpotifyQueue | null> => {
     try {
       const url = `${SPOTIFY_API_URL}me/player/queue`;
 
-      const result = await fetchWithRetry(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getCurrentAccessToken()}`,
+      const result = await fetchWithRetry({
+        url,
+        init: {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCurrentAccessToken()}`,
+          },
         },
       });
       return spotifyQueueSchema.parse(result);

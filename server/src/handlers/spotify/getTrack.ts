@@ -12,11 +12,14 @@ export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> =>
         url += `?market=${Config.spotify.country_code}`;
       }
 
-      const result = await fetchWithRetry(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getCurrentAccessToken()}`,
+      const result = await fetchWithRetry({
+        url,
+        init: {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCurrentAccessToken()}`,
+          },
         },
       });
       return spotifyTrackSchema.parse(result);

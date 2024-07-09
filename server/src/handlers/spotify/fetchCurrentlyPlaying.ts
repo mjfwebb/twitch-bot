@@ -26,11 +26,14 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
     try {
       const url = `${SPOTIFY_API_URL}me/player/currently-playing`;
 
-      const result = await fetchWithRetry(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getCurrentAccessToken()}`,
+      const result = await fetchWithRetry({
+        url,
+        init: {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCurrentAccessToken()}`,
+          },
         },
       });
 
