@@ -103,6 +103,7 @@ export async function twitchEventSubHandler(data: EventsubEvent) {
                   botCommandParams: action.commandParams
                     .replace('%input%', data.user_input)
                     .replace('%user%', data.user_name)
+                    .replace('%user_id%', data.user_id)
                     .replace('%now%', new Date().toTimeString())
                     .replace('%count%', String(reward.timesUsed + 1)),
                 };
