@@ -66,7 +66,7 @@ export const fetchWithRetry = async ({ url, init, attemptNumber = 0, shouldJSONP
 
   let data = null;
   try {
-    if (result.status === StatusCodes.OK && shouldJSONParse) {
+    if (shouldJSONParse) {
       data = await result.json();
     }
   } catch (error) {
