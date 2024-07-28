@@ -24,6 +24,7 @@ import { songqueue } from './commands/songqueue';
 import { spotlight } from './commands/spotlight';
 import { tts } from './commands/tts';
 import { uptime } from './commands/uptime';
+import { vanish } from './commands/vanish';
 import { viewers } from './commands/viewers';
 import { voices } from './commands/voices';
 import { welcome } from './commands/welcome';
@@ -104,6 +105,7 @@ const builtInCommands: BotCommand[] = [
   spotlight,
   tts,
   uptime,
+  vanish,
   viewers,
   voices,
   welcome,

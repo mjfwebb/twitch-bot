@@ -5,7 +5,7 @@ import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { logger } from '../../../logger';
 
-export const banUser = async (userId: string) => {
+export const banUser = async (userId: string, duration?: number): Promise<void> => {
   try {
     const url = `${TWITCH_HELIX_URL}moderation/bans?broadcaster_id=${Config.twitch.broadcaster_id}&moderator_id=${Config.twitch.broadcaster_id}`;
     const accessToken = getCurrentAccessToken();
@@ -13,6 +13,7 @@ export const banUser = async (userId: string) => {
     const body = JSON.stringify({
       data: {
         user_id: userId,
+        ...(duration !== undefined && { duration }),
       },
     });
 
