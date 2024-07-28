@@ -5,16 +5,19 @@ import Config from '../../../config';
 import { TWITCH_HELIX_URL } from '../../../constants';
 import { logger } from '../../../logger';
 
-export const banUser = async (userId: string) => {
+export const banUser = async (userId: string, duration?: number) => {
   try {
     const url = `${TWITCH_HELIX_URL}moderation/bans?broadcaster_id=${Config.twitch.broadcaster_id}&moderator_id=${Config.twitch.broadcaster_id}`;
     const accessToken = getCurrentAccessToken();
 
-    const body = JSON.stringify({
+    const request = {
       data: {
         user_id: userId,
+        ...(duration !== undefined && { duration }),
       },
-    });
+    };
+
+    const body = JSON.stringify(request);
 
     await fetchWithRetry(url, {
       method: 'POST',
