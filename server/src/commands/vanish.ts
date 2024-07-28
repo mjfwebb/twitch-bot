@@ -2,7 +2,7 @@ import { MINUTE_MS } from '../constants';
 import { banUser } from '../handlers/twitch/helix/moderation';
 import type { BotCommand } from '../types';
 
-const COOLDOWN_S = 5;
+const DURATION_S = 5;
 
 export const vanish: BotCommand = {
   command: ['vanish'],
@@ -11,7 +11,7 @@ export const vanish: BotCommand = {
   callback: (connection, parsedCommand) => {
     const userId = parsedCommand.parsedMessage.tags?.['user-id'];
     if (userId) {
-      void banUser(userId, COOLDOWN_S);
+      void banUser(userId, DURATION_S);
     }
   },
 };
