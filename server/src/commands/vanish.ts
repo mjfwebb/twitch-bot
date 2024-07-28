@@ -3,7 +3,7 @@ import { banUser } from '../handlers/twitch/helix/moderation';
 import { sendChatMessage } from './helpers/sendChatMessage';
 import type { BotCommand } from '../types';
 
-const DURATION_S = 5;
+const DURATION_S = 1;
 
 export const vanish: BotCommand = {
   command: ['vanish'],
