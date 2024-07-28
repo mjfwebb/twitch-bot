@@ -9,7 +9,7 @@ export const vanish: BotCommand = {
   command: ['vanish'],
   id: 'vanish',
   cooldown: 5 * MINUTE_MS,
-  callback: (connection, parsedCommand) => {
+  callback: async (connection, parsedCommand) => {
     const userId = parsedCommand.parsedMessage.tags?.['user-id'];
     const isModerator = parsedCommand.parsedMessage.tags?.mod === '1';
 
@@ -19,7 +19,7 @@ export const vanish: BotCommand = {
     }
 
     if (userId) {
-      void banUser(userId, DURATION_S);
+      await banUser(userId, DURATION_S);
     }
   },
 };
