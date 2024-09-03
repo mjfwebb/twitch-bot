@@ -4,6 +4,9 @@ import { assertTokenFileExists } from './auth/tokenManager';
 import { getTwitchAccessToken, twitchAuthCodeRouter } from './auth/twitch';
 import { loadBotCommands } from './botCommands';
 import { loadChatCommandInclusionList, loadChatUserExclusionList } from './chat/chatFiltering';
+import { loadBadges } from './chat/loadBadges';
+import { loadCheers } from './chat/loadCheers';
+import { loadEmotes } from './chat/loadEmotes';
 import Config, { assertConfigFileExists } from './config';
 import { runBetterTTVWebsocket } from './handlers/bttv/betterTTVWebsocket';
 import { runOBSWebsocket } from './handlers/obs/obsWebsocket';
@@ -111,6 +114,11 @@ async function main() {
         runSevenTVWebsocket(sevenTVUser);
       }
     }
+
+    // Load emotes, badges and cheers
+    await loadEmotes();
+    await loadBadges();
+    await loadCheers();
 
     if (Config.obs.enabled) {
       runOBSWebsocket(Config.obs);

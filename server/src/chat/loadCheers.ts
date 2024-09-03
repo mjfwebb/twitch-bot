@@ -12,15 +12,19 @@ type ChatCheer = {
 const channelCheersForClient: Record<string, ChatCheer> = {};
 const globalCheersForClient: Record<string, ChatCheer> = {};
 
-export const loadCheers = async () => {
-  await loadGlobalCheers();
-  await loadChannelCheers();
-
+export function sendCheers() {
   // Change the order of this destructuring for your preferered cheer prioritisation
   getIO().emit('cheers', {
     ...globalCheersForClient,
     ...channelCheersForClient,
   });
+}
+
+export const loadCheers = async () => {
+  await loadGlobalCheers();
+  await loadChannelCheers();
+
+  sendCheers();
 };
 
 export const loadGlobalCheers = async () => {

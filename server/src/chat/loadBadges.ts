@@ -10,15 +10,19 @@ type ChatBadge = {
 const channelBadgesForClient: Record<string, ChatBadge> = {};
 const globalBadgesForClient: Record<string, ChatBadge> = {};
 
-export const loadBadges = async () => {
-  await loadGlobalBadges();
-  await loadChannelBadges();
-
+export function sendBadges() {
   // Change the order of this destructuring for your preferered badge prioritisation
   getIO().emit('badges', {
     ...globalBadgesForClient,
     ...channelBadgesForClient,
   });
+}
+
+export const loadBadges = async () => {
+  await loadGlobalBadges();
+  await loadChannelBadges();
+
+  sendBadges();
 };
 
 export const loadGlobalBadges = async () => {

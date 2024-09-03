@@ -2,10 +2,10 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getChatMessages } from './chat/chatMessages';
 import { getFakeChatMessages } from './chat/getFakeChatMessages';
-import { loadBadges } from './chat/loadBadges';
-import { loadCheers } from './chat/loadCheers';
-import { loadEmotes } from './chat/loadEmotes';
-import { fetchCurrentlyPlaying } from './handlers/spotify/fetchCurrentlyPlaying';
+import { sendBadges } from './chat/loadBadges';
+import { sendCheers } from './chat/loadCheers';
+import { sendEmotes } from './chat/loadEmotes';
+import { getCurrentSpotifySong } from './handlers/spotify/fetchCurrentlyPlaying';
 import { logger } from './logger';
 import { Tasks } from './storage-models/task-model';
 
@@ -31,17 +31,17 @@ export function runSocketServer() {
         socket.emit('task', task.content);
       }
     });
-    socket.on('getSong', async () => {
-      await fetchCurrentlyPlaying();
+    socket.on('getSong', () => {
+      getIO().emit('currentSong', getCurrentSpotifySong());
     });
-    socket.on('getEmotes', async () => {
-      await loadEmotes();
+    socket.on('getEmotes', () => {
+      sendEmotes();
     });
-    socket.on('getBadges', async () => {
-      await loadBadges();
+    socket.on('getBadges', () => {
+      sendBadges();
     });
-    socket.on('getCheers', async () => {
-      await loadCheers();
+    socket.on('getCheers', () => {
+      sendCheers();
     });
     socket.on('setSelectedDisplayName', (displayName: string) => {
       getIO().emit('setSelectedDisplayName', displayName);
