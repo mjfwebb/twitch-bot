@@ -29,4 +29,6 @@ cp ./example.config.json ./config.json
 
 ```
 
+Note that if you want to change the port the server runs on, you can do so in the `config.json` file. You must also change the value for VITE_BOT_SERVER in .env.development in the client folder.
+
 Once you have these files, go ahead and [configure them](CONFIGURATION.md)

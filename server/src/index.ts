@@ -22,7 +22,7 @@ import { fetchKnownTwitchViewerBots } from './handlers/twitchinsights/twitchView
 import { intervalCommands, loadIntervalCommands, loadSpotifyIntervalCommands, runIntervalCommands } from './intervalCommands';
 import { logger } from './logger';
 import { removeOldTTSFiles } from './removeOldTTSFiles';
-import { runSocketServer } from './runSocketServer';
+import { makeIO, runSocketServer } from './runSocketServer';
 import { StreamState } from './streamState';
 import { isError } from './utils/isError';
 
@@ -98,8 +98,11 @@ async function main() {
       runIntervalCommands();
     }
 
+    logger.info('Setting up socket server');
+    makeIO(Config.clientPort);
+
     logger.info(`Running localhost socket server`);
-    runSocketServer();
+    runSocketServer(Config.serverPort);
 
     if (Config.betterTTV.enabled) {
       logger.info(`${pc.green('[BetterTTV enabled]')} Running BetterTTV WebSocket client`);

@@ -1,5 +1,7 @@
 {
   "log_level": "info",
+  "server_port": 6969,
+  "client_port": 5173,
   "twitch": {
     "broadcaster_id": "12345678",
     "client_id": "client_id",
