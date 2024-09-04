@@ -16,7 +16,7 @@ export const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
         setShowCopied(false);
       }, 2000);
     }
-    () => {
+    return () => {
       clearTimeout(showCopiedTimeout.current);
     };
   }, [copyState]);

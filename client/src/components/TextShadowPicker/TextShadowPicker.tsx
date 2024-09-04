@@ -57,7 +57,9 @@ const useShadowParameters = (
   const updateState = (column: keyof TextShadowPickerParams) => (value: string | ShadowOffset | undefined) => {
     const newParams: TextShadowPickerParams = { ...state, [column]: value };
     onChange(buildShadowString(newParams));
-    !isControlled && setState(newParams);
+    if (!isControlled) {
+      setState(newParams);
+    }
   };
 
   return [state, updateState];

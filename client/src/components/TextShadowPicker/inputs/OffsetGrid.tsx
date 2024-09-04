@@ -71,7 +71,9 @@ export default ({ offset: { x, y }, max = 20, onChange }: Props) => {
 
       if (target.getAttribute('data-touch')) {
         e.preventDefault();
-        e.touches && updatePos(e.touches[0]);
+        if (e.touches) {
+          updatePos(e.touches[0]);
+        }
       }
     };
 
