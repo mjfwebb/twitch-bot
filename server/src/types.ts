@@ -102,7 +102,8 @@ type MessageId =
   | 'raid'
   | 'unraid'
   | 'ritual'
-  | 'bitsbadgetier';
+  | 'bitsbadgetier'
+  | 'gigantified-emote-message';
 
 type CommonTags = {
   'badge-info': BadgeInfo;
@@ -146,6 +147,7 @@ export type PrivMsgTags = CommonTags & {
   'reply-parent-msg-body': string; // The text of the parent message. The message does not include this tag if this message is not a reply.
   'first-msg': StringBoolean;
   vip: StringBoolean; // A Boolean value that determines whether the user that sent the chat is a VIP. The message includes this tag if the user is a VIP; otherwise, the message doesn’t include this tag (check for the presence of the tag instead of whether the tag is set to true or false).
+  'msg-id': MessageId;
 };
 
 export type RoomstateTags = {

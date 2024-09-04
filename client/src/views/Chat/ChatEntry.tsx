@@ -36,6 +36,7 @@ export const ChatEntry = ({
 }: ChatEntryProps) => {
   const selectedDisplayName = useStore((s) => s.selectedDisplayName);
   const color = chatMessage.parsedMessage.tags.color;
+  const gigantified = chatMessage.parsedMessage.tags['msg-id'] === 'gigantified-emote-message';
   const actionMessage = chatMessage.parsedMessage.command.botCommand === 'ACTION';
   const message =
     chatMessage.parsedMessage.command.botCommand === 'ACTION'
@@ -61,6 +62,7 @@ export const ChatEntry = ({
           showBorders && chatMessage.parsedMessage.tags.subscriber === '1' && 'chat-message-body-subscriber',
           chatMessage.isSpotlighted && 'chat-message-body-spotlighted',
           dropShadowEnabled && thickTextShadowEnabled && 'chat-message-body-thick-text-shadow',
+          gigantified && 'chat-message-body-gigantified',
         )}
         style={{
           ...(dropShadowEnabled && !thickTextShadowEnabled
