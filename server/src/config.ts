@@ -85,6 +85,8 @@ export type RepeatMessageHandlerConfig = {
 
 interface Config {
   logLevel: LogLevel;
+  serverPort: number;
+  clientPort: number;
   twitch: TwitchConfig;
   webhooks: WebhooksConfig;
   spotify: SpotifyConfig;
@@ -399,6 +401,46 @@ function readLogLevel(config: unknown): LogLevel {
   return logLevel;
 }
 
+function readServerPort(config: unknown): number {
+  const defaultPortNumber: number = 6969;
+
+  if (!hasOwnProperty(config, 'server_port')) {
+    logger.error(missingPropertyErrorMessage('server_port'));
+
+    return defaultPortNumber;
+  }
+
+  const serverPort = config['server_port'];
+
+  if (typeof serverPort !== 'number') {
+    logger.error(`Invalid log_level config`);
+
+    return defaultPortNumber;
+  }
+
+  return serverPort;
+}
+
+function readClientPort(config: unknown): number {
+  const defaultPortNumber: number = 6969;
+
+  if (!hasOwnProperty(config, 'client_port')) {
+    logger.error(missingPropertyErrorMessage('client_port'));
+
+    return defaultPortNumber;
+  }
+
+  const clientPort = config['client_port'];
+
+  if (typeof clientPort !== 'number') {
+    logger.error(`Invalid log_level config`);
+
+    return defaultPortNumber;
+  }
+
+  return clientPort;
+}
+
 export function updateConfigPart<T extends keyof Config, U extends keyof Config[T], V extends Config[T][U]>({
   part,
   property,
@@ -419,6 +461,8 @@ const loadedConfig: unknown = JSON.parse(readFileSync(configFileName, 'utf8'));
 
 const Config: Config = {
   logLevel: readLogLevel(loadedConfig),
+  serverPort: readServerPort(loadedConfig),
+  clientPort: readClientPort(loadedConfig),
   twitch: readTwitchConfig(loadedConfig),
   webhooks: readWebhooksConfig(loadedConfig),
   spotify: readSpotifyConfig(loadedConfig),
