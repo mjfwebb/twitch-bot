@@ -1,11 +1,13 @@
 import { describe, expect, test } from 'vitest';
 
 import { CHAT_MESSAGES_TO_RETAIN } from '../constants';
+import { makeIO } from '../runSocketServer';
 import { addChatMessage, chatMessages } from './chatMessages';
 import { generateFakeChatMessage } from './getFakeChatMessages';
 
 describe('chatMessages', () => {
   test('getChatMessages', () => {
+    makeIO(1234);
     for (let i = 0; i < 40; i++) {
       const fakeMessage = generateFakeChatMessage(i);
       addChatMessage(fakeMessage);
