@@ -12,7 +12,6 @@ describe('chatMessages', () => {
       const fakeMessage = generateFakeChatMessage(i);
       addChatMessage(fakeMessage);
     }
-    console.log(chatMessages.length);
     expect(chatMessages.length).toBe(CHAT_MESSAGES_TO_RETAIN);
     expect(chatMessages[0].id).toBe('fake-chat-message-id-20');
     expect(chatMessages[CHAT_MESSAGES_TO_RETAIN - 1].id).toBe('fake-chat-message-id-39');
