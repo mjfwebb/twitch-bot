@@ -137,11 +137,11 @@
     }
 
     &--party {
-      animation: bttv-emote-modifier-party 1.5s linear infinite;
+      animation: party 1.5s linear infinite;
     }
 
     &--shake {
-      animation: bttv-emote-modifier-shake .5s step-start infinite;
+      animation: shake .5s step-start infinite;
     }
 
     &--rotate {
@@ -190,6 +190,10 @@
   }
 }
 
+.chat-emote--shake.chat-emote--party {
+  animation: shake .5s step-start infinite, party 1.5s linear infinite;
+}
+
 .chat-emote--flipy.chat-emote--flipx {
   transform: scaleX(-1) scaleY(-1);
 }
@@ -204,7 +208,7 @@
   }
 }
 
-@keyframes bttv-emote-modifier-party {
+@keyframes party {
   0% {
     filter: sepia(.5) hue-rotate(0deg) saturate(2.5);
   }
@@ -214,7 +218,7 @@
   }
 }
 
-@keyframes bttv-emote-modifier-shake {
+@keyframes shake {
   0% {
     translate: 0 1px;
   }
