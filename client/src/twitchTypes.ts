@@ -75,7 +75,8 @@ type MessageId =
   | 'raid'
   | 'unraid'
   | 'ritual'
-  | 'bitsbadgetier';
+  | 'bitsbadgetier'
+  | 'gigantified-emote-message';
 
 type CommonTags = {
   'badge-info': BadgeInfo;
@@ -105,7 +106,6 @@ export type UserStateTags = {
 };
 
 export type NoticeTags = {
-  'msg-id': string | 'resub';
   'target-user-id': string;
 };
 

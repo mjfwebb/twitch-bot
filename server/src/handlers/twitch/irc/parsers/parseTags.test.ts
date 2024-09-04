@@ -79,6 +79,14 @@ describe('parseTags', () => {
       expect(parsedMessage?.command?.botCommandParams).toEqual('does a thing');
     });
   });
+  describe('giantified emote PRIVMSG test message', () => {
+    const message =
+      '@badge-info=subscriber/38;badges=broadcaster/1,subscriber/12,game-developer/1;color=#5052B2;display-name=Athano;emotes=166266:3-11/emotesv2_ec84debaec7c4bd8a50a3d532541c60a:14-24;first-msg=0;flags=;id=f1c01f0b-52fe-4c59-b7eb-05f2b373f791;mod=0;msg-id=gigantified-emote-message;returning-chatter=0;room-id=30458956;subscriber=1;tmi-sent-ts=1725469180476;turbo=0;user-id=30458956;user-type= :athano!athano@athano.tmi.twitch.tv PRIVMSG #athano :hi CarlSmile  athanoBongo';
+    const parsedMessage = parseMessage(message);
+    test('should have msg-id property', () => {
+      expect(parsedMessage?.tags?.['msg-id']).toEqual('gigantified-emote-message');
+    });
+  });
   describe('first NOTICE test message', () => {
     const message = '@msg-id=delete_message_success :tmi.twitch.tv NOTICE #bar :The message from foo is now deleted.';
     const parsedMessage = parseMessage(message);
