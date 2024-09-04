@@ -14,7 +14,7 @@ The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, 
 
 #### Method 1: Automated Retrieval
 
-Fill in the required details in `config.json` for Twitch, leaving the `auth_code` field empty. Ensure your `redirect_uri` is set to `http://localhost:3000`.
+Fill in the required details in `config.json` for Twitch, leaving the `auth_code` field empty. We suggest your `redirect_uri` is set to `http://localhost:3000`. The bot will listen on whichever port you specify in the `redirect_uri`.
 
 Once set, run the server with `npm run start` within the server directory. The bot will automatically retrieve and update your `auth_code`.
 

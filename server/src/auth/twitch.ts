@@ -173,6 +173,10 @@ export const getTwitchAccessToken = async (twitchConfig: TwitchConfig): Promise<
 
 export const twitchAuthCodeRouter = async () => {
   if (Config.twitch.client_id && !Config.twitch.auth_code) {
+    const port = parseInt(Config.twitch.redirect_uri.split(':')[2]);
+
+    logger.info(`Listening on port ${String(port)} for Twitch auth code`);
+
     express()
       .get('/', (req, res) => {
         if (req.query.code) {
@@ -192,7 +196,7 @@ export const twitchAuthCodeRouter = async () => {
           res.send('Hello from twitch-bot! No Twitch auth code received. You may close this window.');
         }
       })
-      .listen(3000);
+      .listen(port);
 
     logger.info(`Getting Twitch auth code with scopes ${pc.green(`${Config.twitch.scopes.join(', ')}`)}`);
     await getTwitchAuthCode();
