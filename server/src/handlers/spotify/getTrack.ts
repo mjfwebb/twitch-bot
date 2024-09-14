@@ -22,7 +22,13 @@ export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> =>
           },
         },
       });
-      return spotifyTrackSchema.parse(result);
+
+      const trackParse = spotifyTrackSchema.safeParse(result);
+      if (trackParse.success) {
+        return trackParse.data;
+      } else {
+        logger.error(`JSON response from Spotify (getTrack) is not valid: Error: ${trackParse.error}`);
+      }
     } catch (error) {
       logger.error(error);
     }

@@ -24,7 +24,13 @@ export const getPlaybackQueue = async (): Promise<SpotifyQueue | null> => {
           },
         },
       });
-      return spotifyQueueSchema.parse(result);
+
+      const queueParse = spotifyQueueSchema.safeParse(result);
+      if (queueParse.success) {
+        return queueParse.data;
+      } else {
+        logger.error(`JSON response from Spotify (getPlaybackQueue) is not valid: Error: ${queueParse.error}`);
+      }
     } catch (error) {
       logger.error(error);
     }

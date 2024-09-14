@@ -43,10 +43,15 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
         return null;
       }
 
-      const song = spotifySongSchema.parse(result);
-      getIO().emit('currentSong', song);
-      if (song.item.id && getCurrentSpotifySong()?.item.id !== song.item.id) {
-        playedSongs.push(song);
+      const songParse = spotifySongSchema.safeParse(result);
+      if (songParse.success) {
+        const song = songParse.data;
+        getIO().emit('currentSong', song);
+        if (song.item.id && getCurrentSpotifySong()?.item.id !== song.item.id) {
+          playedSongs.push(song);
+        }
+      } else {
+        logger.error(`JSON response from Spotify (fetchCurrentlyPlaying) is not valid: Error: ${songParse.error}`);
       }
     } catch (error) {
       logger.error(error);
