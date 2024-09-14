@@ -9,7 +9,7 @@
     "grant_type": "authorization_code",
     "account": "your_account_name",
     "channel": "target_channel_name",
-    "auth_code": "your_auth_code",
+    "auth_code": "",
     "redirect_uri": "redirect_uri",
     "scopes": [
       "chat:read",
