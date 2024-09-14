@@ -51,7 +51,7 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
           playedSongs.push(song);
         }
       } else {
-        logger.error(`JSON response from Spotify (fetchCurrentlyPlaying) is not valid: Error: ${songParse.error}`);
+        logger.error(`JSON response from Spotify API (fetchCurrentlyPlaying) is not valid: Error: ${songParse.error}`);
       }
     } catch (error) {
       logger.error(error);

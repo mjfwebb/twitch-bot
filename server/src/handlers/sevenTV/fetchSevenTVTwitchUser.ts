@@ -16,7 +16,7 @@ export const fetchSevenTVTwitchUser = async (): Promise<SevenTVTwitchUser | null
         logger.info(`Fetched 7TV Twitch user`);
         return sevenTVTwitchUserSchema.parse(json);
       } else {
-        logger.error(`JSON response from 7TV API is not valid. Error: ${result.error.message}`);
+        logger.error(`JSON response from 7TV API (fetchSevenTVTwitchUser) is not valid. Error: ${result.error.message}`);
         return json as SevenTVTwitchUser;
       }
     } catch (error) {

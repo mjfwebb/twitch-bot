@@ -29,7 +29,7 @@ export const getPlaybackQueue = async (): Promise<SpotifyQueue | null> => {
       if (queueParse.success) {
         return queueParse.data;
       } else {
-        logger.error(`JSON response from Spotify (getPlaybackQueue) is not valid: Error: ${queueParse.error}`);
+        logger.error(`JSON response from Spotify API (getPlaybackQueue) is not valid: Error: ${queueParse.error}`);
       }
     } catch (error) {
       logger.error(error);

@@ -16,7 +16,7 @@ export const fetchFrankerFaceZGlobalEmotes = async (): Promise<FrankerFaceZGloba
         logger.info(`Fetched FrankerFaceZ global emotes`);
         return frankerFaceZGlobalEmotesSchema.parse(json);
       } else {
-        logger.error(`JSON response from FrankerFaceZ API is not valid. Error: ${result.error.message}`);
+        logger.error(`JSON response from FrankerFaceZ API (fetchFrankerFaceZGlobalEmotes) is not valid. Error: ${result.error.message}`);
         return json as FrankerFaceZGlobalEmotes;
       }
     } catch (error) {
