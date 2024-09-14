@@ -24,6 +24,7 @@ import { logger } from './logger';
 import { removeOldTTSFiles } from './removeOldTTSFiles';
 import { makeIO, runSocketServer } from './runSocketServer';
 import { StreamState } from './streamState';
+import { createTTSDirectory } from './utils/createTTSDirectory';
 import { isError } from './utils/isError';
 
 async function main() {
@@ -126,6 +127,8 @@ async function main() {
     if (Config.obs.enabled) {
       runOBSWebsocket(Config.obs);
     }
+
+    createTTSDirectory();
   } catch (error) {
     if (isError(error)) {
       logger.error(error.message);
