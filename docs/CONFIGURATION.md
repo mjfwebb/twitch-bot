@@ -12,11 +12,11 @@ The listed scopes are relevant to the existing commands in the repository. If yo
 
 The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users`, `channel:manage:broadcast` and `moderator:read:followers`.
 
-#### Method 1: Automated Retrieval
+#### Method 1: Automated Retrieval (Recommended)
 
 Fill in the required details in `config.json` for Twitch, leaving the `auth_code` field empty. We suggest your `redirect_uri` is set to `http://localhost:3000`. The bot will listen on whichever port you specify in the `redirect_uri`.
 
-Once set, run the server with `npm run start` within the server directory. The bot will automatically retrieve and update your `auth_code`.
+Once set, run the server with `npm run start` within the server directory. The bot will automatically retrieve and update your Twitch `auth_code`. You will need to restart the server once more after the `auth_code` is updated.
 
 #### Method 2: Manual URL Construction
 
