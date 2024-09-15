@@ -190,10 +190,16 @@ export const twitchAuthCodeRouter = async () => {
 
           res.send(
             'Hello from twitch-bot! Twitch auth code received and your configuration has been updated.' +
-              'You may close this window. Please restart the bot.',
+              'You can safely close this window. Please restart the bot server.',
+          );
+          logger.info(
+            `Please restart the bot server. A browser window was opened and the Twitch auth code was received, allowing the bot to update your configuration with the new auth_code value. You can safely close this browser window.`,
           );
         } else {
-          res.send('Hello from twitch-bot! No Twitch auth code received. You may close this window.');
+          res.send('Hello from twitch-bot! No Twitch auth code received. You can safelyclose this window.');
+          logger.warn(
+            `No Twitch auth code received. A browser window was opened and the Twitch auth code was not received for some reason. You can safely close this browser window.`,
+          );
         }
       })
       .listen(port);
