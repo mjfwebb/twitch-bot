@@ -6,7 +6,7 @@ import { hasOwnProperty } from '../../utils/hasOwnProperty';
 export const ttsTikTokHandler = async (voice: string, text: string): Promise<ArrayBuffer | null> => {
   if (Config.tiktok.enabled && Config.tiktok.session_id) {
     try {
-      const url = `https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/?text_speaker=${voice}&req_text=${encodeURI(
+      const url = `https://api16-normal-c-useast2a.tiktokv.com/media/api/text/speech/invoke/?text_speaker=${voice}&req_text=${encodeURI(
         text,
       )}&speaker_map_type=0&aid=1233`;
       const response = await fetch(url, {
