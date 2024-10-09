@@ -10,7 +10,7 @@
     "account": "your_account_name",
     "channel": "target_channel_name",
     "auth_code": "",
-    "redirect_uri": "redirect_uri",
+    "redirect_uri": "",
     "scopes": [
       "chat:read",
       "chat:edit",
@@ -28,8 +28,8 @@
     "client_id": "client_id",
     "client_secret": "client_secret",
     "grant_type": "authorization_code",
-    "auth_code": "your_auth_code",
-    "redirect_uri": "redirect_uri",
+    "auth_code": "",
+    "redirect_uri": "",
     "country_code": "US",
     "scopes": [
       "user-read-currently-playing",
