@@ -41,11 +41,19 @@ Note that if you want to change the port the server runs on, you can do so in th
 
 ## Twitch developer account
 
-You will need a [Twitch developer account](https://dev.twitch.tv/console/apps) to create a Twitch application.
-
 Follow the instructions in the [Twitch Developer Documentation](https://dev.twitch.tv/docs/authentication/register-app/) to create a new application.
 
-You will need to create an application and generate a client ID and secret which will need to be added to twitch section of the `config.json` file in the server folder.
+Make sure you update the `redirect_uri` in `config.json` to the same URI that you entered in the `redirect_uri` field of the Twitch app you created. We suggest your `redirect_uri` is set to `http://localhost:3000`.
+
+You will need to create an application and generate a client ID and client secret which will need to be entered into the ``twitch` section of the `config.json` file in the server folder. You can find more information about this in the [Twitch configuration guide](CONFIGURATION.md#twitch-auth-code)
+
+## Spotify developer account
+
+Follow the instructions in the [Spotify Developer Documentation](https://developer.spotify.com/documentation/web-api/tutorials/getting-started/) to create a new application.
+
+Make sure you update the `redirect_uri` in `config.json` to the same URI that you entered in the `redirect_uri` field of the Spotify app you created. We suggest your `redirect_uri` is set to `http://localhost:3000`.
+
+You will need to create an application and generate a client ID and client secret which will need to be entered into the ``spotify` section of the `config.json` file in the server folder. You can find more information about this in the [Spotify configuration guide](CONFIGURATION.md#spotify)
 
 ## Next steps... configuring the bot
 

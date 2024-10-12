@@ -18,7 +18,11 @@ Ensure you have [setup your environment and configuration file](SETUP.md) before
   - [Twitch auth code](#twitch-auth-code)
     - [Method 1: Automated Retrieval (Recommended)](#method-1-automated-retrieval-recommended)
     - [Method 2: Manual URL Construction](#method-2-manual-url-construction)
-  - [Spotify auth code](#spotify-auth-code)
+  - [Spotify](#spotify)
+    - [country\_code](#country_code)
+    - [auth\_code](#auth_code)
+      - [Method 1: Automated Retrieval (Recommended)](#method-1-automated-retrieval-recommended-1)
+      - [Method 2: Manual URL Construction](#method-2-manual-url-construction-1)
   - [SevenTV](#seventv)
   - [BetterTTV](#betterttv)
   - [FrankerFaceZ](#frankerfacez)
@@ -113,7 +117,9 @@ The listed scopes are relevant to the existing commands in the repository. If yo
 
 ## Twitch auth code
 
-The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users`, `channel:manage:broadcast` and `moderator:read:followers`.
+Ensure you have setup your Twitch developer account and application by following the [Twitch setup guide](SETUP.md#twitch-developer-account)
+
+Note: The required scopes are `chat:read`, `chat:edit`, `channel:manage:redemptions`, `channel:read:redemptions`, `moderator:manage:banned_users`, `channel:manage:broadcast` and `moderator:read:followers`.
 
 ### Method 1: Automated Retrieval (Recommended)
 
@@ -129,19 +135,31 @@ To get the auth_code construct your URL and enter it into the browser. Here's an
 
 Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
 
-## Spotify auth code
+## Spotify
 
-The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`.
+Ensure you have setup your Spotify developer account and application by following the [Spotify setup guide](SETUP.md#spotify-developer-account)
 
-Visit https://developer.spotify.com/documentation/web-api/tutorials/getting-started to create an app and obtain the `client_id` and `client_secret`
+Note: The required scopes are `user-read-currently-playing`, `user-read-playback-state`, and `user-modify-playback-state`.
+
+### country_code
+
+The country code is used to help the bot determine if songs are available in the Spotify account's country.
+
+### auth_code
 
 Use the [Authorization Code Flow](https://developer.spotify.com/documentation/web-api/tutorials/code-flow)
+
+#### Method 1: Automated Retrieval (Recommended)
+
+Fill in ``client_id`, `client_secret` and `grant_type` fields in `config.json` for Spotify, leaving the `auth_code` field empty. We suggest your `redirect_uri` is set to `http://localhost:3000`. The bot will listen on whichever port you specify in the `redirect_uri`.
+
+#### Method 2: Manual URL Construction
 
 To get the auth_code construct your URL and enter it into the browser. Here's an example:
 
 `https://accounts.spotify.com/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>&scope=user-read-currently-playing%20user-read-playback-state%20user-modify-playback-state`
 
-Once you open this and authorize access, it will redirect you. Take the auth code from the new URL.
+Once you open this and authorize access, it will redirect you. Take the auth code from the new URL and paste it into the `auth_code` field in `config.json`.
 
 ## SevenTV
 
