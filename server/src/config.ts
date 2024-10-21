@@ -422,7 +422,7 @@ function readServerPort(config: unknown): number {
 }
 
 function readClientPort(config: unknown): number {
-  const defaultPortNumber: number = 6969;
+  const defaultPortNumber: number = 5173;
 
   if (!hasOwnProperty(config, 'client_port')) {
     logger.error(missingPropertyErrorMessage('client_port'));
