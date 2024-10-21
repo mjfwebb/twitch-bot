@@ -92,7 +92,7 @@ export const sevenTVUserSchema = z.object({
       display_name: z.string(),
       linked_at: z.number(),
       emote_capacity: z.number(),
-      emote_set_id: z.null(),
+      emote_set_id: z.nullable(z.string()),
       emote_set: z.nullable(
         z.object({
           id: z.string(),
@@ -116,7 +116,7 @@ export const sevenTVTwitchUserSchema = z.object({
   display_name: z.string(),
   linked_at: z.number(),
   emote_capacity: z.number(),
-  emote_set_id: z.null(),
+  emote_set_id: z.nullable(z.string()),
   emote_set: z.object({
     id: z.string(),
     name: z.string(),
