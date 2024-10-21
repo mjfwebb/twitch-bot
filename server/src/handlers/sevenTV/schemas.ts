@@ -19,7 +19,7 @@ export const sevenTVEmoteDataSchema = z.object({
   state: z.array(z.union([z.literal('PERSONAL'), z.literal('NO_PERSONAL'), z.literal('LISTED')])),
   listed: z.boolean(),
   animated: z.boolean(),
-  owner: sevenTVEmoteDataSetOwnerSchema,
+  owner: z.optional(sevenTVEmoteDataSetOwnerSchema),
   host: z.object({
     url: z.string(),
     files: z.array(
@@ -73,14 +73,16 @@ export const sevenTVUserSchema = z.object({
       }),
     ),
   ),
-  editors: z.optional(z.array(
-    z.object({
-      id: z.string(),
-      permissions: z.number(),
-      visible: z.boolean(),
-      added_at: z.number(),
-    }),
-  )),
+  editors: z.optional(
+    z.array(
+      z.object({
+        id: z.string(),
+        permissions: z.number(),
+        visible: z.boolean(),
+        added_at: z.number(),
+      }),
+    ),
+  ),
   roles: z.array(z.string()),
   connections: z.array(
     z.object({
@@ -91,16 +93,18 @@ export const sevenTVUserSchema = z.object({
       linked_at: z.number(),
       emote_capacity: z.number(),
       emote_set_id: z.null(),
-      emote_set: z.nullable(z.object({
-        id: z.string(),
-        name: z.string(),
-        flags: z.number(),
-        tags: z.array(z.string()),
-        immutable: z.boolean(),
-        privileged: z.boolean(),
-        capacity: z.number(),
-        owner: sevenTVEmoteDataSetOwnerSchema,
-      })),
+      emote_set: z.nullable(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          flags: z.number(),
+          tags: z.array(z.string()),
+          immutable: z.boolean(),
+          privileged: z.boolean(),
+          capacity: z.number(),
+          owner: sevenTVEmoteDataSetOwnerSchema,
+        }),
+      ),
     }),
   ),
 });
