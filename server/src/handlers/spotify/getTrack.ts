@@ -27,7 +27,7 @@ export const getTrack = async (trackId: string): Promise<SpotifyTrack | null> =>
       if (trackParse.success) {
         return trackParse.data;
       } else {
-        logger.error(`JSON response from Spotify API (getTrack) is not valid: Error: ${trackParse.error}`);
+        logger.error(`JSON response from Spotify API (getTrack) is not valid: Error: ${trackParse.error.message}`);
       }
     } catch (error) {
       logger.error(error);
