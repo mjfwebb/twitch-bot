@@ -151,7 +151,7 @@ Use the [Authorization Code Flow](https://developer.spotify.com/documentation/we
 
 #### Method 1: Automated Retrieval (Recommended)
 
-Fill in ``client_id`, `client_secret` and `grant_type` fields in `config.json` for Spotify, leaving the `auth_code` field empty. We suggest your `redirect_uri` is set to `http://localhost:3000`. The bot will listen on whichever port you specify in the `redirect_uri`.
+Fill in `client_id`, `client_secret` and `grant_type` fields in `config.json` for Spotify, leaving the `auth_code` field empty. We suggest your `redirect_uri` is set to `http://localhost:3000`. The bot will listen on whichever port you specify in the `redirect_uri`.
 
 #### Method 2: Manual URL Construction
 
