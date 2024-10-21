@@ -30,7 +30,7 @@ export const sevenTVEmoteDataSchema = z.object({
         height: z.number(),
         frame_count: z.number(),
         size: z.number(),
-        format: z.union([z.literal('AVIF'), z.literal('WEBP')]),
+        format: z.union([z.literal('AVIF'), z.literal('WEBP'), z.literal('PNG'), z.literal('GIF')]),
       }),
     ),
   }),
