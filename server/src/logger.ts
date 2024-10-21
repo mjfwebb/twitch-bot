@@ -1,5 +1,4 @@
 import pc from 'picocolors';
-import Config from './config';
 import { isError } from './utils/isError';
 
 export const logLevels = ['error', 'warn', 'info', 'debug'];
@@ -22,6 +21,12 @@ const formattedDate = () => {
   return `[${hours}:${minutes}:${seconds}.${millis}] `;
 };
 
+let logLevel: number = logLevelsMap['debug']; // Set default log level to debug so we can see the logger message from config loading
+
+export function setLogLevel(logLevelString: string) {
+  logLevel = logLevelsMap[logLevelString];
+}
+
 export const logger = {
   error: (error: unknown) => {
     if (isError(error)) {
@@ -31,17 +36,17 @@ export const logger = {
     }
   },
   warn: (message: string) => {
-    if (logLevelsMap[Config.logLevel] >= logLevelsMap['warn']) {
+    if (logLevel >= logLevelsMap['warn']) {
       console.warn(`${formattedDate()} ${pc.yellow('Warn:')} ${message}`);
     }
   },
   info: (message: string) => {
-    if (logLevelsMap[Config.logLevel] >= logLevelsMap['info']) {
+    if (logLevel >= logLevelsMap['info']) {
       console.info(`${formattedDate()} ${pc.cyan('Info:')} ${message}`);
     }
   },
   debug: (message: string) => {
-    if (logLevelsMap[Config.logLevel] >= logLevelsMap['debug']) {
+    if (logLevel >= logLevelsMap['debug']) {
       console.debug(`${formattedDate()} ${pc.magenta('Debug:')} ${message}`);
     }
   },

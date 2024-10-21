@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { logLevels, logger, type LogLevel } from './logger';
+import { logLevels, logger, setLogLevel, type LogLevel } from './logger';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 
 const webhookNames = ['discord_stream_notification'] as const;
@@ -376,29 +376,33 @@ function readWebhooksConfig(config: unknown): WebhooksConfig {
 }
 
 function readLogLevel(config: unknown): LogLevel {
-  const defaultLogLevel: LogLevel = 'info';
+  const loadLogLevel = () => {
+    const defaultLogLevel: LogLevel = 'info';
 
-  if (!hasOwnProperty(config, 'log_level')) {
-    logger.error(missingPropertyErrorMessage('log_level'));
+    if (!hasOwnProperty(config, 'log_level')) {
+      logger.error(missingPropertyErrorMessage('log_level'));
 
-    return defaultLogLevel;
-  }
+      logger.debug(`config.logLevel failed to load as it was missing from the configuration file. Defaulting to ${defaultLogLevel}`);
+      return defaultLogLevel;
+    }
 
-  const logLevel = config['log_level'];
+    const logLevel = config['log_level'];
 
-  if (typeof logLevel !== 'string') {
-    logger.error(`Invalid log_level config`);
+    if (typeof logLevel !== 'string' || (Array.isArray(logLevel) && !logLevels.includes(logLevel))) {
+      logger.error(invalidPropertyErrorMessage('log_level', logLevels));
 
-    return defaultLogLevel;
-  }
+      logger.debug(`config.logLevel failed to load as it was not a valid log level. Defaulting to ${defaultLogLevel}`);
+      return defaultLogLevel;
+    }
 
-  if (typeof logLevel !== 'string' || (Array.isArray(logLevel) && !logLevels.includes(logLevel))) {
-    logger.error(invalidPropertyErrorMessage('log_level', logLevels));
+    return logLevel;
+  };
 
-    return defaultLogLevel;
-  }
+  const loadedLogLevel = loadLogLevel();
 
-  return logLevel;
+  setLogLevel(loadedLogLevel);
+
+  return loadedLogLevel;
 }
 
 function readServerPort(config: unknown): number {
@@ -407,6 +411,7 @@ function readServerPort(config: unknown): number {
   if (!hasOwnProperty(config, 'server_port')) {
     logger.error(missingPropertyErrorMessage('server_port'));
 
+    logger.debug(`config.server_port failed to load as it was missing from the configuration file. Using default port number: ${defaultPortNumber}`);
     return defaultPortNumber;
   }
 
@@ -415,6 +420,7 @@ function readServerPort(config: unknown): number {
   if (typeof serverPort !== 'number') {
     logger.error(`Invalid log_level config`);
 
+    logger.debug(`config.server_port failed to load as it was not a number. Using default port number: ${defaultPortNumber}`);
     return defaultPortNumber;
   }
 
@@ -427,6 +433,7 @@ function readClientPort(config: unknown): number {
   if (!hasOwnProperty(config, 'client_port')) {
     logger.error(missingPropertyErrorMessage('client_port'));
 
+    logger.debug(`config.client_port failed to load as it was missing from the configuration file. Using default port number: ${defaultPortNumber}`);
     return defaultPortNumber;
   }
 
@@ -435,6 +442,7 @@ function readClientPort(config: unknown): number {
   if (typeof clientPort !== 'number') {
     logger.error(`Invalid log_level config`);
 
+    logger.debug(`config.client_port failed to load as it was not a number. Using default port number: ${defaultPortNumber}`);
     return defaultPortNumber;
   }
 
