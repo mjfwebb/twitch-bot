@@ -39,7 +39,7 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
 
       // If the result is an error, return null
       if (!result) {
-        logger.info('No result from Spotify, are you sure you have a song playing?');
+        logger.debug('Spotify currently playing: No result. Are you sure you have a song playing?');
         return null;
       }
 
@@ -48,6 +48,7 @@ export const fetchCurrentlyPlaying = async (): Promise<SpotifySong | null> => {
         const song = songParse.data;
         getIO().emit('currentSong', song);
         if (song.item.id && getCurrentSpotifySong()?.item.id !== song.item.id) {
+          logger.debug(`Spotify currently playing: Result: ${JSON.stringify(song, null, 2)}`);
           playedSongs.push(song);
         }
       } else {
