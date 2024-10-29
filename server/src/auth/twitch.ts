@@ -42,7 +42,7 @@ export const getCurrentAccessToken = () => getTokenFromFile('twitch_access_token
  * @remarks To support checking the response (which requires using result.json()) we pass back the parsed data response, instead of the whole Reponse.
  * This seems reasonable since all interactions with the API always want the JSON data anyway.
  */
-export const fetchWithRetry = async (url: string, init?: RequestInit | undefined, attemptNumber = 0): Promise<unknown> => {
+export const fetchWithRetry = async (url: string, init?: RequestInit, attemptNumber = 0): Promise<unknown> => {
   if (attemptNumber > 2) {
     throw new Error(`Twitch: Failed to perform fetch ${attemptNumber} ${simplePluralise('time', attemptNumber)} to API`);
   }
@@ -55,14 +55,12 @@ export const fetchWithRetry = async (url: string, init?: RequestInit | undefined
   const data: unknown = await result.json();
   assertNotBadRequest(data);
 
-  if (hasOwnProperty(data, 'status')) {
-    if (data.status === StatusCodes.UNAUTHORIZED) {
-      // NOTE: We got a 401 Unauthorized response. The Access token may have expired. Try to refresh then retry the request.
-      await refreshAccessToken(Config.twitch).catch((e) => logger.error(e));
-      return fetchWithRetry(url, init, attemptNumber + 1);
-    } else {
-      return data;
-    }
+  if (result.status === StatusCodes.UNAUTHORIZED) {
+    // NOTE: We got a 401 Unauthorized response. The Access token may have expired. Try to refresh then retry the request.
+    await refreshAccessToken(Config.twitch).catch((e) => logger.error(e));
+    return fetchWithRetry(url, init, attemptNumber + 1);
+  } else {
+    return data;
   }
 };
 
