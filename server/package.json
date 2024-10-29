@@ -33,7 +33,7 @@
     "open": "^10.0.0",
     "picocolors": "^1.0.0",
     "play-sound": "^1.1.6",
-    "socket.io": "^4.7.0",
+    "socket.io": "^4.8.0",
     "websocket": "^1.0.34",
     "zod": "^3.22.4"
   },
