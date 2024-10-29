@@ -10,6 +10,13 @@ let connectionRef: websocket.connection | undefined;
 
 export const getOBSWebSocketConnection = () => connectionRef;
 
+type PendingRequest = {
+  resolve: (value: unknown) => void;
+  reject: (reason?: string) => void;
+};
+
+const pendingRequests: Map<string, PendingRequest> = new Map();
+
 const WebsocketOpCodes = {
   Hello: 0, // The initial message sent by obs-websocket to newly connected clients.
   Identify: 1, // The message sent by a newly connected client to obs-websocket in response to a Hello.
@@ -177,10 +184,10 @@ type EventMessage = WebsocketInboundMessage<{
  * Sent to: obs-websocket
  * Description: An event coming from OBS has occured. Eg scene switched, source muted.
  */
-type RequestMessage = WebsocketInboundMessage<{
-  requestType: string;
+type RequestMessage<T extends keyof Requests> = WebsocketInboundMessage<{
+  requestType: T;
   requestId: string;
-  requestData?: Record<string, unknown>;
+  requestData?: Requests[T];
 }>;
 
 /**
@@ -197,7 +204,7 @@ type RequestResponseMessage = WebsocketInboundMessage<{
     code: number; // code is a RequestStatus code.
     comment?: string; // comment may be provided by the server on errors to offer further details on why a request failed.
   };
-  responseData?: Record<string, unknown>;
+  responseData?: string;
 }>;
 
 /**
@@ -235,215 +242,232 @@ type Responses = {
 };
 
 type Requests = {
-  GeneralRequests: {
-    GetVersion: {
-      obsVersion: string; // Current OBS Studio version
-      obsWebSocketVersion: string; //	Current obs-websocket version
-      rpcVersion: number; // Current latest obs-websocket RPC version
-      availableRequests: string[]; // Array of available RPC requests for the currently negotiated RPC version
-      supportedImageFormats: string[]; // Image formats available in GetSourceScreenshot and SaveSourceScreenshot requests.
-      platform: string; // Name of the platform. Usually windows, macos, or ubuntu (linux flavor). Not guaranteed to be any of those
-      platformDescription: string; //	Description of the platform, like Windows 10 (10.0)
-    };
-    GetStats: {
-      cpuUsage: number; // Current CPU usage in percent
-      memoryUsage: number; // Amount of memory in MB currently being used by OBS
-      availableDiskSpace: number; // Available disk space on the device being used for recording storage
-      activeFps: number; // Current FPS being rendered
-      averageFrameRenderTime: number; // Average time in milliseconds that OBS is taking to render a frame
-      renderSkippedFrames: number; // Number of frames skipped by OBS in the render thread
-      renderTotalFrames: number; // Total number of frames outputted by the render thread
-      outputSkippedFrames: number; // Number of frames skipped by OBS in the output thread
-      outputTotalFrames: number; // Total number of frames outputted by the output thread
-      webSocketSessionIncomingMessages: number; // Total number of messages received by obs-websocket from the client
-      webSocketSessionOutgoingMessages: number; // Total number of messages sent by obs-websocket to the client
-    };
-    BroadcastCustomEvent: {
-      eventData: Record<string, unknown>; // Custom event data
-    };
-    CallVendorRequest: {
-      vendorName: string; // Name of the vendor to use
-      requestType: string; // The request type to call
-      requestData?: Record<string, unknown>; // Object containing appropriate request data
-    };
-    GetHotkeyList: {
-      hotkeys: string[]; // Array of hotkey names;
-    };
-    TriggerHotkeyByName: {
-      hotkeyName: string; // Name of the hotkey to trigger
-      contextName?: string; // Name of context of the hotkey to trigger
-    };
-    TriggerHotkeyByKeySequence: {
-      keyId?: string; //	The OBS key ID to use. See https://github.com/obsproject/obs-studio/blob/master/libobs/obs-hotkeys.h	None	Not pressed
-      keyModifiers?: {
-        // Object containing key modifiers to apply
-        shift: boolean; //	Press Shift	None	Not pressed
-        control: boolean; //	Press CTRL	None	Not pressed
-        alt: boolean; //	Press ALT	None	Not pressed
-        command: boolean; //	Press CMD (Mac)	None	Not pressed
-      };
-    };
-    Sleep: {
-      sleepMillis?: number; // Number of milliseconds to sleep for (if SERIAL_REALTIME mode)	>= 0, <= 50000	Unknown
-      sleepFrames?: number; // Number of frames to sleep for (if SERIAL_FRAME mode)	>= 0, <= 10000	Unknown
+  // GeneralRequests: {
+  GetVersion: {
+    obsVersion: string; // Current OBS Studio version
+    obsWebSocketVersion: string; //	Current obs-websocket version
+    rpcVersion: number; // Current latest obs-websocket RPC version
+    availableRequests: string[]; // Array of available RPC requests for the currently negotiated RPC version
+    supportedImageFormats: string[]; // Image formats available in GetSourceScreenshot and SaveSourceScreenshot requests.
+    platform: string; // Name of the platform. Usually windows, macos, or ubuntu (linux flavor). Not guaranteed to be any of those
+    platformDescription: string; //	Description of the platform, like Windows 10 (10.0)
+  };
+  GetStats: {
+    cpuUsage: number; // Current CPU usage in percent
+    memoryUsage: number; // Amount of memory in MB currently being used by OBS
+    availableDiskSpace: number; // Available disk space on the device being used for recording storage
+    activeFps: number; // Current FPS being rendered
+    averageFrameRenderTime: number; // Average time in milliseconds that OBS is taking to render a frame
+    renderSkippedFrames: number; // Number of frames skipped by OBS in the render thread
+    renderTotalFrames: number; // Total number of frames outputted by the render thread
+    outputSkippedFrames: number; // Number of frames skipped by OBS in the output thread
+    outputTotalFrames: number; // Total number of frames outputted by the output thread
+    webSocketSessionIncomingMessages: number; // Total number of messages received by obs-websocket from the client
+    webSocketSessionOutgoingMessages: number; // Total number of messages sent by obs-websocket to the client
+  };
+  BroadcastCustomEvent: {
+    eventData: Record<string, unknown>; // Custom event data
+  };
+  CallVendorRequest: {
+    vendorName: string; // Name of the vendor to use
+    requestType: string; // The request type to call
+    requestData?: Record<string, unknown>; // Object containing appropriate request data
+  };
+  GetHotkeyList: {
+    hotkeys: string[]; // Array of hotkey names;
+  };
+  TriggerHotkeyByName: {
+    hotkeyName: string; // Name of the hotkey to trigger
+    contextName?: string; // Name of context of the hotkey to trigger
+  };
+  TriggerHotkeyByKeySequence: {
+    keyId?: string; //	The OBS key ID to use. See https://github.com/obsproject/obs-studio/blob/master/libobs/obs-hotkeys.h	None	Not pressed
+    keyModifiers?: {
+      // Object containing key modifiers to apply
+      shift: boolean; //	Press Shift	None	Not pressed
+      control: boolean; //	Press CTRL	None	Not pressed
+      alt: boolean; //	Press ALT	None	Not pressed
+      command: boolean; //	Press CMD (Mac)	None	Not pressed
     };
   };
-  ConfigRequests: {
-    // GetPersistentData
-    // SetPersistentData
-    // GetSceneCollectionList
-    // SetCurrentSceneCollection
-    // CreateSceneCollection
-    // GetProfileList
-    // SetCurrentProfile
-    // CreateProfile
-    // RemoveProfile
-    // GetProfileParameter
-    // SetProfileParameter
-    // GetVideoSettings
-    // SetVideoSettings
-    // GetStreamServiceSettings
-    // SetStreamServiceSettings
-    // GetRecordDirectory
-    // SetRecordDirectory
+  Sleep: {
+    sleepMillis?: number; // Number of milliseconds to sleep for (if SERIAL_REALTIME mode)	>= 0, <= 50000	Unknown
+    sleepFrames?: number; // Number of frames to sleep for (if SERIAL_FRAME mode)	>= 0, <= 10000	Unknown
   };
-  SourcesRequests: {
-    // GetSourceActive
-    // GetSourceScreenshot
-    // SaveSourceScreenshot
+  // };
+  // ConfigRequests: {
+  // GetPersistentData
+  // SetPersistentData
+  // GetSceneCollectionList
+  // SetCurrentSceneCollection
+  // CreateSceneCollection
+  // GetProfileList
+  // SetCurrentProfile
+  // CreateProfile
+  // RemoveProfile
+  // GetProfileParameter
+  // SetProfileParameter
+  // GetVideoSettings
+  // SetVideoSettings
+  // GetStreamServiceSettings
+  // SetStreamServiceSettings
+  // GetRecordDirectory
+  // SetRecordDirectory
+  // };
+  // SourcesRequests: {
+  // GetSourceActive
+  // GetSourceScreenshot
+  // SaveSourceScreenshot
+  // };
+  // ScenesRequests: {
+  // GetSceneList
+  // GetGroupList
+  // GetCurrentProgramScene
+  // SetCurrentProgramScene
+  // GetCurrentPreviewScene
+  // SetCurrentPreviewScene
+  // CreateScene
+  // RemoveScene
+  // SetSceneName
+  // GetSceneSceneTransitionOverride
+  // SetSceneSceneTransitionOverride
+  // };
+  // InputsRequests: {
+  // GetInputList
+  // GetInputKindList
+  // GetSpecialInputs
+  // CreateInput
+  // RemoveInput
+  // SetInputName
+  // GetInputDefaultSettings
+  GetInputSettings: {
+    inputName: string; // Name of the input to get the settings of
+    inputUuid?: string; // UUID of the input to get the settings of
   };
-  ScenesRequests: {
-    // GetSceneList
-    // GetGroupList
-    // GetCurrentProgramScene
-    // SetCurrentProgramScene
-    // GetCurrentPreviewScene
-    // SetCurrentPreviewScene
-    // CreateScene
-    // RemoveScene
-    // SetSceneName
-    // GetSceneSceneTransitionOverride
-    // SetSceneSceneTransitionOverride
+  SetInputSettings: {
+    inputName: string; // Name of the input to set the settings of
+    inputSettings: Record<string, unknown>; // Object of settings to apply
+    overlay?: boolean; // true == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings.
+    inputUuid?: string; // UUID of the input to set the settings of
   };
-  InputsRequests: {
-    // GetInputList
-    // GetInputKindList
-    // GetSpecialInputs
-    // CreateInput
-    // RemoveInput
-    // SetInputName
-    // GetInputDefaultSettings
-    // GetInputSettings
-    // SetInputSettings
-    // GetInputMute
-    // SetInputMute
-    // ToggleInputMute
-    // GetInputVolume
-    // SetInputVolume
-    // GetInputAudioBalance
-    // SetInputAudioBalance
-    // GetInputAudioSyncOffset
-    // SetInputAudioSyncOffset
-    // GetInputAudioMonitorType
-    // SetInputAudioMonitorType
-    // GetInputAudioTracks
-    // SetInputAudioTracks
-    // GetInputPropertiesListPropertyItems
-    // PressInputPropertiesButton
+  // GetInputMute
+  // SetInputMute
+  // ToggleInputMute
+  // GetInputVolume
+  // SetInputVolume
+  // GetInputAudioBalance
+  // SetInputAudioBalance
+  // GetInputAudioSyncOffset
+  // SetInputAudioSyncOffset
+  // GetInputAudioMonitorType
+  // SetInputAudioMonitorType
+  // GetInputAudioTracks
+  // SetInputAudioTracks
+  // GetInputPropertiesListPropertyItems
+  // PressInputPropertiesButton
+  // };
+  // TransitionsRequests: {
+  // GetTransitionKindList
+  // GetSceneTransitionList
+  // GetCurrentSceneTransition
+  // SetCurrentSceneTransition
+  // SetCurrentSceneTransitionDuration
+  // SetCurrentSceneTransitionSettings
+  // GetCurrentSceneTransitionCursor
+  // TriggerStudioModeTransition
+  // SetTBarPosition
+  // };
+  // FiltersRequests: {
+  // GetSourceFilterKindList
+  // GetSourceFilterList
+  // GetSourceFilterDefaultSettings
+  // CreateSourceFilter
+  // RemoveSourceFilter
+  // SetSourceFilterName
+  // GetSourceFilter
+  // SetSourceFilterIndex
+  // SetSourceFilterSettings
+  // SetSourceFilterEnabled
+  // };
+  // SceneItemsRequests: {
+  // GetSceneItemList
+  // GetGroupSceneItemList
+  // GetSceneItemId
+  // GetSceneItemSource
+  // CreateSceneItem
+  // RemoveSceneItem
+  // DuplicateSceneItem
+  // GetSceneItemTransform
+  // SetSceneItemTransform
+  GetSceneItemEnabled: {
+    sceneName: string; // Name of the scene the item is in
+    sceneUuid?: string; // UUID of the scene the item is in
+    sceneItemId: number; // Numeric ID of the scene item
   };
-  TransitionsRequests: {
-    // GetTransitionKindList
-    // GetSceneTransitionList
-    // GetCurrentSceneTransition
-    // SetCurrentSceneTransition
-    // SetCurrentSceneTransitionDuration
-    // SetCurrentSceneTransitionSettings
-    // GetCurrentSceneTransitionCursor
-    // TriggerStudioModeTransition
-    // SetTBarPosition
+  SetSceneItemEnabled: {
+    sceneName: string; // Name of the scene the item is in
+    sceneUuid?: string; // UUID of the scene the item is in
+    sceneItemId: number; // Numeric ID of the scene item
+    sceneItemEnabled: boolean; // New enable state of the scene item
   };
-  FiltersRequests: {
-    // GetSourceFilterKindList
-    // GetSourceFilterList
-    // GetSourceFilterDefaultSettings
-    // CreateSourceFilter
-    // RemoveSourceFilter
-    // SetSourceFilterName
-    // GetSourceFilter
-    // SetSourceFilterIndex
-    // SetSourceFilterSettings
-    // SetSourceFilterEnabled
-  };
-  SceneItemsRequests: {
-    // GetSceneItemList
-    // GetGroupSceneItemList
-    // GetSceneItemId
-    // GetSceneItemSource
-    // CreateSceneItem
-    // RemoveSceneItem
-    // DuplicateSceneItem
-    // GetSceneItemTransform
-    // SetSceneItemTransform
-    // GetSceneItemEnabled
-    // SetSceneItemEnabled
-    // GetSceneItemLocked
-    // SetSceneItemLocked
-    // GetSceneItemIndex
-    // SetSceneItemIndex
-    // GetSceneItemBlendMode
-    // SetSceneItemBlendMode
-  };
-  OutputsRequests: {
-    // GetVirtualCamStatus
-    // ToggleVirtualCam
-    // StartVirtualCam
-    // StopVirtualCam
-    // GetReplayBufferStatus
-    // ToggleReplayBuffer
-    // StartReplayBuffer
-    // StopReplayBuffer
-    // SaveReplayBuffer
-    // GetLastReplayBufferReplay
-    // GetOutputList
-    // GetOutputStatus
-    // ToggleOutput
-    // StartOutput
-    // StopOutput
-    // GetOutputSettings
-    // SetOutputSettings
-  };
-  StreamRequests: {
-    // GetStreamStatus
-    // ToggleStream
-    // StartStream
-    // StopStream
-    // SendStreamCaption
-  };
-  RecordRequests: {
-    // GetRecordStatus
-    // ToggleRecord
-    // StartRecord
-    // StopRecord
-    // ToggleRecordPause
-    // PauseRecord
-    // ResumeRecord
-  };
-  MediaInputsRequests: {
-    // GetMediaInputStatus
-    // SetMediaInputCursor
-    // OffsetMediaInputCursor
-    // TriggerMediaInputAction
-  };
-  UiRequests: {
-    // GetStudioModeEnabled
-    // SetStudioModeEnabled
-    // OpenInputPropertiesDialog
-    // OpenInputFiltersDialog
-    // OpenInputInteractDialog
-    // GetMonitorList
-    // OpenVideoMixProjector
-    // OpenSourceProjector
-  };
+  // GetSceneItemLocked
+  // SetSceneItemLocked
+  // GetSceneItemIndex
+  // SetSceneItemIndex
+  // GetSceneItemBlendMode
+  // SetSceneItemBlendMode
+  // };
+  // OutputsRequests: {
+  // GetVirtualCamStatus
+  // ToggleVirtualCam
+  // StartVirtualCam
+  // StopVirtualCam
+  // GetReplayBufferStatus
+  // ToggleReplayBuffer
+  // StartReplayBuffer
+  // StopReplayBuffer
+  // SaveReplayBuffer
+  // GetLastReplayBufferReplay
+  // GetOutputList
+  // GetOutputStatus
+  // ToggleOutput
+  // StartOutput
+  // StopOutput
+  // GetOutputSettings
+  // SetOutputSettings
+  // };
+  // StreamRequests: {
+  // GetStreamStatus
+  // ToggleStream
+  // StartStream
+  // StopStream
+  // SendStreamCaption
+  // };
+  // RecordRequests: {
+  // GetRecordStatus
+  // ToggleRecord
+  // StartRecord
+  // StopRecord
+  // ToggleRecordPause
+  // PauseRecord
+  // ResumeRecord
+  // };
+  // MediaInputsRequests: {
+  // GetMediaInputStatus
+  // SetMediaInputCursor
+  // OffsetMediaInputCursor
+  // TriggerMediaInputAction
+  // };
+  // UiRequests: {
+  // GetStudioModeEnabled
+  // SetStudioModeEnabled
+  // OpenInputPropertiesDialog
+  // OpenInputFiltersDialog
+  // OpenInputInteractDialog
+  // GetMonitorList
+  // OpenVideoMixProjector
+  // OpenSourceProjector
+  // };
 };
 
 let isConnected = false;
@@ -797,6 +821,11 @@ function handleWebsocketOpCode(config: OBSConfig, op: number, d: unknown, connec
       logger.debug(`OBS WebSocket: Identified with negotiated RPC version ${negotiatedRpcVersion}`);
       break;
     }
+    case WebsocketOpCodes.Reidentify: {
+      const { eventSubscriptions } = d as ReidentifyMessage['d'];
+      logger.debug(`OBS WebSocket: Reidentify, event subscriptions: ${eventSubscriptions}`);
+      break;
+    }
     case WebsocketOpCodes.Event: {
       const { eventType, eventIntent, eventData } = d as EventMessage['d'];
       logger.debug(`OBS WebSocket: Event: ${eventType} (${eventIntent})`);
@@ -806,8 +835,35 @@ function handleWebsocketOpCode(config: OBSConfig, op: number, d: unknown, connec
     case WebsocketOpCodes.RequestResponse: {
       const { requestType, requestId, requestStatus, responseData } = d as RequestResponseMessage['d'];
       logger.debug(`OBS WebSocket: Request Response: ${requestType} (${requestId})`);
-      logger.debug(JSON.stringify(requestStatus));
-      logger.debug(JSON.stringify(responseData));
+      logger.debug(`OBS WebSocket: Request Status: ${JSON.stringify(requestStatus)}`);
+      logger.debug(`OBS WebSocket: Response Data: ${JSON.stringify(responseData)}`);
+
+      if (requestId) {
+        const pendingRequest = pendingRequests.get(requestId);
+
+        if (!pendingRequest) {
+          logger.warn(`OBS WebSocket: Received a response for a request that does not exist: ${responseData}`);
+          return;
+        }
+
+        const { resolve, reject } = pendingRequest;
+
+        if (requestStatus.result === false) {
+          reject(requestStatus.comment);
+          return;
+        }
+
+        resolve(responseData);
+        pendingRequests.delete(requestId);
+      }
+      break;
+    }
+    case WebsocketOpCodes.RequestBatch: {
+      const { requestId, haltOnFailure, executionType, requests } = d as RequestBatchMessage['d'];
+      logger.debug(`OBS WebSocket: Request Batch: ${requestId}`);
+      logger.debug(JSON.stringify(haltOnFailure));
+      logger.debug(JSON.stringify(executionType));
+      logger.debug(JSON.stringify(requests));
       break;
     }
     case WebsocketOpCodes.RequestBatchResponse: {
@@ -846,7 +902,7 @@ export function runOBSWebsocket(config: OBSConfig) {
       if (hasOwnProperty(message, 'utf8Data') && typeof message.utf8Data === 'string') {
         const data: unknown = JSON.parse(message.utf8Data);
         const { op, d } = data as WebsocketInboundMessage<unknown>;
-        if (op >= WebsocketOpCodes.Hello && op <= WebsocketOpCodes.RequestResponse) {
+        if (op >= WebsocketOpCodes.Hello && op <= WebsocketOpCodes.RequestBatchResponse) {
           handleWebsocketOpCode(config, op, d, connection);
           return;
         }
@@ -865,4 +921,30 @@ export function runOBSWebsocket(config: OBSConfig) {
       client.connect(config.url);
     }
   }, 10000);
+}
+
+// TODO: Add response types instead of unknown
+export function sendRequest<T extends keyof Requests>(request: RequestMessage<T>['d']): Promise<unknown> {
+  return new Promise((resolve, reject) => {
+    pendingRequests.set(request.requestId, { resolve, reject });
+
+    const obsWebSocket = getOBSWebSocketConnection();
+
+    if (!obsWebSocket) {
+      return;
+    }
+
+    obsWebSocket.send(
+      JSON.stringify({
+        op: 6,
+        d: request,
+      }),
+      (err) => {
+        if (err) {
+          pendingRequests.delete(request.requestId);
+          reject(err);
+        }
+      },
+    );
+  });
 }
