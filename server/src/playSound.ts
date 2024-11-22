@@ -56,11 +56,11 @@ export async function getDuration(soundFile: string): Promise<number> {
 
   return await new Promise((resolve, reject) => {
     if (!ffmpegPath) {
-      return reject('ffmpeg not found');
+      return reject(new Error('ffmpeg not found'));
     }
     execFile(ffmpegPath, args, (error: ExecFileException | null, _stdout: string, stderr: string): void => {
       if (error) {
-        return reject(error);
+        return reject(new Error(error.message));
       }
       resolve(getDurationMilliseconds(stderr));
     });
