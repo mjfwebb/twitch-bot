@@ -1,8 +1,7 @@
 import './CSSSizePicker.less';
 
 // Optional additional units could be:
-const cssUnitTypes = ['px', 'em', 'rem', '%', 'vw', 'vh', 'vmin', 'vmax', 'ex', 'ch', 'cm', 'mm', 'in', 'pt', 'pc'] as const;
-type CSSUnit = (typeof cssUnitTypes)[number];
+type CSSUnit = ('px' | 'em' | 'rem' | '%' | 'vw' | 'vh' | 'vmin' | 'vmax' | 'ex' | 'ch' | 'cm' | 'mm' | 'in' | 'pt' | 'pc')[number];
 
 export const CSSSizePicker = ({
   id,
