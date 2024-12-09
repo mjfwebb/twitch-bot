@@ -1,6 +1,6 @@
 /**
  * Calculates the difference between two dates in terms of years, months, days, hours, minutes, and seconds.
- * @param earlierDate - The earlier date. 
+ * @param earlierDate - The earlier date.
  * @param laterDate - The later date.
  * @returns An object representing the difference between the dates in each unit.
  */
@@ -38,8 +38,10 @@ function dateDifference(
   }
   if (result.day < 0) {
     result.month--;
-    // days = days left in earlierDate's month,
-    //   plus days that have passed in laterDate's month
+    // Calculate remaining days when crossing month boundary:
+    // 1. Set date to 32 to determine the last day of the month
+    // 2. Calculate: (days remaining in earlier month) + (days passed in later month)
+    // Note: Using 32 ensures we get the actual last day of any month
     const earlierDateCopy = new Date(earlierDate.getTime());
     earlierDateCopy.setDate(32);
     result.day = 32 - earlierDate.getDate() - earlierDateCopy.getDate() + laterDate.getDate();
