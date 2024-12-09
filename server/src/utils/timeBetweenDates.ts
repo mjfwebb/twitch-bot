@@ -1,12 +1,12 @@
 /**
  * Calculates the difference between two dates in terms of years, months, days, hours, minutes, and seconds.
- * @param date1 - The first date.
- * @param date2 - The second date.
+ * @param earlierDate - The earlier date. 
+ * @param laterDate - The later date.
  * @returns An object representing the difference between the dates in each unit.
  */
 function dateDifference(
-  date1: Date,
-  date2: Date,
+  earlierDate: Date,
+  laterDate: Date,
 ): {
   year: number;
   month: number;
@@ -16,12 +16,12 @@ function dateDifference(
   second: number;
 } {
   const result = {
-    year: date2.getFullYear() - date1.getFullYear(),
-    month: date2.getMonth() - date1.getMonth(),
-    day: date2.getDate() - date1.getDate(),
-    hour: date2.getHours() - date1.getHours(),
-    minute: date2.getMinutes() - date1.getMinutes(),
-    second: date2.getSeconds() - date1.getSeconds(),
+    year: laterDate.getFullYear() - earlierDate.getFullYear(),
+    month: laterDate.getMonth() - earlierDate.getMonth(),
+    day: laterDate.getDate() - earlierDate.getDate(),
+    hour: laterDate.getHours() - earlierDate.getHours(),
+    minute: laterDate.getMinutes() - earlierDate.getMinutes(),
+    second: laterDate.getSeconds() - earlierDate.getSeconds(),
   };
 
   if (result.second < 0) {
@@ -38,11 +38,11 @@ function dateDifference(
   }
   if (result.day < 0) {
     result.month--;
-    // days = days left in date1's month,
-    //   plus days that have passed in date2's month
-    const date1Copy = new Date(date1.getTime());
-    date1Copy.setDate(32);
-    result.day = 32 - date1.getDate() - date1Copy.getDate() + date2.getDate();
+    // days = days left in earlierDate's month,
+    //   plus days that have passed in laterDate's month
+    const earlierDateCopy = new Date(earlierDate.getTime());
+    earlierDateCopy.setDate(32);
+    result.day = 32 - earlierDate.getDate() - earlierDateCopy.getDate() + laterDate.getDate();
   }
   if (result.month < 0) {
     result.year--;
