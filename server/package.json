@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/express": "5.0.0",
-    "@types/node": "22.10.2",
+    "@types/node": "22.10.5",
     "@types/node-fetch": "2.6.12",
     "@types/play-sound": "1.1.2",
     "@types/websocket": "1.0.10",
