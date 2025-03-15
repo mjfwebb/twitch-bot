@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint -c .eslintrc.cjs --ext .js,.jsx,.ts,.tsx src/",
     "test": "vitest"
