@@ -27,7 +27,7 @@
     "react-virtuoso": "^4.3.8",
     "socket.io-client": "^4.5.4",
     "styled-components": "^6.0.0-rc.6",
-    "vitest": "^2.0.0",
+    "vitest": "^3.0.9",
     "wouter": "^3.0.2",
     "zustand": "^5.0.0"
   },
@@ -49,6 +49,6 @@
     "less": "4.2.2",
     "prettier": "3.5.3",
     "typescript": "5.8.2",
-    "vite": "5.4.15"
+    "vite": "6.2.3"
   }
 }
