@@ -33,7 +33,10 @@ async function main() {
     assertTokenFileExists();
 
     await twitchAuthCodeRouter();
-    await spotifyAuthCodeRouter();
+    
+    if (Config.spotify.enabled) {
+      await spotifyAuthCodeRouter();
+    }
 
     removeOldTTSFiles();
     loadBotCommands();

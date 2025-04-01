@@ -221,7 +221,7 @@ export const getSpotifyAccessToken = async (): Promise<void> => {
 };
 
 export const spotifyAuthCodeRouter = async () => {
-  if (Config.spotify.enabled && Config.spotify.client_id && !Config.spotify.auth_code) {
+  if (Config.spotify.client_id && !Config.spotify.auth_code) {
     express()
       .get('/', (req, res) => {
         if (req.query.code) {
