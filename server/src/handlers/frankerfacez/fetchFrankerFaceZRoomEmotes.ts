@@ -14,7 +14,7 @@ export const fetchFrankerFaceZRoomEmotes = async (): Promise<FrankerFaceZRoomEmo
       const result = frankerFaceZRoomEmotesSchema.safeParse(json);
       if (result.success) {
         logger.info(`Fetched FrankerFaceZ room emotes`);
-        return result.data; 
+        return result.data;
       } else {
         logger.error(`JSON response from FrankerFaceZ API (fetchFrankerFaceZRoomEmotes) is not valid. Error: ${result.error.message}`);
         return json as FrankerFaceZRoomEmotes;
