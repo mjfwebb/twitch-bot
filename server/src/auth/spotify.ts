@@ -224,6 +224,14 @@ export const spotifyAuthCodeRouter = async () => {
   if (Config.spotify.client_id && !Config.spotify.auth_code) {
     const port = parseInt(Config.spotify.redirect_uri.split(':')[2]);
 
+    if (!Config.spotify.redirect_uri.includes("localhost")) {
+      throw new Error("Spotify: Only localhost is supported for auth redirect uri.");
+    }
+
+    if (Number.isNaN(port)) {
+      throw new Error("Spotify: Unable to get localhost port number for auth redirect route.");
+    }
+
     logger.info(`Listening on port ${String(port)} for Spotify auth code`);
 
     express()
