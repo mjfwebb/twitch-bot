@@ -171,7 +171,7 @@ export const twitchAuthCodeRouter = async () => {
   if (Config.twitch.client_id && !Config.twitch.auth_code) {
     const port = parseInt(Config.twitch.redirect_uri.split(':')[2]);
 
-    if (!Config.spotify.redirect_uri.includes("localhost")) {
+    if (!Config.twitch.redirect_uri.includes("localhost")) {
       throw new Error("Twitch: Only localhost is supported for auth redirect uri.");
     }
 
