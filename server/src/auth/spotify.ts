@@ -247,7 +247,7 @@ export const spotifyAuthCodeRouter = async () => {
       })
       .listen(port);
 
-    logger.info(`Spotify: Getting Auth Code with scopes ${pc.green(`${Config.twitch.scopes.join(', ')}`)}`);
+    logger.info(`Spotify: Getting Auth Code with scopes ${pc.green(`${Config.spotify.scopes.join(', ')}`)}`);
     await getSpotifyAuthCode();
   }
 };
