@@ -33,10 +33,6 @@ async function main() {
     assertTokenFileExists();
 
     await twitchAuthCodeRouter();
-    
-    if (Config.spotify.enabled) {
-      await spotifyAuthCodeRouter();
-    }
 
     removeOldTTSFiles();
     loadBotCommands();
@@ -49,6 +45,8 @@ async function main() {
     await getTwitchAccessToken(Config.twitch);
 
     if (Config.spotify.enabled) {
+      await spotifyAuthCodeRouter();
+
       logger.info(`${pc.green('[Spotify enabled]')} Getting Spotify access token`);
       await getSpotifyAccessToken();
 
