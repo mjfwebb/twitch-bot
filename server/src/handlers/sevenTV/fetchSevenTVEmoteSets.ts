@@ -12,7 +12,7 @@ export const fetchSevenTVEmoteSet = async (emoteSetId: string): Promise<SevenTVE
     const result = sevenTVEmoteSetSchema.safeParse(json);
     if (result.success) {
       logger.info(`Fetched 7TV emote set ${emoteSetId}`);
-      return sevenTVEmoteSetSchema.parse(json);
+      return result.data;
     } else {
       logger.error(`JSON response from 7TV API (fetchSevenTVEmoteSet) is not valid. Error: ${result.error.message}`);
       return json as SevenTVEmoteSet;
