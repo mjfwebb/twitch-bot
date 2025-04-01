@@ -15,7 +15,7 @@ export const fetchBetterTTVGlobalEmotes = async (): Promise<BttvEmote[] | null> 
       const result = bttvEmotesSchema.safeParse(json);
       if (result.success) {
         logger.info(`Fetched BetterTTV global emotes`);
-        return bttvEmotesSchema.parse(json);
+        return result.data;
       } else {
         logger.error(`JSON response from BetterTTV API is not valid. Error: ${result.error.message}`);
         return json as BttvEmote[];

@@ -14,7 +14,7 @@ export const fetchBetterTTVUser = async (): Promise<BttvUser | null> => {
       const result = bttvUserSchema.safeParse(json);
       if (result.success) {
         logger.info(`Fetched BetterTTV user`);
-        return bttvUserSchema.parse(json);
+        return result.data;
       } else {
         logger.error(`JSON response from BetterTTV API is not valid. Error: ${result.error.message}`);
         return json as BttvUser;
