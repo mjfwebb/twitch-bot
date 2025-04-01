@@ -171,6 +171,14 @@ export const twitchAuthCodeRouter = async () => {
   if (Config.twitch.client_id && !Config.twitch.auth_code) {
     const port = parseInt(Config.twitch.redirect_uri.split(':')[2]);
 
+    if (!Config.twitch.redirect_uri.includes("localhost")) {
+      throw new Error("Twitch: Only localhost is supported for auth redirect uri.");
+    }
+
+    if (Number.isNaN(port)) {
+      throw new Error("Twitch: Unable to get localhost port number for auth redirect route.");
+    }
+
     logger.info(`Listening on port ${String(port)} for Twitch auth code`);
 
     express()

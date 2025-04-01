@@ -222,6 +222,18 @@ export const getSpotifyAccessToken = async (): Promise<void> => {
 
 export const spotifyAuthCodeRouter = async () => {
   if (Config.spotify.client_id && !Config.spotify.auth_code) {
+    const port = parseInt(Config.spotify.redirect_uri.split(':')[2]);
+
+    if (!Config.spotify.redirect_uri.includes("localhost")) {
+      throw new Error("Spotify: Only localhost is supported for auth redirect uri.");
+    }
+
+    if (Number.isNaN(port)) {
+      throw new Error("Spotify: Unable to get localhost port number for auth redirect route.");
+    }
+
+    logger.info(`Listening on port ${String(port)} for Spotify auth code`);
+
     express()
       .get('/', (req, res) => {
         if (req.query.code) {
@@ -241,9 +253,9 @@ export const spotifyAuthCodeRouter = async () => {
           res.send('Hello from twitch-bot! No Spotify Auth Code received. You may close this window.');
         }
       })
-      .listen(3000);
+      .listen(port);
 
-    logger.info(`Spotify: Getting Auth Code with scopes ${pc.green(`${Config.twitch.scopes.join(', ')}`)}`);
+    logger.info(`Spotify: Getting Auth Code with scopes ${pc.green(`${Config.spotify.scopes.join(', ')}`)}`);
     await getSpotifyAuthCode();
   }
 };
