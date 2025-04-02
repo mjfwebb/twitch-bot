@@ -48,10 +48,12 @@ export const ChatEntry = ({
   // Set default user if no user
   const user = chatMessage.user ?? {
     displayName: chatMessage.parsedMessage.tags['display-name'] || 'unknown',
+    nick: 'unknown',
     avatarUrl: '',
   };
 
   const isSelected = selectedDisplayName === user.displayName;
+  const isLocalized = user.displayName.toLocaleLowerCase() !== user.nick;
 
   return (
     <button className={classNames('chat-message')} onClick={() => socket.current?.emit('setSelectedDisplayName', user.displayName)}>
@@ -82,13 +84,23 @@ export const ChatEntry = ({
           {showAvatars && user.avatarUrl && <img className="chat-message-avatar-image" src={user.avatarUrl} alt="avatar" height={34} />}
           <UserBadges badges={chatMessage.parsedMessage.tags.badges} />
           <span
-            className="chat-message-nick"
+            className="chat-message-displayname"
             style={{
               color: isSelected || chatMessage.isSpotlighted ? 'white' : contrastCorrected(color || '#fff', backgroundColor),
             }}
           >
             {user.displayName}
           </span>
+          {isLocalized && (
+            <span
+              className="chat-message-nick"
+              style={{
+                color: isSelected || chatMessage.isSpotlighted ? 'white' : contrastCorrected(color || '#fff', backgroundColor),
+              }}
+            >
+              (@{user.nick})
+            </span>
+          )}
           {showColonAfterDisplayName && !actionMessage && ': '}
           <span className={classNames('chat-message-text', actionMessage && 'chat-message-text-action')}>
             <ChatImageRenderer
