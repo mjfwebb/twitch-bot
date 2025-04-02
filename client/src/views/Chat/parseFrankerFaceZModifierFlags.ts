@@ -5,16 +5,18 @@ const FrankerFaceZModifierFlag = {
   growx: 8,
   slide: 16,
   appear: 32,
-  rotate: 64,
-  rotate90: 128,
-  greyscale: 256,
-  sepia: 512,
+  leave: 64,
+  rotate: 128,
+  rotate90: 256,
+  greyscale: 512,
+  sepia: 1024,
   rainbow: 2048,
   hyperred: 4096,
-  shake: 8192,
+  hypershake: 8192,
   cursed: 16384,
   jam: 32768,
   bounce: 65536,
+  nospace: 131072,
 };
 
 export function parseFrankerFaceZModifierFlags(flags: number): string[] {
