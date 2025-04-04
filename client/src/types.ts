@@ -86,6 +86,7 @@ export type ChatMessage = {
   id: string;
   user: {
     userId: string;
+    nick: string;
     displayName: string;
     welcomeMessage?: string;
     points: number;
