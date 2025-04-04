@@ -27,6 +27,7 @@ export const ChatPreview = () => {
       lastSeen: '2023-07-03T17:43:21.776Z',
       avatarUrl: 'https://static-cdn.jtvnw.net/jtv_user_pictures/6e159f50-bab1-4e19-90e6-10c09710b2dc-profile_image-300x300.png',
       displayName: 'Athano',
+      nick: 'athano',
     },
     parsedMessage: {
       tags: {
@@ -103,7 +104,8 @@ export const ChatPreview = () => {
             },
           },
           user: {
-            displayName: 'OtherUser',
+            displayName: 'ねこ',
+            nick: 'cat',
             avatarUrl: 'https://picsum.photos/100/100',
             experience: 0,
             points: 0,
