@@ -3,13 +3,14 @@
 import fetch from 'node-fetch';
 import { TWITCH_INSIGHTS_URL } from '../../constants';
 import { logger } from '../../logger';
-import { assertArray } from '../../utils/assertArray';
 import { hasOwnProperty } from '../../utils/hasOwnProperty';
 
-/* The response from the API is in the format of a JSON response:
-{ "bots":[[ botName, numberOfChannelsBotIsViewing, botId ]], "_total": totalNumberOfViewerBots } }
-*/
-type TwitchViewerBot = [string, number, number];
+type ValidResult = { bots: TwitchViewerBot[]; _total: number };
+type TwitchViewerBot = [botName: string, numberOfChannelsBotIsViewing: number, botId: number];
+
+function isValidResult(result: unknown): result is ValidResult {
+  return hasOwnProperty(result, 'bots') && Array.isArray(result.bots);
+}
 
 let twitchViewerBotNames: string[];
 
@@ -18,26 +19,11 @@ export const getTwitchViewerBotNames = () => twitchViewerBotNames;
 export const fetchKnownTwitchViewerBots = async (): Promise<void> => {
   try {
     const url = `${TWITCH_INSIGHTS_URL}bots/all`;
+    const response = await fetch(url);
+    const result: unknown = await response.json();
 
-    const response = await fetch(url, {
-      method: 'GET',
-    });
-
-    const result = await response.text();
-    const parsedResult: unknown = JSON.parse(result);
-
-    if (hasOwnProperty(parsedResult, 'bots')) {
-      const botsData: unknown = parsedResult.bots;
-      assertArray(botsData);
-      const botNames = (botsData as TwitchViewerBot[])
-        .map((botData: TwitchViewerBot) => {
-          if (botData[0] && typeof botData[0] === 'string') {
-            return botData[0];
-          } else {
-            return undefined;
-          }
-        })
-        .filter((b): b is string => b !== undefined);
+    if (isValidResult(result)) {
+      const botNames = result.bots.filter((botData) => botData[0] && typeof botData[0] === 'string').map((botData) => botData[0]);
       twitchViewerBotNames = botNames;
     }
   } catch (error) {
