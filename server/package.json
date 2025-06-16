@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/express": "5.0.3",
-    "@types/node": "22.15.30",
+    "@types/node": "22.15.31",
     "@types/node-fetch": "2.6.12",
     "@types/play-sound": "1.1.2",
     "@types/websocket": "1.0.10",
@@ -51,7 +51,7 @@
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.4.1",
     "prettier": "3.5.3",
-    "tsx": "4.19.4",
+    "tsx": "4.20.3",
     "typescript": "5.8.3",
     "vitest": "3.1.3"
   }
