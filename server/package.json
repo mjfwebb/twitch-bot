@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "cors": "^2.8.5",
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.20.0",
     "express": "^5.0.0",
     "ffmpeg-static": "^5.1.0",
     "http-status-codes": "^2.2.0",
