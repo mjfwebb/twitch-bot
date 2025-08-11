@@ -42,13 +42,13 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-prettier": "5.5.3",
+    "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "less": "4.4.0",
     "prettier": "3.6.2",
-    "typescript": "5.8.3",
+    "typescript": "5.9.2",
     "vite": "6.3.5"
   }
 }
