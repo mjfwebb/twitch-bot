@@ -51,7 +51,7 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-prettier": "5.5.4",
     "prettier": "3.6.2",
-    "tsx": "4.20.5",
+    "tsx": "4.20.6",
     "typescript": "5.9.2",
     "vitest": "3.2.4"
   }
