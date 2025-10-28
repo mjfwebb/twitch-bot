@@ -35,17 +35,17 @@
     "play-sound": "^1.1.6",
     "socket.io": "^4.8.0",
     "websocket": "^1.0.34",
-    "zod": "^3.22.4"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@types/express": "5.0.4",
-    "@types/node": "22.18.12",
+    "@types/node": "24.9.2",
     "@types/node-fetch": "2.6.13",
     "@types/play-sound": "1.1.2",
     "@types/websocket": "1.0.10",
     "@typescript-eslint/eslint-plugin": "8.46.2",
     "@typescript-eslint/parser": "8.46.2",
-    "cross-env": "7.0.3",
+    "cross-env": "10.1.0",
     "eslint": "8.57.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
