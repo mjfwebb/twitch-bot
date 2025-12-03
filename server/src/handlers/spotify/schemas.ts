@@ -71,14 +71,16 @@ export const spotifyTrackSchema = z.object({
 
 export const spotifySongSchema = z.object({
   timestamp: z.number(),
-  context: z.object({
-    external_urls: z.object({
-      spotify: z.string(),
+  context: z.nullable(
+    z.object({
+      external_urls: z.object({
+        spotify: z.string(),
+      }),
+      href: z.string(),
+      type: z.string(),
+      uri: z.string(),
     }),
-    href: z.string(),
-    type: z.string(),
-    uri: z.string(),
-  }),
+  ),
   progress_ms: z.number(),
   item: spotifyTrackSchema,
   currently_playing_type: z.string(),
