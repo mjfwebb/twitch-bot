@@ -25,6 +25,10 @@ export const get: BotCommand = {
 
     switch (commandName) {
       case 'category': {
+        const category = (await fetchChannelInformation())?.game_name;
+        if (category) {
+          StreamState.category = category;
+        }
         sendChatMessage(connection, `The current category is ${StreamState.category}`);
         break;
       }
@@ -45,6 +49,7 @@ export const get: BotCommand = {
         break;
       }
       case 'title': {
+        await fetchChannelInformation();
         sendChatMessage(connection, `The current title is ${StreamState.title}`);
         break;
       }
