@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/status-archived-red?style=for-the-badge" alt="Archived">
+</p>
+
+> **This repository is archived and no longer maintained.**
+
 <h1 align="center">Welcome to twitch-bot</h1>
 <p>
   <a href="" target="_blank">
